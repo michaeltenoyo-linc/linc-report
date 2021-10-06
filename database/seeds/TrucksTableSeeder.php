@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Models\Trucks;
 
 class TrucksTableSeeder extends Seeder
 {
@@ -13,51 +14,30 @@ class TrucksTableSeeder extends Seeder
      */
     public function run()
     {
-        $seeds= [
-            [
-                'nopol' => "B9058SXS",
-                'fungsional' => "logistik",
-                'ownership' => "own",
-                'owner' => "own",
-                'type' => "cdd chiller",
-                'v_gps' => "oslog",
-                'site' => "NL Surabaya",
-                'area' => "surabaya",
-                'taken' => 1,
-                'kategori'=> 5000,
-                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
-            ],
-            [
-                'nopol' => "B9059SXS",
-                'fungsional' => "logistik",
-                'ownership' => "own",
-                'owner' => "own",
-                'type' => "cdd chiller",
-                'v_gps' => "oslog",
-                'site' => "NL Surabaya",
-                'area' => "surabaya",
-                'taken' => 1,
-                'kategori'=> 3000,
-                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
-            ],
-            [
-                'nopol' => "B9060SXS",
-                'fungsional' => "logistik",
-                'ownership' => "own",
-                'owner' => "own",
-                'type' => "cdd chiller",
-                'v_gps' => "oslog",
-                'site' => "NL Surabaya",
-                'area' => "surabaya",
-                'taken' => 1,
-                'kategori'=> 3000,
-                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
-            ],
-        ];
+        Trucks::truncate();
 
-        DB::table('trucks')->insert($seeds);
+        $csvFile = fopen(base_path("reference/MASTER DATA TRUCK BP.csv"),"r");
+        
+        $firstline = true;
+
+        while(($data = fgetcsv($csvFile, 2000, ';')) != FALSE){
+            if (!$firstline){
+                Trucks::create([
+                    'nopol' => $data['1'],
+                    'fungsional' => $data['2'],
+                    'ownership' => $data['3'],
+                    'owner' => $data['4'],
+                    'type' => $data['5'],
+                    'v_gps' => $data['6'],
+                    'site' => $data['7'],
+                    'area' => $data['8'],
+                    'taken' => $data['13'],
+                    'kategori' => $data['12']
+                ]);
+            }
+            $firstline = false;
+        }
+
+        fclose($csvFile);
     }
 }
