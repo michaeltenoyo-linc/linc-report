@@ -1,0 +1,40 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateSuratjalansTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('suratjalan', function (Blueprint $table) {
+            $table->string('id_so')->primary();
+            $table->string('load_id');
+            $table->float('total_weightSO',12);
+            $table->float('total_qtySO',12);
+            $table->string('nopol');
+            $table->string('penerima');
+            $table->float('utilitas');
+            $table->float('biaya_bongkar',12);
+            $table->timestamp('tgl_muat');
+            $table->timestamps();
+            $table->softDeletes();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('suratjalan');
+    }
+}

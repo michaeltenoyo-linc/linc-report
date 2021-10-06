@@ -1,0 +1,17 @@
+/** Tailwind **/
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/** Import admin **/
+@import 'admin/custom_button.scss';
+@import 'admin/custom_navigation.scss';
+
+/** Fontawesome **/
+@import '@fortawesome/fontawesome-free/css/fontawesome';
+@import '@fortawesome/fontawesome-free/css/regular';
+@import '@fortawesome/fontawesome-free/css/solid';
+@import '@fortawesome/fontawesome-free/css/brands';
+
+/** node-snackbar **/
+@import 'node-snackbar/dist/snackbar.min.css';

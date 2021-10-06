@@ -1,0 +1,41 @@
+{
+    "private": true,
+    "scripts": {
+        "dev": "npm run development",
+        "development": "mix",
+        "watch": "mix watch",
+        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "hot": "mix watch --hot",
+        "prod": "npm run production",
+        "production": "mix --production"
+    },
+    "devDependencies": {
+        "@fortawesome/fontawesome-free": "^5.15.3",
+        "@fullcalendar/core": "^5.9.0",
+        "@fullcalendar/daygrid": "^5.9.0",
+        "@fullcalendar/interaction": "^5.9.0",
+        "@fullcalendar/list": "^5.9.0",
+        "@fullcalendar/timegrid": "^5.9.0",
+        "@tailwindcss/forms": "^0.3.3",
+        "@tailwindcss/ui": "^0.3.1",
+        "autoprefixer": "^10.3.4",
+        "axios": "^0.21",
+        "cross-env": "^7.0.3",
+        "laravel-mix": "^6.0.28",
+        "lodash": "^4.17.19",
+        "moment": "^2.29.1",
+        "node-snackbar": "^0.1.16",
+        "postcss": "^8.3.6",
+        "postcss-import": "^13.0",
+        "postcss-nested": "^4.2",
+        "resolve-url-loader": "^4.0.0",
+        "sass": "^1.38.2",
+        "sass-loader": "^12.1.0",
+        "sweetalert2": "^11.1.5",
+        "tailwindcss": "^2.2.9",
+        "typeahead": "^0.2.2",
+        "vue-template-compiler": "^2.6.11",
+        "webpack-cli": "^4.8.0"
+    },
+    "dependencies": []
+}
