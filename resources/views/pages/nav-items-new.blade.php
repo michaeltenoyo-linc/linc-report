@@ -21,27 +21,35 @@ Linc | New Item
             </div>
         </div>
         <div class="flex flex-nowrap p-8 ">
-            <form id="form-items-new">
+            <form id="form-items-new" autocomplete="off">
                 <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase"> Product Information </h6>
                 <div class="flex flex-wrap">
-                    <div class="w-full lg:w-12/12 px-4">
+                    <div class="w-full lg:w-8/12 px-4">
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                                 htmlFor="name"> Material Code </label>
                             <input type="text"
                                 name="material_code"
-                                class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                value="" />
+                                class="input-id-item border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                value=""/>
                         </div>
                     </div>
+
+                    <div class="w-full lg:w-4/12 px-4">
+                        <div class="relative w-full mb-3">
+                            <br>
+                            <button class="check-item btn_blue" value="check">Cek Kode</button>
+                        </div>
+                    </div>
+
                     <div class="w-full lg:w-12/12 px-4">
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                                 htmlFor="grid-password"> Deskripsi </label>
                             <input type="text"
                                 name="description"
-                                class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                value="" />
+                                class="input-item-deskripsi border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                value="" readonly/>
                         </div>
                     </div>
 
@@ -51,11 +59,11 @@ Linc | New Item
                                 htmlFor="grid-password"> Gross Weight </label>
                             <input type="number"
                                 name="gross_weight"
-                                class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                class="input-item-grossw border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                 min=0
                                 inputmode="decimal"
                                 value="0.01"
-                                step=".01" />
+                                step=".01" readonly/>
                         </div>
                     </div>
                     <div class="w-full lg:w-12/12 px-4">
@@ -65,11 +73,11 @@ Linc | New Item
                             <input type="number"
                                 min="0"
                                 name="nett_weight"
-                                class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
+                                class="input-item-nettw border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
                                 value="0.01"
                                 inputmode="decimal"
                                 step=".01"
-                            />
+                                readonly/>
                         </div>
                     </div>
                     <div class="w-full lg:w-12/12 px-4">
@@ -79,17 +87,17 @@ Linc | New Item
                             <input type="text"
                                 min="0"
                                 name="category"
-                                class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
-                                value=""
-                                
+                                class="input-item-category border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
+                                value="Branded"
+                                readonly
                             />
                         </div>
                     </div>
                     <div class="w-full lg:w-12/12 px-4" >
                         <div class="flex flex-row-reverse w-full mb-3">
                             <input type="submit"
-                                class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded text-right"
-                                value="Simpan" />
+                                class="input-item-submit bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded text-right"
+                                value="Simpan" disabled/>
                         </div>
                     </div>
                 </div>

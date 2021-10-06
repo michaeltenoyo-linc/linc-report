@@ -115,6 +115,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var node_snackbar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! node-snackbar */ "./node_modules/node-snackbar/src/js/snackbar.js");
+/* harmony import */ var node_snackbar__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(node_snackbar__WEBPACK_IMPORTED_MODULE_1__);
+
 
 var AdminItems = function AdminItems() {
   console.log("loading adminProduct JS");
@@ -178,8 +181,130 @@ var AdminItems = function AdminItems() {
     console.log("loading typeahead done.");
   };
 
+  var checkMaterialCode = function checkMaterialCode() {
+    $('#form-items-new .check-item').on('click', function (e) {
+      var _this = this;
+
+      var currentStats = $(this).val();
+      e.preventDefault();
+
+      if (currentStats == "check") {
+        console.log("Checking Item...");
+        var id = $('#form-items-new .input-id-item').val(); //console.log(id);
+
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+          processData: false,
+          contentType: false,
+          dataType: 'JSON'
+        });
+        $.ajax({
+          url: '/items/check-existing/' + id,
+          type: 'GET',
+          success: function success(data) {
+            //$(this).trigger('reset');
+            //console.log(data);
+            if (!data['check']) {
+              $(_this).val("cancel");
+              $(_this).html("Cancel");
+              $('#form-items-new .input-id-item').prop('readonly', true);
+              $('#form-items-new .input-item-deskripsi').prop('readonly', false);
+              $('#form-items-new .input-item-grossw').prop('readonly', false);
+              $('#form-items-new .input-item-nettw').prop('readonly', false);
+              $('#form-items-new .input-item-category').prop('readonly', false);
+              $('#form-items-new .input-item-submit').prop('disabled', false);
+              node_snackbar__WEBPACK_IMPORTED_MODULE_1___default().show({
+                text: "Item belum terdaftar.",
+                actionText: 'Tutup',
+                duration: 3000,
+                pos: 'bottom-center'
+              });
+            } else {
+              node_snackbar__WEBPACK_IMPORTED_MODULE_1___default().show({
+                text: "Item sudah terdaftar.",
+                actionText: 'Tutup',
+                duration: 3000,
+                pos: 'bottom-center'
+              });
+            }
+          }
+        });
+      } else {
+        $(this).val("check");
+        $(this).html('Check SJ');
+        $('#form-items-new .input-id-item').prop('readonly', false);
+        $('#form-items-new .input-item-deskripsi').prop('readonly', true);
+        $('#form-items-new .input-item-grossw').prop('readonly', true);
+        $('#form-items-new .input-item-nettw').prop('readonly', true);
+        $('#form-items-new .input-item-category').prop('readonly', true);
+        $('#form-items-new .input-item-submit').prop('disabled', true);
+        node_snackbar__WEBPACK_IMPORTED_MODULE_1___default().show({
+          text: "Silahkan cek kembali material code.",
+          actionText: 'Tutup',
+          duration: 3000,
+          pos: 'bottom-center'
+        });
+      }
+
+      return false;
+    });
+  };
+
+  var addItem = function addItem() {
+    $('#form-items-new').on('submit', function (e) {
+      var _this2 = this;
+
+      e.preventDefault();
+      sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+        title: 'Are you sure?',
+        text: "Pastikan data sudah benar semua!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Iya, simpan!'
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            processData: false,
+            contentType: false,
+            dataType: 'JSON'
+          });
+          $.ajax({
+            url: '/items/addItem',
+            type: 'POST',
+            data: new FormData($(_this2)[0]),
+            success: function success(data) {
+              sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+                title: 'Tersimpan!',
+                text: 'Data item baru sudah disimpan.',
+                icon: 'success'
+              }).then(function () {
+                location.reload();
+              });
+            },
+            error: function error(request, status, _error) {
+              sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: JSON.parse(request.responseText).message
+              });
+            }
+          });
+        }
+      });
+    });
+  };
+
+  addItem();
   autocompleteItems();
   getItems();
+  checkMaterialCode();
 };
 
 /***/ }),

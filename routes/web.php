@@ -5,6 +5,7 @@ use App\Http\Controllers\ViewController;
 use App\Http\Controllers\SuratjalanController;
 use App\Http\Controllers\TruckController;
 use App\Http\Controllers\LoadController;
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ReportController;
 
 /*
@@ -48,6 +49,11 @@ Route::prefix('/suratjalan')->group(function () {
 
 Route::prefix('/trucks')->group(function () {
     Route::get('/check/{nopol}',[TruckController::class, 'checkTruck']);
+});
+
+Route::prefix('/items')->group(function () {
+    Route::post('/addItem', [ItemController::class, 'addItem']);
+    Route::get('/check-existing/{material_code}',[ItemController::class, 'checkItemExist']);
 });
 
 Route::prefix('/load')->group(function () {
