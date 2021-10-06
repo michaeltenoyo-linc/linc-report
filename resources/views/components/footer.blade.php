@@ -7,7 +7,7 @@
                     Copyright © <span id="get-current-year"></span>
                     <a href="https://www.creative-tim.com?ref=njs-dashboard"
                         class="text-blueGray-500 hover:text-blueGray-700 text-sm font-semibold py-1">
-                        NEST Team
+                        Linc Group
                     </a>
                 </div>
             </div>
