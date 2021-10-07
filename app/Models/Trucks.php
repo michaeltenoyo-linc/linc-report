@@ -10,6 +10,8 @@ class Trucks extends Model
     use SoftDeletes;
 
     protected $table = 'trucks';
+    protected $primaryKey = 'nopol';
+    public $incrementing = false;
     protected $fillable = [
         'nopol',
         'fungsional',

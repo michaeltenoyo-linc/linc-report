@@ -56,20 +56,20 @@ export const ItemsModal = () => {
                 $('#form-so-new .ctr-item').val(ctr);
 
                 //update total value
-                let currTotal = parseFloat($('#form-so-new .input-total-weight').val());
-                let currQty = parseFloat($('#form-so-new .input-total-qty').val());
-                let kategori_truck = parseFloat($('#form-so-new .kategori-truck').val());
+                var currTotal = parseFloat($('#form-so-new .input-total-weight').val());
+                var currQty = parseFloat($('#form-so-new .input-total-qty').val());
+                var kategori_truck = parseFloat($('#form-so-new .kategori-truck').val());
                 currQty = parseFloat(currQty) + parseFloat(qty);
                 console.log(currTotal);
                 console.log(kategori_truck);
                 currTotal = parseFloat(parseFloat(currTotal) + parseFloat(subtotal_weight));
                 console.log(currTotal);
-                let currUtility = parseFloat(currTotal / kategori_truck).toFixed(4);
+                var currUtility = parseFloat(currTotal / kategori_truck).toFixed(4);
 
                 currUtility = parseFloat(currUtility).toFixed(4);
                 currTotal = parseFloat(currTotal).toFixed(2);
                 $('#form-so-new .input-total-weight').val(currTotal);
-                $('#form-so-new .input-total-utility').val(currUtility);
+                $('#form-so-new .input-total-utility').val(currUtility*100);
                 $('#form-so-new .input-total-qty').val(currQty);
                 $('#form-so-new .teks-total-weight').html("Total : "+String(currTotal)+" Kg. | "+String(currQty));
                 $('#form-so-new .teks-utility').html("Utilitas : "+String(currUtility*100)+"%");

@@ -51,5 +51,12 @@ class ItemController extends BaseController
 
         return response()->json(['message' => "Berhasil menyimpan data."], 200);
     }
+
+    public function delete(Request $req){
+        $item = Item::where('material_code','=',$req->input('materialCode'))->first();
+        $item->delete();
+
+        return response()->json(['message' => 'berhasil menghapus data.'], 200);
+    }
     
 }

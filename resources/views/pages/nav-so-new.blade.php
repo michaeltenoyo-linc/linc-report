@@ -173,5 +173,7 @@ Linc | Register Surat Jalan
         </div>
     </div>
 </div>
+
+<div class="dot-elastic"></div>
 @endsection
 @include('modals.sj-items-modal');

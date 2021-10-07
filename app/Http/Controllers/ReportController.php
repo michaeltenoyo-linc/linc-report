@@ -45,7 +45,7 @@ class ReportController extends BaseController
                         'Kota Tujuan' => $row['Last Drop Location City'],
                         'Kuantitas' => $sj->total_qtySO,
                         'Berat' => $sj->total_weightSO,
-                        'Utilitas' => $sj->utilitas,
+                        'Utilitas' => strval($sj->utilitas)."%",
                         'Nopol' => $sj->nopol,
                         'Tipe Kendaraan' => $truck->type,
                         'Kontainer' => "-",
@@ -57,10 +57,29 @@ class ReportController extends BaseController
                     ]);
                     $ctr++;
                 }
+                $reports->push([
+                    'No' => " ",
+                    'Load ID' => " ",
+                    'Tgl Muat' => " ",
+                    'No SJ' => " ",
+                    'Penerima' => " ",
+                    'Kota Tujuan' => " ",
+                    'Kuantitas' => " ",
+                    'Berat' => " ",
+                    'Utilitas' => " ",
+                    'Nopol' => " ",
+                    'Tipe Kendaraan' => " ",
+                    'Kontainer' => " ",
+                    'Biaya Kirim' => " ",
+                    'Biaya Bongkar' => " ",
+                    'Overnight Charge' =>" ",
+                    'Multidrop' => " ",
+                    'Total' => " ",
+                ]);
             }else{
                 $warning->push([
                     'Load ID' => $row['TMS ID'],
-                    'Suggestion' => 'none'
+                    'Suggestion' => $row['Shipment Reference Numbers']
                 ]);
             }
         }

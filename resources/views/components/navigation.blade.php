@@ -86,6 +86,75 @@
             <hr class="my-4 md:min-w-full" />
             <!-- Heading -->
             <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+                Surat Jalan
+            </h6>
+            <!-- Navigation Loads-->
+            <ul class="md:flex-col md:min-w-full flex flex-col list-none">
+                {{-- Active --}}
+                <li class="items-center">
+                    @if (Request::path() == 'nav-so-new')
+                    <a href="{{url('/nav-so-new')}}"
+                        class="page_nav_active">
+                        <i class="fas fa-plus"></i>
+                        Tambah Surat Jalan
+                    </a>
+                    @else
+                    <a href="{{url('/nav-so-new')}}"
+                        class="page_nav">
+                        <i class="fas fa-plus"></i>
+                        Tambah Surat Jalan
+                    </a>
+                    @endif
+                </li>
+            </ul>
+            <ul class="md:flex-col md:min-w-full flex flex-col list-none">
+                {{-- Active --}}
+                <li class="items-center">
+                    @if (Request::path() == 'nav-so-list')
+                    <a href="{{url('/nav-so-list')}}"
+                        class="page_nav_active">
+                        <i class="fas fa-shipping-fast"></i>
+                        List Surat Jalan
+                    </a>
+                    @else
+                    <a href="{{url('/nav-so-list')}}"
+                        class="page_nav">
+                        <i class="fas fa-shipping-fast"></i>
+                        List Surat Jalan
+                    </a>
+                    @endif
+                </li>
+            </ul>
+
+            <!-- Divider -->
+            <hr class="my-4 md:min-w-full" />
+            <!-- Heading -->
+            <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+                Report
+            </h6>
+            <!-- Navigation Product -->
+            <ul class="md:flex-col md:min-w-full flex flex-col list-none">
+                <li class="items-center">
+                    @if (Request::path() == 'nav-report-generate')
+                        <a href="{{url('/nav-report-generate')}}"
+                            class="page_nav_active">
+                            <i class="far fa-clipboard"></i>
+                            Generate Report
+                        </a>
+                    @else
+                        <a href="{{url('/nav-report-generate')}}"
+                            class="page_nav">
+                            <i class="far fa-clipboard"></i>
+                            Generate Report
+                        </a>
+                    @endif
+                </li>
+            </ul>
+
+            <!-- Divider -->
+            <hr class="my-4 md:min-w-full" />
+            <!-- Heading -->
+            <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
                 Items
             </h6>
             <!-- Navigation Items -->
@@ -95,13 +164,13 @@
                     @if (Request::path() == 'nav-items-new')
                     <a href="{{ url('/nav-items-new') }}"
                         class="page_nav_active">
-                        <i class="far fa-address-book"></i>
+                        <i class="fas fa-plus"></i>
                         New Item
                     </a>
                     @else
                     <a href="{{ url('/nav-items-new') }}"
                         class="page_nav">
-                        <i class="far fa-address-book"></i>
+                        <i class="fas fa-plus"></i>
                         New Item
                     </a>
                     @endif
@@ -113,13 +182,13 @@
                     @if (Request::path() == 'nav-items-list')
                     <a href="{{ url('/nav-items-list') }}"
                         class="page_nav_active">
-                        <i class="far fa-address-book"></i>
+                        <i class="fas fa-boxes"></i>
                         Item List
                     </a>
                     @else
                     <a href="{{ url('/nav-items-list') }}"
                         class="page_nav">
-                        <i class="far fa-address-book"></i>
+                        <i class="fas fa-boxes"></i>
                         Item List
                     </a>
                     @endif
@@ -139,13 +208,13 @@
                     @if (Request::path() == 'nav-trucks-new')
                     <a href="{{ url('/nav-trucks-new') }}"
                         class="page_nav_active">
-                        <i class="far fa-address-book"></i>
+                        <i class="fas fa-plus"></i>
                         Register Truck
                     </a>
                     @else
                     <a href="{{ url('/nav-trucks-new') }}"
                         class="page_nav">
-                        <i class="far fa-address-book"></i>
+                        <i class="fas fa-plus"></i>
                         Register Truck
                     </a>
                     @endif
@@ -157,88 +226,18 @@
                     @if (Request::path() == 'nav-trucks-list')
                     <a href="{{ url('/nav-trucks-list') }}"
                         class="page_nav_active">
-                        <i class="far fa-address-book"></i>
+                        <i class="fas fa-truck"></i>
                         Truck List
                     </a>
                     @else
                     <a href="{{ url('/nav-trucks-list') }}"
                         class="page_nav">
-                        <i class="far fa-address-book"></i>
+                        <i class="fas fa-truck"></i>
                         Truck List
                     </a>
                     @endif
                 </li>
             </ul>
-
-            <!-- Divider -->
-            <hr class="my-4 md:min-w-full" />
-            <!-- Heading -->
-            <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                Surat Jalan
-            </h6>
-            <!-- Navigation Loads-->
-            <ul class="md:flex-col md:min-w-full flex flex-col list-none">
-                {{-- Active --}}
-                <li class="items-center">
-                    @if (Request::path() == 'nav-loads-so-new')
-                    <a href="{{url('/nav-so-new')}}"
-                        class="page_nav_active">
-                        <i class="far fa-address-book"></i>
-                        Tambah Surat Jalan
-                    </a>
-                    @else
-                    <a href="{{url('/nav-so-new')}}"
-                        class="page_nav">
-                        <i class="far fa-address-book"></i>
-                        Tambah Surat Jalan
-                    </a>
-                    @endif
-                </li>
-            </ul>
-            <ul class="md:flex-col md:min-w-full flex flex-col list-none">
-                {{-- Active --}}
-                <li class="items-center">
-                    @if (Request::path() == 'nav-so-list')
-                    <a href="{{url('/nav-so-list')}}"
-                        class="page_nav_active">
-                        <i class="far fa-address-book"></i>
-                        List Surat Jalan
-                    </a>
-                    @else
-                    <a href="{{url('/nav-so-list')}}"
-                        class="page_nav">
-                        <i class="far fa-address-book"></i>
-                        List Surat Jalan
-                    </a>
-                    @endif
-                </li>
-            </ul>
-
-            <!-- Divider -->
-            <hr class="my-4 md:min-w-full" />
-            <!-- Heading -->
-            <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                Report
-            </h6>
-            <!-- Navigation Product -->
-            <ul class="md:flex-col md:min-w-full flex flex-col list-none">
-                <li class="items-center">
-                    @if (Request::path() == '/nav-report-generate')
-                        <a href="{{url('/nav-report-generate')}}"
-                            class="page_nav_active">
-                            <i class="fas fa-plus"></i>
-                            Generate Report
-                        </a>
-                    @else
-                        <a href="{{url('/nav-report-generate')}}"
-                            class="page_nav">
-                            <i class="fas fa-plus"></i>
-                            Generate Report
-                        </a>
-                    @endif
-                </li>
-            </ul>
-
         </div>
     </div>
 </nav>

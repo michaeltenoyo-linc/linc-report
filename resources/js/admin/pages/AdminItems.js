@@ -181,7 +181,59 @@ export const AdminItems = () => {
         });    
     }
 
+    const deleteItem = () => {
+        $(document).on('submit','#btn-items-delete', function(e){
+            e.preventDefault();
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Data akan dihapus secara permanen!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Iya, hapus!'
+              }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        processData: false,
+                        contentType: false,
+                        dataType: 'JSON',
+                    });
+                    $.ajax({
+                        url: '/items/delete',
+                        type: 'POST',
+                        data: new FormData($(this)[0]),
+                        success: (data) => {
+                            Swal.fire({
+                                title: 'Terhapus!',
+                                text: 'Data item sudah dihapus.',
+                                icon: 'success'
+                            }).then(function(){
+                                var table = $('#yajra-datatable-items-list').DataTable();
+                                table.ajax.reload(null, false);
+                            });
+                        },
+                        error : function(request, status, error){
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: (JSON.parse(request.responseText)).message,
+                            })
+                        },
+                    });
+
+
+                }
+            })
+        });
+    }
+
     addItem();
+    deleteItem();
     autocompleteItems();
     getItems();
     checkMaterialCode();

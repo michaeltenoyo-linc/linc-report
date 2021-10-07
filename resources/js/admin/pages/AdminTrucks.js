@@ -85,7 +85,7 @@ export const AdminTrucks = () => {
 
                         if(!data['check']){
                             Snackbar.show({
-                                text: "Kendaraan belum terdaftar.",
+                                text: data['message'],
                                 actionText: 'Tutup',
                                 duration: 3000,
                                 pos: 'bottom-center',

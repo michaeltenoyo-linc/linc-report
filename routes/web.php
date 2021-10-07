@@ -44,6 +44,7 @@ Route::prefix('/data')->group(function () {
 
 Route::prefix('/suratjalan')->group(function () {
     Route::get('/check/{id_so}',[SuratjalanController::class, 'checkSj']);
+    Route::post('/delete',[SuratjalanController::class, 'delete']);
     Route::post('/addSj',[SuratjalanController::class, 'addSj']);
 });
 
@@ -53,6 +54,7 @@ Route::prefix('/trucks')->group(function () {
 
 Route::prefix('/items')->group(function () {
     Route::post('/addItem', [ItemController::class, 'addItem']);
+    Route::post('/delete',[ItemController::class, 'delete']);
     Route::get('/check-existing/{material_code}',[ItemController::class, 'checkItemExist']);
 });
 

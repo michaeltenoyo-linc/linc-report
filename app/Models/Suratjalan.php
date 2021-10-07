@@ -11,6 +11,8 @@ class Suratjalan extends Model
 
     use softDeletes;
     protected $table = 'suratjalan';
+    protected $primaryKey = 'id_so';
+    public $incrementing = false;
     protected $fillable = [
         'id_so',
         'load_id',

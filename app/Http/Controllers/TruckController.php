@@ -25,9 +25,16 @@ class TruckController extends BaseController
         $data['message'] = "Kendaraan tidak terdaftar.";
 
         if($temp != null){
-            $data['check'] = true;
-            $data['kategori'] = $temp->kategori;
-            $data['message'] = "Kendaraan ditemukan.";
+            if($temp->taken == 0){
+                $data['check'] = false;
+                $data['kategori'] = $temp->kategori;
+                $data['message'] = "Kendaraan tidak valid (TIDAK DIAMBIL).";
+            }else{
+                $data['check'] = true;
+                $data['kategori'] = $temp->kategori;
+                $data['message'] = "Kendaraan ditemukan.";
+            }
+            
         }
 
         return response()->json($data,200);

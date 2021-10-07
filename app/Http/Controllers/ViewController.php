@@ -69,7 +69,7 @@ class ViewController extends BaseController
         return DataTables::of($data)
             ->addColumn('action', function($row){
                 $btn = '<a href="items/'.$row->material_code.'" class="btn_yellow">Edit</a>';
-                $btn = '<form id="btn-items-delete" class="inline-flex"><input name="materialCode" type="hidden" value="'.$row->material_Code.'">'.$btn.'<button type="submit" class="btn_red">Delete</button></form>';
+                $btn = '<form id="btn-items-delete" class="inline-flex"><input name="materialCode" type="hidden" value="'.$row->material_code.'">'.$btn.'<button type="submit" class="btn_red">Delete</button></form>';
                 return $btn;
             })
             ->make(true);
@@ -82,7 +82,7 @@ class ViewController extends BaseController
         return DataTables::of($data)
             ->addColumn('action', function($row){
                 $btn = '<a href="trucks/'.$row->nopol.'" class="btn_yellow">Edit</a>';
-                $btn = '<form id="btn-trucks-delete" class="inline-flex"><input name="materialCode" type="hidden" value="'.$row->material_Code.'">'.$btn.'<button type="submit" class="btn_red">Delete</button></form>';
+                $btn = '<form id="btn-trucks-delete" class="inline-flex"><input name="materialCode" type="hidden" value="'.$row->nopol.'">'.$btn.'<button type="submit" class="btn_red">Delete</button></form>';
                 return $btn;
             })
             ->make(true);

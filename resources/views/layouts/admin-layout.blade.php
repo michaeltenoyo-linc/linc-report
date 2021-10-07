@@ -7,6 +7,49 @@
             font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"
         }
 
+        .lds-dual-ring.hidden{
+            display: none;
+        }
+
+        .overlay{
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0,0,0,.8);
+            z-index: 999;
+            opacity: 1;
+            transition: all 0.5s;
+        }
+
+        .lds-dual-ring {
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+        }
+
+        .lds-dual-ring:after{
+            content: " ";
+            display: block;
+            width: 64px;
+            height: 64px;
+            margin: 5% auto;
+            border-radius: 50%;
+            border: 6px solid #fff;
+            border-color: #fff transparent #fff transparent;
+            animation: lds-dual-ring 1.2s linear infinite;
+        }
+
+        @keyframes lds-dual-ring {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
     </style>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -104,6 +147,9 @@
             </div>
         </div>
     </div>
+
+    <!--Loader Spinner-->
+    <div id="loader" class="lds-dual-ring hidden overlay w-full h-full fixed block top-0 left-0"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" charset="utf-8"></script>
     <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>

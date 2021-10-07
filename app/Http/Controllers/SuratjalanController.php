@@ -84,4 +84,11 @@ class SuratjalanController extends BaseController
         return response()->json($data, 200);
     }
 
+    public function delete(Request $req){
+        $sj = Suratjalan::where('id_so','=',$req->input('id_so'))->first();
+        $sj->delete();
+
+        return response()->json(['message' => 'berhasil menghapus data.'], 200);
+    }
+
 }

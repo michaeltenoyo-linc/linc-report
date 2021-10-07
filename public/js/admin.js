@@ -76,7 +76,7 @@ var ItemsModal = function ItemsModal() {
         currUtility = parseFloat(currUtility).toFixed(4);
         currTotal = parseFloat(currTotal).toFixed(2);
         $('#form-so-new .input-total-weight').val(currTotal);
-        $('#form-so-new .input-total-utility').val(currUtility);
+        $('#form-so-new .input-total-utility').val(currUtility * 100);
         $('#form-so-new .input-total-qty').val(currQty);
         $('#form-so-new .teks-total-weight').html("Total : " + String(currTotal) + " Kg. | " + String(currQty));
         $('#form-so-new .teks-utility').html("Utilitas : " + String(currUtility * 100) + "%");
@@ -301,7 +301,58 @@ var AdminItems = function AdminItems() {
     });
   };
 
+  var deleteItem = function deleteItem() {
+    $(document).on('submit', '#btn-items-delete', function (e) {
+      var _this3 = this;
+
+      e.preventDefault();
+      sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+        title: 'Are you sure?',
+        text: "Data akan dihapus secara permanen!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Iya, hapus!'
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            processData: false,
+            contentType: false,
+            dataType: 'JSON'
+          });
+          $.ajax({
+            url: '/items/delete',
+            type: 'POST',
+            data: new FormData($(_this3)[0]),
+            success: function success(data) {
+              sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+                title: 'Terhapus!',
+                text: 'Data item sudah dihapus.',
+                icon: 'success'
+              }).then(function () {
+                var table = $('#yajra-datatable-items-list').DataTable();
+                table.ajax.reload(null, false);
+              });
+            },
+            error: function error(request, status, _error2) {
+              sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: JSON.parse(request.responseText).message
+              });
+            }
+          });
+        }
+      });
+    });
+  };
+
   addItem();
+  deleteItem();
   autocompleteItems();
   getItems();
   checkMaterialCode();
@@ -652,8 +703,59 @@ var AdminSjalan = function AdminSjalan() {
     });
   };
 
+  var deleteSj = function deleteSj() {
+    $(document).on('submit', '#btn-sj-delete', function (e) {
+      var _this3 = this;
+
+      e.preventDefault();
+      sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+        title: 'Are you sure?',
+        text: "Data akan dihapus secara permanen!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Iya, hapus!'
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            processData: false,
+            contentType: false,
+            dataType: 'JSON'
+          });
+          $.ajax({
+            url: '/suratjalan/delete',
+            type: 'POST',
+            data: new FormData($(_this3)[0]),
+            success: function success(data) {
+              sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+                title: 'Terhapus!',
+                text: 'Data surat jalan sudah dihapus.',
+                icon: 'success'
+              }).then(function () {
+                var table = $('#yajra-datatable-sj-list').DataTable();
+                table.ajax.reload(null, false);
+              });
+            },
+            error: function error(request, status, _error2) {
+              sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: JSON.parse(request.responseText).message
+              });
+            }
+          });
+        }
+      });
+    });
+  };
+
   getSj();
   addSj();
+  deleteSj();
   checkSj();
 };
 
@@ -780,7 +882,7 @@ var AdminTrucks = function AdminTrucks() {
             //console.log(data);
             if (!data['check']) {
               node_snackbar__WEBPACK_IMPORTED_MODULE_1___default().show({
-                text: "Kendaraan belum terdaftar.",
+                text: data['message'],
                 actionText: 'Tutup',
                 duration: 3000,
                 pos: 'bottom-center'
@@ -21510,6 +21612,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var load = function load() {
+  //Loading Spinner
+  $(document).on({
+    ajaxStart: function ajaxStart() {
+      $('#loader').removeClass('hidden');
+    },
+    ajaxStop: function ajaxStop() {
+      $("#loader").addClass("hidden");
+    }
+  });
   (0,_pages_AdminItems__WEBPACK_IMPORTED_MODULE_0__.AdminItems)();
   (0,_pages_AdminTrucks__WEBPACK_IMPORTED_MODULE_1__.AdminTrucks)();
   (0,_pages_AdminSjalan__WEBPACK_IMPORTED_MODULE_2__.AdminSjalan)();
