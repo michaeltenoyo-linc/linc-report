@@ -420,8 +420,8 @@ var AdminReport = function AdminReport() {
               data: 'TMS ID',
               name: 'TMS ID'
             }, {
-              data: 'Closed Date',
-              name: 'Closed Data'
+              data: 'Created Date',
+              name: 'Created Date'
             }, {
               data: 'Last Drop Location City',
               name: 'Last Drop Location City'
@@ -934,9 +934,61 @@ var AdminTrucks = function AdminTrucks() {
     });
   };
 
+  var deleteTruck = function deleteTruck() {
+    $(document).on('submit', '#btn-trucks-delete', function (e) {
+      var _this2 = this;
+
+      e.preventDefault();
+      sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+        title: 'Are you sure?',
+        text: "Data akan dihapus secara permanen!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Iya, hapus!'
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            processData: false,
+            contentType: false,
+            dataType: 'JSON'
+          });
+          $.ajax({
+            url: '/trucks/delete',
+            type: 'POST',
+            data: new FormData($(_this2)[0]),
+            success: function success(data) {
+              sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+                title: 'Terhapus!',
+                text: 'Data kendaraan sudah dihapus.',
+                icon: 'success'
+              }).then(function () {
+                var table = $('#yajra-datatable-trucks-list').DataTable();
+                table.ajax.reload(null, false);
+              });
+            },
+            error: function error(request, status, _error) {
+              sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: JSON.parse(request.responseText).message
+              });
+            }
+          });
+        }
+      });
+      return false;
+    });
+  };
+
   getTrucks();
   autocompleteTrucks();
   checkTruck();
+  deleteTruck();
 };
 
 /***/ }),

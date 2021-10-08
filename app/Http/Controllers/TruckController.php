@@ -39,5 +39,12 @@ class TruckController extends BaseController
 
         return response()->json($data,200);
     }
+
+    public function delete(Request $req){
+        $sj = Trucks::where('nopol','=',$req->input('nopol'))->first();
+        $sj->delete();
+
+        return response()->json(['message' => 'berhasil menghapus data.'], 200);
+    }
     
 }

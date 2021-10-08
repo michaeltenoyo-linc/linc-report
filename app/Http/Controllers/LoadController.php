@@ -82,7 +82,7 @@ class LoadController extends BaseController
             $loads->push([
                 'TMS ID' => $row['TMS ID'],
                 'Billable Total Rate' => $row['Billable Total Rate'],
-                'Closed Date' => $row['Closed Date'],
+                'Created Date' => $row['Created Date'],
                 'Last Drop Location City' => $row['Last Drop Location City'],
                 'Load Status' => $row['Load Status'],
             ]);

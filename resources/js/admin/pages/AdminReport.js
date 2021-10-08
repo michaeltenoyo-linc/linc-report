@@ -46,7 +46,7 @@ export const AdminReport = () => {
                         },
                         columns: [
                             {data: 'TMS ID', name: 'TMS ID'},
-                            {data: 'Closed Date', name: 'Closed Data'},
+                            {data: 'Created Date', name: 'Created Date'},
                             {data: 'Last Drop Location City', name: 'Last Drop Location City'},
                             {data: 'Billable Total Rate', name: 'Billable Total Rate'},
                             {data: 'Load Status', name: 'Load Status'},
