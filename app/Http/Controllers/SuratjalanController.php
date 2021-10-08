@@ -46,6 +46,8 @@ class SuratjalanController extends BaseController
             'item' => 'required',
             'qty' => 'required',
             'bongkar' => 'required',
+            'overnight' => 'required',
+            'multidrop' => 'required',
             'tgl_muat' => 'required',
             'total_qty' => 'required',
         ]);
@@ -60,6 +62,8 @@ class SuratjalanController extends BaseController
             'penerima' => $req->input('penerima'),
             'utilitas' => $req->input('total_utility'),
             'biaya_bongkar' => $req->input('bongkar'),
+            'biaya_overnight' => $req->input('overnight'),
+            'biaya_multidrop' => $req->input('multidrop'),
             'tgl_muat' => $req->input('tgl_muat'),
             'total_qtySO' => $req->input('total_qty'),
         ]);

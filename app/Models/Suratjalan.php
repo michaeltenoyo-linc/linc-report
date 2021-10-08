@@ -21,6 +21,8 @@ class Suratjalan extends Model
         'penerima',
         'utilitas',
         'biaya_bongkar',
+        'biaya_overnight',
+        'biaya_multidrop',
         'tgl_muat',
         'total_qtySO',
     ];

@@ -22,6 +22,8 @@ class CreateSuratjalansTable extends Migration
             $table->string('penerima');
             $table->float('utilitas');
             $table->float('biaya_bongkar',12);
+            $table->float('biaya_overnight',12);
+            $table->float('biaya_multidrop',12);
             $table->timestamp('tgl_muat');
             $table->timestamps();
             $table->softDeletes();
