@@ -446,11 +446,11 @@ var AdminReport = function AdminReport() {
     });
   };
 
-  var previewReport = function previewReport() {
-    $('#yajra-datatable-report-preview').DataTable({
+  var previewReportSmart1 = function previewReportSmart1() {
+    $('#yajra-datatable-report-preview-smart-1').DataTable({
       processing: true,
       serverSide: false,
-      ajax: '/report/get-preview',
+      ajax: '/report/get-preview-smart-1',
       columns: [{
         data: 'No',
         name: 'TMS ID'
@@ -507,10 +507,10 @@ var AdminReport = function AdminReport() {
   };
 
   var previewWarning = function previewWarning() {
-    $('#yajra-datatable-warning-preview').DataTable({
+    $('#yajra-datatable-warning-preview-smart-1').DataTable({
       processing: true,
       serverSide: false,
-      ajax: '/report/get-warning',
+      ajax: '/report/get-warning-smart-1',
       columns: [{
         data: 'Load ID',
         name: 'Load ID'
@@ -521,7 +521,7 @@ var AdminReport = function AdminReport() {
     });
   };
 
-  previewReport();
+  previewReportSmart1();
   previewWarning();
   onUploadBluejay();
 };

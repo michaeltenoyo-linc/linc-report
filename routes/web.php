@@ -66,7 +66,7 @@ Route::prefix('/load')->group(function () {
 
 Route::prefix('/report')->group(function () {
     Route::post('/generate',[ReportController::class, 'generateReport']);
-    Route::get('/get-preview',[ReportController::class, 'getPreviewResult']);
-    Route::get('/get-warning',[ReportController::class, 'getPreviewWarning']);
+    Route::get('/get-preview-smart-1',[ReportController::class, 'getPreviewResultSmart1']);
+    Route::get('/get-warning-smart-1',[ReportController::class, 'getPreviewWarningSmart1']);
     Route::get('/downloadReport',[ReportController::class, 'downloadExcel']);
 });

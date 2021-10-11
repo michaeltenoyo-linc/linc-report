@@ -67,11 +67,11 @@ export const AdminReport = () => {
         });
     }
 
-    const previewReport = () => {
-        $('#yajra-datatable-report-preview').DataTable({
+    const previewReportSmart1 = () => {
+        $('#yajra-datatable-report-preview-smart-1').DataTable({
             processing: true,
             serverSide: false,
-            ajax: '/report/get-preview',
+            ajax: '/report/get-preview-smart-1',
             columns: [
                 {data: 'No', name: 'TMS ID'},
                 {data: 'Load ID', name: 'Closed Data'},
@@ -95,10 +95,10 @@ export const AdminReport = () => {
     }
 
     const previewWarning = () => {
-        $('#yajra-datatable-warning-preview').DataTable({
+        $('#yajra-datatable-warning-preview-smart-1').DataTable({
             processing: true,
             serverSide: false,
-            ajax: '/report/get-warning',
+            ajax: '/report/get-warning-smart-1',
             columns: [
                 {data: 'Load ID', name: 'Load ID'},
                 {data: 'Suggestion', name: 'Suggestion'},
@@ -106,7 +106,7 @@ export const AdminReport = () => {
         })
     }
 
-    previewReport();
+    previewReportSmart1();
     previewWarning();
     onUploadBluejay();
 };

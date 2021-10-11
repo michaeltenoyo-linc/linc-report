@@ -31,7 +31,7 @@ Linc | Report Homepage
 
                     <div class="block w-full p-8  overflow-x-auto">
                         <!-- Projects table -->
-                        <table id="yajra-datatable-report-preview" class="items-center w-full bg-transparent border-collapse yajra-datatable-report-preview">
+                        <table id="yajra-datatable-report-preview-smart-1" class="items-center w-full bg-transparent border-collapse yajra-datatable-report-preview-smart-1">
                             <thead>
                             <tr>
                                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
@@ -91,12 +91,14 @@ Linc | Report Homepage
                             </tbody>
                         </table>
                     </div>
-                    <h3 class="font-semibold text-lg text-red-700 py-8">
-                        Warning!
+                    <h3 class="font-semibold text-lg text-red-600 py-8">
+                        Warning! Cek kembali Load ID yang belum memiliki surat jalan.
+                        <br>
+                        Abaikan bila tidak diperlukan.
                     </h3>
                     <div class="block w-full p-8  overflow-x-auto">
                         <!-- Projects table -->
-                        <table id="yajra-datatable-warning-preview" class="items-center w-full bg-transparent border-collapse yajra-datatable-warning-preview">
+                        <table id="yajra-datatable-warning-preview-smart-1" class="items-center w-full bg-transparent border-collapse yajra-datatable-warning-preview-smart-1">
                             <thead>
                             <tr>
                                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
