@@ -4,14 +4,7 @@ const colors = require("tailwindcss/colors");
 module.exports = {
   purge: [
     './resources/views/**/*.blade.php',
-    './resources/css/**/*.css',
-    {
-      enabled: true,
-      content: ["./**/*.html", "./*.html"],
-      options: {
-        safelist: [],
-      },
-    }
+    './resources/sass/**/*.scss',
   ],
   theme: {
     colors: {
