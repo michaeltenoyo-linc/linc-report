@@ -19,12 +19,14 @@ class CreateSuratjalansTable extends Migration
             $table->float('total_weightSO',12);
             $table->float('total_qtySO',12);
             $table->string('nopol');
+            $table->string('driver_nmk');
+            $table->string('driver_name');
             $table->string('penerima');
             $table->float('utilitas');
             $table->float('biaya_bongkar',12);
             $table->float('biaya_overnight',12);
             $table->float('biaya_multidrop',12);
-            $table->timestamp('tgl_muat');
+            $table->timestamp('tgl_terima');
             $table->timestamps();
             $table->softDeletes();
         });

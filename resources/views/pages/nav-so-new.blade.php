@@ -56,9 +56,9 @@ Linc | Register Surat Jalan
                     <div class="w-full lg:w-12/12 px-4">
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="grid-password"> Tanggal Muat </label>
+                                htmlFor="grid-password"> Tanggal Terima SJ </label>
                             <input type="date"
-                                name="tgl_muat"
+                                name="tgl_terima"
                                 class="input-muat border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                 value="" readonly/>
                         </div>
@@ -103,6 +103,29 @@ Linc | Register Surat Jalan
                                 name="multidrop"
                                 class="input-multidrop border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                 value="0" min=0 readonly/>
+                        </div>
+                    </div>
+
+                    <!-- Driver -->
+                    <div class="w-full lg:w-full px-4">
+                        <div class="relative w-full mb-3">
+                            <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                htmlFor="grid-password"> NMK Driver </label>
+                            <input type="text"
+                                name="driver_nmk"
+                                class="input-driver-nmk border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                value="" readonly/>
+                        </div>
+                    </div>
+
+                    <div class="w-full lg:w-full px-4">
+                        <div class="relative w-full mb-3">
+                            <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                htmlFor="grid-password"> Nama Driver </label>
+                            <input type="text"
+                                name="driver_name"
+                                class="input-driver-name border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                value="" readonly/>
                         </div>
                     </div>
 

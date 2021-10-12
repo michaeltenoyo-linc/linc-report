@@ -41,6 +41,8 @@ class SuratjalanController extends BaseController
             'load_id' => 'required',
             'penerima' => 'required',
             'nopol' => 'required',
+            'driver_nmk' => 'required',
+            'driver_name' => 'required',
             'total_weight' => 'required',
             'total_utility' => 'required',
             'item' => 'required',
@@ -48,7 +50,7 @@ class SuratjalanController extends BaseController
             'bongkar' => 'required',
             'overnight' => 'required',
             'multidrop' => 'required',
-            'tgl_muat' => 'required',
+            'tgl_terima' => 'required',
             'total_qty' => 'required',
         ]);
 
@@ -59,12 +61,14 @@ class SuratjalanController extends BaseController
             'load_id' => $req->input('load_id'),
             'total_weightSO' => $req->input('total_weight'),
             'nopol' => $req->input('nopol'),
+            'driver_nmk' => $req->input('driver_nmk'),
+            'driver_name' => $req->input('driver_name'),
             'penerima' => $req->input('penerima'),
             'utilitas' => $req->input('total_utility'),
             'biaya_bongkar' => $req->input('bongkar'),
             'biaya_overnight' => $req->input('overnight'),
             'biaya_multidrop' => $req->input('multidrop'),
-            'tgl_muat' => $req->input('tgl_muat'),
+            'tgl_terima' => $req->input('tgl_muat'),
             'total_qtySO' => $req->input('total_qty'),
         ]);
 

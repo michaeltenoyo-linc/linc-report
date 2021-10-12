@@ -24,6 +24,7 @@ export const AdminReport = () => {
                 enctype: 'multipart/form-data',
                 data: new FormData($('#form-report-generate')[0]),
                 success: (data) => {
+                    console.log(data);
                     Swal.fire({
                         title: 'Success!',
                         text: 'Silahkan cek kembali isi file Bluejay pada tabel.',
@@ -71,7 +72,7 @@ export const AdminReport = () => {
         $('#yajra-datatable-report-preview-smart-1').DataTable({
             processing: true,
             serverSide: false,
-            ajax: '/report/get-preview-smart-1',
+            ajax: '/report/get-preview',
             columns: [
                 {data: 'No', name: 'TMS ID'},
                 {data: 'Load ID', name: 'Closed Data'},
@@ -94,11 +95,58 @@ export const AdminReport = () => {
         })
     }
 
-    const previewWarning = () => {
+    const previewWarningSmart1 = () => {
         $('#yajra-datatable-warning-preview-smart-1').DataTable({
             processing: true,
             serverSide: false,
-            ajax: '/report/get-warning-smart-1',
+            ajax: '/report/get-warning',
+            columns: [
+                {data: 'Load ID', name: 'Load ID'},
+                {data: 'Suggestion', name: 'Suggestion'},
+            ]
+        })
+    }
+
+    const previewReportSmart2 = () => {
+        $('#yajra-datatable-report-preview-smart-2').DataTable({
+            processing: true,
+            serverSide: false,
+            ajax: '/report/get-preview',
+            columns: [
+                {data: 'No', name: 'TMS ID'},
+                {data: 'Tanggal', name: 'Closed Data'},
+                {data: 'Customer', name: 'Last Drop Location City'},
+                {data: 'Billable Method', name: 'Billable Total Rate'},
+                {data: 'Customer Type', name: 'Load Status'},
+                {data: 'Prodyct ID', name: 'Load Status'},
+                {data: 'Origin', name: 'Load Status'},
+                {data: 'Destination', name: 'Load Status'},
+                {data: 'Penerima Barang', name: 'Load Status'},
+                {data: 'Equipment Required', name: 'Load Status'},
+                {data: 'No Order ID', name: 'Load Status'},
+                {data: 'Carrier', name: 'Load Status'},
+                {data: 'Nopol', name: 'Load Status'},
+                {data: 'Driver', name: 'Load Status'},
+                {data: 'NMK', name: 'Load Status'},
+                {data: 'Load ID', name: 'Load Status'},
+                {data: 'No. DO', name: 'Load Status'},
+                {data: 'KODE SKU', name: 'Load Status'},
+                {data: 'Description', name: 'Load Status'},
+                {data: 'QTY', name: 'Load Status'},
+                {data: 'Weight', name: 'Load Status'},
+                {data: 'Tanggal SJ Balik', name: 'Load Status'},
+                {data: 'Tanggal POD', name: 'Load Status'},
+                {data: 'Note Retur', name: 'Load Status'},
+                {data: 'Pengembalian Retur', name: 'Load Status'},
+            ]
+        })
+    }
+
+    const previewWarningSmart2 = () => {
+        $('#yajra-datatable-warning-preview-smart-2').DataTable({
+            processing: true,
+            serverSide: false,
+            ajax: '/report/get-warning',
             columns: [
                 {data: 'Load ID', name: 'Load ID'},
                 {data: 'Suggestion', name: 'Suggestion'},
@@ -107,6 +155,8 @@ export const AdminReport = () => {
     }
 
     previewReportSmart1();
-    previewWarning();
+    previewReportSmart2();
+    previewWarningSmart1();
+    previewWarningSmart2();
     onUploadBluejay();
 };

@@ -21,11 +21,85 @@ class LoadController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    private function csvtojson($file,$delimiter)
+    private function csvstring_to_array($string, $separatorChar = ',', $enclosureChar = '"', $newlineChar = "\n") {
+        // @author: Klemen Nagode
+        $array = array();
+        $size = strlen($string);
+        $columnIndex = 0;
+        $rowIndex = 0;
+        $fieldValue="";
+        $isEnclosured = false;
+        for($i=0; $i<$size;$i++) {
+    
+            $char = $string{$i};
+            $addChar = "";
+    
+            if($isEnclosured) {
+                if($char==$enclosureChar) {
+    
+                    if($i+1<$size && $string{$i+1}==$enclosureChar){
+                        // escaped char
+                        $addChar=$char;
+                        $i++; // dont check next char
+                    }else{
+                        $isEnclosured = false;
+                    }
+                }else {
+                    $addChar=$char;
+                }
+            }else {
+                if($char==$enclosureChar) {
+                    $isEnclosured = true;
+                }else {
+    
+                    if($char==$separatorChar) {
+    
+                        $array[$rowIndex][$columnIndex] = $fieldValue;
+                        $fieldValue="";
+    
+                        $columnIndex++;
+                    }elseif($char==$newlineChar) {
+                        echo $char;
+                        $array[$rowIndex][$columnIndex] = $fieldValue;
+                        $fieldValue="";
+                        $columnIndex=0;
+                        $rowIndex++;
+                    }else {
+                        $addChar=$char;
+                    }
+                }
+            }
+            if($addChar!=""){
+                $fieldValue.=$addChar;
+    
+            }
+        }
+    
+        if($fieldValue) { // save last field
+            $array[$rowIndex][$columnIndex] = $fieldValue;
+        }
+        return $array;
+    }
+
+    private function csvtoarray($file)
     {
         $csv= file_get_contents($file);
-        $array = array_map('str_getcsv', explode(PHP_EOL, $csv));
-        return json_encode($array);
+        $array = $this->csvstring_to_array($csv);
+        $header = $array[0];
+        $out = new Collection;
+
+        for ($i=0; $i < count($array); $i++) { 
+            $row = $array[$i];
+            if($i > 0){
+                $arrayRow = [];
+                for ($key=0; $key < count($header); $key++) { 
+                    $arrayRow[$header[$key]] = $row[$key];
+                }
+                $out->push($arrayRow);
+            }
+        }
+
+        return $out;
     }
 
     private function csv_to_array($csvfile) {
@@ -62,7 +136,7 @@ class LoadController extends BaseController
             'bluejay' => 'required',
         ]);
 
-        $data['bluejayData'] = $this->csv_to_array($req->file('bluejay'));
+        $data['bluejayData'] = $this->csvtoarray($req->file('bluejay'));
         $data['message'] = "File sesuai dengan ketentuan.";
 
         Session::put('bluejayArray',$data['bluejayData']);
@@ -79,13 +153,24 @@ class LoadController extends BaseController
 
         for ($i=0; $i < count($bluejayList); $i++) {
             $row = $bluejayList[$i];
+            
             $loads->push([
-                'TMS ID' => $row['TMS ID'],
+                'TMS ID' => (isset($row['TMS ID'])?$row['TMS ID']:$row['Load ID']),
                 'Billable Total Rate' => $row['Billable Total Rate'],
-                'Created Date' => $row['Created Date'],
-                'Last Drop Location City' => $row['Last Drop Location City'],
+                'Created Date' => (isset($row['Created Date'])?$row['Created Date']:$row['Order Create Date']),
+                'Last Drop Location City' => (isset($row['Last Drop Location City'])?$row['Last Drop Location City']:$row['Delivery Location Name']),
                 'Load Status' => $row['Load Status'],
             ]);
+
+            /*
+            $loads->push([
+                'TMS ID' => $row['Load ID'],
+                'Billable Total Rate' => $row['Billable Total Rate'],
+                'Created Date' => $row['Order Create Date'],
+                'Last Drop Location City' => $row['Delivery Location Name'],
+                'Load Status' => $row['Load Status'],
+            ]);
+            */
         }
 
         return DataTables::of($loads)->make(true);

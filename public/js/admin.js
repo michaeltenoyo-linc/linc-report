@@ -396,6 +396,7 @@ var AdminReport = function AdminReport() {
         enctype: 'multipart/form-data',
         data: new FormData($('#form-report-generate')[0]),
         success: function success(data) {
+          console.log(data);
           sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
             title: 'Success!',
             text: 'Silahkan cek kembali isi file Bluejay pada tabel.',
@@ -450,7 +451,7 @@ var AdminReport = function AdminReport() {
     $('#yajra-datatable-report-preview-smart-1').DataTable({
       processing: true,
       serverSide: false,
-      ajax: '/report/get-preview-smart-1',
+      ajax: '/report/get-preview',
       columns: [{
         data: 'No',
         name: 'TMS ID'
@@ -506,11 +507,110 @@ var AdminReport = function AdminReport() {
     });
   };
 
-  var previewWarning = function previewWarning() {
+  var previewWarningSmart1 = function previewWarningSmart1() {
     $('#yajra-datatable-warning-preview-smart-1').DataTable({
       processing: true,
       serverSide: false,
-      ajax: '/report/get-warning-smart-1',
+      ajax: '/report/get-warning',
+      columns: [{
+        data: 'Load ID',
+        name: 'Load ID'
+      }, {
+        data: 'Suggestion',
+        name: 'Suggestion'
+      }]
+    });
+  };
+
+  var previewReportSmart2 = function previewReportSmart2() {
+    $('#yajra-datatable-report-preview-smart-2').DataTable({
+      processing: true,
+      serverSide: false,
+      ajax: '/report/get-preview',
+      columns: [{
+        data: 'No',
+        name: 'TMS ID'
+      }, {
+        data: 'Tanggal',
+        name: 'Closed Data'
+      }, {
+        data: 'Customer',
+        name: 'Last Drop Location City'
+      }, {
+        data: 'Billable Method',
+        name: 'Billable Total Rate'
+      }, {
+        data: 'Customer Type',
+        name: 'Load Status'
+      }, {
+        data: 'Prodyct ID',
+        name: 'Load Status'
+      }, {
+        data: 'Origin',
+        name: 'Load Status'
+      }, {
+        data: 'Destination',
+        name: 'Load Status'
+      }, {
+        data: 'Penerima Barang',
+        name: 'Load Status'
+      }, {
+        data: 'Equipment Required',
+        name: 'Load Status'
+      }, {
+        data: 'No Order ID',
+        name: 'Load Status'
+      }, {
+        data: 'Carrier',
+        name: 'Load Status'
+      }, {
+        data: 'Nopol',
+        name: 'Load Status'
+      }, {
+        data: 'Driver',
+        name: 'Load Status'
+      }, {
+        data: 'NMK',
+        name: 'Load Status'
+      }, {
+        data: 'Load ID',
+        name: 'Load Status'
+      }, {
+        data: 'No. DO',
+        name: 'Load Status'
+      }, {
+        data: 'KODE SKU',
+        name: 'Load Status'
+      }, {
+        data: 'Description',
+        name: 'Load Status'
+      }, {
+        data: 'QTY',
+        name: 'Load Status'
+      }, {
+        data: 'Weight',
+        name: 'Load Status'
+      }, {
+        data: 'Tanggal SJ Balik',
+        name: 'Load Status'
+      }, {
+        data: 'Tanggal POD',
+        name: 'Load Status'
+      }, {
+        data: 'Note Retur',
+        name: 'Load Status'
+      }, {
+        data: 'Pengembalian Retur',
+        name: 'Load Status'
+      }]
+    });
+  };
+
+  var previewWarningSmart2 = function previewWarningSmart2() {
+    $('#yajra-datatable-warning-preview-smart-2').DataTable({
+      processing: true,
+      serverSide: false,
+      ajax: '/report/get-warning',
       columns: [{
         data: 'Load ID',
         name: 'Load ID'
@@ -522,7 +622,9 @@ var AdminReport = function AdminReport() {
   };
 
   previewReportSmart1();
-  previewWarning();
+  previewReportSmart2();
+  previewWarningSmart1();
+  previewWarningSmart2();
   onUploadBluejay();
 };
 
@@ -615,6 +717,8 @@ var AdminSjalan = function AdminSjalan() {
               $('#form-so-new .input-penerima').prop('readonly', false);
               $('#form-so-new .input-bongkar').prop('readonly', false);
               $('#form-so-new .input-muat').prop('readonly', false);
+              $('#form-so-new .input-driver-nmk').prop('readonly', false);
+              $('#form-so-new .input-driver-name').prop('readonly', false);
               $('#form-so-new .btn-simpan').prop('disabled', false);
               node_snackbar__WEBPACK_IMPORTED_MODULE_1___default().show({
                 text: "Surat jalan belum terdaftar.",
@@ -641,6 +745,8 @@ var AdminSjalan = function AdminSjalan() {
         $('#form-so-new .input-penerima').prop('readonly', true);
         $('#form-so-new .input-bongkar').prop('readonly', true);
         $('#form-so-new .input-muat').prop('readonly', true);
+        $('#form-so-new .input-driver-nmk').prop('readonly', true);
+        $('#form-so-new .input-driver-name').prop('readonly', true);
         $('#form-so-new .btn-simpan').prop('disabled', true);
         node_snackbar__WEBPACK_IMPORTED_MODULE_1___default().show({
           text: "Silahkan cek kembali nomor SJ.",

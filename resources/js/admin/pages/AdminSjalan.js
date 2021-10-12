@@ -59,6 +59,8 @@ export const AdminSjalan = () => {
                             $('#form-so-new .input-penerima').prop('readonly',false);
                             $('#form-so-new .input-bongkar').prop('readonly',false);
                             $('#form-so-new .input-muat').prop('readonly',false);
+                            $('#form-so-new .input-driver-nmk').prop('readonly',false);
+                            $('#form-so-new .input-driver-name').prop('readonly',false);
                             $('#form-so-new .btn-simpan').prop('disabled',false);
 
                             Snackbar.show({
@@ -88,6 +90,8 @@ export const AdminSjalan = () => {
                 $('#form-so-new .input-penerima').prop('readonly',true);
                 $('#form-so-new .input-bongkar').prop('readonly',true);
                 $('#form-so-new .input-muat').prop('readonly',true);
+                $('#form-so-new .input-driver-nmk').prop('readonly',true);
+                $('#form-so-new .input-driver-name').prop('readonly',true);
                 $('#form-so-new .btn-simpan').prop('disabled',true);
 
                 Snackbar.show({

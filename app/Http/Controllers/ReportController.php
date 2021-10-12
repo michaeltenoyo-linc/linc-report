@@ -17,6 +17,7 @@ use Illuminate\Support\Carbon;
 use App\Models\Item;
 use App\Models\Trucks;
 use App\Models\Suratjalan;
+use App\Models\Dload;
 use Yajra\DataTables\Contracts\DataTable;
 
 class ReportController extends BaseController
@@ -91,19 +92,139 @@ class ReportController extends BaseController
             Session::put('totalReport',$ctr-1);
     
             return view('pages.report-preview-smart-1');
+
+        }else if($req->input('reportType') == "smart_2"){
+            for ($i=0; $i < count($bluejayList); $i++) {
+                $row = $bluejayList[$i];
+                $listSJ = Suratjalan::where('load_id','=',(isset($row['TMS ID'])?$row['TMS ID']:$row['Load ID']))->get();
+    
+                if(count($listSJ) > 0){
+                    $firstSJ = true;    
+                    foreach ($listSJ as $sj) {
+                        $listDload = Dload::where('id_so','=',$sj->id_so)->get();
+                        $truck = Trucks::where('nopol','=',$sj->nopol)->first();
+                        $firstDload = true;
+                        foreach ($listDload as $dload) {
+                            $item = Item::where('material_code','=',$dload->material_code)->first();
+                            $totalHarga = intval($row['Billable Total Rate']) + intval($sj->biaya_bongkar);
+                            if($firstSJ && $firstDload){
+                                $reports->push([
+                                    'No' => $ctr,
+                                    'Tanggal' => (isset($row['Created Date'])?$row['Created Date']:$row['Order Create Date']),
+                                    'Customer' => $row['Customer Name'],
+                                    'Billable Method' => $row['Billable Method'],
+                                    'Customer Type' => $row['Shipping Comment'],
+                                    'Prodyct ID' => $truck->type,
+                                    'Origin' => $row['Pick-up Location Reference Number'],
+                                    'Destination' => $row['Delivery Location Name'],
+                                    'Penerima Barang' => $sj->penerima,
+                                    'Equipment Required' => $truck->type,
+                                    'No Order ID' => $row['Order Number'],
+                                    'Carrier' => $row['Carrier Name'],
+                                    'Nopol' => $sj->nopol,
+                                    'Driver' => $sj->driver_name,
+                                    'NMK' => $sj->driver_nmk,
+                                    'Load ID' => (isset($row['TMS ID'])?$row['TMS ID']:$row['Load ID']),
+                                    'No. DO' => $sj->id_so,
+                                    'KODE SKU' => $dload->material_code,
+                                    'Description' => $item->description,
+                                    'QTY' => $dload->qty,
+                                    'Weight' => $dload->subtotal_weight,
+                                    'Tanggal SJ Balik' => $sj->tgl_terima,
+                                    'Tanggal POD' => $sj->tgl_terima,
+                                    'Note Retur' => " ",
+                                    'Pengembalian Retur' => " ",
+                                ]);
+                                $firstSJ = false;
+                                $firstDload = false;
+                            }else if($firstDload){
+                                $reports->push([
+                                    'No' => " ",
+                                    'Tanggal' => " ",
+                                    'Customer' => " ",
+                                    'Billable Method' => " ",
+                                    'Customer Type' => " ",
+                                    'Prodyct ID' => " ",
+                                    'Origin' => " ",
+                                    'Destination' => " ",
+                                    'Penerima Barang' => " ",
+                                    'Equipment Required' => " ",
+                                    'No Order ID' => " ",
+                                    'Carrier' => " ",
+                                    'Nopol' => " ",
+                                    'Driver' => " ",
+                                    'NMK' => " ",
+                                    'Load ID' => " ",
+                                    'No. DO' => $sj->id_so,
+                                    'KODE SKU' => $dload->material_code,
+                                    'Description' => $item->description,
+                                    'QTY' => $dload->qty,
+                                    'Weight' => $dload->subtotal_weight,
+                                    'Tanggal SJ Balik' => " ",
+                                    'Tanggal POD' => " ",
+                                    'Note Retur' => " ",
+                                    'Pengembalian Retur' => " ",
+                                ]);
+                                $firstDload = false;
+                            }else{
+                                $reports->push([
+                                    'No' => " ",
+                                    'Tanggal' => " ",
+                                    'Customer' => " ",
+                                    'Billable Method' => " ",
+                                    'Customer Type' => " ",
+                                    'Prodyct ID' => " ",
+                                    'Origin' => " ",
+                                    'Destination' => " ",
+                                    'Penerima Barang' => " ",
+                                    'Equipment Required' => " ",
+                                    'No Order ID' => " ",
+                                    'Carrier' => " ",
+                                    'Nopol' => " ",
+                                    'Driver' => " ",
+                                    'NMK' => " ",
+                                    'Load ID' => " ",
+                                    'No. DO' => " ",
+                                    'KODE SKU' => $dload->material_code,
+                                    'Description' => $item->description,
+                                    'QTY' => $dload->qty,
+                                    'Weight' => $dload->subtotal_weight,
+                                    'Tanggal SJ Balik' => " ",
+                                    'Tanggal POD' => " ",
+                                    'Note Retur' => " ",
+                                    'Pengembalian Retur' => " ",
+                                ]);
+                            }
+                        }
+                    }
+                    $ctr++;
+                }else{
+                    $warning->push([
+                        'Load ID' => (isset($row['TMS ID'])?$row['TMS ID']:$row['Load ID']),
+                        'Suggestion' => (isset($row['Shipment Reference Numbers'])?$row['Shipment Reference Numbers']:"None"),
+                    ]);
+                }
+                
+            }
+    
+            Session::put('warningReport',$warning);
+            Session::put('resultReport',$reports);
+            Session::put('totalReport',$ctr-1);
+    
+            return view('pages.report-preview-smart-2');
         }
 
         
     }
 
-    public function getPreviewResultSmart1(Request $req){
+    public function getPreviewResult(Request $req){
         $collection = Session::get('resultReport');
         $totalReport = Session::get('totalReport');
 
         return DataTables::of($collection)->setTotalRecords($totalReport)->make(true);
     }
 
-    public function getPreviewWarningSmart1(Request $req){
+    public function getPreviewWarning(Request $req){
         $collection = Session::get('warningReport');
 
         return DataTables::of($collection)->make(true);

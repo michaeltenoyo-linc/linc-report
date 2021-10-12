@@ -17,13 +17,15 @@ class Suratjalan extends Model
         'id_so',
         'load_id',
         'nopol',
+        'driver_nmk',
+        'driver_name',
         'total_weightSO',
         'penerima',
         'utilitas',
         'biaya_bongkar',
         'biaya_overnight',
         'biaya_multidrop',
-        'tgl_muat',
+        'tgl_terima',
         'total_qtySO',
     ];
 }
