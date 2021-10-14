@@ -154,6 +154,29 @@ export const AdminReport = () => {
         })
     }
 
+    const onChangeReportType = () => {
+        $('#form-report-generate .input-report-type').change( function(e){
+            e.preventDefault();
+
+            var type = $(this).val();
+            
+            if(type == "smart_1"){
+                $('#form-report-generate .requirement-reportSmart1').removeClass('hidden');
+                $('#form-report-generate .preview-reportSmart1').removeClass('hidden');
+                $('#form-report-generate .requirement-reportSmart2').addClass('hidden');
+                $('#form-report-generate .preview-reportSmart2').addClass('hidden');
+            }else if(type == "smart_2"){
+                $('#form-report-generate .requirement-reportSmart1').addClass('hidden');
+                $('#form-report-generate .preview-reportSmart1').addClass('hidden');
+                $('#form-report-generate .requirement-reportSmart2').removeClass('hidden');
+                $('#form-report-generate .preview-reportSmart2').removeClass('hidden');
+            }
+
+            return false;
+        })
+    }
+
+    onChangeReportType();
     previewReportSmart1();
     previewReportSmart2();
     previewWarningSmart1();

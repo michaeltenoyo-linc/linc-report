@@ -160,8 +160,8 @@ class ReportController extends BaseController
                                     'Description' => $item->description,
                                     'QTY' => $dload->qty,
                                     'Weight' => $dload->subtotal_weight,
-                                    'Tanggal SJ Balik' => " ",
-                                    'Tanggal POD' => " ",
+                                    'Tanggal SJ Balik' => $sj->tgl_terima,
+                                    'Tanggal POD' => $sj->tgl_terima,
                                     'Note Retur' => " ",
                                     'Pengembalian Retur' => " ",
                                 ]);
