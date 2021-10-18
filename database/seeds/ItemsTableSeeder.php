@@ -16,18 +16,18 @@ class ItemsTableSeeder extends Seeder
     {
         Item::truncate();
 
-        $csvFile = fopen(base_path("reference/Master ITEM SMART.csv"),"r");
+        $csvFile = fopen(base_path("reference/Master ITEM v2 CSV.csv"),"r");
         
         $firstline = true;
 
-        while(($data = fgetcsv($csvFile, 2000, ';')) != FALSE){
+        while(($data = fgetcsv($csvFile, 2000, ',')) != FALSE){
             if (!$firstline){
                 Item::create([
                     'material_code' => $data['0'],
                     'description' => $data['1'],
                     'gross_weight' => $data['2'],
-                    'nett_weight' => $data['3'],
-                    'category' => $data['4'],
+                    'nett_weight' => $data['2'],
+                    'category' => $data['3'],
                 ]);
             }
             $firstline = false;

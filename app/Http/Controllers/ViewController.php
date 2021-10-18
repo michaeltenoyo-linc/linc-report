@@ -97,7 +97,7 @@ class ViewController extends BaseController
 
     public function search_getItems(Request $req){
         $query = $req->get('query');
-        $filterResult = Item::select('material_code')->where('material_code','LIKE','%'.$query.'%')->pluck('material_code');
+        $filterResult = Item::select('description')->where('description','LIKE','%'.$query.'%')->pluck('description');
     
         return response()->json($filterResult);
     }
@@ -109,6 +109,23 @@ class ViewController extends BaseController
         ]);
 
         $data['item'] = Item::where('material_code','=',$req->input('material_code'))->first();
+
+        if(!is_null($data['item'])){
+            $data['message'] = "data ditemukan.";
+            return response()->json($data,200);
+        }else{
+            $data['message'] = "data tidak ditemukan.";
+            return response()->json($data,404);
+        }
+    }
+
+    public function getItemsFromName(Request $req){
+        $this->validate($req, [
+            'material_name' => 'required',
+            'qty' => 'required|numeric|min:1'
+        ]);
+
+        $data['item'] = Item::where('description','=',$req->input('material_name'))->first();
 
         if(!is_null($data['item'])){
             $data['message'] = "data ditemukan.";

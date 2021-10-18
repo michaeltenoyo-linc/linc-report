@@ -34,6 +34,7 @@ Route::prefix('/data')->group(function () {
     //Item
     Route::get('/get-items',[ViewController::class, 'getItems']);
     Route::post('/get-items-fromid',[ViewController::class, 'getItemsFromid']);
+    Route::post('/get-items-fromname',[ViewController::class, 'getItemsFromName']);
     Route::get('/autocomplete-items',[ViewController::class,'search_getItems']);
     //Trucks
     Route::get('/get-trucks',[ViewController::class, 'getTrucks']);

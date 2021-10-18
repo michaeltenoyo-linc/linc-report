@@ -39,7 +39,7 @@ export const AdminItems = () => {
     }
 
     const autocompleteItems = () => {
-        $('#sj-items-modal .input-item-code').typeahead({
+        $('#sj-items-modal .input-item-name').typeahead({
             source: function (query, process) {
                 return $.get('/data/autocomplete-items', {
                     query: query

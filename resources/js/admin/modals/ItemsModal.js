@@ -27,13 +27,13 @@ export const ItemsModal = () => {
             dataType: 'JSON',
         });
         $.ajax({
-            url: '/data/get-items-fromid',
+            url: '/data/get-items-fromname',
             type: 'POST',
             data: new FormData($(this)[0]),
             success: (data) => {
                 let currItem = data['item'];
 
-                var mcode = $('#form-so-add-item .input-item-code').val();
+                var mcode = currItem['material_code'];
                 var qty = $('#form-so-add-item .input-item-qty').val();
 
                 //append item to table
