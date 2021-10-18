@@ -16,11 +16,11 @@ class ItemsTableSeeder extends Seeder
     {
         Item::truncate();
 
-        $csvFile = fopen(base_path("reference/Master ITEM v2 CSV.csv"),"r");
+        $csvFile = fopen(base_path("reference/Master ITEM v2.csv"),"r");
         
         $firstline = true;
 
-        while(($data = fgetcsv($csvFile, 2000, ',')) != FALSE){
+        while(($data = fgetcsv($csvFile, 2000, ';')) != FALSE){
             if (!$firstline){
                 Item::create([
                     'material_code' => $data['0'],
