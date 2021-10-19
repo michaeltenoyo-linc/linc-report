@@ -31,6 +31,7 @@ Linc | Generate Report
                         <select class="input-report-type w-full border bg-white rounded px-3 py-2 outline-none" name="reportType">
                             <option class="py-1" value="smart_1">Smart Customer 1</option>
                             <option class="py-1" value="smart_2">Smart Customer 2</option>
+                            <option class="py-1" value="smart_3">Smart Customer 2</option>
                         </select>
                     </div>
                 </div>
@@ -49,6 +50,7 @@ Linc | Generate Report
                                 <li>Created Date</li>
                                 <li>Last Drop Location City</li>
                                 <li>Billable Total Rate</li>
+                                <li>Load Status</li>
                             </ul>
                         </div>
                     </div>
@@ -80,12 +82,41 @@ Linc | Generate Report
                                 <li>Carrier Name</li>
                                 <li>Last Drop Location City</li>
                                 <li>Billable Total Rate</li>
+                                <li>Load Status</li>
                             </ul>
                         </div>
                     </div>
                     <div class="preview-reportSmart2 hidden w-full lg:w-1/2 px-4">
                         <div class="relative w-full mb-3">
                             <h1 class="font-bold">Report Smart 2 untuk :</h1>
+                            <img src="{{asset('assets/contoh-report/ReportSmart2.png')}}" alt="">
+                        </div>
+                        
+                    </div>
+
+                    <!--Requirement Proforma LTL-->
+                    <div class="requirement-reportLtl hidden w-full lg:w-1/2 px-4">
+                        <div class="relative w-full mb-3">
+                            <h1 class="text-red-600 font-bold">Requirement Proforma Lautan Luas</h1>
+                            <p class="text-red-600">
+                                Pastikan semua field yang diambil dari Blujay sudah memiliki
+                                ketentuan yang dibutuhkan dibawah ini :
+                            </p>
+                            <br>
+                            <ul class="list-disc">
+                                <li>TMS ID / Load ID</li>
+                                <li>First Pick Departure Date</li>
+                                <li>Customer Name</li>
+                                <li>Customer Address</li>
+                                <li>Last Drop Location City</li>
+                                <li>Weight (kg)</li>
+                                <li>Load Status</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="preview-reportLtl hidden w-full lg:w-1/2 px-4">
+                        <div class="relative w-full mb-3">
+                            <h1 class="font-bold">Proforma Lautan Luas untuk :</h1>
                             <img src="{{asset('assets/contoh-report/ReportSmart2.png')}}" alt="">
                         </div>
                         

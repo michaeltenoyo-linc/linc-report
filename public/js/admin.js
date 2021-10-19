@@ -233,7 +233,7 @@ var AdminItems = function AdminItems() {
         });
       } else {
         $(this).val("check");
-        $(this).html('Check SJ');
+        $(this).html('Check Kode');
         $('#form-items-new .input-id-item').prop('readonly', false);
         $('#form-items-new .input-item-deskripsi').prop('readonly', true);
         $('#form-items-new .input-item-grossw').prop('readonly', true);
@@ -1060,11 +1060,91 @@ var AdminTrucks = function AdminTrucks() {
 
       return false;
     });
+    $('#form-trucks-new .check-truck').on('click', function (e) {
+      var _this2 = this;
+
+      e.preventDefault();
+      var currentStats = $(this).val();
+
+      if (currentStats == "check") {
+        console.log("Checking Truck...");
+        var id = $('#form-trucks-new .input-nopol').val(); //console.log(id);
+
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+          processData: false,
+          contentType: false,
+          dataType: 'JSON'
+        });
+        $.ajax({
+          url: '/trucks/check/' + id,
+          type: 'GET',
+          success: function success(data) {
+            //$(this).trigger('reset');
+            //console.log(data);
+            if (!data['check']) {
+              node_snackbar__WEBPACK_IMPORTED_MODULE_1___default().show({
+                text: "Kendaraan tidak ada, dapat melanjutkan.",
+                actionText: 'Tutup',
+                duration: 3000,
+                pos: 'bottom-center'
+              });
+              $('#form-trucks-new .input-nopol').prop('readonly', true);
+              $(_this2).val("cancel");
+              $(_this2).html("Cancel"); //Enable form input
+
+              $('#form-trucks-new .input-fungsional').prop('readonly', false);
+              $('#form-trucks-new .input-ownership').prop('readonly', false);
+              $('#form-trucks-new .input-owner').prop('readonly', false);
+              $('#form-trucks-new .input-type').prop('readonly', false);
+              $('#form-trucks-new .input-vgps').prop('readonly', false);
+              $('#form-trucks-new .input-site').prop('readonly', false);
+              $('#form-trucks-new .input-area').prop('readonly', false);
+              $('#form-trucks-new .input-pengambilan').prop('disabled', false);
+              $('#form-trucks-new .input-kategori').prop('readonly', false);
+              $('#form-trucks-new .input-submit').prop('disabled', false);
+            } else {
+              node_snackbar__WEBPACK_IMPORTED_MODULE_1___default().show({
+                text: "Kendaraan SUDAH ADA. Harap dicek kembali pada LIST TRUCK.",
+                actionText: 'Tutup',
+                duration: 3000,
+                pos: 'bottom-center'
+              });
+            }
+          }
+        });
+      } else {
+        $(this).val("check");
+        $(this).html('Cek Nopol');
+        $('#form-trucks-new .input-nopol').prop('readonly', false);
+        node_snackbar__WEBPACK_IMPORTED_MODULE_1___default().show({
+          text: "Silahkan cek kembali nopol kendaraan.",
+          actionText: 'Tutup',
+          duration: 3000,
+          pos: 'bottom-center'
+        }); //Disable form input
+
+        $('#form-trucks-new .input-fungsional').prop('readonly', true);
+        $('#form-trucks-new .input-ownership').prop('readonly', true);
+        $('#form-trucks-new .input-owner').prop('readonly', true);
+        $('#form-trucks-new .input-type').prop('readonly', true);
+        $('#form-trucks-new .input-vgps').prop('readonly', true);
+        $('#form-trucks-new .input-site').prop('readonly', true);
+        $('#form-trucks-new .input-area').prop('readonly', true);
+        $('#form-trucks-new .input-pengambilan').prop('disabled', true);
+        $('#form-trucks-new .input-kategori').prop('readonly', true);
+        $('#form-trucks-new .input-submit').prop('disabled', true);
+      }
+
+      return false;
+    });
   };
 
   var deleteTruck = function deleteTruck() {
     $(document).on('submit', '#btn-trucks-delete', function (e) {
-      var _this2 = this;
+      var _this3 = this;
 
       e.preventDefault();
       sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
@@ -1088,7 +1168,7 @@ var AdminTrucks = function AdminTrucks() {
           $.ajax({
             url: '/trucks/delete',
             type: 'POST',
-            data: new FormData($(_this2)[0]),
+            data: new FormData($(_this3)[0]),
             success: function success(data) {
               sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
                 title: 'Terhapus!',
@@ -1113,10 +1193,60 @@ var AdminTrucks = function AdminTrucks() {
     });
   };
 
+  var newTruck = function newTruck() {
+    $('#form-trucks-new').on('submit', function (e) {
+      var _this4 = this;
+
+      e.preventDefault();
+      sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+        title: 'Are you sure?',
+        text: "Pastikan data sudah terisi dengan benar!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Iya, simpan!'
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            processData: false,
+            contentType: false,
+            dataType: 'JSON'
+          });
+          $.ajax({
+            url: '/trucks/create',
+            type: 'POST',
+            data: new FormData($(_this4)[0]),
+            success: function success(data) {
+              sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+                title: 'Tersimpan!',
+                text: 'Data kendaraan baru sudah disimpan.',
+                icon: 'success'
+              }).then(function () {
+                location.reload();
+              });
+            },
+            error: function error(request, status, _error2) {
+              sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: JSON.parse(request.responseText).message
+              });
+            }
+          });
+        }
+      });
+    });
+  };
+
   getTrucks();
   autocompleteTrucks();
   checkTruck();
   deleteTruck();
+  newTruck();
 };
 
 /***/ }),

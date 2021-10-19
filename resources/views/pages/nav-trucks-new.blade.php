@@ -29,8 +29,8 @@ Linc | New Truck
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                                 htmlFor="name"> Nomor Polisi </label>
                             <input type="text"
-                                name="id_so"
-                                class="input-id-so border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                name="nopol"
+                                class="input-nopol border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                 value=""/>
                         </div>
                     </div>
@@ -46,9 +46,9 @@ Linc | New Truck
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                                 htmlFor="grid-password"> Fungsional </label>
                             <input type="text"
-                                name="description"
-                                class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                value="" />
+                                name="fungsional"
+                                class="input-fungsional border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                value="" readonly/>
                         </div>
                     </div>
 
@@ -58,8 +58,8 @@ Linc | New Truck
                                 htmlFor="grid-password"> Ownership </label>
                             <input type="text"
                                 name="ownership"
-                                class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                value=""/>
+                                class="input-ownership border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                value="" readonly/>
                         </div>
                     </div>
 
@@ -69,8 +69,8 @@ Linc | New Truck
                                 htmlFor="grid-password"> Owner </label>
                             <input type="text"
                                 name="owner"
-                                class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                value=""/>
+                                class="input-owner border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                value="" readonly/>
                         </div>
                     </div>
 
@@ -80,8 +80,8 @@ Linc | New Truck
                                 htmlFor="grid-password"> Type </label>
                             <input type="text"
                                 name="type"
-                                class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                value=""/>
+                                class="input-type border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                value="" readonly/>
                         </div>
                     </div>
 
@@ -91,8 +91,8 @@ Linc | New Truck
                                 htmlFor="grid-password"> V. GPS </label>
                             <input type="text"
                                 name="v_gps"
-                                class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                value=""/>
+                                class="input-vgps border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                value="" readonly/>
                         </div>
                     </div>
 
@@ -102,8 +102,8 @@ Linc | New Truck
                                 htmlFor="grid-password"> Site </label>
                             <input type="text"
                                 name="site"
-                                class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                value=""/>
+                                class="input-site border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                value="" readonly/>
                         </div>
                     </div>
 
@@ -113,8 +113,8 @@ Linc | New Truck
                                 htmlFor="grid-password"> Area </label>
                             <input type="text"
                                 name="area"
-                                class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                value=""/>
+                                class="input-area border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                value="" readonly/>
                         </div>
                     </div>
 
@@ -122,29 +122,33 @@ Linc | New Truck
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                                 htmlFor="grid-password"> Pengambilan </label>
-                            <input type="text"
-                                name="taken"
-                                class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                value=""/>
+                            <select 
+                                name="pengambilan" 
+                                class="input-pengambilan border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                id="" disabled>
+                                <option value="1">Iya</option>
+                                <option value="0">Tidak</option>
+                            </select>
                         </div>
                     </div>
 
                     <div class="w-full lg:w-12/12 px-4">
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="grid-password"> Kategori </label>
-                            <input type="text"
+                                htmlFor="grid-password"> Kategori (Kg.)</label>
+                            <input type="number"
                                 name="kategori"
-                                class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                value=""/>
+                                min=0
+                                class="input-kategori border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                value="" readonly/>
                         </div>
                     </div>
 
                     <div class="w-full lg:w-12/12 px-4" >
                         <div class="flex flex-row-reverse w-full mb-3">
                             <input type="submit"
-                                class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded text-right"
-                                value="Simpan" />
+                                class="input-submit bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded text-right"
+                                value="Simpan" disabled/>
                         </div>
                     </div>
                 </div>

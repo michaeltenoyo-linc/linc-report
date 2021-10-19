@@ -51,6 +51,7 @@ Route::prefix('/suratjalan')->group(function () {
 
 Route::prefix('/trucks')->group(function () {
     Route::get('/check/{nopol}',[TruckController::class, 'checkTruck']);
+    Route::post('/create',[TruckController::class, 'Create']);
     Route::post('/delete',[TruckController::class, 'delete']);
 });
 

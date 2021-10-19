@@ -14,7 +14,7 @@ class CreateItemsTable extends Migration
     public function up()
     {
         Schema::create('items', function (Blueprint $table) {
-            $table->string('material_code',6)->primary();
+            $table->string('material_code',15)->primary();
             $table->string('description');
             $table->float('gross_weight',10);
             $table->float('nett_weight',10);

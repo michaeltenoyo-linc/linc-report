@@ -108,7 +108,7 @@ export const AdminItems = () => {
                 });
             }else{
                 $(this).val("check");
-                $(this).html('Check SJ');
+                $(this).html('Check Kode');
 
                 $('#form-items-new .input-id-item').prop('readonly', false);
                 $('#form-items-new .input-item-deskripsi').prop('readonly', true);

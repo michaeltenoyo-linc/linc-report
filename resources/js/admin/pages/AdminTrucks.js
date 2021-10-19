@@ -142,6 +142,94 @@ export const AdminTrucks = () => {
 
             return false;
         });
+
+        $('#form-trucks-new .check-truck').on('click', function(e){
+            e.preventDefault();
+
+            var currentStats = $(this).val();
+
+            if(currentStats == "check"){
+                console.log("Checking Truck...");
+
+                var id = $('#form-trucks-new .input-nopol').val();
+                //console.log(id);
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    processData: false,
+                    contentType: false,
+                    dataType: 'JSON',
+                });
+                $.ajax({
+                    url: '/trucks/check/'+id,
+                    type: 'GET',
+                    success: (data) => {
+                        //$(this).trigger('reset');
+                        //console.log(data);
+
+                        if(!data['check']){
+                            Snackbar.show({
+                                text: "Kendaraan tidak ada, dapat melanjutkan.",
+                                actionText: 'Tutup',
+                                duration: 3000,
+                                pos: 'bottom-center',
+                            });
+
+                            $('#form-trucks-new .input-nopol').prop('readonly',true);
+                            $(this).val("cancel");
+                            $(this).html("Cancel");
+
+                            //Enable form input
+                            $('#form-trucks-new .input-fungsional').prop('readonly',false);
+                            $('#form-trucks-new .input-ownership').prop('readonly',false);
+                            $('#form-trucks-new .input-owner').prop('readonly',false);
+                            $('#form-trucks-new .input-type').prop('readonly',false);
+                            $('#form-trucks-new .input-vgps').prop('readonly',false);
+                            $('#form-trucks-new .input-site').prop('readonly',false);
+                            $('#form-trucks-new .input-area').prop('readonly',false);
+                            $('#form-trucks-new .input-pengambilan').prop('disabled',false);
+                            $('#form-trucks-new .input-kategori').prop('readonly',false);
+                            $('#form-trucks-new .input-submit').prop('disabled',false);
+                        }else{
+                            Snackbar.show({
+                                text: "Kendaraan SUDAH ADA. Harap dicek kembali pada LIST TRUCK.",
+                                actionText: 'Tutup',
+                                duration: 3000,
+                                pos: 'bottom-center',
+                            });
+                        }
+
+                    }
+                });
+            }else{
+                $(this).val("check");
+                $(this).html('Cek Nopol');
+                $('#form-trucks-new .input-nopol').prop('readonly',false);
+
+                Snackbar.show({
+                    text: "Silahkan cek kembali nopol kendaraan.",
+                    actionText: 'Tutup',
+                    duration: 3000,
+                    pos: 'bottom-center',
+                });
+
+                //Disable form input
+                $('#form-trucks-new .input-fungsional').prop('readonly',true);
+                $('#form-trucks-new .input-ownership').prop('readonly',true);
+                $('#form-trucks-new .input-owner').prop('readonly',true);
+                $('#form-trucks-new .input-type').prop('readonly',true);
+                $('#form-trucks-new .input-vgps').prop('readonly',true);
+                $('#form-trucks-new .input-site').prop('readonly',true);
+                $('#form-trucks-new .input-area').prop('readonly',true);
+                $('#form-trucks-new .input-pengambilan').prop('disabled',true);
+                $('#form-trucks-new .input-kategori').prop('readonly',true);
+                $('#form-trucks-new .input-submit').prop('disabled',true);
+            }
+
+            return false;
+        });
     }
 
     const deleteTruck = () => {
@@ -197,8 +285,59 @@ export const AdminTrucks = () => {
         });
     }
 
+    const newTruck = () => {
+        $('#form-trucks-new').on('submit', function(e){
+            e.preventDefault();
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Pastikan data sudah terisi dengan benar!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Iya, simpan!'
+              }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        processData: false,
+                        contentType: false,
+                        dataType: 'JSON',
+                    });
+                    $.ajax({
+                        url: '/trucks/create',
+                        type: 'POST',
+                        data: new FormData($(this)[0]),
+                        success: (data) => {
+                            Swal.fire({
+                                title: 'Tersimpan!',
+                                text: 'Data kendaraan baru sudah disimpan.',
+                                icon: 'success'
+                            }).then(function(){
+                                location.reload();
+                            });
+                        },
+                        error : function(request, status, error){
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: (JSON.parse(request.responseText)).message,
+                            })
+                        },
+                    });
+
+
+                }
+            });
+        });
+    }
+
     getTrucks();
     autocompleteTrucks();
     checkTruck();
     deleteTruck();
+    newTruck();
 };
