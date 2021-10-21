@@ -1,12 +1,18 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ViewController;
-use App\Http\Controllers\SuratjalanController;
-use App\Http\Controllers\TruckController;
-use App\Http\Controllers\LoadController;
-use App\Http\Controllers\ItemController;
-use App\Http\Controllers\ReportController;
+
+//MASTER
+use App\Http\Controllers\Master\ViewController as MasterViewController;
+
+//SMART CONTROLLER
+use App\Http\Controllers\Smart\ViewController as SmartViewController;
+use App\Http\Controllers\Smart\SuratjalanController as SmartSuratjalanController;
+use App\Http\Controllers\Smart\TruckController as SmartTruckController;
+use App\Http\Controllers\Smart\LoadController as SmartLoadController;
+use App\Http\Controllers\Smart\ItemController as SmartItemController;
+use App\Http\Controllers\Smart\ReportController as SmartReportController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,56 +25,63 @@ use App\Http\Controllers\ReportController;
 |
 */
 
-//View Navigation
-Route::get('/',[ViewController::class, 'gotoLandingPage']);
-Route::get('/nav-items-new',[ViewController::class, 'gotoItemNew']);
-Route::get('/nav-items-list',[ViewController::class, 'gotoItemList']);
-Route::get('/nav-trucks-new',[ViewController::class, 'gotoTrucksNew']);
-Route::get('/nav-trucks-list',[ViewController::class, 'gotoTrucksList']);
-Route::get('/nav-so-new',[ViewController::class, 'gotoSoNew']);
-Route::get('/nav-so-list',[ViewController::class, 'gotoSoList']);
-Route::get('/nav-report-generate',[ViewController::class, 'gotoReportGenerate']);
+//MASTER
+Route::get('/',[MasterViewController::class, 'gotoLandingPage']);
 
-//View Function
-Route::prefix('/data')->group(function () {
-    //Item
-    Route::get('/get-items',[ViewController::class, 'getItems']);
-    Route::post('/get-items-fromid',[ViewController::class, 'getItemsFromid']);
-    Route::post('/get-items-fromname',[ViewController::class, 'getItemsFromName']);
-    Route::get('/autocomplete-items',[ViewController::class,'search_getItems']);
-    //Trucks
-    Route::get('/get-trucks',[ViewController::class, 'getTrucks']);
-    Route::get('/autocomplete-trucks',[ViewController::class,'search_getTrucks']);
-    //Surat Jalan
-    Route::get('/get-sj',[ViewController::class, 'getSj']);
+//SMART ROUTES
+Route::prefix('/smart')->group(function (){
+    //View Navigation
+    Route::get('/',[SmartViewController::class, 'gotoLandingPage']);
+    Route::get('/nav-items-new',[SmartViewController::class, 'gotoItemNew']);
+    Route::get('/nav-items-list',[SmartViewController::class, 'gotoItemList']);
+    Route::get('/nav-trucks-new',[SmartViewController::class, 'gotoTrucksNew']);
+    Route::get('/nav-trucks-list',[SmartViewController::class, 'gotoTrucksList']);
+    Route::get('/nav-so-new',[SmartViewController::class, 'gotoSoNew']);
+    Route::get('/nav-so-list',[SmartViewController::class, 'gotoSoList']);
+    Route::get('/nav-report-generate',[SmartViewController::class, 'gotoReportGenerate']);
+
+    //View Function
+    Route::prefix('/data')->group(function () {
+        //Item
+        Route::get('/get-items',[SmartViewController::class, 'getItems']);
+        Route::post('/get-items-fromid',[SmartViewController::class, 'getItemsFromid']);
+        Route::post('/get-items-fromname',[SmartViewController::class, 'getItemsFromName']);
+        Route::get('/autocomplete-items',[SmartViewController::class,'search_getItems']);
+        //Trucks
+        Route::get('/get-trucks',[SmartViewController::class, 'getTrucks']);
+        Route::get('/autocomplete-trucks',[SmartViewController::class,'search_getTrucks']);
+        //Surat Jalan
+        Route::get('/get-sj',[SmartViewController::class, 'getSj']);
+    });
+
+    Route::prefix('/suratjalan')->group(function () {
+        Route::get('/check/{id_so}',[SmartSuratjalanController::class, 'checkSj']);
+        Route::post('/delete',[SmartSuratjalanController::class, 'delete']);
+        Route::post('/addSj',[SmartSuratjalanController::class, 'addSj']);
+    });
+
+    Route::prefix('/trucks')->group(function () {
+        Route::get('/check/{nopol}',[SmartTruckController::class, 'checkTruck']);
+        Route::post('/create',[SmartTruckController::class, 'Create']);
+        Route::post('/delete',[SmartTruckController::class, 'delete']);
+    });
+
+    Route::prefix('/items')->group(function () {
+        Route::post('/addItem', [SmartItemController::class, 'addItem']);
+        Route::post('/delete',[SmartItemController::class, 'delete']);
+        Route::get('/check-existing/{material_code}',[SmartItemController::class, 'checkItemExist']);
+    });
+
+    Route::prefix('/load')->group(function () {
+        Route::post('/check-bluejay',[SmartLoadController::class, 'checkBluejay']);
+        Route::post('/bluejay-table',[SmartLoadController::class, 'bluejayTable']);
+    });
+
+    Route::prefix('/report')->group(function () {
+        Route::post('/generate',[SmartReportController::class, 'generateReport']);
+        Route::get('/get-preview',[SmartReportController::class, 'getPreviewResult']);
+        Route::get('/get-warning',[SmartReportController::class, 'getPreviewWarning']);
+        Route::get('/downloadReport',[SmartReportController::class, 'downloadExcel']);
+    });
 });
 
-Route::prefix('/suratjalan')->group(function () {
-    Route::get('/check/{id_so}',[SuratjalanController::class, 'checkSj']);
-    Route::post('/delete',[SuratjalanController::class, 'delete']);
-    Route::post('/addSj',[SuratjalanController::class, 'addSj']);
-});
-
-Route::prefix('/trucks')->group(function () {
-    Route::get('/check/{nopol}',[TruckController::class, 'checkTruck']);
-    Route::post('/create',[TruckController::class, 'Create']);
-    Route::post('/delete',[TruckController::class, 'delete']);
-});
-
-Route::prefix('/items')->group(function () {
-    Route::post('/addItem', [ItemController::class, 'addItem']);
-    Route::post('/delete',[ItemController::class, 'delete']);
-    Route::get('/check-existing/{material_code}',[ItemController::class, 'checkItemExist']);
-});
-
-Route::prefix('/load')->group(function () {
-    Route::post('/check-bluejay',[LoadController::class, 'checkBluejay']);
-    Route::post('/bluejay-table',[LoadController::class, 'bluejayTable']);
-});
-
-Route::prefix('/report')->group(function () {
-    Route::post('/generate',[ReportController::class, 'generateReport']);
-    Route::get('/get-preview',[ReportController::class, 'getPreviewResult']);
-    Route::get('/get-warning',[ReportController::class, 'getPreviewWarning']);
-    Route::get('/downloadReport',[ReportController::class, 'downloadExcel']);
-});
