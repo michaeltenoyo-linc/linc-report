@@ -1,11 +1,11 @@
-@extends('smart.layouts.admin-layout')
+@extends('ltl.layouts.admin-layout')
 
 @section('title')
-Linc | SMART Homepage
+Linc | LTL Homepage
 @endsection
 
 @section('header')
-@include('smart.components.header_no_login')
+@include('ltl.components.header_no_login')
 @endsection
 
 @section('content')
@@ -15,7 +15,7 @@ Linc | SMART Homepage
             <div class="flex flex-wrap items-center">
                 <div class="relative w-full px-4 max-w-full flex-grow flex-1">
                     <h3 class="font-semibold text-lg text-blueGray-700">
-                        Welcome to data services for SMART CUSTOMER.
+                        Welcome to data services for LTL CUSTOMER
                     </h3>
                 </div>
             </div>

@@ -8,14 +8,14 @@ export const AdminSjalan = () => {
         $('#yajra-datatable-sj-list').DataTable({
             processing: true,
             serverSide: false,
-            ajax: "/smart/data/get-sj",
+            ajax: "/lautanluas/data/get-sj",
             columns: [
               {data: 'id_so', name: 'id_so'},
-              {data: 'load_id', name: 'load_id'},
-              {data: 'nopol', name: 'nopol'},
-              {data: 'penerima', name: 'penerima'},
-              {data: 'total_weightSO', name: 'total_weightSO'},
-              {data: 'utilitas', name: 'utilitas'},
+              {data: 'no_do', name: 'load_id'},
+              {data: 'load_id', name: 'nopol'},
+              {data: 'alamat_full', name: 'penerima'},
+              {data: 'total_qtySO', name: 'total_weightSO'},
+              {data: 'total_weightSO', name: 'utilitas'},
               {data: 'action', name: 'action', orderable: false, searchable: false}
             ],
         });
@@ -43,7 +43,7 @@ export const AdminSjalan = () => {
                     dataType: 'JSON',
                 });
                 $.ajax({
-                    url: '/smart/suratjalan/check/'+id,
+                    url: '/lautanluas/suratjalan/check/'+id,
                     type: 'GET',
                     success: (data) => {
                         //$(this).trigger('reset');
@@ -54,14 +54,15 @@ export const AdminSjalan = () => {
                             $(this).html("Cancel");
 
                             $('#form-so-new .input-id-so').prop('readonly',true);
+                            $('#form-so-new .input-do').prop('readonly',false);
                             $('#form-so-new .input-loadid').prop('readonly',false);
-                            $('#form-so-new .input-nopol').prop('readonly',false);
-                            $('#form-so-new .input-penerima').prop('readonly',false);
+                            $('#form-so-new .input-kota').prop('readonly',false);
+                            $('#form-so-new .input-alamat').prop('readonly',false);
+                            $('#form-so-new .input-tgl').prop('readonly',false);
+                            $('#form-so-new .input-qty').prop('readonly',false);
+                            $('#form-so-new .input-weight').prop('readonly',false);
                             $('#form-so-new .input-bongkar').prop('readonly',false);
-                            $('#form-so-new .input-muat').prop('readonly',false);
-                            $('#form-so-new .input-note').prop('readonly',false);
-                            $('#form-so-new .input-driver-nmk').prop('readonly',false);
-                            $('#form-so-new .input-driver-name').prop('readonly',false);
+                            $('#form-so-new .input-multidrop').prop('readonly',false);
                             $('#form-so-new .btn-simpan').prop('disabled',false);
 
                             Snackbar.show({
@@ -86,16 +87,17 @@ export const AdminSjalan = () => {
                 $(this).html('Check SJ');
 
                 $('#form-so-new .input-id-so').prop('readonly',false);
+                $('#form-so-new .input-do').prop('readonly',true);
                 $('#form-so-new .input-loadid').prop('readonly',true);
-                $('#form-so-new .input-nopol').prop('readonly',true);
-                $('#form-so-new .input-penerima').prop('readonly',true);
+                $('#form-so-new .input-kota').prop('readonly',true);
+                $('#form-so-new .input-alamat').prop('readonly',true);
+                $('#form-so-new .input-tgl').prop('readonly',true);
+                $('#form-so-new .input-qty').prop('readonly',true);
+                $('#form-so-new .input-weight').prop('readonly',true);
                 $('#form-so-new .input-bongkar').prop('readonly',true);
-                $('#form-so-new .input-muat').prop('readonly',true);
-                $('#form-so-new .input-note').prop('readonly',true);
-                $('#form-so-new .input-driver-nmk').prop('readonly',true);
-                $('#form-so-new .input-driver-name').prop('readonly',true);
+                $('#form-so-new .input-multidrop').prop('readonly',true);
                 $('#form-so-new .btn-simpan').prop('disabled',true);
-
+                
                 Snackbar.show({
                     text: "Silahkan cek kembali nomor SJ.",
                     actionText: 'Tutup',

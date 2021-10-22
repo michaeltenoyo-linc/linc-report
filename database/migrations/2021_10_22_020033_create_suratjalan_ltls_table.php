@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSuratjalansTable extends Migration
+class CreateSuratjalanLtlsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,21 +13,17 @@ class CreateSuratjalansTable extends Migration
      */
     public function up()
     {
-        Schema::create('suratjalan', function (Blueprint $table) {
+        Schema::create('suratjalan_ltl', function (Blueprint $table) {
             $table->string('id_so')->primary();
+            $table->string('no_do');
             $table->string('load_id');
+            $table->string('lokasi_pengiriman');
+            $table->string('kota_pengiriman');
             $table->float('total_weightSO',12);
             $table->float('total_qtySO',12);
-            $table->string('nopol');
-            $table->string('driver_nmk');
-            $table->string('driver_name');
-            $table->string('penerima');
-            $table->string('note');
-            $table->float('utilitas');
-            $table->float('biaya_bongkar',12);
             $table->float('biaya_overnight',12);
             $table->float('biaya_multidrop',12);
-            $table->timestamp('tgl_terima');
+            $table->date('delivery_date');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -40,6 +36,6 @@ class CreateSuratjalansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('suratjalan');
+        Schema::dropIfExists('suratjalan_ltls');
     }
 }

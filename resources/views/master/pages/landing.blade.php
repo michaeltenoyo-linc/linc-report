@@ -106,12 +106,12 @@
 			<div class="col-lg-6 col-md-12 col-xl-7">
 				<div class="block">
 					<div class="divider mb-3"></div>
-					<span class="text-uppercase text-sm letter-spacing ">LINC REPORTING SOLUTION</span>
-					<h1 class="mb-3 mt-3">Make Your Report Easiser Now!</h1>
+					<span class="text-uppercase text-sm letter-spacing ">LINC DATA SOLUTION</span>
+					<h1 class="mb-3 mt-3">Manage and Process Your Data Easiser Now!</h1>
 					
 					<p class="mb-4 pr-5">Website ini dibangun untuk mempermudah manajemen data surat jalan, pembuatan report, dan proforma.</p>
 					<div class="btn-container ">
-						<a href="appoinment.html" target="_blank" class="btn btn-main-2 btn-icon btn-round-full">Baca lebih lanjut... <i class="icofont-simple-right ml-2  "></i></a>
+						<a href="" target="_blank" class="btn btn-main-2 btn-icon btn-round-full">Baca lebih lanjut... <i class="icofont-simple-right ml-2  "></i></a>
 					</div>
 				</div>
 			</div>
@@ -127,32 +127,30 @@
 						<div class="feature-icon mb-4">
 							<i class="icofont-surgeon-alt"></i>
 						</div>
-						<span>24 Hours Service</span>
-						<h4 class="mb-3">Online Appoinment</h4>
-						<p class="mb-4">Get ALl time support for emergency.We have introduced the principle of family medicine.</p>
-						<a href="appoinment.html" class="btn btn-main btn-round-full">Make a appoinment</a>
+						<span>Data Services</span>
+						<h4 class="mb-3">SMART Customer</h4>
+						<p class="mb-4">Truck and item database for SMART customer, auto-generate 2 report for SMART.</p>
+						<a href="{{ url('/smart') }}" class="btn btn-main btn-round-full">GO TO SMART</a>
 					</div>
 				
 					<div class="feature-item mb-5 mb-lg-0">
 						<div class="feature-icon mb-4">
-							<i class="icofont-ui-clock"></i>
+							<i class="icofont-surgeon-alt"></i>
 						</div>
-						<span>Timing schedule</span>
-						<h4 class="mb-3">Working Hours</h4>
-						<ul class="w-hours list-unstyled">
-		                    <li class="d-flex justify-content-between">Sun - Wed : <span>8:00 - 17:00</span></li>
-		                    <li class="d-flex justify-content-between">Thu - Fri : <span>9:00 - 17:00</span></li>
-		                    <li class="d-flex justify-content-between">Sat - sun : <span>10:00 - 17:00</span></li>
-		                </ul>
+						<span>Data Services</span>
+						<h4 class="mb-3">LTL Customer</h4>
+						<p class="mb-4">Order database for LTL (Lautan Luas) customer, auto-generate 2 report for SMART.</p>
+						<a href="" class="btn btn-main btn-round-full">UNDER CONSTRUCTION</a>
 					</div>
 				
 					<div class="feature-item mb-5 mb-lg-0">
 						<div class="feature-icon mb-4">
-							<i class="icofont-support"></i>
+							<i class="icofont-surgeon-alt"></i>
 						</div>
-						<span>Emegency Cases</span>
-						<h4 class="mb-3">1-800-700-6200</h4>
-						<p>Get ALl time support for emergency.We have introduced the principle of family medicine.Get Conneted with us for any urgency .</p>
+						<span>Data Services</span>
+						<h4 class="mb-3">--- Customer</h4>
+						<p class="mb-4">---------.</p>
+						<a href="" class="btn btn-main btn-round-full">UNDER CONSTRUCTION</a>
 					</div>
 				</div>
 			</div>

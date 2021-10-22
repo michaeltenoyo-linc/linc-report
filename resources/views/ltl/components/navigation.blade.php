@@ -9,7 +9,7 @@
         </button>
         <a class="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
             href="#">
-            SMART CUSTOMER
+            LAUTAN LUAS CUSTOMER
         </a>
         <ul class="md:hidden items-center flex flex-wrap list-none">
             <li class="inline-block relative">
@@ -92,14 +92,14 @@
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
                 {{-- Active --}}
                 <li class="items-center">
-                    @if (Request::path() == '/smart/nav-so-new')
-                    <a href="{{url('/smart/nav-so-new')}}"
+                    @if (Request::path() == '/lautanluas/nav-so-new')
+                    <a href="{{url('/lautanluas/nav-so-new')}}"
                         class="page_nav_active">
                         <i class="fas fa-plus"></i>
                         Tambah Surat Jalan
                     </a>
                     @else
-                    <a href="{{url('/smart/nav-so-new')}}"
+                    <a href="{{url('/lautanluas/nav-so-new')}}"
                         class="page_nav">
                         <i class="fas fa-plus"></i>
                         Tambah Surat Jalan
@@ -110,14 +110,14 @@
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
                 {{-- Active --}}
                 <li class="items-center">
-                    @if (Request::path() == '/smart/nav-so-list')
-                    <a href="{{url('/smart/nav-so-list')}}"
+                    @if (Request::path() == '/lautanluas/nav-so-list')
+                    <a href="{{url('/lautanluas/nav-so-list')}}"
                         class="page_nav_active">
                         <i class="fas fa-shipping-fast"></i>
                         List Surat Jalan
                     </a>
                     @else
-                    <a href="{{url('/smart/nav-so-list')}}"
+                    <a href="{{url('/lautanluas/nav-so-list')}}"
                         class="page_nav">
                         <i class="fas fa-shipping-fast"></i>
                         List Surat Jalan
@@ -135,106 +135,18 @@
             <!-- Navigation Product -->
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
                 <li class="items-center">
-                    @if (Request::path() == 'smart/nav-report-generate')
-                        <a href="{{url('/smart/nav-report-generate')}}"
+                    @if (Request::path() == 'lautanluas/nav-report-generate')
+                        <a href="{{url('/lautanluas/nav-report-generate')}}"
                             class="page_nav_active">
                             <i class="far fa-clipboard"></i>
                             Generate Report
                         </a>
                     @else
-                        <a href="{{url('/smart/nav-report-generate')}}"
+                        <a href="{{url('/lautanluas/nav-report-generate')}}"
                             class="page_nav">
                             <i class="far fa-clipboard"></i>
                             Generate Report
                         </a>
-                    @endif
-                </li>
-            </ul>
-
-            <!-- Divider -->
-            <hr class="my-4 md:min-w-full" />
-            <!-- Heading -->
-            <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                Items
-            </h6>
-            <!-- Navigation Items -->
-            <ul class="md:flex-col md:min-w-full flex flex-col list-none">
-                {{-- Active --}}
-                <li class="items-center">
-                    @if (Request::path() == 'smart/nav-items-new')
-                    <a href="{{ url('/smart/nav-items-new') }}"
-                        class="page_nav_active">
-                        <i class="fas fa-plus"></i>
-                        New Item
-                    </a>
-                    @else
-                    <a href="{{ url('/smart/nav-items-new') }}"
-                        class="page_nav">
-                        <i class="fas fa-plus"></i>
-                        New Item
-                    </a>
-                    @endif
-                </li>
-            </ul>
-            <ul class="md:flex-col md:min-w-full flex flex-col list-none">
-                {{-- Active --}}
-                <li class="items-center">
-                    @if (Request::path() == 'smart/nav-items-list')
-                    <a href="{{ url('/smart/nav-items-list') }}"
-                        class="page_nav_active">
-                        <i class="fas fa-boxes"></i>
-                        Item List
-                    </a>
-                    @else
-                    <a href="{{ url('/smart/nav-items-list') }}"
-                        class="page_nav">
-                        <i class="fas fa-boxes"></i>
-                        Item List
-                    </a>
-                    @endif
-                </li>
-            </ul>
-
-            <!-- Divider -->
-            <hr class="my-4 md:min-w-full" />
-            <!-- Heading -->
-            <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                Trucks
-            </h6>
-            <!-- Navigation Trucks -->
-            <ul class="md:flex-col md:min-w-full flex flex-col list-none">
-                {{-- Active --}}
-                <li class="items-center">
-                    @if (Request::path() == 'smart/nav-trucks-new')
-                    <a href="{{ url('/smart/nav-trucks-new') }}"
-                        class="page_nav_active">
-                        <i class="fas fa-plus"></i>
-                        Register Truck
-                    </a>
-                    @else
-                    <a href="{{ url('/smart/nav-trucks-new') }}"
-                        class="page_nav">
-                        <i class="fas fa-plus"></i>
-                        Register Truck
-                    </a>
-                    @endif
-                </li>
-            </ul>
-            <ul class="md:flex-col md:min-w-full flex flex-col list-none">
-                {{-- Active --}}
-                <li class="items-center">
-                    @if (Request::path() == 'smart/nav-trucks-list')
-                    <a href="{{ url('/smart/nav-trucks-list') }}"
-                        class="page_nav_active">
-                        <i class="fas fa-truck"></i>
-                        Truck List
-                    </a>
-                    @else
-                    <a href="{{ url('/smart/nav-trucks-list') }}"
-                        class="page_nav">
-                        <i class="fas fa-truck"></i>
-                        Truck List
-                    </a>
                     @endif
                 </li>
             </ul>

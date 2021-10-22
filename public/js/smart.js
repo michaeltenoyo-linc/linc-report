@@ -739,6 +739,7 @@ var AdminSjalan = function AdminSjalan() {
               $('#form-so-new .input-penerima').prop('readonly', false);
               $('#form-so-new .input-bongkar').prop('readonly', false);
               $('#form-so-new .input-muat').prop('readonly', false);
+              $('#form-so-new .input-note').prop('readonly', false);
               $('#form-so-new .input-driver-nmk').prop('readonly', false);
               $('#form-so-new .input-driver-name').prop('readonly', false);
               $('#form-so-new .btn-simpan').prop('disabled', false);
@@ -767,6 +768,7 @@ var AdminSjalan = function AdminSjalan() {
         $('#form-so-new .input-penerima').prop('readonly', true);
         $('#form-so-new .input-bongkar').prop('readonly', true);
         $('#form-so-new .input-muat').prop('readonly', true);
+        $('#form-so-new .input-note').prop('readonly', true);
         $('#form-so-new .input-driver-nmk').prop('readonly', true);
         $('#form-so-new .input-driver-name').prop('readonly', true);
         $('#form-so-new .btn-simpan').prop('disabled', true);
@@ -973,7 +975,7 @@ var AdminTrucks = function AdminTrucks() {
   var autocompleteTrucks = function autocompleteTrucks() {
     $('#form-so-new .autocomplete-trucks').typeahead({
       source: function source(query, process) {
-        return $.get('/data/autocomplete-trucks', {
+        return $.get('/smart/data/autocomplete-trucks', {
           query: query
         }, function (data) {
           return process(data);

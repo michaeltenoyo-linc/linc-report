@@ -13,6 +13,9 @@ use App\Http\Controllers\Smart\LoadController as SmartLoadController;
 use App\Http\Controllers\Smart\ItemController as SmartItemController;
 use App\Http\Controllers\Smart\ReportController as SmartReportController;
 
+//LTL CONTROLLER
+use App\Http\Controllers\Ltl\ViewController as LtlViewController;
+use App\Http\Controllers\Ltl\SuratjalanController as LtlSuratjalanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -82,6 +85,25 @@ Route::prefix('/smart')->group(function (){
         Route::get('/get-preview',[SmartReportController::class, 'getPreviewResult']);
         Route::get('/get-warning',[SmartReportController::class, 'getPreviewWarning']);
         Route::get('/downloadReport',[SmartReportController::class, 'downloadExcel']);
+    });
+});
+
+//LTL
+Route::prefix('/lautanluas')->group(function () {
+    Route::get('/',[LtlViewController::class, 'gotoLandingPage']);
+    Route::get('/nav-so-new',[LtlViewController::class, 'gotoSoNew']);
+    Route::get('/nav-so-list',[LtlViewController::class, 'gotoSoList']);
+
+    //View Function
+    Route::prefix('/data')->group(function () {
+        //Surat Jalan
+        Route::get('/get-sj',[LtlViewController::class, 'getSj']);
+    });
+
+    //Surat Jalan LTL
+    Route::prefix('/suratjalan')->group(function () {
+        Route::get('/check/{id_so}',[LtlSuratjalanController::class, 'checkSj']);
+        Route::post('/addSj',[LtlSuratjalanController::class, 'addSj']);
     });
 });
 

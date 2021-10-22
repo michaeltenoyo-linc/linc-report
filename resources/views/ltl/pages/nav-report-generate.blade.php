@@ -92,12 +92,6 @@ Linc | Generate Report
                         </div>
                         
                     </div>
-
-                    <div class="w-full px-4 py-8">
-                        <div class="relative w-full mb-3">
-                            <hr>
-                        </div>
-                    </div>
                     
                     <div class="w-full lg:w-6/12 px-4" >
                         <div class="relative w-full w-full mb-3">

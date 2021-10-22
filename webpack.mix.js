@@ -18,6 +18,7 @@ mix
   .js('resources/js/app.js', 'public/js')
   .js('resources/js/auth/auth.js', 'public/js')
   .js('resources/js/smart/smart.js', 'public/js')
+  .js('resources/js/ltl/ltl.js', 'public/js')
   .sass('resources/sass/app.scss', 'public/css')
   .options({
     postCss: [

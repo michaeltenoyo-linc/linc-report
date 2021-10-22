@@ -46,7 +46,7 @@ export const AdminTrucks = () => {
     const autocompleteTrucks = () => {
         $('#form-so-new .autocomplete-trucks').typeahead({
             source: function (query, process) {
-                return $.get('/data/autocomplete-trucks', {
+                return $.get('/smart/data/autocomplete-trucks', {
                     query: query
                 }, function (data) {
                     return process(data);

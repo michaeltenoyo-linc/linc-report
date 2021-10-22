@@ -5,28 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Suratjalan extends Model
+class Suratjalan_ltl extends Model
 {
-    //
-
     use softDeletes;
     protected $table = 'suratjalan';
     protected $primaryKey = 'id_so';
     public $incrementing = false;
     protected $fillable = [
         'id_so',
+        'no_do',
         'load_id',
-        'nopol',
-        'driver_nmk',
-        'driver_name',
+        'lokasi_pengiriman',
+        'kota_pengiriman',
         'total_weightSO',
-        'penerima',
-        'utilitas',
-        'biaya_bongkar',
+        'total_qtySO',
         'biaya_overnight',
         'biaya_multidrop',
-        'tgl_terima',
-        'total_qtySO',
-        'note',
+        'delivery_date'
     ];
 }

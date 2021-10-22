@@ -2,5 +2,6 @@
     "/js/app.js": "/js/app.js",
     "/js/auth.js": "/js/auth.js",
     "/js/smart.js": "/js/smart.js",
+    "/js/ltl.js": "/js/ltl.js",
     "/css/app.css": "/css/app.css"
 }
