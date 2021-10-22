@@ -93,6 +93,7 @@ Route::prefix('/lautanluas')->group(function () {
     Route::get('/',[LtlViewController::class, 'gotoLandingPage']);
     Route::get('/nav-so-new',[LtlViewController::class, 'gotoSoNew']);
     Route::get('/nav-so-list',[LtlViewController::class, 'gotoSoList']);
+    Route::get('/nav-report-generate',[LtlViewController::class, 'gotoReportGenerate']);
 
     //View Function
     Route::prefix('/data')->group(function () {

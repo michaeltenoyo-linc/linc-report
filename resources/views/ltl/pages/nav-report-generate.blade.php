@@ -1,11 +1,11 @@
-@extends('smart.layouts.admin-layout')
+@extends('ltl.layouts.admin-layout')
 
 @section('title')
 Linc | Generate Report
 @endsection
 
 @section('header')
-@include('smart.components.header_no_login')
+@include('ltl.components.header_no_login')
 @endsection
 
 @section('content')
@@ -29,41 +29,15 @@ Linc | Generate Report
                         <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                             htmlFor="name"> Jenis Report </label>
                         <select class="input-report-type w-full border bg-white rounded px-3 py-2 outline-none" name="reportType">
-                            <option class="py-1" value="smart_1">Smart Customer 1</option>
-                            <option class="py-1" value="smart_2">Smart Customer 2</option>
+                            <option class="py-1" value="proforma_ltl">Proforma LTL</option>
                         </select>
                     </div>
                 </div>
                 <div class="flex flex-wrap">
-                    <!--Requirement SMART 1-->
+                    <!--Requirement Proforma LTL-->
                     <div class="requirement-reportSmart1 w-full lg:w-1/2 px-4">
                         <div class="relative w-full mb-3">
-                            <h1 class="text-red-600 font-bold">Requirement SMART Report 1</h1>
-                            <p class="text-red-600">
-                                Pastikan semua field yang diambil dari Blujay sudah memiliki
-                                ketentuan yang dibutuhkan dibawah ini :
-                            </p>
-                            <br>
-                            <ul class="list-disc">
-                                <li>TMS ID / Load ID</li>
-                                <li>Created Date</li>
-                                <li>Last Drop Location City</li>
-                                <li>Billable Total Rate</li>
-                                <li>Load Status</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="preview-reportSmart1 w-full lg:w-1/2 px-4">
-                        <div class="relative w-full mb-3">
-                            <h1 class="font-bold">Report Smart 1 untuk :</h1>
-                        </div>
-                        <img src="{{asset('assets/contoh-report/ReportSmart1.jpg')}}" alt="">
-                    </div>
-
-                    <!--Requirement SMART 2-->
-                    <div class="requirement-reportSmart2 hidden w-full lg:w-1/2 px-4">
-                        <div class="relative w-full mb-3">
-                            <h1 class="text-red-600 font-bold">Requirement SMART Report 2</h1>
+                            <h1 class="text-red-600 font-bold">Requirement Report Proforma LTL</h1>
                             <p class="text-red-600">
                                 Pastikan semua field yang diambil dari Blujay sudah memiliki
                                 ketentuan yang dibutuhkan dibawah ini :
@@ -73,25 +47,25 @@ Linc | Generate Report
                                 <li>TMS ID / Load ID</li>
                                 <li>Created Date</li>
                                 <li>Customer Name</li>
-                                <li>Billable Method</li>
-                                <li>Shipping Comment</li>
-                                <li>Pick-up Location Reference Number</li>
-                                <li>Delivery Location Name</li>
-                                <li>Order Number</li>
-                                <li>Carrier Name</li>
                                 <li>Last Drop Location City</li>
                                 <li>Billable Total Rate</li>
                                 <li>Load Status</li>
                             </ul>
                         </div>
                     </div>
-                    <div class="preview-reportSmart2 hidden w-full lg:w-1/2 px-4">
+                    <div class="preview-reportSmart1 w-full lg:w-1/2 px-4">
                         <div class="relative w-full mb-3">
-                            <h1 class="font-bold">Report Smart 2 untuk :</h1>
-                            <img src="{{asset('assets/contoh-report/ReportSmart2.png')}}" alt="">
+                            <h1 class="font-bold">Report Proforma LTL untuk :</h1>
                         </div>
-                        
+                        <img width="80%" src="{{asset('assets/contoh-report/ReportProformaLTL.jpg')}}" alt="">
                     </div>
+
+                    <div class="w-full lg:w-12/12 px-4 py-8" >
+                        <div class="relative w-full w-full mb-3">
+                            <hr>
+                        </div>
+                    </div>
+                    
                     
                     <div class="w-full lg:w-6/12 px-4" >
                         <div class="relative w-full w-full mb-3">

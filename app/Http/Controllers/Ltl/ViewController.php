@@ -32,6 +32,10 @@ class ViewController extends BaseController
         return view('ltl.pages.nav-so-list');
     }
 
+    public function gotoReportGenerate(){
+        return view('ltl.pages.nav-report-generate');
+    }
+
     //DATA CRAWL
     public function getSj(){
         $data = Suratjalan_ltl::get();
