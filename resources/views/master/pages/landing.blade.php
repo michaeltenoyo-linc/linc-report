@@ -140,7 +140,7 @@
 						<span>Data Services</span>
 						<h4 class="mb-3">LTL Customer</h4>
 						<p class="mb-4">Order database for LTL (Lautan Luas) customer, auto-generate report for LTL.</p>
-						<a href="" class="btn btn-main btn-round-full">UNDER CONSTRUCTION</a>
+						<a href="" class="btn btn-main btn-round-full">UNDER CONSTRUCTION :)</a>
 					</div>
 				
 					<div class="feature-item mb-5 mb-lg-0">
@@ -150,7 +150,7 @@
 						<span>Data Services</span>
 						<h4 class="mb-3">--- Customer</h4>
 						<p class="mb-4">---------.</p>
-						<a href="" class="btn btn-main btn-round-full">UNDER CONSTRUCTION</a>
+						<a href="" class="btn btn-main btn-round-full">UNDER CONSTRUCTION :)</a>
 					</div>
 				</div>
 			</div>

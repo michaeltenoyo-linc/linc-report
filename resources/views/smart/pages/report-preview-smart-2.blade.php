@@ -1,11 +1,11 @@
-@extends('layouts.admin-layout')
+@extends('smart.layouts.admin-layout')
 
 @section('title')
 Linc | Report Homepage
 @endsection
 
 @section('header')
-@include('components.header_no_login')
+@include('smart.components.header_no_login')
 @endsection
 
 @section('content')
@@ -24,7 +24,7 @@ Linc | Report Homepage
                     <div class="w-full lg:w-4/12 px-4">
                         <div class="relative w-full mb-3">
                             <h3 class="font-semibold text-lg text-blueGray-700">
-                                <a class="btn_blue" href="smart/report/downloadReport">Export .Xls</a>
+                                <a class="btn_blue" href="{{ url('smart/report/downloadReport') }}">Export .Xls</a>
                             </h3>
                         </div>
                     </div>
