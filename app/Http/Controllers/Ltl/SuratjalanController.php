@@ -39,62 +39,39 @@ class SuratjalanController extends BaseController
     public function addSj(Request $req){
         $this->validate($req, [
             'id_so' => 'required',
+            'no_do' => 'required',
             'load_id' => 'required',
-            'penerima' => 'required',
-            'nopol' => 'required',
-            'driver_nmk' => 'required',
-            'driver_name' => 'required',
-            'total_weight' => 'required',
-            'total_utility' => 'required',
-            'item' => 'required',
-            'qty' => 'required',
+            'kota_kirim' => 'required',
+            'alamat_kirim' => 'required',
+            'tgl_kirim' => 'required',
+            'totalQty' => 'required',
+            'totalWeight' => 'required',
             'bongkar' => 'required',
-            'overnight' => 'required',
             'multidrop' => 'required',
-            'tgl_terima' => 'required',
-            'total_qty' => 'required',
+            'nopol' => 'required',
+        ]);
+
+        Suratjalan_ltl::create([
+            'id_so' => $req->input('id_so'),
+            'no_do' => $req->input('no_do'),
+            'load_id' => $req->input('load_id'),
+            'lokasi_pengiriman' => $req->input('alamat_kirim'),
+            'nopol' => $req->input('nopol'),
+            'kota_pengiriman' => $req->input('kota_kirim'),
+            'total_weightSO' => $req->input('totalWeight'),
+            'total_qtySO' => $req->input('totalQty'),
+            'biaya_bongkar' => $req->input('bongkar'),
+            'biaya_multidrop' => $req->input('multidrop'),
+            'delivery_date' => $req->input('tgl_kirim'),
         ]);
 
         $data['message'] = "Data surat jalan sudah disimpan.";
-
-        $new_so = Suratjalan::create([
-            'id_so' => $req->input('id_so'),
-            'load_id' => $req->input('load_id'),
-            'total_weightSO' => $req->input('total_weight'),
-            'nopol' => $req->input('nopol'),
-            'driver_nmk' => $req->input('driver_nmk'),
-            'driver_name' => $req->input('driver_name'),
-            'penerima' => $req->input('penerima'),
-            'utilitas' => $req->input('total_utility'),
-            'biaya_bongkar' => $req->input('bongkar'),
-            'biaya_overnight' => $req->input('overnight'),
-            'biaya_multidrop' => $req->input('multidrop'),
-            'tgl_terima' => $req->input('tgl_muat'),
-            'total_qtySO' => $req->input('total_qty'),
-        ]);
-
-        //DLOADS
-        $itemList = $req->input('item');
-        $qtyList = $req->input('qty');
-
-        for ($i=0; $i < count($itemList); $i++) {
-            $tempItem = Item::where('material_code','=',$itemList[$i])->first();
-            $subtotal_weight = $tempItem->gross_weight * $qtyList[$i];
-
-            Dload::create([
-                'id_so' => $new_so->id_so,
-                'nopol' => $req->input('nopol'),
-                'material_code' => $itemList[$i],
-                'qty' => $qtyList[$i],
-                'subtotal_weight' => $subtotal_weight,
-            ]);
-        }
 
         return response()->json($data, 200);
     }
 
     public function delete(Request $req){
-        $sj = Suratjalan::where('id_so','=',$req->input('id_so'))->first();
+        $sj = Suratjalan_ltl::where('id_so','=',$req->input('id_so'))->first();
         $sj->delete();
 
         return response()->json(['message' => 'berhasil menghapus data.'], 200);

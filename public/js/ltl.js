@@ -32,7 +32,7 @@ var AdminReport = function AdminReport() {
         dataType: 'JSON'
       });
       $.ajax({
-        url: '/smart/load/check-bluejay',
+        url: '/lautanluas/load/check-bluejay',
         type: 'POST',
         enctype: 'multipart/form-data',
         data: new FormData($('#form-report-generate')[0]),
@@ -50,7 +50,7 @@ var AdminReport = function AdminReport() {
             processing: true,
             serverSide: false,
             ajax: {
-              url: '/smart/load/bluejay-table',
+              url: '/lautanluas/load/bluejay-table',
               type: 'POST',
               'headers': {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -88,11 +88,11 @@ var AdminReport = function AdminReport() {
     });
   };
 
-  var previewReportSmart1 = function previewReportSmart1() {
-    $('#yajra-datatable-report-preview-smart-1').DataTable({
+  var previewReportLtl1 = function previewReportLtl1() {
+    $('#yajra-datatable-report-preview-ltl-1').DataTable({
       processing: true,
       serverSide: false,
-      ajax: '/smart/report/get-preview',
+      ajax: '/lautanluas/report/get-preview',
       columns: [{
         data: 'No',
         name: 'TMS ID'
@@ -100,43 +100,34 @@ var AdminReport = function AdminReport() {
         data: 'Load ID',
         name: 'Closed Data'
       }, {
-        data: 'Tgl Muat',
+        data: 'No SO',
         name: 'Last Drop Location City'
       }, {
-        data: 'No SJ',
+        data: 'No DO',
         name: 'Billable Total Rate'
       }, {
-        data: 'Penerima',
+        data: 'Delivery Date',
         name: 'Load Status'
       }, {
-        data: 'Kota Tujuan',
+        data: 'No Polisi',
         name: 'Load Status'
       }, {
-        data: 'Kuantitas',
+        data: 'Customer Name',
         name: 'Load Status'
       }, {
-        data: 'Berat',
+        data: 'Customer Address',
         name: 'Load Status'
       }, {
-        data: 'Utilitas',
+        data: 'City',
         name: 'Load Status'
       }, {
-        data: 'Nopol',
+        data: 'Qty',
         name: 'Load Status'
       }, {
-        data: 'Tipe Kendaraan',
+        data: 'Transport Rate',
         name: 'Load Status'
       }, {
-        data: 'Kontainer',
-        name: 'Load Status'
-      }, {
-        data: 'Biaya Kirim',
-        name: 'Load Status'
-      }, {
-        data: 'Biaya Bongkar',
-        name: 'Load Status'
-      }, {
-        data: 'Overnight Charge',
+        data: 'Unloading Cost',
         name: 'Load Status'
       }, {
         data: 'Multidrop',
@@ -144,15 +135,24 @@ var AdminReport = function AdminReport() {
       }, {
         data: 'Total',
         name: 'Load Status'
+      }, {
+        data: 'Rate / Kg',
+        name: 'Load Status'
+      }, {
+        data: 'Invoice To LTL',
+        name: 'Load Status'
+      }, {
+        data: 'Remarks',
+        name: 'Load Status'
       }]
     });
   };
 
-  var previewWarningSmart1 = function previewWarningSmart1() {
-    $('#yajra-datatable-warning-preview-smart-1').DataTable({
+  var previewWarningLtl1 = function previewWarningLtl1() {
+    $('#yajra-datatable-warning-preview-ltl-1').DataTable({
       processing: true,
       serverSide: false,
-      ajax: '/smart/report/get-warning',
+      ajax: '/lautanluas/report/get-warning',
       columns: [{
         data: 'Load ID',
         name: 'Load ID'
@@ -163,131 +163,8 @@ var AdminReport = function AdminReport() {
     });
   };
 
-  var previewReportSmart2 = function previewReportSmart2() {
-    $('#yajra-datatable-report-preview-smart-2').DataTable({
-      processing: true,
-      serverSide: false,
-      ajax: '/smart/report/get-preview',
-      columns: [{
-        data: 'No',
-        name: 'TMS ID'
-      }, {
-        data: 'Tanggal',
-        name: 'Closed Data'
-      }, {
-        data: 'Customer',
-        name: 'Last Drop Location City'
-      }, {
-        data: 'Billable Method',
-        name: 'Billable Total Rate'
-      }, {
-        data: 'Customer Type',
-        name: 'Load Status'
-      }, {
-        data: 'Prodyct ID',
-        name: 'Load Status'
-      }, {
-        data: 'Origin',
-        name: 'Load Status'
-      }, {
-        data: 'Destination',
-        name: 'Load Status'
-      }, {
-        data: 'Penerima Barang',
-        name: 'Load Status'
-      }, {
-        data: 'Equipment Required',
-        name: 'Load Status'
-      }, {
-        data: 'No Order ID',
-        name: 'Load Status'
-      }, {
-        data: 'Carrier',
-        name: 'Load Status'
-      }, {
-        data: 'Nopol',
-        name: 'Load Status'
-      }, {
-        data: 'Driver',
-        name: 'Load Status'
-      }, {
-        data: 'NMK',
-        name: 'Load Status'
-      }, {
-        data: 'Load ID',
-        name: 'Load Status'
-      }, {
-        data: 'No. DO',
-        name: 'Load Status'
-      }, {
-        data: 'KODE SKU',
-        name: 'Load Status'
-      }, {
-        data: 'Description',
-        name: 'Load Status'
-      }, {
-        data: 'QTY',
-        name: 'Load Status'
-      }, {
-        data: 'Weight',
-        name: 'Load Status'
-      }, {
-        data: 'Tanggal SJ Balik',
-        name: 'Load Status'
-      }, {
-        data: 'Tanggal POD',
-        name: 'Load Status'
-      }, {
-        data: 'Note Retur',
-        name: 'Load Status'
-      }, {
-        data: 'Pengembalian Retur',
-        name: 'Load Status'
-      }]
-    });
-  };
-
-  var previewWarningSmart2 = function previewWarningSmart2() {
-    $('#yajra-datatable-warning-preview-smart-2').DataTable({
-      processing: true,
-      serverSide: false,
-      ajax: '/smart/report/get-warning',
-      columns: [{
-        data: 'Load ID',
-        name: 'Load ID'
-      }, {
-        data: 'Suggestion',
-        name: 'Suggestion'
-      }]
-    });
-  };
-
-  var onChangeReportType = function onChangeReportType() {
-    $('#form-report-generate .input-report-type').change(function (e) {
-      e.preventDefault();
-      var type = $(this).val();
-
-      if (type == "smart_1") {
-        $('#form-report-generate .requirement-reportSmart1').removeClass('hidden');
-        $('#form-report-generate .preview-reportSmart1').removeClass('hidden');
-        $('#form-report-generate .requirement-reportSmart2').addClass('hidden');
-        $('#form-report-generate .preview-reportSmart2').addClass('hidden');
-      } else if (type == "smart_2") {
-        $('#form-report-generate .requirement-reportSmart1').addClass('hidden');
-        $('#form-report-generate .preview-reportSmart1').addClass('hidden');
-        $('#form-report-generate .requirement-reportSmart2').removeClass('hidden');
-        $('#form-report-generate .preview-reportSmart2').removeClass('hidden');
-      }
-
-      return false;
-    });
-  };
-
-  onChangeReportType();
-  previewReportSmart1();
-  previewReportSmart2();
-  previewWarningSmart1();
-  previewWarningSmart2();
+  previewReportLtl1();
+  previewWarningLtl1();
   onUploadBluejay();
 };
 
@@ -380,6 +257,7 @@ var AdminSjalan = function AdminSjalan() {
               $('#form-so-new .input-kota').prop('readonly', false);
               $('#form-so-new .input-alamat').prop('readonly', false);
               $('#form-so-new .input-tgl').prop('readonly', false);
+              $('#form-so-new .input-nopol').prop('readonly', false);
               $('#form-so-new .input-qty').prop('readonly', false);
               $('#form-so-new .input-weight').prop('readonly', false);
               $('#form-so-new .input-bongkar').prop('readonly', false);
@@ -411,6 +289,7 @@ var AdminSjalan = function AdminSjalan() {
         $('#form-so-new .input-alamat').prop('readonly', true);
         $('#form-so-new .input-tgl').prop('readonly', true);
         $('#form-so-new .input-qty').prop('readonly', true);
+        $('#form-so-new .input-nopol').prop('readonly', true);
         $('#form-so-new .input-weight').prop('readonly', true);
         $('#form-so-new .input-bongkar').prop('readonly', true);
         $('#form-so-new .input-multidrop').prop('readonly', true);
@@ -451,7 +330,7 @@ var AdminSjalan = function AdminSjalan() {
             dataType: 'JSON'
           });
           $.ajax({
-            url: '/smart/suratjalan/addSj',
+            url: '/lautanluas/suratjalan/addSj',
             type: 'POST',
             data: new FormData($(_this2)[0]),
             success: function success(data) {
@@ -500,7 +379,7 @@ var AdminSjalan = function AdminSjalan() {
             dataType: 'JSON'
           });
           $.ajax({
-            url: '/smart/suratjalan/delete',
+            url: '/lautanluas/suratjalan/delete',
             type: 'POST',
             data: new FormData($(_this3)[0]),
             success: function success(data) {

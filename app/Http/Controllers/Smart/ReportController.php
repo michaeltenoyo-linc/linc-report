@@ -33,9 +33,15 @@ class ReportController extends BaseController
         if($req->input('reportType') == "smart_1"){
             for ($i=0; $i < count($bluejayList); $i++) {
                 $row = $bluejayList[$i];
-                $listSJ = Suratjalan::where('load_id','=',$row['TMS ID'])->get();
-    
-                if(count($listSJ) > 0){
+                $listSJ = Suratjalan::where('load_id','=',(isset($row['TMS ID'])?$row['TMS ID']:$row['Load ID']))->get();
+                $loadExist = False;
+                foreach ($reports as $r) {
+                    if($r['Load ID'] == (isset($row['TMS ID'])?$row['TMS ID']:$row['Load ID'])){
+                        $loadExist = True;
+                    }
+                }
+
+                if(count($listSJ) > 0 && !$loadExist){
                     foreach ($listSJ as $sj) {
                         $truck = Trucks::where('nopol','=',$sj->nopol)->first();
                         $totalHarga = intval($row['Billable Total Rate']) + intval($sj->biaya_bongkar);
@@ -91,14 +97,20 @@ class ReportController extends BaseController
             Session::put('resultReport',$reports);
             Session::put('totalReport',$ctr-1);
     
-            return view('pages.report-preview-smart-1');
+            return view('smart.pages.report-preview-smart-1');
 
         }else if($req->input('reportType') == "smart_2"){
             for ($i=0; $i < count($bluejayList); $i++) {
                 $row = $bluejayList[$i];
                 $listSJ = Suratjalan::where('load_id','=',(isset($row['TMS ID'])?$row['TMS ID']:$row['Load ID']))->get();
-    
-                if(count($listSJ) > 0){
+                $loadExist = False;
+                foreach ($reports as $r) {
+                    if($r['Load ID'] == (isset($row['TMS ID'])?$row['TMS ID']:$row['Load ID'])){
+                        $loadExist = True;
+                    }
+                }
+
+                if(count($listSJ) > 0 && !$loadExist){
                     $firstSJ = true;    
                     foreach ($listSJ as $sj) {
                         $listDload = Dload::where('id_so','=',$sj->id_so)->get();
@@ -211,7 +223,7 @@ class ReportController extends BaseController
             Session::put('resultReport',$reports);
             Session::put('totalReport',$ctr-1);
     
-            return view('pages.report-preview-smart-2');
+            return view('smart.pages.report-preview-smart-2');
         }
 
         

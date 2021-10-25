@@ -15,6 +15,8 @@ use App\Http\Controllers\Smart\ReportController as SmartReportController;
 
 //LTL CONTROLLER
 use App\Http\Controllers\Ltl\ViewController as LtlViewController;
+use App\Http\Controllers\Ltl\ReportController as LtlReportController;
+use App\Http\Controllers\Ltl\LoadController as LtlLoadController;
 use App\Http\Controllers\Ltl\SuratjalanController as LtlSuratjalanController;
 
 /*
@@ -104,7 +106,20 @@ Route::prefix('/lautanluas')->group(function () {
     //Surat Jalan LTL
     Route::prefix('/suratjalan')->group(function () {
         Route::get('/check/{id_so}',[LtlSuratjalanController::class, 'checkSj']);
+        Route::post('/delete',[LtlSuratjalanController::class, 'delete']);
         Route::post('/addSj',[LtlSuratjalanController::class, 'addSj']);
+    });
+
+    Route::prefix('/load')->group(function () {
+        Route::post('/check-bluejay',[LtlLoadController::class, 'checkBluejay']);
+        Route::post('/bluejay-table',[LtlLoadController::class, 'bluejayTable']);
+    });
+
+    Route::prefix('/report')->group(function () {
+        Route::post('/generate',[LtlReportController::class, 'generateReport']);
+        Route::get('/get-preview',[LtlReportController::class, 'getPreviewResult']);
+        Route::get('/get-warning',[LtlReportController::class, 'getPreviewWarning']);
+        Route::get('/downloadReport',[LtlReportController::class, 'downloadExcel']);
     });
 });
 

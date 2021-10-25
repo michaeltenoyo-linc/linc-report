@@ -18,10 +18,11 @@ class CreateSuratjalanLtlsTable extends Migration
             $table->string('no_do');
             $table->string('load_id');
             $table->string('lokasi_pengiriman');
+            $table->string('nopol');
             $table->string('kota_pengiriman');
             $table->float('total_weightSO',12);
             $table->float('total_qtySO',12);
-            $table->float('biaya_overnight',12);
+            $table->float('biaya_bongkar',12);
             $table->float('biaya_multidrop',12);
             $table->date('delivery_date');
             $table->timestamps();

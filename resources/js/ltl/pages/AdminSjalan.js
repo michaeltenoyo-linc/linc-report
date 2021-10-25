@@ -59,6 +59,7 @@ export const AdminSjalan = () => {
                             $('#form-so-new .input-kota').prop('readonly',false);
                             $('#form-so-new .input-alamat').prop('readonly',false);
                             $('#form-so-new .input-tgl').prop('readonly',false);
+                            $('#form-so-new .input-nopol').prop('readonly',false);
                             $('#form-so-new .input-qty').prop('readonly',false);
                             $('#form-so-new .input-weight').prop('readonly',false);
                             $('#form-so-new .input-bongkar').prop('readonly',false);
@@ -93,6 +94,7 @@ export const AdminSjalan = () => {
                 $('#form-so-new .input-alamat').prop('readonly',true);
                 $('#form-so-new .input-tgl').prop('readonly',true);
                 $('#form-so-new .input-qty').prop('readonly',true);
+                $('#form-so-new .input-nopol').prop('readonly',true);
                 $('#form-so-new .input-weight').prop('readonly',true);
                 $('#form-so-new .input-bongkar').prop('readonly',true);
                 $('#form-so-new .input-multidrop').prop('readonly',true);
@@ -134,7 +136,7 @@ export const AdminSjalan = () => {
                         dataType: 'JSON',
                     });
                     $.ajax({
-                        url: '/smart/suratjalan/addSj',
+                        url: '/lautanluas/suratjalan/addSj',
                         type: 'POST',
                         data: new FormData($(this)[0]),
                         success: (data) => {
@@ -184,7 +186,7 @@ export const AdminSjalan = () => {
                         dataType: 'JSON',
                     });
                     $.ajax({
-                        url: '/smart/suratjalan/delete',
+                        url: '/lautanluas/suratjalan/delete',
                         type: 'POST',
                         data: new FormData($(this)[0]),
                         success: (data) => {

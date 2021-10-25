@@ -1,11 +1,11 @@
-@extends('layouts.admin-layout')
+@extends('ltl.layouts.admin-layout')
 
 @section('title')
-Linc | Report Homepage
+Linc | Preview Proforma LTL
 @endsection
 
 @section('header')
-@include('components.header_no_login')
+@include('ltl.components.header_no_login')
 @endsection
 
 @section('content')
@@ -24,90 +24,66 @@ Linc | Report Homepage
                     <div class="w-full lg:w-4/12 px-4">
                         <div class="relative w-full mb-3">
                             <h3 class="font-semibold text-lg text-blueGray-700">
-                                <a class="btn_blue" href="smart/report/downloadReport">Export .Xls</a>
+                                <a class="btn_blue" href="{{ url('/lautanluas/report/downloadReport') }}">Export .Xls</a>
                             </h3>
                         </div>
                     </div>
 
                     <div class="block w-full p-8  overflow-x-auto">
                         <!-- Projects table -->
-                        <table id="yajra-datatable-report-preview-smart-2" class="items-center w-full bg-transparent border-collapse yajra-datatable-report-preview-smart-2">
+                        <table id="yajra-datatable-report-preview-ltl-1" class="items-center w-full bg-transparent border-collapse yajra-datatable-report-preview-ltl-1">
                             <thead>
                             <tr>
                                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
                                     No.
                                 </th>
                                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                                    Tanggal
-                                </th>
-                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                                    Customer
-                                </th>
-                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                                    Billable Method
-                                </th>
-                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                                    Customer Type
-                                </th>
-                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                                    Prodyct ID
-                                </th>
-                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                                    Origin
-                                </th>
-                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                                    Destination
-                                </th>
-                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                                    Penerima Barang
-                                </th>
-                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                                    Equipment Required
-                                </th>
-                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                                    No Order ID
-                                </th>
-                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                                    Carrier
-                                </th>
-                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                                    Nopol
-                                </th>
-                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                                    Driver
-                                </th>
-                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                                    NMK
-                                </th>
-                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
                                     Load ID
                                 </th>
                                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                                    No. DO
+                                    No SO
                                 </th>
                                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                                    Kode SKU
+                                    No DO
                                 </th>
                                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                                    Description
+                                    Delivery Date
+                                </th>
+                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                    No.Polisi
+                                </th>
+                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                    Customer Name
+                                </th>
+                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                    Customer Address
+                                </th>
+                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                    City
                                 </th>
                                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
                                     Qty
                                 </th>
                                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                                    Weight
+                                    Transport Rate
                                 </th>
                                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                                    Tanggal SJ Balik
+                                    Unloading Cost
                                 </th>
                                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                                    Tanggal POD
+                                    Multidrop
                                 </th>
                                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                                    Note Retur
+                                    Total
                                 </th>
                                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                                    Pengembalian Retur
+                                    Rate / Kg
+                                </th>
+                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                    Invoice To LTL
+                                </th>
+                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                    Remarks
                                 </th>
                             </tr>
                             </thead>
@@ -122,7 +98,7 @@ Linc | Report Homepage
                     </h3>
                     <div class="block w-full p-8  overflow-x-auto">
                         <!-- Projects table -->
-                        <table id="yajra-datatable-warning-preview-smart-1" class="items-center w-full bg-transparent border-collapse yajra-datatable-warning-preview-smart-1">
+                        <table id="yajra-datatable-warning-preview-ltl-1" class="items-center w-full bg-transparent border-collapse yajra-datatable-warning-preview-ltl-1">
                             <thead>
                             <tr>
                                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
