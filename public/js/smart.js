@@ -427,9 +427,6 @@ var AdminReport = function AdminReport() {
               data: 'Last Drop Location City',
               name: 'Last Drop Location City'
             }, {
-              data: 'Billable Total Rate',
-              name: 'Billable Total Rate'
-            }, {
               data: 'Load Status',
               name: 'Load Status'
             }]
