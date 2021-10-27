@@ -21,7 +21,7 @@ class LoadController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    private function csvstring_to_array($string, $separatorChar = ',', $enclosureChar = '"', $newlineChar = "\n") {
+    private function csvstring_to_array($string, $separatorChar = ';', $enclosureChar = '"', $newlineChar = "\n") {
         // @author: Klemen Nagode
         $array = array();
         $size = strlen($string);
