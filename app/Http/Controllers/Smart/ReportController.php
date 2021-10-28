@@ -86,10 +86,16 @@ class ReportController extends BaseController
                         'Total' => " ",
                     ]);
                 }else{
-                    $warning->push([
-                        'Load ID' => $row['TMS ID'],
-                        'Suggestion' => $row['Shipment Reference Numbers']
-                    ]);
+                    $custId = substr($row['First Pick Location Name'],0,3);
+
+                    if($custId == "SMR"){
+                        $warning->push([
+                            'Load ID' => (isset($row['TMS ID'])?$row['TMS ID']:$row['Load ID']),
+                            'Customer Pick Location' => $row['First Pick Location Name'],
+                            'Suggestion' => (isset($row['Shipment Reference Numbers'])?$row['Shipment Reference Numbers']:"None"),
+                            
+                        ]);
+                    }
                 }
             }
     
@@ -211,10 +217,16 @@ class ReportController extends BaseController
                     }
                     $ctr++;
                 }else{
-                    $warning->push([
-                        'Load ID' => (isset($row['TMS ID'])?$row['TMS ID']:$row['Load ID']),
-                        'Suggestion' => (isset($row['Shipment Reference Numbers'])?$row['Shipment Reference Numbers']:"None"),
-                    ]);
+                    $custId = substr($row['First Pick Location Name'],0,3);
+
+                    if($custId == "SMR"){
+                        $warning->push([
+                            'Load ID' => (isset($row['TMS ID'])?$row['TMS ID']:$row['Load ID']),
+                            'Customer Pick Location' => $row['First Pick Location Name'],
+                            'Suggestion' => (isset($row['Shipment Reference Numbers'])?$row['Shipment Reference Numbers']:"None"),
+                            
+                        ]);
+                    }
                 }
                 
             }

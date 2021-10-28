@@ -19,6 +19,7 @@ class CreateSuratjalansTable extends Migration
             $table->float('total_weightSO',12);
             $table->float('total_qtySO',12);
             $table->string('nopol');
+            $table->string('penerima');
             $table->string('driver_nmk');
             $table->string('driver_name');
             $table->string('note');

@@ -421,6 +421,9 @@ var AdminReport = function AdminReport() {
               data: 'TMS ID',
               name: 'TMS ID'
             }, {
+              data: 'Customer ID',
+              name: 'Customer ID'
+            }, {
               data: 'Created Date',
               name: 'Created Date'
             }, {
@@ -512,6 +515,9 @@ var AdminReport = function AdminReport() {
       columns: [{
         data: 'Load ID',
         name: 'Load ID'
+      }, {
+        data: 'Customer Pick Location',
+        name: 'Customer Pick Location'
       }, {
         data: 'Suggestion',
         name: 'Suggestion'
@@ -611,6 +617,9 @@ var AdminReport = function AdminReport() {
       columns: [{
         data: 'Load ID',
         name: 'Load ID'
+      }, {
+        data: 'Customer Pick Location',
+        name: 'Customer Pick Location'
       }, {
         data: 'Suggestion',
         name: 'Suggestion'

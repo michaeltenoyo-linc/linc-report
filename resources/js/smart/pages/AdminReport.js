@@ -47,6 +47,7 @@ export const AdminReport = () => {
                         },
                         columns: [
                             {data: 'TMS ID', name: 'TMS ID'},
+                            {data: 'Customer ID', name: 'Customer ID'},
                             {data: 'Created Date', name: 'Created Date'},
                             {data: 'Last Drop Location City', name: 'Last Drop Location City'},
                             {data: 'Load Status', name: 'Load Status'},
@@ -101,6 +102,7 @@ export const AdminReport = () => {
             ajax: '/smart/report/get-warning',
             columns: [
                 {data: 'Load ID', name: 'Load ID'},
+                {data: 'Customer Pick Location', name: 'Customer Pick Location'},
                 {data: 'Suggestion', name: 'Suggestion'},
             ]
         })
@@ -148,6 +150,7 @@ export const AdminReport = () => {
             ajax: '/smart/report/get-warning',
             columns: [
                 {data: 'Load ID', name: 'Load ID'},
+                {data: 'Customer Pick Location', name: 'Customer Pick Location'},
                 {data: 'Suggestion', name: 'Suggestion'},
             ]
         })
