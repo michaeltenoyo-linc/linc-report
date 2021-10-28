@@ -68,8 +68,8 @@ var AdminReport = function AdminReport() {
               data: 'Last Drop Location City',
               name: 'Last Drop Location City'
             }, {
-              data: 'Billable Total Rate',
-              name: 'Billable Total Rate'
+              data: 'Customer ID',
+              name: 'Customer ID'
             }, {
               data: 'Load Status',
               name: 'Load Status'
@@ -156,6 +156,9 @@ var AdminReport = function AdminReport() {
       columns: [{
         data: 'Load ID',
         name: 'Load ID'
+      }, {
+        data: 'Customer Pick Location',
+        name: 'Customer Pick Location'
       }, {
         data: 'Suggestion',
         name: 'Suggestion'
@@ -254,10 +257,10 @@ var AdminSjalan = function AdminSjalan() {
               $('#form-so-new .input-id-so').prop('readonly', true);
               $('#form-so-new .input-do').prop('readonly', false);
               $('#form-so-new .input-loadid').prop('readonly', false);
-              $('#form-so-new .input-kota').prop('readonly', false);
               $('#form-so-new .input-alamat').prop('readonly', false);
+              $('#form-so-new .input-note').prop('readonly', false);
               $('#form-so-new .input-tgl').prop('readonly', false);
-              $('#form-so-new .input-nopol').prop('readonly', false);
+              $('#form-so-new .input-customer').prop('readonly', false);
               $('#form-so-new .input-qty').prop('readonly', false);
               $('#form-so-new .input-weight').prop('readonly', false);
               $('#form-so-new .input-bongkar').prop('readonly', false);
@@ -285,11 +288,11 @@ var AdminSjalan = function AdminSjalan() {
         $('#form-so-new .input-id-so').prop('readonly', false);
         $('#form-so-new .input-do').prop('readonly', true);
         $('#form-so-new .input-loadid').prop('readonly', true);
-        $('#form-so-new .input-kota').prop('readonly', true);
         $('#form-so-new .input-alamat').prop('readonly', true);
+        $('#form-so-new .input-note').prop('readonly', true);
+        $('#form-so-new .input-customer').prop('readonly', true);
         $('#form-so-new .input-tgl').prop('readonly', true);
         $('#form-so-new .input-qty').prop('readonly', true);
-        $('#form-so-new .input-nopol').prop('readonly', true);
         $('#form-so-new .input-weight').prop('readonly', true);
         $('#form-so-new .input-bongkar').prop('readonly', true);
         $('#form-so-new .input-multidrop').prop('readonly', true);

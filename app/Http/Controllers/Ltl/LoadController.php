@@ -153,10 +153,11 @@ class LoadController extends BaseController
 
         for ($i=0; $i < count($bluejayList); $i++) {
             $row = $bluejayList[$i];
+            $customerID = substr($row['First Pick Location Name'],0,3);
             
             $loads->push([
                 'TMS ID' => (isset($row['TMS ID'])?$row['TMS ID']:$row['Load ID']),
-                'Billable Total Rate' => $row['Billable Total Rate'],
+                'Customer ID' => $customerID,
                 'Created Date' => (isset($row['Created Date'])?$row['Created Date']:$row['Order Create Date']),
                 'Last Drop Location City' => (isset($row['Last Drop Location City'])?$row['Last Drop Location City']:$row['Delivery Location Name']),
                 'Load Status' => $row['Load Status'],

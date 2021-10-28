@@ -21,6 +21,7 @@ class CreateSuratjalansTable extends Migration
             $table->string('nopol');
             $table->string('driver_nmk');
             $table->string('driver_name');
+            $table->string('note');
             $table->float('utilitas');
             $table->float('biaya_bongkar',12);
             $table->float('biaya_overnight',12);

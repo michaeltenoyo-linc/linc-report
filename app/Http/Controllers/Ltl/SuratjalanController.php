@@ -41,14 +41,14 @@ class SuratjalanController extends BaseController
             'id_so' => 'required',
             'no_do' => 'required',
             'load_id' => 'required',
-            'kota_kirim' => 'required',
             'alamat_kirim' => 'required',
             'tgl_kirim' => 'required',
             'totalQty' => 'required',
+            'customer_name' => 'required',
             'totalWeight' => 'required',
             'bongkar' => 'required',
             'multidrop' => 'required',
-            'nopol' => 'required',
+            'note' => 'required'
         ]);
 
         Suratjalan_ltl::create([
@@ -56,8 +56,7 @@ class SuratjalanController extends BaseController
             'no_do' => $req->input('no_do'),
             'load_id' => $req->input('load_id'),
             'lokasi_pengiriman' => $req->input('alamat_kirim'),
-            'nopol' => $req->input('nopol'),
-            'kota_pengiriman' => $req->input('kota_kirim'),
+            'customer_name' => $req->input('customer_name'),
             'total_weightSO' => $req->input('totalWeight'),
             'total_qtySO' => $req->input('totalQty'),
             'biaya_bongkar' => $req->input('bongkar'),

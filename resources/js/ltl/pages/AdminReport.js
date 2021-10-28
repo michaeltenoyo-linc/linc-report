@@ -49,7 +49,7 @@ export const AdminReport = () => {
                             {data: 'TMS ID', name: 'TMS ID'},
                             {data: 'Created Date', name: 'Created Date'},
                             {data: 'Last Drop Location City', name: 'Last Drop Location City'},
-                            {data: 'Billable Total Rate', name: 'Billable Total Rate'},
+                            {data: 'Customer ID', name: 'Customer ID'},
                             {data: 'Load Status', name: 'Load Status'},
                         ]
                     });
@@ -102,6 +102,7 @@ export const AdminReport = () => {
             ajax: '/lautanluas/report/get-warning',
             columns: [
                 {data: 'Load ID', name: 'Load ID'},
+                {data: 'Customer Pick Location', name: 'Customer Pick Location'},
                 {data: 'Suggestion', name: 'Suggestion'},
             ]
         })

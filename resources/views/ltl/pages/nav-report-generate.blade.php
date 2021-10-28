@@ -48,6 +48,8 @@ Linc | Generate Report
                                 <li>Created Date</li>
                                 <li>Customer Name</li>
                                 <li>Last Drop Location City</li>
+                                <li>Vehicle Number</li>
+                                <li>First Pick Location Name</li>
                                 <li>Billable Total Rate</li>
                                 <li>Load Status</li>
                             </ul>
@@ -70,7 +72,7 @@ Linc | Generate Report
                     <div class="w-full lg:w-6/12 px-4" >
                         <div class="relative w-full w-full mb-3">
                             <h1 class="text-red-600">Pastikan sudah ada/konversi file blujay dalam format .CSV</h1>
-                            <h1 class="text-red-600 font-bold">Separator : Comma ( , )</h1>
+                            <h1 class="text-red-600 font-bold">Separator : Semicolon ( ; )</h1>
                         </div>
                     </div>
                     <div class="w-full lg:w-6/12 px-4" >
@@ -97,7 +99,7 @@ Linc | Generate Report
                                     Last Drop Location
                                 </th>
                                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                                    Billable Total Rate
+                                    Customer ID
                                 </th>
                                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
                                     Load Status

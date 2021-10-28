@@ -60,10 +60,10 @@ class ReportController extends BaseController
                                 'No SO' => $sj->id_so,
                                 'No DO' => $sj->no_do,
                                 'Delivery Date' => Carbon::parse($sj->delivery_date)->format('d/M/Y'),
-                                'No Polisi' => $sj->nopol,
-                                'Customer Name' => $row['Customer Name'],
+                                'No Polisi' => $row['Vehicle Number'],
+                                'Customer Name' => $sj->customer_name,
                                 'Customer Address' => $sj->lokasi_pengiriman,
-                                'City' => $sj->kota_pengiriman,
+                                'City' => $row['Last Drop Location City'],
                                 'Qty' => number_format($sj->total_weightSO,2,'.',','),
                                 'Transport Rate' => number_format($transRate,2,'.',','),
                                 'Unloading Cost' => number_format($sj->biaya_bongkar,2,'.',','),
@@ -82,10 +82,10 @@ class ReportController extends BaseController
                                 'No SO' => $sj->id_so,
                                 'No DO' => $sj->no_do,
                                 'Delivery Date' => Carbon::parse($sj->delivery_date)->format('d/M/Y'),
-                                'No Polisi' => $sj->nopol,
-                                'Customer Name' => $row['Customer Name'],
+                                'No Polisi' => $row['Vehicle Number'],
+                                'Customer Name' => $sj->customer_name,
                                 'Customer Address' => $sj->lokasi_pengiriman,
-                                'City' => $sj->kota_pengiriman,
+                                'City' => $row['Last Drop Location City'],
                                 'Qty' => number_format($sj->total_weightSO,2,'.',','),
                                 'Transport Rate' => number_format($transRate,2,'.',','),
                                 'Unloading Cost' => "",
@@ -119,10 +119,15 @@ class ReportController extends BaseController
                         'Remarks' => ""
                     ]);
                 }else{
-                    $warning->push([
-                        'Load ID' => (isset($row['TMS ID'])?$row['TMS ID']:$row['Load ID']),
-                        'Suggestion' => (isset($row['Shipment Reference Numbers'])?$row['Shipment Reference Numbers']:"None"),
-                    ]);
+                    $custId = substr($row['First Pick Location Name'],0,3);
+
+                    if($custId == "LTL"){
+                        $warning->push([
+                            'Load ID' => (isset($row['TMS ID'])?$row['TMS ID']:$row['Load ID']),
+                            'Customer Pick Location' => $row['First Pick Location Name'],
+                            'Suggestion' => (isset($row['Shipment Reference Numbers'])?$row['Shipment Reference Numbers']:"None"),
+                        ]);
+                    }
                 }
             }
     

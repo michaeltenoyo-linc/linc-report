@@ -67,26 +67,15 @@ Linc | Register Surat Jalan
                     <div class="w-full lg:w-12/12 px-4">
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="grid-password"> No. Polisi </label>
+                                htmlFor="grid-password"> Nama Customer </label>
                             <input type="text"
-                                name="nopol"
-                                class="input-nopol border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                name="customer_name"
+                                class="input-customer border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                 value="" readonly/>
                         </div>
                     </div>
 
-                    <div class="w-full lg:w-6/12 px-4">
-                        <div class="relative w-full mb-3">
-                            <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="grid-password"> Kota Pengiriman </label>
-                            <input type="text"
-                                name="kota_kirim"
-                                class="input-kota border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                value="" readonly/>
-                        </div>
-                    </div>
-
-                    <div class="w-full lg:w-6/12 px-4">
+                    <div class="w-full lg:w-12/12 px-4">
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                                 htmlFor="grid-password"> Alamat Pengiriman </label>
@@ -105,6 +94,17 @@ Linc | Register Surat Jalan
                                 name="tgl_kirim"
                                 class="input-tgl border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                 value="" readonly/>
+                        </div>
+                    </div>
+
+                    <div class="w-full lg:w-12/12 px-4">
+                        <div class="relative w-full mb-3">
+                            <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                htmlFor="grid-password"> Catatan Pengiriman </label>
+                            <input type="text"
+                                name="note"
+                                class="input-note border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                value="tidak ada" readonly/>
                         </div>
                     </div>
 
