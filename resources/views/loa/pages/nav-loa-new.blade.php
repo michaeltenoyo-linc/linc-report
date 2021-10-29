@@ -42,7 +42,7 @@ Linc | Input LOA
                             <select 
                                 name="divisi" 
                                 id="input-divisi" 
-                                class="input-item-deskripsi border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                                class="input-divisi border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
                                 <option value="exim">Ekspor-Impor</option>
                                 <option value="transport">Transport</option>
                                 <option value="warehouse">Warehouse</option>
@@ -131,7 +131,7 @@ Linc | Input LOA
                     </div>
 
                     <!--Biaya Tambahan Warehouse-->
-                    <div class="warehouse w-full lg:w-12/12 px-4">
+                    <div class="warehouse hidden w-full lg:w-12/12 px-4">
                         <div class="relative w-full mb-3 border-4 border-dashed border-blue-300 py-8 px-4">
                             <div class="w-full lg:w-12/12 px-4 mb-6" >
                                 <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
@@ -216,7 +216,7 @@ Linc | Input LOA
                     </div>
 
                     <!--Biaya Tambahan BULK-->
-                    <div class="bulk w-full lg:w-12/12 px-4">
+                    <div class="bulk hidden w-full lg:w-12/12 px-4">
                         <div class="relative w-full mb-3 border-4 border-dashed border-blue-300 py-8 px-4">
                             <div class="w-full lg:w-12/12 px-4 mb-6" >
                                 <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"

@@ -1,3 +1,4 @@
+import { AdminLoa } from "./pages/AdminLoa";
 
 export const load = () => {
     //Loading Spinner
@@ -10,6 +11,8 @@ export const load = () => {
             $("#loader").addClass("hidden");
         }
     })
+
+    AdminLoa();
 };
 
 load();
