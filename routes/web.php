@@ -19,6 +19,9 @@ use App\Http\Controllers\Ltl\ReportController as LtlReportController;
 use App\Http\Controllers\Ltl\LoadController as LtlLoadController;
 use App\Http\Controllers\Ltl\SuratjalanController as LtlSuratjalanController;
 
+//LOA CONTROLLEr
+use App\Http\Controllers\Loa\ViewController as LoaViewController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -121,5 +124,12 @@ Route::prefix('/lautanluas')->group(function () {
         Route::get('/get-warning',[LtlReportController::class, 'getPreviewWarning']);
         Route::get('/downloadReport',[LtlReportController::class, 'downloadExcel']);
     });
+});
+
+//LOA
+Route::prefix('/loa')->group(function (){
+    //View Navigation
+    Route::get('/',[LoaViewController::class, 'gotoLandingPage']);
+    Route::get('/nav-loa-new',[LoaViewController::class, 'gotoInputLoa']);
 });
 

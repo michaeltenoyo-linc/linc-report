@@ -148,8 +148,8 @@
 							<i class="icofont-surgeon-alt"></i>
 						</div>
 						<span>Data Services</span>
-						<h4 class="mb-3">--- Customer</h4>
-						<p class="mb-4">---------.</p>
+						<h4 class="mb-3">LOA Data</h4>
+						<p class="mb-4">Database for letter of agreement, with report, and easier monitoring for LOA.</p>
 						<a href="" class="btn btn-main btn-round-full">UNDER CONSTRUCTION :)</a>
 					</div>
 				</div>
