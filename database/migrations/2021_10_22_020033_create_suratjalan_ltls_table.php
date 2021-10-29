@@ -14,8 +14,9 @@ class CreateSuratjalanLtlsTable extends Migration
     public function up()
     {
         Schema::create('suratjalan_ltl', function (Blueprint $table) {
-            $table->string('id_so')->primary();
+            $table->string('id_so');
             $table->string('no_do');
+            $table->primary(['id_so','no_do']);
             $table->string('load_id');
             $table->string('lokasi_pengiriman');
             $table->string('customer_name');

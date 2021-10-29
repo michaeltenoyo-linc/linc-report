@@ -9,7 +9,7 @@ class Suratjalan_ltl extends Model
 {
     use softDeletes;
     protected $table = 'suratjalan_ltl';
-    protected $primaryKey = 'id_so';
+    protected $primaryKey = ['id_so','no_do'];
     public $incrementing = false;
     protected $fillable = [
         'id_so',
