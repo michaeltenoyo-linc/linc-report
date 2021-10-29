@@ -20,8 +20,8 @@ class SuratjalanController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function checkSj(Request $req, $id_so){
-        $temp = Suratjalan_ltl::where('id_so','=',$id_so)->first();
+    public function checkSj(Request $req, $id_so, $no_do){
+        $temp = Suratjalan_ltl::where('id_so','=',$id_so)->where('no_do','=',$no_do)->first();
 
         $data['check'] = false;
         $data['message'] = "Surat jalan sudah terdaftar.";

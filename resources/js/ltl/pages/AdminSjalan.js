@@ -32,6 +32,7 @@ export const AdminSjalan = () => {
                 console.log("Checking SJ...");
 
                 var id = $('#form-so-new .input-id-so').val();
+                var no_do = $('#form-so-new .input-do').val();
                 //console.log(id);
 
                 $.ajaxSetup({
@@ -43,7 +44,7 @@ export const AdminSjalan = () => {
                     dataType: 'JSON',
                 });
                 $.ajax({
-                    url: '/lautanluas/suratjalan/check/'+id,
+                    url: '/lautanluas/suratjalan/check/'+id+'/'+no_do,
                     type: 'GET',
                     success: (data) => {
                         //$(this).trigger('reset');
@@ -54,7 +55,7 @@ export const AdminSjalan = () => {
                             $(this).html("Cancel");
 
                             $('#form-so-new .input-id-so').prop('readonly',true);
-                            $('#form-so-new .input-do').prop('readonly',false);
+                            $('#form-so-new .input-do').prop('readonly',true);
                             $('#form-so-new .input-loadid').prop('readonly',false);
                             $('#form-so-new .input-alamat').prop('readonly',false);
                             $('#form-so-new .input-note').prop('readonly',false);
@@ -88,7 +89,7 @@ export const AdminSjalan = () => {
                 $(this).html('Check SJ');
 
                 $('#form-so-new .input-id-so').prop('readonly',false);
-                $('#form-so-new .input-do').prop('readonly',true);
+                $('#form-so-new .input-do').prop('readonly',false);
                 $('#form-so-new .input-loadid').prop('readonly',true);
                 $('#form-so-new .input-alamat').prop('readonly',true);
                 $('#form-so-new .input-note').prop('readonly',true);

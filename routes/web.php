@@ -105,7 +105,7 @@ Route::prefix('/lautanluas')->group(function () {
 
     //Surat Jalan LTL
     Route::prefix('/suratjalan')->group(function () {
-        Route::get('/check/{id_so}',[LtlSuratjalanController::class, 'checkSj']);
+        Route::get('/check/{id_so}/{no_do}',[LtlSuratjalanController::class, 'checkSj']);
         Route::post('/delete',[LtlSuratjalanController::class, 'delete']);
         Route::post('/addSj',[LtlSuratjalanController::class, 'addSj']);
     });
