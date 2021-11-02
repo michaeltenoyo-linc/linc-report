@@ -15,6 +15,8 @@ use App\Models\Trucks;
 use App\Models\Suratjalan;
 use App\Models\Dload;
 
+use function PHPUnit\Framework\isNull;
+
 class SuratjalanController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -46,8 +48,6 @@ class SuratjalanController extends BaseController
             'driver_name' => 'required',
             'total_weight' => 'required',
             'total_utility' => 'required',
-            'item' => 'required',
-            'qty' => 'required',
             'bongkar' => 'required',
             'overnight' => 'required',
             'multidrop' => 'required',
@@ -74,22 +74,27 @@ class SuratjalanController extends BaseController
             'total_qtySO' => $req->input('total_qty'),
         ]);
 
-        //DLOADS
-        $itemList = $req->input('item');
-        $qtyList = $req->input('qty');
+        
 
-        for ($i=0; $i < count($itemList); $i++) {
-            $tempItem = Item::where('material_code','=',$itemList[$i])->first();
-            $subtotal_weight = $tempItem->gross_weight * $qtyList[$i];
-
-            Dload::create([
-                'id_so' => $new_so->id_so,
-                'nopol' => $req->input('nopol'),
-                'material_code' => $itemList[$i],
-                'qty' => $qtyList[$i],
-                'subtotal_weight' => $subtotal_weight,
-            ]);
+        if(!isNull($req->input('item'))){
+            //DLOADS
+            $itemList = $req->input('item');
+            $qtyList = $req->input('qty');
+            for ($i=0; $i < count($itemList); $i++) {
+                $tempItem = Item::where('material_code','=',$itemList[$i])->first();
+                $subtotal_weight = $tempItem->gross_weight * $qtyList[$i];
+    
+                Dload::create([
+                    'id_so' => $new_so->id_so,
+                    'nopol' => $req->input('nopol'),
+                    'material_code' => $itemList[$i],
+                    'qty' => $qtyList[$i],
+                    'subtotal_weight' => $subtotal_weight,
+                ]);
+            }
         }
+
+        
 
         return response()->json($data, 200);
     }

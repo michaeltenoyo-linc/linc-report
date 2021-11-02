@@ -122,6 +122,96 @@ class ReportController extends BaseController
                         $listDload = Dload::where('id_so','=',$sj->id_so)->get();
                         $truck = Trucks::where('nopol','=',$sj->nopol)->first();
                         $firstDload = true;
+                        if(count($listDload) == 0){
+                            if($firstSJ && $firstDload){
+                                $reports->push([
+                                    'No' => $ctr,
+                                    'Tanggal' => (isset($row['Created Date'])?$row['Created Date']:$row['Order Create Date']),
+                                    'Customer' => $row['Customer Name'],
+                                    'Billable Method' => $row['Billable Method'],
+                                    'Customer Type' => $row['Shipping Comment'],
+                                    'Prodyct ID' => $truck->type,
+                                    'Origin' => $row['Pick-up Location Reference Number'],
+                                    'Destination' => $row['Delivery Location Name'],
+                                    'Penerima Barang' => $sj->penerima,
+                                    'Equipment Required' => $truck->type,
+                                    'No Order ID' => $row['Order Number'],
+                                    'Carrier' => $row['Carrier Name'],
+                                    'Nopol' => $sj->nopol,
+                                    'Driver' => $sj->driver_name,
+                                    'NMK' => $sj->driver_nmk,
+                                    'Load ID' => (isset($row['TMS ID'])?$row['TMS ID']:$row['Load ID']),
+                                    'No. DO' => $sj->id_so,
+                                    'KODE SKU' => "",
+                                    'Description' => "",
+                                    'QTY' => "",
+                                    'Weight' => "",
+                                    'Tanggal SJ Balik' => $sj->tgl_terima,
+                                    'Tanggal POD' => $sj->tgl_terima,
+                                    'Note Retur' => " ",
+                                    'Pengembalian Retur' => " ",
+                                ]);
+                                $firstSJ = false;
+                                $firstDload = false;
+                            }else if($firstDload){
+                                $reports->push([
+                                    'No' => " ",
+                                    'Tanggal' => " ",
+                                    'Customer' => " ",
+                                    'Billable Method' => " ",
+                                    'Customer Type' => " ",
+                                    'Prodyct ID' => " ",
+                                    'Origin' => " ",
+                                    'Destination' => " ",
+                                    'Penerima Barang' => " ",
+                                    'Equipment Required' => " ",
+                                    'No Order ID' => " ",
+                                    'Carrier' => " ",
+                                    'Nopol' => " ",
+                                    'Driver' => " ",
+                                    'NMK' => " ",
+                                    'Load ID' => " ",
+                                    'No. DO' => $sj->id_so,
+                                    'KODE SKU' => "",
+                                    'Description' => "",
+                                    'QTY' => "",
+                                    'Weight' => "",
+                                    'Tanggal SJ Balik' => $sj->tgl_terima,
+                                    'Tanggal POD' => $sj->tgl_terima,
+                                    'Note Retur' => " ",
+                                    'Pengembalian Retur' => " ",
+                                ]);
+                                $firstDload = false;
+                            }else{
+                                $reports->push([
+                                    'No' => " ",
+                                    'Tanggal' => " ",
+                                    'Customer' => " ",
+                                    'Billable Method' => " ",
+                                    'Customer Type' => " ",
+                                    'Prodyct ID' => " ",
+                                    'Origin' => " ",
+                                    'Destination' => " ",
+                                    'Penerima Barang' => " ",
+                                    'Equipment Required' => " ",
+                                    'No Order ID' => " ",
+                                    'Carrier' => " ",
+                                    'Nopol' => " ",
+                                    'Driver' => " ",
+                                    'NMK' => " ",
+                                    'Load ID' => " ",
+                                    'No. DO' => " ",
+                                    'KODE SKU' => "",
+                                    'Description' => "",
+                                    'QTY' => "",
+                                    'Weight' => "",
+                                    'Tanggal SJ Balik' => " ",
+                                    'Tanggal POD' => " ",
+                                    'Note Retur' => " ",
+                                    'Pengembalian Retur' => " ",
+                                ]);
+                            }
+                        }
                         foreach ($listDload as $dload) {
                             $item = Item::where('material_code','=',$dload->material_code)->first();
                             $totalHarga = intval($row['Billable Total Rate']) + intval($sj->biaya_bongkar);
