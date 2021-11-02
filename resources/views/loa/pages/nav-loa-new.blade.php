@@ -24,7 +24,7 @@ Linc | Input LOA
             <form id="form-loa-new" autocomplete="off">
                 <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase"> LOA Information </h6>
                 <div class="flex flex-wrap">
-                    <div class="w-full lg:w-8/12 px-4">
+                    <div class="w-full lg:w-12/12 px-4">
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                                 htmlFor="name">Nama Customer</label>
@@ -60,8 +60,7 @@ Linc | Input LOA
                                 class="input-price border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                 min=0
                                 inputmode="decimal"
-                                value="0.01"
-                                step=".01"/>
+                                value="0"/>
                         </div>
                     </div>
                     <div class="w-full lg:w-12/12 px-4">

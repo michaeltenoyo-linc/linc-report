@@ -45,7 +45,7 @@ class ViewController extends BaseController
                 return $row->lokasi_pengiriman.", ".$row->kota_pengiriman;
             })
             ->addColumn('action', function($row){
-                $btn = '<form id="btn-sj-delete" class="inline-flex"><input name="id_so" type="hidden" value="'.$row->id_so.'"><button type="submit" class="btn_red">Delete</button></form>';
+                $btn = '<form id="btn-sj-delete" class="inline-flex"><input name="id_so" type="hidden" value="'.$row->id_so.'"><input name="no_do" type="hidden" value="'.$row->no_do.'"><button type="submit" class="btn_red">Delete</button></form>';
                 return $btn;
             })
             ->make(true);
