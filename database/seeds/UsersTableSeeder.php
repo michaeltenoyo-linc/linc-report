@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -14,15 +15,19 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
+        User::truncate();
+
         $seeds= [
             [
                 'name' => 'ming',
                 'email' => 'michaeltenoyo.lincgroup@gmail.com',
+                'email_verified_at' => Carbon::today(),
                 'password' => Hash::make('admin'),
             ],
             [
                 'name' => 'kiky',
                 'email' => 'kiky@gmail.com',
+                'email_verified_at' => Carbon::today(),
                 'password' => Hash::make('admin'),
             ]
         ];

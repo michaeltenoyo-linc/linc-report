@@ -4,23 +4,8 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="description" content="Orbitor,business,company,agency,modern,bootstrap4,tech,software">
   <meta name="author" content="themefisher.com">
-
+  @include('master.layouts.master-frontend')
   <title>Linc Group | Homepage</title>
-
-  <!-- Favicon -->
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
-
-  <!-- bootstrap.min css -->
-  <link rel="stylesheet" href="{{ asset('plugins/bootstrap/css/bootstrap.min.css') }}">
-  <!-- Icon Font Css -->
-  <link rel="stylesheet" href="{{ asset('plugins/icofont/icofont.min.css') }}">
-  <!-- Slick Slider  CSS -->
-  <link rel="stylesheet" href="{{ asset('plugins/slick-carousel/slick/slick.css')}}">
-  <link rel="stylesheet" href="{{ asset('plugins/slick-carousel/slick/slick-theme.css')}}">
-
-  <!-- Main Stylesheet -->
-  <link rel="stylesheet" href="{{ asset('css/novena/style.css') }}">
-
 </head>
 
 <body id="top">
@@ -55,7 +40,7 @@
 		  	<button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarmain" aria-controls="navbarmain" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="icofont-navigation-menu"></span>
 		  </button>
-	  
+
 		  <div class="collapse navbar-collapse" id="navbarmain">
 			<ul class="navbar-nav ml-auto">
 			  <li class="nav-item active">
@@ -77,17 +62,17 @@
 
 			   <!-- Account -->
 			   @if (Auth::check())
-			   <li id="nav-account"><a class="nav-link font-weight-bold text-decoration-underline" href=""><u>Account Name</u></a></li>
+			    <li id="nav-account"><a class="nav-link font-weight-bold text-decoration-underline" href=""><u>Account Name</u></a></li>
 			   @else
-			   <li id="nav-login"><a class="nav-link font-weight-bold text-decoration-underline" href=""><u>Login</u></a></li> 
+			    <li id="nav-login"><a class="nav-link font-weight-bold text-decoration-underline" href="" data-toggle="modal" data-target="#loginModal"><u>Login</u></a></li>
 			   @endif
-			   
+
 			</ul>
 		  </div>
 		</div>
 	</nav>
 </header>
-	
+
 
 
 
@@ -100,7 +85,7 @@
 					<div class="divider mb-3"></div>
 					<span class="text-uppercase text-sm letter-spacing ">LINC DATA SOLUTION</span>
 					<h1 class="mb-3 mt-3">Manage and Process Data Easiser Now!</h1>
-					
+
 					<p class="mb-4 pr-5">Website ini dibangun untuk mempermudah manajemen data surat jalan, pembuatan report, dan proforma.</p>
 					<div class="btn-container ">
 						<a href="" target="_blank" class="btn btn-main-2 btn-icon btn-round-full">Baca lebih lanjut... <i class="icofont-simple-right ml-2  "></i></a>
@@ -124,7 +109,7 @@
 						<p class="mb-4">Truck and item database for SMART customer, auto-generate report for SMART.</p>
 						<a href="{{ url('/smart') }}" class="btn btn-main btn-round-full">GO TO SMART</a>
 					</div>
-				
+
 					<div class="feature-item mb-5 mb-lg-0">
 						<div class="feature-icon mb-4">
 							<i class="icofont-surgeon-alt"></i>
@@ -134,7 +119,7 @@
 						<p class="mb-4">Order database for LTL (Lautan Luas) customer, auto-generate report for LTL.</p>
 						<a href="{{ url('/lautanluas') }}" class="btn btn-main btn-round-full">GO TO LTL</a>
 					</div>
-				
+
 					<div class="feature-item mb-5 mb-lg-0">
 						<div class="feature-icon mb-4">
 							<i class="icofont-surgeon-alt"></i>
@@ -194,7 +179,7 @@
 						<p>Surgery Comepleted</p>
 					</div>
 				</div>
-				
+
 				<div class="col-lg-3 col-md-6 col-sm-6">
 					<div class="counter-stat">
 						<i class="icofont-badge"></i>
@@ -250,7 +235,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="col-lg-4 col-md-6 col-sm-6">
 				<div class="service-item mb-4">
 					<div class="icon d-flex align-items-center">
@@ -288,7 +273,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="col-lg-4 col-md-6 col-sm-6">
 				<div class="service-item mb-4">
 					<div class="icon d-flex align-items-center">
@@ -449,7 +434,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="footer-btm py-4 mt-5">
 			<div class="row align-items-center justify-content-between">
 				<div class="col-lg-6">
@@ -477,34 +462,7 @@
 		</div>
 	</div>
 </footer>
-
-   
-
-    <!-- 
-    Essential Scripts
-    =====================================-->
-
-    
-    <!-- Main jQuery -->
-    <script src="plugins/jquery/jquery.js"></script>
-    <!-- Bootstrap 4.3.2 -->
-    <script src="plugins/bootstrap/js/popper.js"></script>
-    <script src="plugins/bootstrap/js/bootstrap.min.js"></script>
-    <script src="plugins/counterup/jquery.easing.js"></script>
-    <!-- Slick Slider -->
-    <script src="plugins/slick-carousel/slick/slick.min.js"></script>
-    <!-- Counterup -->
-    <script src="plugins/counterup/jquery.waypoints.min.js"></script>
-    
-    <script src="plugins/shuffle/shuffle.min.js"></script>
-    <script src="plugins/counterup/jquery.counterup.min.js"></script>
-    <!-- Google Map -->
-    <script src="plugins/google-map/map.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkeLMlsiwzp6b3Gnaxd86lvakimwGA6UA&callback=initMap"></script>    
-    
-    <script src="js/script.js"></script>
-    <script src="js/contact.js"></script>
-
-  </body>
-  </html>
-   
+</body>
+</html>
+@include('shared.master-scripts')
+@include('master.modals.login-modal')
