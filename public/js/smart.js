@@ -753,6 +753,8 @@ var AdminSjalan = function AdminSjalan() {
               $('#form-so-new .input-nopol').prop('readonly', false);
               $('#form-so-new .input-penerima').prop('readonly', false);
               $('#form-so-new .input-bongkar').prop('readonly', false);
+              $('#form-so-new .input-multidrop').prop('readonly', false);
+              $('#form-so-new .input-overnight').prop('readonly', false);
               $('#form-so-new .input-muat').prop('readonly', false);
               $('#form-so-new .input-note').prop('readonly', false);
               $('#form-so-new .input-driver-nmk').prop('readonly', false);
@@ -783,6 +785,8 @@ var AdminSjalan = function AdminSjalan() {
         $('#form-so-new .input-nopol').prop('readonly', true);
         $('#form-so-new .input-penerima').prop('readonly', true);
         $('#form-so-new .input-bongkar').prop('readonly', true);
+        $('#form-so-new .input-multidrop').prop('readonly', true);
+        $('#form-so-new .input-overnight').prop('readonly', true);
         $('#form-so-new .input-muat').prop('readonly', true);
         $('#form-so-new .input-note').prop('readonly', true);
         $('#form-so-new .input-driver-nmk').prop('readonly', true);
