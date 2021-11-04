@@ -70,6 +70,7 @@ class SuratjalanController extends BaseController
             'nopol' => $req->input('nopol'),
             'driver_nmk' => $req->input('driver_nmk'),
             'driver_name' => $req->input('driver_name'),
+            'customer_type' => "",
             'note' => $req->input('note'),
             'penerima' => $req->input('penerima'),
             'utilitas' => $req->input('total_utility'),
