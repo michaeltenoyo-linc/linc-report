@@ -21,6 +21,7 @@ class Suratjalan extends Model
         'driver_name',
         'total_weightSO',
         'penerima',
+        'customer_type',
         'utilitas',
         'biaya_bongkar',
         'biaya_overnight',
