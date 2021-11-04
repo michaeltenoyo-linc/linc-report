@@ -465,6 +465,9 @@ var AdminReport = function AdminReport() {
         data: 'No SJ',
         name: 'Billable Total Rate'
       }, {
+        data: 'No DO',
+        name: 'Billable Total Rate'
+      }, {
         data: 'Penerima',
         name: 'Load Status'
       }, {
@@ -720,7 +723,12 @@ var AdminSjalan = function AdminSjalan() {
 
       if (currentStats == "check") {
         console.log("Checking SJ...");
-        var id = $('#form-so-new .input-id-so').val(); //console.log(id);
+        var id = $('#form-so-new .input-id-so').val();
+
+        if ($('#form-so-new .input-no-do').val()) {
+          id += "$" + $('#form-so-new .input-no-do').val();
+        } //console.log(id);
+
 
         $.ajaxSetup({
           headers: {
@@ -740,6 +748,7 @@ var AdminSjalan = function AdminSjalan() {
               $(_this).val("cancel");
               $(_this).html("Cancel");
               $('#form-so-new .input-id-so').prop('readonly', true);
+              $('#form-so-new .input-no-do').prop('readonly', true);
               $('#form-so-new .input-loadid').prop('readonly', false);
               $('#form-so-new .input-nopol').prop('readonly', false);
               $('#form-so-new .input-penerima').prop('readonly', false);
@@ -769,6 +778,7 @@ var AdminSjalan = function AdminSjalan() {
         $(this).val("check");
         $(this).html('Check SJ');
         $('#form-so-new .input-id-so').prop('readonly', false);
+        $('#form-so-new .input-no-do').prop('readonly', false);
         $('#form-so-new .input-loadid').prop('readonly', true);
         $('#form-so-new .input-nopol').prop('readonly', true);
         $('#form-so-new .input-penerima').prop('readonly', true);

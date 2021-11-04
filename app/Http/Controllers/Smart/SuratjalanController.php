@@ -15,6 +15,7 @@ use App\Models\Trucks;
 use App\Models\Suratjalan;
 use App\Models\Dload;
 
+use function PHPUnit\Framework\isEmpty;
 use function PHPUnit\Framework\isNull;
 
 class SuratjalanController extends BaseController
@@ -56,9 +57,14 @@ class SuratjalanController extends BaseController
         ]);
 
         $data['message'] = "Data surat jalan sudah disimpan.";
+        $thisId = strval($req->input('id_so'));
+
+        if($req->input('no_do')){
+           $thisId .= "$".$req->input('no_do'); 
+        }
 
         $new_so = Suratjalan::create([
-            'id_so' => $req->input('id_so'),
+            'id_so' => $thisId,
             'load_id' => $req->input('load_id'),
             'total_weightSO' => $req->input('total_weight'),
             'nopol' => $req->input('nopol'),

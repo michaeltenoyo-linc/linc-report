@@ -45,11 +45,13 @@ class ReportController extends BaseController
                     foreach ($listSJ as $sj) {
                         $truck = Trucks::where('nopol','=',$sj->nopol)->first();
                         $totalHarga = intval($row['Billable Total Rate']) + intval($sj->biaya_bongkar);
+                        $splitID = explode('$',$sj->id_so);
                         $reports->push([
                             'No' => $ctr,
                             'Load ID' => $row['TMS ID'],
                             'Tgl Muat' => Carbon::parse($sj->tgl_muat)->format('d-M-Y'),
-                            'No SJ' => $sj->id_so,
+                            'No SJ' => $splitID[0],
+                            'No DO' => (isset($splitID[1])?$splitID[1]:""),
                             'Penerima' => $sj->penerima,
                             'Kota Tujuan' => $row['Last Drop Location City'],
                             'Kuantitas' => $sj->total_qtySO,
@@ -71,6 +73,7 @@ class ReportController extends BaseController
                         'Load ID' => " ",
                         'Tgl Muat' => " ",
                         'No SJ' => " ",
+                        'No DO' => " ",
                         'Penerima' => " ",
                         'Kota Tujuan' => " ",
                         'Kuantitas' => " ",

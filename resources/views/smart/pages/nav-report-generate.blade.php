@@ -102,7 +102,7 @@ Linc | Generate Report
                     <div class="w-full lg:w-6/12 px-4" >
                         <div class="relative w-full w-full mb-3">
                             <h1 class="text-red-600">Pastikan sudah ada/konversi file blujay dalam format .CSV</h1>
-                            <h1 class="text-red-600 font-bold">Separator : Comma ( , )</h1>
+                            <h1 class="text-red-600 font-bold">Separator : Semicolon ( ; )</h1>
                         </div>
                     </div>
                     <div class="w-full lg:w-6/12 px-4" >

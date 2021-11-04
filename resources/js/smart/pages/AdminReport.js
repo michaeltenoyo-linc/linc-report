@@ -78,6 +78,7 @@ export const AdminReport = () => {
                 {data: 'Load ID', name: 'Closed Data'},
                 {data: 'Tgl Muat', name: 'Last Drop Location City'},
                 {data: 'No SJ', name: 'Billable Total Rate'},
+                {data: 'No DO', name: 'Billable Total Rate'},
                 {data: 'Penerima', name: 'Load Status'},
                 {data: 'Kota Tujuan', name: 'Load Status'},
                 {data: 'Kuantitas', name: 'Load Status'},
