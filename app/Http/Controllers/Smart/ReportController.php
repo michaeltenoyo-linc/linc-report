@@ -43,30 +43,32 @@ class ReportController extends BaseController
 
                 if(count($listSJ) > 0 && !$loadExist){
                     foreach ($listSJ as $sj) {
-                        $truck = Trucks::where('nopol','=',$sj->nopol)->first();
-                        $totalHarga = intval($row['Billable Total Rate']) + intval($sj->biaya_bongkar);
-                        $splitID = explode('$',$sj->id_so);
-                        $reports->push([
-                            'No' => $ctr,
-                            'Load ID' => $row['TMS ID'],
-                            'Tgl Muat' => Carbon::parse($sj->tgl_muat)->format('d-M-Y'),
-                            'No SJ' => $splitID[0],
-                            'No DO' => (isset($splitID[1])?$splitID[1]:""),
-                            'Penerima' => $sj->penerima,
-                            'Kota Tujuan' => $row['Last Drop Location City'],
-                            'Kuantitas' => $sj->total_qtySO,
-                            'Berat' => $sj->total_weightSO,
-                            'Utilitas' => strval($sj->utilitas)."%",
-                            'Nopol' => $sj->nopol,
-                            'Tipe Kendaraan' => $truck->type,
-                            'Kontainer' => "-",
-                            'Biaya Kirim' => $row['Billable Total Rate'],
-                            'Biaya Bongkar' => $sj->biaya_bongkar,
-                            'Overnight Charge' => 0,
-                            'Multidrop' => 0,
-                            'Total' => $totalHarga,
-                        ]);
-                        $ctr++;
+                        if($sj->customer_type == $req->input('customerType')){
+                            $truck = Trucks::where('nopol','=',$sj->nopol)->first();
+                            $totalHarga = intval($row['Billable Total Rate']) + intval($sj->biaya_bongkar);
+                            $splitID = explode('$',$sj->id_so);
+                            $reports->push([
+                                'No' => $ctr,
+                                'Load ID' => $row['TMS ID'],
+                                'Tgl Muat' => Carbon::parse($sj->tgl_muat)->format('d-M-Y'),
+                                'No SJ' => $splitID[0],
+                                'No DO' => (isset($splitID[1])?$splitID[1]:""),
+                                'Penerima' => $sj->penerima,
+                                'Kota Tujuan' => $row['Last Drop Location City'],
+                                'Kuantitas' => $sj->total_qtySO,
+                                'Berat' => $sj->total_weightSO,
+                                'Utilitas' => strval($sj->utilitas)."%",
+                                'Nopol' => $sj->nopol,
+                                'Tipe Kendaraan' => $truck->type,
+                                'Kontainer' => "-",
+                                'Biaya Kirim' => $row['Billable Total Rate'],
+                                'Biaya Bongkar' => $sj->biaya_bongkar,
+                                'Overnight Charge' => 0,
+                                'Multidrop' => 0,
+                                'Total' => $totalHarga,
+                            ]);
+                            $ctr++;
+                        }
                     }
                     $reports->push([
                         'No' => " ",

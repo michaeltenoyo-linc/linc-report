@@ -62,6 +62,7 @@ export const AdminSjalan = () => {
                             $('#form-so-new .input-loadid').prop('readonly',false);
                             $('#form-so-new .input-nopol').prop('readonly',false);
                             $('#form-so-new .input-penerima').prop('readonly',false);
+                            $('#form-so-new .input-customer-type').prop('disabled',false);
                             $('#form-so-new .input-bongkar').prop('readonly',false);
                             $('#form-so-new .input-multidrop').prop('readonly',false);
                             $('#form-so-new .input-overnight').prop('readonly',false);
@@ -95,6 +96,7 @@ export const AdminSjalan = () => {
                 $('#form-so-new .input-id-so').prop('readonly',false);
                 $('#form-so-new .input-no-do').prop('readonly',false);
                 $('#form-so-new .input-loadid').prop('readonly',true);
+                $('#form-so-new .input-customer-type').prop('disabled',true);
                 $('#form-so-new .input-nopol').prop('readonly',true);
                 $('#form-so-new .input-penerima').prop('readonly',true);
                 $('#form-so-new .input-bongkar').prop('readonly',true);
