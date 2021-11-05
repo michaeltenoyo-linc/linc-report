@@ -687,7 +687,7 @@ var AdminSjalan = function AdminSjalan() {
       serverSide: false,
       ajax: "/smart/data/get-sj",
       columns: [{
-        data: 'id_so',
+        data: 'splitId',
         name: 'id_so'
       }, {
         data: 'load_id',

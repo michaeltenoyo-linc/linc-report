@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 //MASTER
 use App\Http\Controllers\Master\ViewController as MasterViewController;
+use App\Http\Controllers\Master\UsersController as MasterUsersController;
 
 //SMART CONTROLLER
 use App\Http\Controllers\Smart\ViewController as SmartViewController;
@@ -35,6 +36,10 @@ use App\Http\Controllers\Loa\ViewController as LoaViewController;
 
 //MASTER
 Route::get('/',[MasterViewController::class, 'gotoLandingPage']);
+Route::prefix('/user')->group(function (){
+    //Login
+    Route::post('/authenticate', [MasterUsersController::class, 'onLogin']);
+});
 
 //SMART ROUTES
 Route::prefix('/smart')->group(function (){

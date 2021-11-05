@@ -10,7 +10,7 @@ export const AdminSjalan = () => {
             serverSide: false,
             ajax: "/smart/data/get-sj",
             columns: [
-              {data: 'id_so', name: 'id_so'},
+              {data: 'splitId', name: 'id_so'},
               {data: 'load_id', name: 'load_id'},
               {data: 'nopol', name: 'nopol'},
               {data: 'penerima', name: 'penerima'},

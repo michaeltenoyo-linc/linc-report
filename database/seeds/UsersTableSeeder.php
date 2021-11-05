@@ -23,12 +23,21 @@ class UsersTableSeeder extends Seeder
                 'email' => 'michaeltenoyo.lincgroup@gmail.com',
                 'email_verified_at' => Carbon::today(),
                 'password' => Hash::make('admin'),
+                'active' => 1,
             ],
             [
                 'name' => 'kiky',
                 'email' => 'kiky@gmail.com',
                 'email_verified_at' => Carbon::today(),
                 'password' => Hash::make('admin'),
+                'active' => 1,
+            ],
+            [
+                'name' => 'ros',
+                'email' => 'ros@gmail.com',
+                'email_verified_at' => Carbon::today(),
+                'password' => Hash::make('admin'),
+                'active' => 1,
             ]
         ];
 

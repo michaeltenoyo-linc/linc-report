@@ -60,6 +60,15 @@ class ViewController extends BaseController
                 $btn = '<form id="btn-sj-delete" class="inline-flex"><input name="id_so" type="hidden" value="'.$row->id_so.'"><button type="submit" class="btn_red">Delete</button></form>';
                 return $btn;
             })
+            ->addColumn('splitId', function($row){
+                $splitId = explode('$',$row->id_so);
+
+                if(isset($splitId[1])){
+                    return $splitId[0]." [ DO: ".$splitId[1]." ]";
+                }else{
+                    return $splitId[0]." [ DO: - ]";
+                }
+            })
             ->make(true);
     }
 
