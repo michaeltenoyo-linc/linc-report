@@ -1,10 +1,10 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./resources/js/ltl/pages/AdminReport.js":
-/*!***********************************************!*\
-  !*** ./resources/js/ltl/pages/AdminReport.js ***!
-  \***********************************************/
+/***/ "./resources/js/greenfields/pages/AdminReport.js":
+/*!*******************************************************!*\
+  !*** ./resources/js/greenfields/pages/AdminReport.js ***!
+  \*******************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -173,10 +173,10 @@ var AdminReport = function AdminReport() {
 
 /***/ }),
 
-/***/ "./resources/js/ltl/pages/AdminSjalan.js":
-/*!***********************************************!*\
-  !*** ./resources/js/ltl/pages/AdminSjalan.js ***!
-  \***********************************************/
+/***/ "./resources/js/greenfields/pages/AdminSjalan.js":
+/*!*******************************************************!*\
+  !*** ./resources/js/greenfields/pages/AdminSjalan.js ***!
+  \*******************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -262,6 +262,7 @@ var AdminSjalan = function AdminSjalan() {
               $('#form-so-new .input-note').prop('readonly', false);
               $('#form-so-new .input-tgl').prop('readonly', false);
               $('#form-so-new .input-customer').prop('readonly', false);
+              $('#form-so-new .input-qty').prop('readonly', false);
               $('#form-so-new .input-weight').prop('readonly', false);
               $('#form-so-new .input-bongkar').prop('readonly', false);
               $('#form-so-new .input-multidrop').prop('readonly', false);
@@ -292,6 +293,7 @@ var AdminSjalan = function AdminSjalan() {
         $('#form-so-new .input-note').prop('readonly', true);
         $('#form-so-new .input-customer').prop('readonly', true);
         $('#form-so-new .input-tgl').prop('readonly', true);
+        $('#form-so-new .input-qty').prop('readonly', true);
         $('#form-so-new .input-weight').prop('readonly', true);
         $('#form-so-new .input-bongkar').prop('readonly', true);
         $('#form-so-new .input-multidrop').prop('readonly', true);
@@ -3811,15 +3813,15 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
-/*!*********************************!*\
-  !*** ./resources/js/ltl/ltl.js ***!
-  \*********************************/
+/*!*************************************************!*\
+  !*** ./resources/js/greenfields/greenfields.js ***!
+  \*************************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "load": () => (/* binding */ load)
 /* harmony export */ });
-/* harmony import */ var _pages_AdminSjalan__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pages/AdminSjalan */ "./resources/js/ltl/pages/AdminSjalan.js");
-/* harmony import */ var _pages_AdminReport__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./pages/AdminReport */ "./resources/js/ltl/pages/AdminReport.js");
+/* harmony import */ var _pages_AdminSjalan__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pages/AdminSjalan */ "./resources/js/greenfields/pages/AdminSjalan.js");
+/* harmony import */ var _pages_AdminReport__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./pages/AdminReport */ "./resources/js/greenfields/pages/AdminReport.js");
 
 
 var load = function load() {

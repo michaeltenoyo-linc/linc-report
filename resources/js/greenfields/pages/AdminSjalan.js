@@ -61,6 +61,7 @@ export const AdminSjalan = () => {
                             $('#form-so-new .input-note').prop('readonly',false);
                             $('#form-so-new .input-tgl').prop('readonly',false);
                             $('#form-so-new .input-customer').prop('readonly',false);
+                            $('#form-so-new .input-qty').prop('readonly',false);
                             $('#form-so-new .input-weight').prop('readonly',false);
                             $('#form-so-new .input-bongkar').prop('readonly',false);
                             $('#form-so-new .input-multidrop').prop('readonly',false);
@@ -94,6 +95,7 @@ export const AdminSjalan = () => {
                 $('#form-so-new .input-note').prop('readonly',true);
                 $('#form-so-new .input-customer').prop('readonly',true);
                 $('#form-so-new .input-tgl').prop('readonly',true);
+                $('#form-so-new .input-qty').prop('readonly',true);
                 $('#form-so-new .input-weight').prop('readonly',true);
                 $('#form-so-new .input-bongkar').prop('readonly',true);
                 $('#form-so-new .input-multidrop').prop('readonly',true);

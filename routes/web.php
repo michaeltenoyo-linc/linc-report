@@ -20,6 +20,9 @@ use App\Http\Controllers\Ltl\ReportController as LtlReportController;
 use App\Http\Controllers\Ltl\LoadController as LtlLoadController;
 use App\Http\Controllers\Ltl\SuratjalanController as LtlSuratjalanController;
 
+//GREENFIELDS CONTROLLER
+use App\Http\Controllers\Greenfields\ViewController as GreenfieldsViewController;
+
 //LOA CONTROLLEr
 use App\Http\Controllers\Loa\ViewController as LoaViewController;
 
@@ -129,6 +132,14 @@ Route::prefix('/lautanluas')->group(function () {
         Route::get('/get-warning',[LtlReportController::class, 'getPreviewWarning']);
         Route::get('/downloadReport',[LtlReportController::class, 'downloadExcel']);
     });
+});
+
+//GREENFIELDS
+Route::prefix('/greenfields')->group(function () {
+    Route::get('/',[GreenfieldsViewController::class, 'gotoLandingPage']);
+    Route::get('/nav-so-new',[GreenfieldsViewController::class, 'gotoSoNew']);
+    Route::get('/nav-so-list',[GreenfieldsViewController::class, 'gotoSoList']);
+    Route::get('/nav-report-generate',[GreenfieldsViewController::class, 'gotoReportGenerate']);
 });
 
 //LOA

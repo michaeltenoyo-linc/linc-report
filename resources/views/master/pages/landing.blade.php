@@ -54,6 +54,7 @@
 					<ul class="dropdown-menu" aria-labelledby="dropdown02">
 						<li><a class="dropdown-item" href="department.html">SMART Data Services</a></li>
 						<li><a class="dropdown-item" href="department-single.html">LTL Data Services</a></li>
+						<li><a class="dropdown-item" href="department-single.html">Greenfields Data Services</a></li>
 						<li><a class="dropdown-item" href="department-single.html">Letter of Agreements</a></li>
 					</ul>
 			  	</li>
@@ -125,9 +126,49 @@
 							<i class="icofont-surgeon-alt"></i>
 						</div>
 						<span>Data Services</span>
+						<h4 class="mb-3">Greenfields Customer</h4>
+						<p class="mb-4">Order database for Greenfields customer, auto-generate report for Greenfields.</p>
+						<a href="" class="btn btn-main btn-round-full">UNDER CONSTRUCTION :)</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="features-2">
+	<div class="container">
+		<div class="row mt-4">
+			<div class="col-lg-12">
+				<div class="feature-block d-lg-flex">
+					<div class="feature-item mb-5 mb-lg-0">
+						<div class="feature-icon mb-4">
+							<i class="icofont-surgeon-alt"></i>
+						</div>
+						<span>Data Services</span>
 						<h4 class="mb-3">LOA Data</h4>
 						<p class="mb-4">Database for letter of agreement, with report, and easier monitoring for LOA.</p>
 						<a href="" class="btn btn-main btn-round-full">UNDER CONSTRUCTION :)</a>
+					</div>
+
+					<div class="feature-item mb-5 mb-lg-0">
+						<div class="feature-icon mb-4">
+							<i class="icofont-surgeon-alt"></i>
+						</div>
+						<span>Data Services</span>
+						<h4 class="mb-3">TBD</h4>
+						<p class="mb-4">TBD</p>
+						<a href="" class="btn btn-main btn-round-full">UNDER CONSTRUCTION</a>
+					</div>
+
+					<div class="feature-item mb-5 mb-lg-0">
+						<div class="feature-icon mb-4">
+							<i class="icofont-surgeon-alt"></i>
+						</div>
+						<span>Data Services</span>
+						<h4 class="mb-3">TBD</h4>
+						<p class="mb-4">TBD</p>
+						<a href="" class="btn btn-main btn-round-full">UNDER CONSTRUCTION</a>
 					</div>
 				</div>
 			</div>
