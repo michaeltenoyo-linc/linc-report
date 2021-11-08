@@ -33,6 +33,25 @@ Linc | Generate Report
                         </select>
                     </div>
                 </div>
+
+                <!-- Filter Date Range -->
+                <div class="flex flex-wrap px-4">
+                    <div class="relative w-5/12 mb-3 pr-2">
+                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                            htmlFor="name"> Dari </label>
+                        <input type="date"
+                            class="input-filter-start-date w-full border bg-white rounded px-3 py-2 outline-none"
+                            name="startDate">
+                    </div>
+                    <div class="relative w-5/12 mb-3">
+                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                            htmlFor="name"> Sampai </label>
+                        <input type="date"
+                            class="input-filter-end-date w-full border bg-white rounded px-3 py-2 outline-none"
+                            name="endDate">
+                    </div>
+                </div>
+
                 <div class="flex flex-wrap">
                     <!--Requirement Proforma LTL-->
                     <div class="requirement-reportSmart1 w-full lg:w-1/2 px-4">
