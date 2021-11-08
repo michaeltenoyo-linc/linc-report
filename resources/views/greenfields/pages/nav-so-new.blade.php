@@ -1,11 +1,11 @@
-@extends('ltl.layouts.admin-layout')
+@extends('greenfields.layouts.admin-layout')
 
 @section('title')
 Linc | Register Surat Jalan
 @endsection
 
 @section('header')
-@include('ltl.components.header_no_login')
+@include('greenfields.components.header_no_login')
 @endsection
 
 @section('content')
@@ -24,21 +24,25 @@ Linc | Register Surat Jalan
             <form id="form-so-new" autocomplete="off">
                 <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase"> SO Information </h6>
                 <div class="flex flex-wrap">
-                    <div class="w-full lg:w-8/12 px-4">
+                    <div class="w-full lg:w-3/12 px-4">
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="name"> No. SO </label>
+                                htmlFor="name"> No. Order </label>
                             <input type="text"
                                 name="id_so"
                                 class="input-id-so border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                 value=""/>
                         </div>
                     </div>
-
-                    <div class="w-full lg:w-8/12 px-4">
+                    <div class="w-full lg:w-1/12 pt-8">
+                        <div class="relative text-center w-full mb-3">
+                            /
+                        </div>
+                    </div>
+                    <div class="w-full lg:w-3/12 px-4 pt-4">
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="grid-password">No. DO</label>
+                                htmlFor="grid-password"></label>
                             <input type="text"
                                 name="no_do"
                                 class="input-do border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
@@ -69,32 +73,10 @@ Linc | Register Surat Jalan
                     <div class="w-full lg:w-12/12 px-4">
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="grid-password"> Nama Customer </label>
-                            <input type="text"
-                                name="customer_name"
-                                class="input-customer border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                value="" readonly/>
-                        </div>
-                    </div>
-
-                    <div class="w-full lg:w-12/12 px-4">
-                        <div class="relative w-full mb-3">
-                            <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="grid-password"> Alamat Pengiriman </label>
-                            <input type="text"
-                                name="alamat_kirim"
-                                class="input-alamat border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                value="" readonly/>
-                        </div>
-                    </div>
-
-                    <div class="w-full lg:w-12/12 px-4">
-                        <div class="relative w-full mb-3">
-                            <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="grid-password"> Tanggal Pengiriman </label>
+                                htmlFor="grid-password"> Order Date </label>
                             <input type="date"
-                                name="tgl_kirim"
-                                class="input-tgl border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                name="order_date"
+                                class="input-date border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                 value="" readonly/>
                         </div>
                     </div>
@@ -102,7 +84,29 @@ Linc | Register Surat Jalan
                     <div class="w-full lg:w-12/12 px-4">
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="grid-password"> Catatan Pengiriman </label>
+                                htmlFor="grid-password"> Destination </label>
+                            <input type="text"
+                                name="destination"
+                                class="input-destination border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                value="" readonly/>
+                        </div>
+                    </div>
+
+                    <div class="w-full lg:w-12/12 px-4">
+                        <div class="relative w-full mb-3">
+                            <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                htmlFor="grid-password"> Quantity </label>
+                            <input type="number"
+                                name="qty"
+                                class="input-qty border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                value="" readonly/>
+                        </div>
+                    </div>
+
+                    <div class="w-full lg:w-12/12 px-4">
+                        <div class="relative w-full mb-3">
+                            <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                htmlFor="grid-password"> Note </label>
                             <input type="text"
                                 name="note"
                                 class="input-note border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
@@ -113,42 +117,32 @@ Linc | Register Surat Jalan
                     <div class="w-full lg:w-6/12 px-4">
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="grid-password"> Total QTY </label>
+                                htmlFor="grid-password"> Biaya Multidrop </label>
                             <input type="number"
-                                name="totalQty"
-                                class="input-qty border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                value="" readonly/>
+                                name="multidrop"
+                                class="input-multidrop border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                value="0" min="0" readonly/>
                         </div>
                     </div>
 
                     <div class="w-full lg:w-6/12 px-4">
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="grid-password"> Total Berat </label>
+                                htmlFor="grid-password"> Biaya Unloading </label>
                             <input type="number"
-                                name="totalWeight"
-                                class="input-weight border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                value="" readonly/>
+                                name="unloading"
+                                class="input-unloading border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                value="0" min=0 readonly/>
                         </div>
                     </div>
 
                     <div class="w-full lg:w-12/12 px-4">
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="grid-password"> Biaya Bongkar </label>
+                                htmlFor="grid-password"> Biaya Other </label>
                             <input type="number"
-                                name="bongkar"
-                                class="input-bongkar border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                value="0" min=0 readonly/>
-                        </div>
-                    </div>
-                    <div class="w-full lg:w-12/12 px-4">
-                        <div class="relative w-full mb-3">
-                            <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="grid-password"> Biaya Multidrop </label>
-                            <input type="number"
-                                name="multidrop"
-                                class="input-multidrop border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                name="other"
+                                class="input-other border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                 value="0" min=0 readonly/>
                         </div>
                     </div>
@@ -168,4 +162,3 @@ Linc | Register Surat Jalan
 
 <div class="dot-elastic"></div>
 @endsection
-@include('smart.modals.sj-items-modal');
