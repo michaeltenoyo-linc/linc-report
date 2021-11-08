@@ -103,7 +103,7 @@
 				<div class="feature-block d-lg-flex">
 					<div class="feature-item mb-5 mb-lg-0">
 						<div class="feature-icon mb-4">
-							<i class="icofont-surgeon-alt"></i>
+							<img height="50rem" src="{{ asset('assets/novena/images/service/logo/smart.jpg') }}" alt="">
 						</div>
 						<span>Data Services</span>
 						<h4 class="mb-3">SMART Customer</h4>
@@ -113,7 +113,7 @@
 
 					<div class="feature-item mb-5 mb-lg-0">
 						<div class="feature-icon mb-4">
-							<i class="icofont-surgeon-alt"></i>
+							<img height="50rem" src="{{ asset('assets/novena/images/service/logo/ltl.jpg') }}" alt="">
 						</div>
 						<span>Data Services</span>
 						<h4 class="mb-3">LTL Customer</h4>
@@ -123,7 +123,7 @@
 
 					<div class="feature-item mb-5 mb-lg-0">
 						<div class="feature-icon mb-4">
-							<i class="icofont-surgeon-alt"></i>
+							<img height="50rem" src="{{ asset('assets/novena/images/service/logo/greenfields.jpg') }}" alt="">
 						</div>
 						<span>Data Services</span>
 						<h4 class="mb-3">Greenfields Customer</h4>
