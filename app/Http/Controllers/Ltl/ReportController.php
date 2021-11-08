@@ -27,6 +27,12 @@ class ReportController extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     public function generateReport(Request $req){
+        $req->validate([
+            'startDate' => 'required',
+            'endDate' => 'required',
+            'bluejay' => 'required'
+        ]);
+
         $bluejayList = Session::get('bluejayArray');
         $reports = new Collection;
         $warning = new Collection;
@@ -35,7 +41,9 @@ class ReportController extends BaseController
         if($req->input('reportType') == "proforma_ltl"){
             for ($i=0; $i < count($bluejayList); $i++) {
                 $row = $bluejayList[$i];
-                $listSJ = Suratjalan_ltl::where('load_id','=',(isset($row['TMS ID'])?$row['TMS ID']:$row['Load ID']))->get();
+                $listSJ = Suratjalan_ltl::where('load_id','=',(isset($row['TMS ID'])?$row['TMS ID']:$row['Load ID']))
+                            ->whereBetween('delivery_date', [$req->input('startDate'),$req->input('endDate')])
+                            ->get();
                 $firstSJ = true;
                 $loadExist = False;
                 foreach ($reports as $r) {

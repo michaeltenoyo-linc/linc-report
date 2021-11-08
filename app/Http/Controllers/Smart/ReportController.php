@@ -25,6 +25,10 @@ class ReportController extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     public function generateReport(Request $req){
+        $req->validate([
+            'bluejay' => 'required',
+        ]);
+
         $bluejayList = Session::get('bluejayArray');
         $reports = new Collection;
         $warning = new Collection;
