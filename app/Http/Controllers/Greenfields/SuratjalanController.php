@@ -40,29 +40,28 @@ class SuratjalanController extends BaseController
 
     public function addSj(Request $req){
         $this->validate($req, [
-            'id_so' => 'required',
-            'no_do' => 'required',
+            'order1' => 'required',
+            'order2' => 'required',
             'load_id' => 'required',
-            'alamat_kirim' => 'required',
-            'tgl_kirim' => 'required',
-            'customer_name' => 'required',
-            'totalWeight' => 'required',
-            'bongkar' => 'required',
+            'order_date' => 'required',
+            'destination' => 'required',
+            'qty' => 'required',
+            'note' => 'required',
             'multidrop' => 'required',
-            'note' => 'required'
+            'unloading' => 'required',
+            'other' => 'required',
         ]);
 
-        Suratjalan_ltl::create([
-            'id_so' => $req->input('id_so'),
-            'no_do' => $req->input('no_do'),
+        Suratjalan_greenfields::create([
+            'no_order' => $req->input('order1')."/".$req->input('order2'),
             'load_id' => $req->input('load_id'),
-            'lokasi_pengiriman' => $req->input('alamat_kirim'),
-            'customer_name' => $req->input('customer_name'),
-            'total_weightSO' => $req->input('totalWeight'),
-            'total_qtySO' => 0,
-            'biaya_bongkar' => $req->input('bongkar'),
-            'biaya_multidrop' => $req->input('multidrop'),
-            'delivery_date' => $req->input('tgl_kirim'),
+            'order_date' => $req->input('order_date'),
+            'qty' => $req->input('qty'),
+            'destination' => $req->input('destination'),
+            'other' => $req->input('other'),
+            'multidrop' => $req->input('multidrop'),
+            'unloading' => $req->input('unloading'),
+            'note' => $req->input('note')  
         ]);
 
         $data['message'] = "Data surat jalan sudah disimpan.";

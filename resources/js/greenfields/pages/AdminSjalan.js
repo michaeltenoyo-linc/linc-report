@@ -54,17 +54,16 @@ export const AdminSjalan = () => {
                             $(this).val("cancel");
                             $(this).html("Cancel");
 
-                            $('#form-so-new .input-id-so').prop('readonly',true);
-                            $('#form-so-new .input-do').prop('readonly',true);
+                            $('#form-so-new .input-order1').prop('readonly',true);
+                            $('#form-so-new .input-order2').prop('readonly',true);
                             $('#form-so-new .input-loadid').prop('readonly',false);
-                            $('#form-so-new .input-alamat').prop('readonly',false);
-                            $('#form-so-new .input-note').prop('readonly',false);
-                            $('#form-so-new .input-tgl').prop('readonly',false);
-                            $('#form-so-new .input-customer').prop('readonly',false);
+                            $('#form-so-new .input-date').prop('readonly',false);
+                            $('#form-so-new .input-destination').prop('readonly',false);
                             $('#form-so-new .input-qty').prop('readonly',false);
-                            $('#form-so-new .input-weight').prop('readonly',false);
-                            $('#form-so-new .input-bongkar').prop('readonly',false);
+                            $('#form-so-new .input-note').prop('readonly',false);
                             $('#form-so-new .input-multidrop').prop('readonly',false);
+                            $('#form-so-new .input-unloading').prop('readonly',false);
+                            $('#form-so-new .input-other').prop('readonly',false);
                             $('#form-so-new .btn-simpan').prop('disabled',false);
 
                             Snackbar.show({
@@ -88,19 +87,18 @@ export const AdminSjalan = () => {
                 $(this).val("check");
                 $(this).html('Check SJ');
 
-                $('#form-so-new .input-id-so').prop('readonly',false);
-                $('#form-so-new .input-do').prop('readonly',false);
+                $('#form-so-new .input-order1').prop('readonly',false);
+                $('#form-so-new .input-order2').prop('readonly',false);
                 $('#form-so-new .input-loadid').prop('readonly',true);
-                $('#form-so-new .input-alamat').prop('readonly',true);
-                $('#form-so-new .input-note').prop('readonly',true);
-                $('#form-so-new .input-customer').prop('readonly',true);
-                $('#form-so-new .input-tgl').prop('readonly',true);
+                $('#form-so-new .input-date').prop('readonly',true);
+                $('#form-so-new .input-destination').prop('readonly',true);
                 $('#form-so-new .input-qty').prop('readonly',true);
-                $('#form-so-new .input-weight').prop('readonly',true);
-                $('#form-so-new .input-bongkar').prop('readonly',true);
+                $('#form-so-new .input-note').prop('readonly',true);
                 $('#form-so-new .input-multidrop').prop('readonly',true);
+                $('#form-so-new .input-unloading').prop('readonly',true);
+                $('#form-so-new .input-other').prop('readonly',true);
                 $('#form-so-new .btn-simpan').prop('disabled',true);
-                
+
                 Snackbar.show({
                     text: "Silahkan cek kembali nomor SJ.",
                     actionText: 'Tutup',

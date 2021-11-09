@@ -145,6 +145,8 @@ Route::prefix('/greenfields')->group(function () {
     //Surat Jalan
     Route::prefix('/suratjalan')->group(function (){
         Route::get('/check/{id1}/{id2}',[GreenfieldsSuratjalanController::class, 'checkSj']);
+        Route::post('/delete',[GreenfieldsSuratjalanController::class, 'delete']);
+        Route::post('/addSj',[GreenfieldsSuratjalanController::class, 'addSj']);
     });
 });
 

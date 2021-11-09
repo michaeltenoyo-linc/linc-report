@@ -15,6 +15,7 @@ class Suratjalan_greenfields extends Model
     public $incrementing = false;
     protected $fillable = [
         'no_order',
+        'load_id',
         'order_date',
         'qty',
         'destination',

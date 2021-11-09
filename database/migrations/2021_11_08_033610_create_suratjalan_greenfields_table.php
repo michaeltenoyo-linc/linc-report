@@ -15,6 +15,7 @@ class CreateSuratjalanGreenfieldsTable extends Migration
     {
         Schema::create('suratjalan_greenfields', function (Blueprint $table) {
             $table->string('no_order')->primary();
+            $table->string('load_id');
             $table->date('order_date');
             $table->integer('qty');
             $table->string('destination');
