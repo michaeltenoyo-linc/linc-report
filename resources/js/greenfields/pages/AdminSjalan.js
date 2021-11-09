@@ -8,7 +8,7 @@ export const AdminSjalan = () => {
         $('#yajra-datatable-sj-list').DataTable({
             processing: true,
             serverSide: false,
-            ajax: "/lautanluas/data/get-sj",
+            ajax: "/greenfields/data/get-sj",
             columns: [
               {data: 'id_so', name: 'id_so'},
               {data: 'no_do', name: 'load_id'},
@@ -31,8 +31,8 @@ export const AdminSjalan = () => {
             if(currentStats == "check"){
                 console.log("Checking SJ...");
 
-                var id = $('#form-so-new .input-id-so').val();
-                var no_do = $('#form-so-new .input-do').val();
+                var id1 = $('#form-so-new .input-order1').val();
+                var id2 = $('#form-so-new .input-order2').val();
                 //console.log(id);
 
                 $.ajaxSetup({
@@ -44,7 +44,7 @@ export const AdminSjalan = () => {
                     dataType: 'JSON',
                 });
                 $.ajax({
-                    url: '/lautanluas/suratjalan/check/'+id+'/'+no_do,
+                    url: '/greenfields/suratjalan/check/'+id1+'/'+id2,
                     type: 'GET',
                     success: (data) => {
                         //$(this).trigger('reset');
@@ -137,7 +137,7 @@ export const AdminSjalan = () => {
                         dataType: 'JSON',
                     });
                     $.ajax({
-                        url: '/lautanluas/suratjalan/addSj',
+                        url: '/greenfields/suratjalan/addSj',
                         type: 'POST',
                         data: new FormData($(this)[0]),
                         success: (data) => {
@@ -187,7 +187,7 @@ export const AdminSjalan = () => {
                         dataType: 'JSON',
                     });
                     $.ajax({
-                        url: '/lautanluas/suratjalan/delete',
+                        url: '/greenfields/suratjalan/delete',
                         type: 'POST',
                         data: new FormData($(this)[0]),
                         success: (data) => {

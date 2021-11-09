@@ -14,7 +14,7 @@ class CreateSuratjalanGreenfieldsTable extends Migration
     public function up()
     {
         Schema::create('suratjalan_greenfields', function (Blueprint $table) {
-            $table->string('no_order');
+            $table->string('no_order')->primary();
             $table->date('order_date');
             $table->integer('qty');
             $table->string('destination');
@@ -22,8 +22,8 @@ class CreateSuratjalanGreenfieldsTable extends Migration
             $table->float('multidrop',12);
             $table->float('unloading',12);
             $table->string('note');
-            $table->float('total',12);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

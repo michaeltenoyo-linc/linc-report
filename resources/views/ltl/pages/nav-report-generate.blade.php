@@ -41,14 +41,14 @@ Linc | Generate Report
                             htmlFor="name"> Dari </label>
                         <input type="date"
                             class="input-filter-start-date w-full border bg-white rounded px-3 py-2 outline-none"
-                            name="startDate">
+                            name="startDate" required>
                     </div>
                     <div class="relative w-5/12 mb-3">
                         <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                             htmlFor="name"> Sampai </label>
                         <input type="date"
                             class="input-filter-end-date w-full border bg-white rounded px-3 py-2 outline-none"
-                            name="endDate">
+                            name="endDate" required>
                     </div>
                 </div>
 

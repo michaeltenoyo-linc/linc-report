@@ -30,7 +30,6 @@ class ReportController extends BaseController
         $req->validate([
             'startDate' => 'required',
             'endDate' => 'required',
-            'bluejay' => 'required'
         ]);
 
         $bluejayList = Session::get('bluejayArray');

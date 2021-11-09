@@ -197,7 +197,7 @@ var AdminSjalan = function AdminSjalan() {
     $('#yajra-datatable-sj-list').DataTable({
       processing: true,
       serverSide: false,
-      ajax: "/lautanluas/data/get-sj",
+      ajax: "/greenfields/data/get-sj",
       columns: [{
         data: 'id_so',
         name: 'id_so'
@@ -235,8 +235,8 @@ var AdminSjalan = function AdminSjalan() {
 
       if (currentStats == "check") {
         console.log("Checking SJ...");
-        var id = $('#form-so-new .input-id-so').val();
-        var no_do = $('#form-so-new .input-do').val(); //console.log(id);
+        var id1 = $('#form-so-new .input-order1').val();
+        var id2 = $('#form-so-new .input-order2').val(); //console.log(id);
 
         $.ajaxSetup({
           headers: {
@@ -247,7 +247,7 @@ var AdminSjalan = function AdminSjalan() {
           dataType: 'JSON'
         });
         $.ajax({
-          url: '/lautanluas/suratjalan/check/' + id + '/' + no_do,
+          url: '/greenfields/suratjalan/check/' + id1 + '/' + id2,
           type: 'GET',
           success: function success(data) {
             //$(this).trigger('reset');
@@ -334,7 +334,7 @@ var AdminSjalan = function AdminSjalan() {
             dataType: 'JSON'
           });
           $.ajax({
-            url: '/lautanluas/suratjalan/addSj',
+            url: '/greenfields/suratjalan/addSj',
             type: 'POST',
             data: new FormData($(_this2)[0]),
             success: function success(data) {
@@ -383,7 +383,7 @@ var AdminSjalan = function AdminSjalan() {
             dataType: 'JSON'
           });
           $.ajax({
-            url: '/lautanluas/suratjalan/delete',
+            url: '/greenfields/suratjalan/delete',
             type: 'POST',
             data: new FormData($(_this3)[0]),
             success: function success(data) {

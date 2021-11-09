@@ -22,6 +22,5 @@ class Suratjalan_greenfields extends Model
         'multidrop',
         'unloading',
         'note',
-        'total',
     ];
 }

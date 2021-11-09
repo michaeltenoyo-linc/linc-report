@@ -22,6 +22,7 @@ use App\Http\Controllers\Ltl\SuratjalanController as LtlSuratjalanController;
 
 //GREENFIELDS CONTROLLER
 use App\Http\Controllers\Greenfields\ViewController as GreenfieldsViewController;
+use App\Http\Controllers\Greenfields\SuratjalanController as GreenfieldsSuratjalanController;
 
 //LOA CONTROLLEr
 use App\Http\Controllers\Loa\ViewController as LoaViewController;
@@ -140,6 +141,11 @@ Route::prefix('/greenfields')->group(function () {
     Route::get('/nav-so-new',[GreenfieldsViewController::class, 'gotoSoNew']);
     Route::get('/nav-so-list',[GreenfieldsViewController::class, 'gotoSoList']);
     Route::get('/nav-report-generate',[GreenfieldsViewController::class, 'gotoReportGenerate']);
+
+    //Surat Jalan
+    Route::prefix('/suratjalan')->group(function (){
+        Route::get('/check/{id1}/{id2}',[GreenfieldsSuratjalanController::class, 'checkSj']);
+    });
 });
 
 //LOA
