@@ -21,7 +21,7 @@ Linc | Generate Report
             </div>
         </div>
         <div class="flex flex-nowrap p-8 ">
-            <form id="form-report-generate" method="POST" action="report/generate">
+            <form id="form-report-generate" method="POST" action="report/generate" enctype="multipart/form-data">
                 @csrf
                 <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase"> Loads Information </h6>
                 <div class="w-full lg:w-12/12 px-4">

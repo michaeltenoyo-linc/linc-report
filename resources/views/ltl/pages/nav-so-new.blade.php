@@ -117,7 +117,10 @@ Linc | Register Surat Jalan
                             <input type="number"
                                 name="totalWeight"
                                 class="input-weight border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                value="" readonly/>
+                                value="0.00"
+                                min="0"
+                                step=".01"
+                                readonly/>
                         </div>
                     </div>
 
