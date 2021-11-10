@@ -11,6 +11,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 //Model
 use App\Models\Item;
+use App\Models\Suratjalan_greenfields;
 use App\Models\Trucks;
 
 class ViewController extends BaseController
@@ -35,4 +36,14 @@ class ViewController extends BaseController
     }
 
     //DATA CRAWL
+    public function getSj(){
+        $data = Suratjalan_greenfields::get();
+
+        return DataTables::of($data)
+            ->addColumn('action', function($row){
+                $btn = '<form id="btn-sj-delete" class="inline-flex"><input name="no_order" type="hidden" value="'.$row->no_order.'"><input name="no_do" type="hidden" value="'.$row->no_order.'"><button type="submit" class="btn_red">Delete</button></form>';
+                return $btn;
+            })
+            ->make(true);
+    }
 }

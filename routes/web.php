@@ -142,6 +142,12 @@ Route::prefix('/greenfields')->group(function () {
     Route::get('/nav-so-list',[GreenfieldsViewController::class, 'gotoSoList']);
     Route::get('/nav-report-generate',[GreenfieldsViewController::class, 'gotoReportGenerate']);
 
+    //View Function
+    Route::prefix('/data')->group(function () {
+        //Surat Jalan
+        Route::get('/get-sj',[GreenfieldsViewController::class, 'getSj']);
+    });
+
     //Surat Jalan
     Route::prefix('/suratjalan')->group(function (){
         Route::get('/check/{id1}/{id2}',[GreenfieldsSuratjalanController::class, 'checkSj']);

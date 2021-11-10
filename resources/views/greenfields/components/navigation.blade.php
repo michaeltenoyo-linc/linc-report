@@ -110,14 +110,14 @@
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
                 {{-- Active --}}
                 <li class="items-center">
-                    @if (Request::path() == '/lautanluas/nav-so-list')
-                    <a href="{{url('/lautanluas/nav-so-list')}}"
+                    @if (Request::path() == '/greenfields/nav-so-list')
+                    <a href="{{url('/greenfields/nav-so-list')}}"
                         class="page_nav_active">
                         <i class="fas fa-shipping-fast"></i>
                         List Surat Jalan
                     </a>
                     @else
-                    <a href="{{url('/lautanluas/nav-so-list')}}"
+                    <a href="{{url('/greenfields/nav-so-list')}}"
                         class="page_nav">
                         <i class="fas fa-shipping-fast"></i>
                         List Surat Jalan

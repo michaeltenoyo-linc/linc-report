@@ -61,7 +61,7 @@ class SuratjalanController extends BaseController
             'other' => $req->input('other'),
             'multidrop' => $req->input('multidrop'),
             'unloading' => $req->input('unloading'),
-            'note' => $req->input('note')  
+            'note' => $req->input('note')
         ]);
 
         $data['message'] = "Data surat jalan sudah disimpan.";
@@ -70,7 +70,7 @@ class SuratjalanController extends BaseController
     }
 
     public function delete(Request $req){
-        $sj = Suratjalan_ltl::where('id_so','=',$req->input('id_so'))->where('no_do','=',$req->input('no_do'))->first();
+        $sj = Suratjalan_greenfields::where('no_order','=',$req->input('no_order'))->first();
         $sj->delete();
 
         return response()->json(['message' => 'berhasil menghapus data.'], 200);

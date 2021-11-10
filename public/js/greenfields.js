@@ -199,23 +199,17 @@ var AdminSjalan = function AdminSjalan() {
       serverSide: false,
       ajax: "/greenfields/data/get-sj",
       columns: [{
-        data: 'id_so',
+        data: 'no_order',
         name: 'id_so'
       }, {
-        data: 'no_do',
+        data: 'load_id',
         name: 'load_id'
       }, {
-        data: 'load_id',
+        data: 'order_date',
         name: 'nopol'
       }, {
-        data: 'alamat_full',
+        data: 'destination',
         name: 'penerima'
-      }, {
-        data: 'total_qtySO',
-        name: 'total_weightSO'
-      }, {
-        data: 'total_weightSO',
-        name: 'utilitas'
       }, {
         data: 'action',
         name: 'action',

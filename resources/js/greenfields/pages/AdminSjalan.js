@@ -10,12 +10,10 @@ export const AdminSjalan = () => {
             serverSide: false,
             ajax: "/greenfields/data/get-sj",
             columns: [
-              {data: 'id_so', name: 'id_so'},
-              {data: 'no_do', name: 'load_id'},
-              {data: 'load_id', name: 'nopol'},
-              {data: 'alamat_full', name: 'penerima'},
-              {data: 'total_qtySO', name: 'total_weightSO'},
-              {data: 'total_weightSO', name: 'utilitas'},
+              {data: 'no_order', name: 'id_so'},
+              {data: 'load_id', name: 'load_id'},
+              {data: 'order_date', name: 'nopol'},
+              {data: 'destination', name: 'penerima'},
               {data: 'action', name: 'action', orderable: false, searchable: false}
             ],
         });
@@ -212,7 +210,7 @@ export const AdminSjalan = () => {
             })
         });
     }
-    
+
 
     getSj();
     addSj();
