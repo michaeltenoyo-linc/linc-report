@@ -136,13 +136,13 @@
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
                 <li class="items-center">
                     @if (Request::path() == 'lautanluas/nav-report-generate')
-                        <a href="{{url('/lautanluas/nav-report-generate')}}"
+                        <a href="{{url('/greenfields/nav-report-generate')}}"
                             class="page_nav_active">
                             <i class="far fa-clipboard"></i>
                             Generate Report
                         </a>
                     @else
-                        <a href="{{url('/lautanluas/nav-report-generate')}}"
+                        <a href="{{url('/greenfields/nav-report-generate')}}"
                             class="page_nav">
                             <i class="far fa-clipboard"></i>
                             Generate Report
