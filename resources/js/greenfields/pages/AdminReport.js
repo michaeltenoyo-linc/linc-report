@@ -19,7 +19,7 @@ export const AdminReport = () => {
                 dataType: 'JSON',
             });
             $.ajax({
-                url: '/lautanluas/load/check-bluejay',
+                url: '/greenfields/load/check-bluejay',
                 type: 'POST',
                 enctype: 'multipart/form-data',
                 data: new FormData($('#form-report-generate')[0]),
@@ -37,7 +37,7 @@ export const AdminReport = () => {
                         processing: true,
                         serverSide: false,
                         ajax: {
-                            url: '/lautanluas/load/bluejay-table',
+                            url: '/greenfields/load/bluejay-table',
                             type: 'POST',
                                 'headers' : {
                                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -68,11 +68,11 @@ export const AdminReport = () => {
         });
     }
 
-    const previewReportLtl1 = () => {
-        $('#yajra-datatable-report-preview-ltl-1').DataTable({
+    const previewReportGreenfields1 = () => {
+        $('#yajra-datatable-report-preview-greenfields-1').DataTable({
             processing: true,
             serverSide: false,
-            ajax: '/lautanluas/report/get-preview',
+            ajax: '/greenfields/report/get-preview',
             columns: [
                 {data: 'No', name: 'TMS ID'},
                 {data: 'Load ID', name: 'Closed Data'},
@@ -95,11 +95,11 @@ export const AdminReport = () => {
         })
     }
 
-    const previewWarningLtl1 = () => {
-        $('#yajra-datatable-warning-preview-ltl-1').DataTable({
+    const previewWarningGreenfields1 = () => {
+        $('#yajra-datatable-warning-preview-greenfields-1').DataTable({
             processing: true,
             serverSide: false,
-            ajax: '/lautanluas/report/get-warning',
+            ajax: '/greenfields/report/get-warning',
             columns: [
                 {data: 'Load ID', name: 'Load ID'},
                 {data: 'Customer Pick Location', name: 'Customer Pick Location'},
@@ -109,7 +109,7 @@ export const AdminReport = () => {
     }
 
     
-    previewReportLtl1();
-    previewWarningLtl1();
+    previewReportGreenfields1();
+    previewWarningGreenfields1();
     onUploadBluejay();
 };

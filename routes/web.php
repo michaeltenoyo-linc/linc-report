@@ -23,6 +23,7 @@ use App\Http\Controllers\Ltl\SuratjalanController as LtlSuratjalanController;
 //GREENFIELDS CONTROLLER
 use App\Http\Controllers\Greenfields\ViewController as GreenfieldsViewController;
 use App\Http\Controllers\Greenfields\SuratjalanController as GreenfieldsSuratjalanController;
+use App\Http\Controllers\Greenfields\LoadController as GreenfieldsLoadController;
 
 //LOA CONTROLLEr
 use App\Http\Controllers\Loa\ViewController as LoaViewController;
@@ -153,6 +154,19 @@ Route::prefix('/greenfields')->group(function () {
         Route::get('/check/{id1}/{id2}',[GreenfieldsSuratjalanController::class, 'checkSj']);
         Route::post('/delete',[GreenfieldsSuratjalanController::class, 'delete']);
         Route::post('/addSj',[GreenfieldsSuratjalanController::class, 'addSj']);
+    });
+
+    //Reporting
+    Route::prefix('/load')->group(function () {
+        Route::post('/check-bluejay',[GreenfieldsLoadController::class, 'checkBluejay']);
+        Route::post('/bluejay-table',[GreenfieldsLoadController::class, 'bluejayTable']);
+    });
+
+    Route::prefix('/report')->group(function () {
+        Route::post('/generate',[LtlReportController::class, 'generateReport']);
+        Route::get('/get-preview',[LtlReportController::class, 'getPreviewResult']);
+        Route::get('/get-warning',[LtlReportController::class, 'getPreviewWarning']);
+        Route::get('/downloadReport',[LtlReportController::class, 'downloadExcel']);
     });
 });
 

@@ -1,11 +1,11 @@
-@extends('ltl.layouts.admin-layout')
+@extends('greenfields.layouts.admin-layout')
 
 @section('title')
 Linc | Preview Proforma LTL
 @endsection
 
 @section('header')
-@include('ltl.components.header_no_login')
+@include('greenfields.components.header_no_login')
 @endsection
 
 @section('content')
