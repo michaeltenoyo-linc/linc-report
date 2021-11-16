@@ -50,9 +50,9 @@ class ReportController extends BaseController
                         $loadExist = True;
                     }
                 }
-    
+                
                 if(count($listSJ) > 0 && !$loadExist){
-                    $transRate = intval(intval(str_replace('.','',str_replace(',','',$row['Billable Total Rate']))) / count($listSJ));
+                    $transRate = intval(intval(str_replace('.','',str_replace(',','',$row['Billable Total Rate']))));
                     $totalWeight = 0;
                     foreach ($listSJ as $sj) {
                         $totalWeight += $sj->total_weightSO;
@@ -94,7 +94,7 @@ class ReportController extends BaseController
                                 'Customer Address' => $sj->lokasi_pengiriman,
                                 'City' => $row['Last Drop Location City'],
                                 'Qty' => number_format($sj->total_weightSO,2,'.',','),
-                                'Transport Rate' => number_format($transRate,2,'.',','),
+                                'Transport Rate' => "",
                                 'Unloading Cost' => "",
                                 'Multidrop' => "",
                                 'Total' => "",
@@ -105,6 +105,27 @@ class ReportController extends BaseController
                             $ctr++;
                         }
                         
+                    }
+                    if(count($listSJ) > 1){
+                        $reports->push([
+                            'No' => "",
+                            'Load ID' => "",
+                            'No SO' => "",
+                            'No DO' => "",
+                            'Delivery Date' => "",
+                            'No Polisi' => "",
+                            'Customer Name' => "",
+                            'Customer Address' => "",
+                            'City' => "",
+                            'Qty' => number_format($totalWeight,2,'.',','),
+                            'Transport Rate' => "",
+                            'Unloading Cost' => "",
+                            'Multidrop' =>"",
+                            'Total' => "",
+                            'Rate / Kg' => "",
+                            'Invoice To LTL' => "",
+                            'Remarks' => ""
+                        ]);
                     }
                     $reports->push([
                         'No' => "",
