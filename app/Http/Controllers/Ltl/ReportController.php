@@ -94,10 +94,10 @@ class ReportController extends BaseController
                                 'Customer Address' => $sj->lokasi_pengiriman,
                                 'City' => $row['Last Drop Location City'],
                                 'Qty' => number_format($sj->total_weightSO,2,'.',','),
+                                'Transport Rate' => "",
                                 'Unloading Cost' => number_format($sj->biaya_bongkar,2,'.',','),
-                                'Multidrop' =>number_format($sj->biaya_multidrop,2,'.',','),
-                                'Multidrop' => "",
-                                'Total' => "",
+                                'Multidrop' => number_format($sj->biaya_multidrop,2,'.',','),
+                                'Total' => number_format($transRate,2,'.',','),
                                 'Rate / Kg' => number_format($rateKG,2,'.',','),
                                 'Invoice To LTL' => number_format($rateKG*$sj->total_weightSO),
                                 'Remarks' => ""
