@@ -14,7 +14,7 @@ export const load = () => {
     });
 
     //Disable Scroll on input
-    $('form').on('focus', 'input[type=number', function(e){
+    $('form').on('focus', 'input[type=number]', function(e){
         $(this).on('wheel.disableScroll', function(e){
             e.preventDefault();
         });

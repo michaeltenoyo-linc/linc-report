@@ -3831,6 +3831,15 @@ var load = function load() {
     ajaxStop: function ajaxStop() {
       $("#loader").addClass("hidden");
     }
+  }); //Disable Scroll on input
+
+  $('form').on('focus', 'input[type=number]', function (e) {
+    $(this).on('wheel.disableScroll', function (e) {
+      e.preventDefault();
+    });
+  });
+  $('form').on('blur', 'input[type=number]', function (e) {
+    $(this).off('wheel.disableScroll');
   });
   (0,_pages_AdminSjalan__WEBPACK_IMPORTED_MODULE_0__.AdminSjalan)();
   (0,_pages_AdminReport__WEBPACK_IMPORTED_MODULE_1__.AdminReport)();

@@ -32,7 +32,7 @@ var AdminReport = function AdminReport() {
         dataType: 'JSON'
       });
       $.ajax({
-        url: '/lautanluas/load/check-bluejay',
+        url: '/greenfields/load/check-bluejay',
         type: 'POST',
         enctype: 'multipart/form-data',
         data: new FormData($('#form-report-generate')[0]),
@@ -50,7 +50,7 @@ var AdminReport = function AdminReport() {
             processing: true,
             serverSide: false,
             ajax: {
-              url: '/lautanluas/load/bluejay-table',
+              url: '/greenfields/load/bluejay-table',
               type: 'POST',
               'headers': {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -88,11 +88,11 @@ var AdminReport = function AdminReport() {
     });
   };
 
-  var previewReportLtl1 = function previewReportLtl1() {
-    $('#yajra-datatable-report-preview-ltl-1').DataTable({
+  var previewReportGreenfields1 = function previewReportGreenfields1() {
+    $('#yajra-datatable-report-preview-greenfields-1').DataTable({
       processing: true,
       serverSide: false,
-      ajax: '/lautanluas/report/get-preview',
+      ajax: '/greenfields/report/get-preview',
       columns: [{
         data: 'No',
         name: 'TMS ID'
@@ -148,11 +148,11 @@ var AdminReport = function AdminReport() {
     });
   };
 
-  var previewWarningLtl1 = function previewWarningLtl1() {
-    $('#yajra-datatable-warning-preview-ltl-1').DataTable({
+  var previewWarningGreenfields1 = function previewWarningGreenfields1() {
+    $('#yajra-datatable-warning-preview-greenfields-1').DataTable({
       processing: true,
       serverSide: false,
-      ajax: '/lautanluas/report/get-warning',
+      ajax: '/greenfields/report/get-warning',
       columns: [{
         data: 'Load ID',
         name: 'Load ID'
@@ -166,8 +166,8 @@ var AdminReport = function AdminReport() {
     });
   };
 
-  previewReportLtl1();
-  previewWarningLtl1();
+  previewReportGreenfields1();
+  previewWarningGreenfields1();
   onUploadBluejay();
 };
 

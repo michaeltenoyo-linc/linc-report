@@ -101,7 +101,7 @@ class ReportController extends BaseController
                                 'Transport Rate' => "",
                                 'Unloading Cost' => number_format($sj->biaya_bongkar,2,'.',','),
                                 'Multidrop' => "",
-                                'Total' => number_format($transRate,2,'.',','),
+                                'Total' => number_format($totalPay,2,'.',','),
                                 'Rate / Kg' => number_format($rateKG,2,'.',','),
                                 'Invoice To LTL' => number_format($rateKG*$sj->total_weightSO),
                                 'Remarks' => ""
