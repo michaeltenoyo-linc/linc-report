@@ -55,17 +55,35 @@ class ReportController extends BaseController
                 }
     
                 if(count($listSJ) > 0 && !$loadExist){
+                    //Ambil other, multidrop dan unloading costnya
+                    $multidrop = 0;
+                    $unloading = 0;
+                    $other = 0;
+                    foreach ($listSJ as $sj) {
+                        if($sj->multidrop > 0){
+                            $multidrop = $sj->multidrop;
+                        }
+
+                        if($sj->unloading > 0){
+                            $unloading = $sj->unloading;
+                        }
+
+                        if($sj->other > 0){
+                            $other = $sj->other;
+                        }
+                    }
+
                     //ISI LAPORAN DISINI PER LOAD ID
                     foreach ($listSJ as $sj) {
                         if($firstSJ){
                             $totalRate = 0;
                             foreach ($bluejayList as $bj) {
                                 if((isset($bj['TMS ID'])?$bj['TMS ID']:$bj['Load ID']) == (isset($row['TMS ID'])?$row['TMS ID']:$row['Load ID'])){
-                                    $totalRate += $bj['Billable Total Rate'];
+                                    $totalRate += floatval(str_replace(',','',$bj['Billable Total Rate']));
                                 }
                             }
 
-                            $totalInvoices = $totalRate + $sj->other + $sj->multidrop + $sj->unloading;
+                            $totalInvoices = $totalRate + $other + $multidrop + $sj->unloading;
 
                             $reports->push([
                                 'No.' => $ctr,
@@ -78,9 +96,28 @@ class ReportController extends BaseController
                                 'Destination' => $sj->destination,
                                 'Rate' => $totalRate,
                                 'Other' => $sj->other,
+                                'Multi Drop' => $sj->multidrop,
+                                'Un-Loading' => $sj->unloading,
+                                'Total Invoices' => $totalInvoices,
+                                'REMARKS' => $sj->note,
                             ]);
                         }else{
-
+                            $reports->push([
+                                'No.' => $ctr,
+                                'Order Date' => "",
+                                'No Order' => $sj->no_order,
+                                'Area' => "",
+                                'Quantity' => $sj->qty,
+                                'Pol. No' => "",
+                                'Truck Type' => "",
+                                'Destination' => $sj->destination,
+                                'Rate' => "",
+                                'Other' => "",
+                                'Multi Drop' => "",
+                                'Un-Loading' => "",
+                                'Total Invoices' => "",
+                                'REMARKS' => $sj->note,
+                            ]);
                         }
                     }
 
