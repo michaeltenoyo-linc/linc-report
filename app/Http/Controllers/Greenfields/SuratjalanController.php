@@ -71,7 +71,7 @@ class SuratjalanController extends BaseController
 
     public function delete(Request $req){
         $sj = Suratjalan_greenfields::where('no_order','=',$req->input('no_order'))->first();
-        $sj->delete();
+        $sj->forceDelete();
 
         return response()->json(['message' => 'berhasil menghapus data.'], 200);
     }

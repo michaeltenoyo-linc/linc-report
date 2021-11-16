@@ -138,7 +138,7 @@ class ReportController extends BaseController
             Session::put('resultReport',$reports);
             Session::put('totalReport',$ctr-1);
     
-            return view('greenfields.pages.report-preview-ltl-1');
+            return view('greenfields.pages.report-preview-greenfields-1');
         }
     }
 

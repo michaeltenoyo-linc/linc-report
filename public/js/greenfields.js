@@ -97,52 +97,43 @@ var AdminReport = function AdminReport() {
         data: 'No',
         name: 'TMS ID'
       }, {
-        data: 'Load ID',
+        data: 'Order Date',
         name: 'Closed Data'
       }, {
-        data: 'No SO',
+        data: 'No Order',
         name: 'Last Drop Location City'
       }, {
-        data: 'No DO',
+        data: 'Area',
         name: 'Billable Total Rate'
       }, {
-        data: 'Delivery Date',
+        data: 'Quantity',
         name: 'Load Status'
       }, {
-        data: 'No Polisi',
+        data: 'Pol. No',
         name: 'Load Status'
       }, {
-        data: 'Customer Name',
+        data: 'Truck Type',
         name: 'Load Status'
       }, {
-        data: 'Customer Address',
+        data: 'Destination',
         name: 'Load Status'
       }, {
-        data: 'City',
+        data: 'Rate',
         name: 'Load Status'
       }, {
-        data: 'Qty',
+        data: 'Other',
         name: 'Load Status'
       }, {
-        data: 'Transport Rate',
+        data: 'Multi Drop',
         name: 'Load Status'
       }, {
-        data: 'Unloading Cost',
+        data: 'Un-Loading',
         name: 'Load Status'
       }, {
-        data: 'Multidrop',
+        data: 'Total Invoices',
         name: 'Load Status'
       }, {
-        data: 'Total',
-        name: 'Load Status'
-      }, {
-        data: 'Rate / Kg',
-        name: 'Load Status'
-      }, {
-        data: 'Invoice To LTL',
-        name: 'Load Status'
-      }, {
-        data: 'Remarks',
+        data: 'REMARKS',
         name: 'Load Status'
       }]
     });
@@ -3825,6 +3816,15 @@ var load = function load() {
     ajaxStop: function ajaxStop() {
       $("#loader").addClass("hidden");
     }
+  }); //Disable Scroll on input
+
+  $('form').on('focus', 'input[type=number]', function (e) {
+    $(this).on('wheel.disableScroll', function (e) {
+      e.preventDefault();
+    });
+  });
+  $('form').on('blur', 'input[type=number]', function (e) {
+    $(this).off('wheel.disableScroll');
   });
   (0,_pages_AdminSjalan__WEBPACK_IMPORTED_MODULE_0__.AdminSjalan)();
   (0,_pages_AdminReport__WEBPACK_IMPORTED_MODULE_1__.AdminReport)();
