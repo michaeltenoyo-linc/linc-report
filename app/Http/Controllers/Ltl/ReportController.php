@@ -54,11 +54,15 @@ class ReportController extends BaseController
                 if(count($listSJ) > 0 && !$loadExist){
                     $transRate = floatval(floatval(str_replace(',','',$row['Billable Total Rate'])));
                     $totalWeight = 0;
+                    $multidrop = 0;
                     foreach ($listSJ as $sj) {
                         $totalWeight += $sj->total_weightSO;
+                        if($sj->biaya_multidrop > 0){
+                            $multidrop = $sj->biaya_multidrop;
+                        }
                     }
                     foreach ($listSJ as $sj) {
-                        $totalPay = $transRate + $sj->biaya_bongkar + $sj->biaya_multidrop;
+                        $totalPay = $transRate + $sj->biaya_bongkar + $multidrop;
                         $rateKG = $totalPay / $totalWeight;
                         if($firstSJ){
                             $reports->push([
@@ -74,7 +78,7 @@ class ReportController extends BaseController
                                 'Qty' => number_format($sj->total_weightSO,2,'.',','),
                                 'Transport Rate' => number_format($transRate,2,'.',','),
                                 'Unloading Cost' => number_format($sj->biaya_bongkar,2,'.',','),
-                                'Multidrop' =>number_format($sj->biaya_multidrop,2,'.',','),
+                                'Multidrop' =>number_format($multidrop,2,'.',','),
                                 'Total' => number_format($totalPay,2,'.',','),
                                 'Rate / Kg' => number_format($rateKG,2,'.',','),
                                 'Invoice To LTL' => number_format($rateKG*$sj->total_weightSO),
@@ -96,7 +100,7 @@ class ReportController extends BaseController
                                 'Qty' => number_format($sj->total_weightSO,2,'.',','),
                                 'Transport Rate' => "",
                                 'Unloading Cost' => number_format($sj->biaya_bongkar,2,'.',','),
-                                'Multidrop' => number_format($sj->biaya_multidrop,2,'.',','),
+                                'Multidrop' => "",
                                 'Total' => number_format($transRate,2,'.',','),
                                 'Rate / Kg' => number_format($rateKG,2,'.',','),
                                 'Invoice To LTL' => number_format($rateKG*$sj->total_weightSO),
