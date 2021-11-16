@@ -52,7 +52,7 @@ class ReportController extends BaseController
                 }
                 
                 if(count($listSJ) > 0 && !$loadExist){
-                    $transRate = intval(intval(str_replace('.','',str_replace(',','',$row['Billable Total Rate']))));
+                    $transRate = floatval(floatval(str_replace(',','',$row['Billable Total Rate'])));
                     $totalWeight = 0;
                     foreach ($listSJ as $sj) {
                         $totalWeight += $sj->total_weightSO;
