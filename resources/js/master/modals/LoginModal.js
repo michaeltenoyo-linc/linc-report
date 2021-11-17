@@ -14,13 +14,34 @@ export const LoginModal = () => {
 
         $('#loginModal .form-master-login').on('submit', function(e){
             e.preventDefault();
-            
-            console.log("TEST LOGIN");
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                processData: false,
+                contentType: false,
+                dataType: 'JSON',
+            });
+            $.ajax({
+                url: '/user/authenticate',
+                type: 'POST',
+                data: new FormData($(this)[0]),
+                success: (data) => {
+                    location.reload();
+                },
+                error : function(request, status, error){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal Login!',
+                        text: "Mohon cek kembali data login.",
+                    })
+                },
+            });
         });
     }
 
     onClickLogin();
-    onLogin();
 }
 
 

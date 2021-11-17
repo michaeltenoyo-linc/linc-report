@@ -505,5 +505,6 @@
 </footer>
 </body>
 </html>
-@include('shared.master-scripts')
+
 @include('master.modals.login-modal')
+@include('shared.master-scripts')
