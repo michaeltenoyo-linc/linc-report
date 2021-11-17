@@ -15,6 +15,15 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
+        /*
+            Priviledges :
+            master -> ALL
+            smart -> SMART Customer
+            ltl -> Lautan Luas
+            loa -> Letter of Agreements
+            gfs -> Greenfields
+        */
+
         User::truncate();
 
         $seeds= [
