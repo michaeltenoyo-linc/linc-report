@@ -49,7 +49,7 @@ class ReportController extends BaseController
                 $firstSJ = true;
                 $loadExist = False;
                 foreach ($reports as $r) {
-                    if($r['Load ID'] == (isset($row['TMS ID'])?$row['TMS ID']:$row['Load ID'])){
+                    if((isset($r['TMS ID'])?$r['TMS ID']:$r['Load ID']) == (isset($row['TMS ID'])?$row['TMS ID']:$row['Load ID'])){
                         $loadExist = True;
                     }
                 }
@@ -83,7 +83,7 @@ class ReportController extends BaseController
                                 }
                             }
 
-                            $totalInvoices = $totalRate + $other + $multidrop + $sj->unloading;
+                            $totalInvoices = $totalRate + $other + $multidrop + $unloading;
 
                             $reports->push([
                                 'No.' => $ctr,
@@ -95,11 +95,12 @@ class ReportController extends BaseController
                                 'Truck Type' => $row['Equipment Description'],
                                 'Destination' => $sj->destination,
                                 'Rate' => $totalRate,
-                                'Other' => $sj->other,
-                                'Multi Drop' => $sj->multidrop,
-                                'Un-Loading' => $sj->unloading,
+                                'Other' => $other,
+                                'Multi Drop' => $multidrop,
+                                'Un-Loading' => $unloading,
                                 'Total Invoices' => $totalInvoices,
                                 'REMARKS' => $sj->note,
+                                'Load ID' => $sj->load_id,
                             ]);
                         }else{
                             $reports->push([
@@ -117,6 +118,7 @@ class ReportController extends BaseController
                                 'Un-Loading' => "",
                                 'Total Invoices' => "",
                                 'REMARKS' => $sj->note,
+                                'Load ID' => $sj->load_id,
                             ]);
                         }
                     }

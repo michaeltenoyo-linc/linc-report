@@ -97,6 +97,7 @@ Linc | Register Surat Jalan
                                 <option value="smart customer">SMART INDUSTRIAL</option>
                                 <option value="smart customer">SMART CONSUMER</option>
                                 <option value="smart mt">SMART MT</option>
+                                <option value="pallet">PALLET</option>
                             </select>
                         </div>
                     </div>
