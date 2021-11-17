@@ -50,6 +50,8 @@ class UsersTableSeeder extends Seeder
             ]
         ];
 
-        DB::table('users')->insert($seeds);
+        foreach ($seeds as $seed) {
+            User::create($seed);
+        }
     }
 }

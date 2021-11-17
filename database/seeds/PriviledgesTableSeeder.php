@@ -41,6 +41,8 @@ class PriviledgesTableSeeder extends Seeder
             ],
         ];
 
-        DB::table('priviledges')->insert($seeds);
+        foreach ($seeds as $seed) {
+            Priviledge::create($seed);
+        }
     }
 }

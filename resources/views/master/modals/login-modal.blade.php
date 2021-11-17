@@ -8,21 +8,21 @@
             </button>
         </div>
         <div class="modal-body d-flex justify-content-center">
-            <form>
+            <form class='form-master-login'>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Username</label>
-                    <input name="username" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter username">
-                    <small id="emailHelp" class="form-text text-muted">Never share your username with anyone else.</small>
+                    <label for="exampleInputEmail1">Email</label>
+                    <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required>
+                    <small id="emailHelp" class="form-text text-muted">Never share your email with anyone else.</small>
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Password</label>
-                    <input name="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    <input name="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" required>
                 </div>
-                <button type="submit" class="btn btn-primary">Login</button>
+                <input type="submit" class="btn btn-primary" value="Login">
             </form>
         </div>
         <div class="modal-footer">
-
+            <a href="" class="link-info">Forgot your password ?</a>
         </div>
         </div>
     </div>

@@ -28,9 +28,14 @@ var LoginModal = function LoginModal() {
       e.preventDefault();
       $('#master-login-modal .modal').removeClass('hidden');
     });
+    $('#loginModal .form-master-login').on('submit', function (e) {
+      e.preventDefault();
+      console.log("TEST LOGIN");
+    });
   };
 
   onClickLogin();
+  onLogin();
 };
 
 /***/ }),

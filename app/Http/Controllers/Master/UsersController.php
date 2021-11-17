@@ -13,6 +13,7 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Models\Item;
 use App\Models\Trucks;
 use App\Models\Suratjalan;
+use Illuminate\Support\Facades\Auth;
 
 class UsersController extends BaseController
 {
@@ -21,7 +22,17 @@ class UsersController extends BaseController
     //User onLogin
     public function onLogin(Request $req)
     {
+        $credentials =  $req->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        if(Auth::attempt($credentials)){
+            $req->session()->regenerate();
+
+            return response()->json(['message' => 'Berhasil login'],200);
+        }
         
-        return false;
+        return response()->json(['message' => 'Gagal login'],400);
     }
 }

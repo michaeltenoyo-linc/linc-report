@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Priviledge;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,6 +17,7 @@ class DatabaseSeeder extends Seeder
             ItemsTableSeeder::class,
             TrucksTableSeeder::class,
             UsersTableSeeder::class,
+            PriviledgesTableSeeder::class,
         ]);
     }
 }
