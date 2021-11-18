@@ -32,7 +32,17 @@ class UsersController extends BaseController
 
             return response()->json(['message' => 'Berhasil login'],200);
         }
-        
+
         return response()->json(['message' => 'Gagal login'],400);
+    }
+
+    public function onLogout(Request $req){
+        if(Auth::check()){
+            Auth::logout();
+
+            return response()->json(['message' => "Berhasil logout."], 200);
+        }else{
+            return response()->json(["message" => "User tidak login saat ini."], 400);
+        }
     }
 }
