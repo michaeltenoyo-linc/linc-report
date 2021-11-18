@@ -43,7 +43,7 @@ class UsersTableSeeder extends Seeder
             ],
             [
                 'name' => 'ros',
-                'email' => 'ros@gmail.com',
+                'email' => 'rosy.tasaniyah@lincgrp.com',
                 'email_verified_at' => Carbon::today(),
                 'password' => Hash::make('admin'),
                 'active' => 1,
