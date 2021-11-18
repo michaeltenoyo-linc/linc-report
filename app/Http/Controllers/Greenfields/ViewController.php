@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Auth;
 
 //Model
 use App\Models\Item;
@@ -17,6 +18,12 @@ use App\Models\Trucks;
 class ViewController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    public function __construct()
+    {
+        //Check log in status
+        $this->middleware('auth');
+    }
 
     //Navigation
     public function gotoLandingPage(){

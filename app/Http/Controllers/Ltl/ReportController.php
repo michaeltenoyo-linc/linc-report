@@ -26,6 +26,12 @@ class ReportController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    public function __construct()
+    {
+        //Check log in status
+        $this->middleware('auth');
+    }
+
     public function generateReport(Request $req){
         $req->validate([
             'startDate' => 'required',
@@ -50,7 +56,7 @@ class ReportController extends BaseController
                         $loadExist = True;
                     }
                 }
-                
+
                 if(count($listSJ) > 0 && !$loadExist){
                     $transRate = floatval(floatval(str_replace(',','',$row['Billable Total Rate'])));
                     $totalWeight = 0;
@@ -108,7 +114,7 @@ class ReportController extends BaseController
                             ]);
                             $ctr++;
                         }
-                        
+
                     }
                     if(count($listSJ) > 1){
                         $reports->push([
@@ -162,11 +168,11 @@ class ReportController extends BaseController
                     }
                 }
             }
-    
+
             Session::put('warningReport',$warning);
             Session::put('resultReport',$reports);
             Session::put('totalReport',$ctr-1);
-    
+
             return view('ltl.pages.report-preview-ltl-1');
         }
     }

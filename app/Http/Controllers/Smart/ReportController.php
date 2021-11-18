@@ -23,6 +23,11 @@ use Yajra\DataTables\Contracts\DataTable;
 class ReportController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    public function __construct()
+    {
+        //Check log in status
+        $this->middleware('auth');
+    }
 
     public function generateReport(Request $req){
         $req->validate([
@@ -102,16 +107,16 @@ class ReportController extends BaseController
                             'Load ID' => (isset($row['TMS ID'])?$row['TMS ID']:$row['Load ID']),
                             'Customer Pick Location' => $row['First Pick Location Name'],
                             'Suggestion' => (isset($row['Shipment Reference Numbers'])?$row['Shipment Reference Numbers']:"None"),
-                            
+
                         ]);
                     }
                 }
             }
-    
+
             Session::put('warningReport',$warning);
             Session::put('resultReport',$reports);
             Session::put('totalReport',$ctr-1);
-    
+
             return view('smart.pages.report-preview-smart-1');
 
         }else if($req->input('reportType') == "smart_2"){
@@ -126,7 +131,7 @@ class ReportController extends BaseController
                 }
 
                 if(count($listSJ) > 0 && !$loadExist){
-                    $firstSJ = true;    
+                    $firstSJ = true;
                     foreach ($listSJ as $sj) {
                         $listDload = Dload::where('id_so','=',$sj->id_so)->get();
                         $truck = Trucks::where('nopol','=',$sj->nopol)->first();
@@ -323,21 +328,21 @@ class ReportController extends BaseController
                             'Load ID' => (isset($row['TMS ID'])?$row['TMS ID']:$row['Load ID']),
                             'Customer Pick Location' => $row['First Pick Location Name'],
                             'Suggestion' => (isset($row['Shipment Reference Numbers'])?$row['Shipment Reference Numbers']:"None"),
-                            
+
                         ]);
                     }
                 }
-                
+
             }
-    
+
             Session::put('warningReport',$warning);
             Session::put('resultReport',$reports);
             Session::put('totalReport',$ctr-1);
-    
+
             return view('smart.pages.report-preview-smart-2');
         }
 
-        
+
     }
 
     public function getPreviewResult(Request $req){

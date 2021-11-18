@@ -22,4 +22,8 @@ class ViewController extends BaseController
     public function gotoLandingPage(){
         return view('master.pages.landing');
     }
+
+    public function notAuthorized(){
+        return view('master.pages.not-authorized');
+    }
 }

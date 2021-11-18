@@ -28,6 +28,12 @@ class ReportController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    public function __construct()
+    {
+        //Check log in status
+        $this->middleware('auth');
+    }
+
     public function generateReport(Request $req){
         /*
         $req->validate([
@@ -53,7 +59,7 @@ class ReportController extends BaseController
                         $loadExist = True;
                     }
                 }
-    
+
                 if(count($listSJ) > 0 && !$loadExist){
                     //Ambil other, multidrop dan unloading costnya
                     $multidrop = 0;
@@ -135,11 +141,11 @@ class ReportController extends BaseController
                     }
                 }
             }
-    
+
             Session::put('warningReport',$warning);
             Session::put('resultReport',$reports);
             Session::put('totalReport',$ctr-1);
-    
+
             return view('greenfields.pages.report-preview-greenfields-1');
         }
     }

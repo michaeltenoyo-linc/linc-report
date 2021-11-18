@@ -98,7 +98,7 @@ export const AdminSjalan = () => {
                 $('#form-so-new .input-bongkar').prop('readonly',true);
                 $('#form-so-new .input-multidrop').prop('readonly',true);
                 $('#form-so-new .btn-simpan').prop('disabled',true);
-                
+
                 Snackbar.show({
                     text: "Silahkan cek kembali nomor SJ.",
                     actionText: 'Tutup',
@@ -212,7 +212,7 @@ export const AdminSjalan = () => {
             })
         });
     }
-    
+
 
     getSj();
     addSj();

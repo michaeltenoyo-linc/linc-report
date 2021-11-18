@@ -8,7 +8,7 @@
             </button>
         </div>
         <div class="modal-body d-flex justify-content-center">
-            <form class='form-master-login'>
+            <form class='form-master-login' method="POST">
                 <div class="form-group">
                     <label for="exampleInputEmail1">Email</label>
                     <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required>

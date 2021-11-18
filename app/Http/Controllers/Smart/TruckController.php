@@ -17,6 +17,11 @@ use App\Models\Suratjalan;
 class TruckController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    public function __construct()
+    {
+        //Check log in status
+        $this->middleware('auth');
+    }
 
     public function checkTruck(Request $req, $nopol){
         $temp = Trucks::where('nopol','=',$nopol)->first();
@@ -34,7 +39,7 @@ class TruckController extends BaseController
                 $data['kategori'] = $temp->kategori;
                 $data['message'] = "Kendaraan ditemukan.";
             }
-            
+
         }
 
         return response()->json($data,200);
@@ -65,7 +70,7 @@ class TruckController extends BaseController
             'area' => $req->input('area'),
             'taken' => $req->input('pengambilan'),
             'kategori' => $req->input('kategori')
-        ]);        
+        ]);
 
         return response()->json(['message' => "Data berhasil disimpan."], 200);
     }
@@ -76,5 +81,5 @@ class TruckController extends BaseController
 
         return response()->json(['message' => 'berhasil menghapus data.'], 200);
     }
-    
+
 }

@@ -8,6 +8,12 @@
 <!-- Slick Slider  CSS -->
 <link rel="stylesheet" href="{{ asset('plugins/slick-carousel/slick/slick.css')}}">
 <link rel="stylesheet" href="{{ asset('plugins/slick-carousel/slick/slick-theme.css')}}">
-
+<!-- Materialize -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <!-- Main Stylesheet -->
 <link rel="stylesheet" href="{{ asset('css/novena/style.css') }}">
+<style>
+    .inline-icon{
+        vertical-align: bottom;
+    }
+</style>

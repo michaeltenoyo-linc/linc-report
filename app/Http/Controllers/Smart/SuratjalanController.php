@@ -21,6 +21,11 @@ use function PHPUnit\Framework\isNull;
 class SuratjalanController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    public function __construct()
+    {
+        //Check log in status
+        $this->middleware('auth');
+    }
 
     public function checkSj(Request $req, $id_so){
         $temp = Suratjalan::where('id_so','=',$id_so)->first();
@@ -61,7 +66,7 @@ class SuratjalanController extends BaseController
         $thisId = strval($req->input('id_so'));
 
         if($req->input('no_do')){
-           $thisId .= "$".$req->input('no_do'); 
+           $thisId .= "$".$req->input('no_do');
         }
 
         $new_so = Suratjalan::create([
@@ -82,7 +87,7 @@ class SuratjalanController extends BaseController
             'total_qtySO' => $req->input('total_qty'),
         ]);
 
-        
+
 
         if(!isNull($req->input('item'))){
             //DLOADS
@@ -91,7 +96,7 @@ class SuratjalanController extends BaseController
             for ($i=0; $i < count($itemList); $i++) {
                 $tempItem = Item::where('material_code','=',$itemList[$i])->first();
                 $subtotal_weight = $tempItem->gross_weight * $qtyList[$i];
-    
+
                 Dload::create([
                     'id_so' => $new_so->id_so,
                     'nopol' => $req->input('nopol'),
@@ -102,7 +107,7 @@ class SuratjalanController extends BaseController
             }
         }
 
-        
+
 
         return response()->json($data, 200);
     }

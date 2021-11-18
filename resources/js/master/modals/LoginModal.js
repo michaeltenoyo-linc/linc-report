@@ -1,6 +1,7 @@
 import { toInteger } from 'lodash';
 import { disableElement } from '../../utilities/helpers';
 import Snackbar from 'node-snackbar';
+import Swal from 'sweetalert2';
 
 export const LoginModal = () => {
     console.log("loading LoginModalJS");

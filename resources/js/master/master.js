@@ -1,4 +1,5 @@
 import { LoginModal } from "./modals/LoginModal";
+import { Auth } from "./pages/auth";
 
 export const load = () => {
     //Loading Spinner
@@ -13,6 +14,7 @@ export const load = () => {
     });
 
     LoginModal();
+    Auth();
 };
 
 load();

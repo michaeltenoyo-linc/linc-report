@@ -43,8 +43,10 @@ use App\Http\Controllers\Loa\ViewController as LoaViewController;
 //MASTER
 Route::get('/',[MasterViewController::class, 'gotoLandingPage']);
 Route::prefix('/user')->group(function (){
-    //Login
+    //Auth
     Route::post('/authenticate', [MasterUsersController::class, 'onLogin']);
+    Route::post('/logout', [MasterUsersController::class, 'onLogout']);
+    Route::get('/notAuthorized', [MasterViewController::class, 'notAuthorized']);
 });
 
 //SMART ROUTES

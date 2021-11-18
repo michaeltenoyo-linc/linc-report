@@ -11,6 +11,8 @@ use Illuminate\Routing\Controller as BaseController;
 use Yajra\DataTables\Facades\DataTables;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 //Model
 use App\Models\Item;
@@ -21,6 +23,12 @@ class LoadController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    public function __construct()
+    {
+        //Check log in status
+        $this->middleware('auth');
+    }
+
     private function csvstring_to_array($string, $separatorChar = ';', $enclosureChar = '"', $newlineChar = "\n") {
         // @author: Klemen Nagode
         $array = array();
@@ -30,13 +38,13 @@ class LoadController extends BaseController
         $fieldValue="";
         $isEnclosured = false;
         for($i=0; $i<$size;$i++) {
-    
+
             $char = $string{$i};
             $addChar = "";
-    
+
             if($isEnclosured) {
                 if($char==$enclosureChar) {
-    
+
                     if($i+1<$size && $string{$i+1}==$enclosureChar){
                         // escaped char
                         $addChar=$char;
@@ -51,12 +59,12 @@ class LoadController extends BaseController
                 if($char==$enclosureChar) {
                     $isEnclosured = true;
                 }else {
-    
+
                     if($char==$separatorChar) {
-    
+
                         $array[$rowIndex][$columnIndex] = $fieldValue;
                         $fieldValue="";
-    
+
                         $columnIndex++;
                     }elseif($char==$newlineChar) {
                         echo $char;
@@ -71,10 +79,10 @@ class LoadController extends BaseController
             }
             if($addChar!=""){
                 $fieldValue.=$addChar;
-    
+
             }
         }
-    
+
         if($fieldValue) { // save last field
             $array[$rowIndex][$columnIndex] = $fieldValue;
         }
@@ -88,11 +96,11 @@ class LoadController extends BaseController
         $header = $array[0];
         $out = new Collection;
 
-        for ($i=0; $i < count($array); $i++) { 
+        for ($i=0; $i < count($array); $i++) {
             $row = $array[$i];
             if($i > 0){
                 $arrayRow = [];
-                for ($key=0; $key < count($header); $key++) { 
+                for ($key=0; $key < count($header); $key++) {
                     $arrayRow[$header[$key]] = $row[$key];
                 }
                 $out->push($arrayRow);
@@ -154,7 +162,7 @@ class LoadController extends BaseController
         for ($i=0; $i < count($bluejayList); $i++) {
             $row = $bluejayList[$i];
             $customerID = substr($row['First Pick Location Name'],0,3);
-            
+
             $loads->push([
                 'TMS ID' => (isset($row['TMS ID'])?$row['TMS ID']:$row['Load ID']),
                 'Customer ID' => $customerID,

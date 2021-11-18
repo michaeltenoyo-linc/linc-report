@@ -4,6 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="description" content="Orbitor,business,company,agency,modern,bootstrap4,tech,software">
   <meta name="author" content="themefisher.com">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   @include('master.layouts.master-frontend')
   <title>Linc Group | Homepage</title>
 </head>
@@ -63,7 +64,13 @@
 
 			   <!-- Account -->
 			   @if (Auth::check())
-			    <li id="nav-account"><a class="nav-link font-weight-bold text-decoration-underline" href=""><u>Account Name</u></a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="department.html" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->name }} <i class="icofont-thin-down"></i></a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdown02">
+                        <li><a class="dropdown-item" href="department.html">Account Info</a></li>
+                        <li class="logout-btn"><a class="dropdown-item" href=""><i class="inline-icon small material-icons">chevron_left</i> Logout</a></li>
+                    </ul>
+                </li>
 			   @else
 			    <li id="nav-login"><a class="nav-link font-weight-bold text-decoration-underline" href="" data-toggle="modal" data-target="#loginModal"><u>Login</u></a></li>
 			   @endif

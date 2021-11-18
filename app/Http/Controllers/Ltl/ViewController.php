@@ -18,6 +18,11 @@ use App\Models\Suratjalan_ltl;
 class ViewController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    public function __construct()
+    {
+        //Check log in status
+        $this->middleware('auth');
+    }
 
     //Navigation
     public function gotoLandingPage(){
