@@ -20,11 +20,6 @@ use App\Models\Suratjalan_greenfields;
 class SuratjalanController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    public function __construct()
-    {
-        //Check log in status
-        $this->middleware('auth');
-    }
 
     public function checkSj(Request $req, $id1, $id2){
         $id = $id1."/".$id2;

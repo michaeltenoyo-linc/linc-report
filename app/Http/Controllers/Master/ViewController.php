@@ -26,4 +26,8 @@ class ViewController extends BaseController
     public function notAuthorized(){
         return view('master.pages.not-authorized');
     }
+
+    public function notPriviledges(){
+        return view('master.pages.not-priviledges');
+    }
 }

@@ -21,12 +21,6 @@ class LoadController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function __construct()
-    {
-        //Check log in status
-        $this->middleware('auth');
-    }
-
     private function csvstring_to_array($string, $separatorChar = ';', $enclosureChar = '"', $newlineChar = "\n") {
         // @author: Klemen Nagode
         $array = array();

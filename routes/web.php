@@ -47,136 +47,145 @@ Route::prefix('/user')->group(function (){
     Route::post('/authenticate', [MasterUsersController::class, 'onLogin']);
     Route::post('/logout', [MasterUsersController::class, 'onLogout']);
     Route::get('/notAuthorized', [MasterViewController::class, 'notAuthorized']);
+    Route::get('/notPriviledges', [MasterViewController::class, 'notPriviledges']);
 });
 
 //SMART ROUTES
-Route::prefix('/smart')->group(function (){
-    //View Navigation
-    Route::get('/',[SmartViewController::class, 'gotoLandingPage']);
-    Route::get('/nav-items-new',[SmartViewController::class, 'gotoItemNew']);
-    Route::get('/nav-items-list',[SmartViewController::class, 'gotoItemList']);
-    Route::get('/nav-trucks-new',[SmartViewController::class, 'gotoTrucksNew']);
-    Route::get('/nav-trucks-list',[SmartViewController::class, 'gotoTrucksList']);
-    Route::get('/nav-so-new',[SmartViewController::class, 'gotoSoNew']);
-    Route::get('/nav-so-list',[SmartViewController::class, 'gotoSoList']);
-    Route::get('/nav-report-generate',[SmartViewController::class, 'gotoReportGenerate']);
+Route::middleware(['auth','priviledge:smart,master'])->group(function () {
+    Route::prefix('/smart')->group(function (){
+        //View Navigation
+        Route::get('/',[SmartViewController::class, 'gotoLandingPage']);
+        Route::get('/nav-items-new',[SmartViewController::class, 'gotoItemNew']);
+        Route::get('/nav-items-list',[SmartViewController::class, 'gotoItemList']);
+        Route::get('/nav-trucks-new',[SmartViewController::class, 'gotoTrucksNew']);
+        Route::get('/nav-trucks-list',[SmartViewController::class, 'gotoTrucksList']);
+        Route::get('/nav-so-new',[SmartViewController::class, 'gotoSoNew']);
+        Route::get('/nav-so-list',[SmartViewController::class, 'gotoSoList']);
+        Route::get('/nav-report-generate',[SmartViewController::class, 'gotoReportGenerate']);
 
-    //View Function
-    Route::prefix('/data')->group(function () {
-        //Item
-        Route::get('/get-items',[SmartViewController::class, 'getItems']);
-        Route::post('/get-items-fromid',[SmartViewController::class, 'getItemsFromid']);
-        Route::post('/get-items-fromname',[SmartViewController::class, 'getItemsFromName']);
-        Route::get('/autocomplete-items',[SmartViewController::class,'search_getItems']);
-        //Trucks
-        Route::get('/get-trucks',[SmartViewController::class, 'getTrucks']);
-        Route::get('/autocomplete-trucks',[SmartViewController::class,'search_getTrucks']);
-        //Surat Jalan
-        Route::get('/get-sj',[SmartViewController::class, 'getSj']);
-    });
+        //View Function
+        Route::prefix('/data')->group(function () {
+            //Item
+            Route::get('/get-items',[SmartViewController::class, 'getItems']);
+            Route::post('/get-items-fromid',[SmartViewController::class, 'getItemsFromid']);
+            Route::post('/get-items-fromname',[SmartViewController::class, 'getItemsFromName']);
+            Route::get('/autocomplete-items',[SmartViewController::class,'search_getItems']);
+            //Trucks
+            Route::get('/get-trucks',[SmartViewController::class, 'getTrucks']);
+            Route::get('/autocomplete-trucks',[SmartViewController::class,'search_getTrucks']);
+            //Surat Jalan
+            Route::get('/get-sj',[SmartViewController::class, 'getSj']);
+        });
 
-    Route::prefix('/suratjalan')->group(function () {
-        Route::get('/check/{id_so}',[SmartSuratjalanController::class, 'checkSj']);
-        Route::post('/delete',[SmartSuratjalanController::class, 'delete']);
-        Route::post('/addSj',[SmartSuratjalanController::class, 'addSj']);
-    });
+        Route::prefix('/suratjalan')->group(function () {
+            Route::get('/check/{id_so}',[SmartSuratjalanController::class, 'checkSj']);
+            Route::post('/delete',[SmartSuratjalanController::class, 'delete']);
+            Route::post('/addSj',[SmartSuratjalanController::class, 'addSj']);
+        });
 
-    Route::prefix('/trucks')->group(function () {
-        Route::get('/check/{nopol}',[SmartTruckController::class, 'checkTruck']);
-        Route::post('/create',[SmartTruckController::class, 'Create']);
-        Route::post('/delete',[SmartTruckController::class, 'delete']);
-    });
+        Route::prefix('/trucks')->group(function () {
+            Route::get('/check/{nopol}',[SmartTruckController::class, 'checkTruck']);
+            Route::post('/create',[SmartTruckController::class, 'Create']);
+            Route::post('/delete',[SmartTruckController::class, 'delete']);
+        });
 
-    Route::prefix('/items')->group(function () {
-        Route::post('/addItem', [SmartItemController::class, 'addItem']);
-        Route::post('/delete',[SmartItemController::class, 'delete']);
-        Route::get('/check-existing/{material_code}',[SmartItemController::class, 'checkItemExist']);
-    });
+        Route::prefix('/items')->group(function () {
+            Route::post('/addItem', [SmartItemController::class, 'addItem']);
+            Route::post('/delete',[SmartItemController::class, 'delete']);
+            Route::get('/check-existing/{material_code}',[SmartItemController::class, 'checkItemExist']);
+        });
 
-    Route::prefix('/load')->group(function () {
-        Route::post('/check-bluejay',[SmartLoadController::class, 'checkBluejay']);
-        Route::post('/bluejay-table',[SmartLoadController::class, 'bluejayTable']);
-    });
+        Route::prefix('/load')->group(function () {
+            Route::post('/check-bluejay',[SmartLoadController::class, 'checkBluejay']);
+            Route::post('/bluejay-table',[SmartLoadController::class, 'bluejayTable']);
+        });
 
-    Route::prefix('/report')->group(function () {
-        Route::post('/generate',[SmartReportController::class, 'generateReport']);
-        Route::get('/get-preview',[SmartReportController::class, 'getPreviewResult']);
-        Route::get('/get-warning',[SmartReportController::class, 'getPreviewWarning']);
-        Route::get('/downloadReport',[SmartReportController::class, 'downloadExcel']);
+        Route::prefix('/report')->group(function () {
+            Route::post('/generate',[SmartReportController::class, 'generateReport']);
+            Route::get('/get-preview',[SmartReportController::class, 'getPreviewResult']);
+            Route::get('/get-warning',[SmartReportController::class, 'getPreviewWarning']);
+            Route::get('/downloadReport',[SmartReportController::class, 'downloadExcel']);
+        });
     });
 });
 
 //LTL
-Route::prefix('/lautanluas')->group(function () {
-    Route::get('/',[LtlViewController::class, 'gotoLandingPage']);
-    Route::get('/nav-so-new',[LtlViewController::class, 'gotoSoNew']);
-    Route::get('/nav-so-list',[LtlViewController::class, 'gotoSoList']);
-    Route::get('/nav-report-generate',[LtlViewController::class, 'gotoReportGenerate']);
+Route::middleware(['auth','priviledge:ltl,master'])->group(function () {
+    Route::prefix('/lautanluas')->group(function () {
+        Route::get('/',[LtlViewController::class, 'gotoLandingPage']);
+        Route::get('/nav-so-new',[LtlViewController::class, 'gotoSoNew']);
+        Route::get('/nav-so-list',[LtlViewController::class, 'gotoSoList']);
+        Route::get('/nav-report-generate',[LtlViewController::class, 'gotoReportGenerate']);
 
-    //View Function
-    Route::prefix('/data')->group(function () {
-        //Surat Jalan
-        Route::get('/get-sj',[LtlViewController::class, 'getSj']);
-    });
+        //View Function
+        Route::prefix('/data')->group(function () {
+            //Surat Jalan
+            Route::get('/get-sj',[LtlViewController::class, 'getSj']);
+        });
 
-    //Surat Jalan LTL
-    Route::prefix('/suratjalan')->group(function () {
-        Route::get('/check/{id_so}/{no_do}',[LtlSuratjalanController::class, 'checkSj']);
-        Route::post('/delete',[LtlSuratjalanController::class, 'delete']);
-        Route::post('/addSj',[LtlSuratjalanController::class, 'addSj']);
-    });
+        //Surat Jalan LTL
+        Route::prefix('/suratjalan')->group(function () {
+            Route::get('/check/{id_so}/{no_do}',[LtlSuratjalanController::class, 'checkSj']);
+            Route::post('/delete',[LtlSuratjalanController::class, 'delete']);
+            Route::post('/addSj',[LtlSuratjalanController::class, 'addSj']);
+        });
 
-    Route::prefix('/load')->group(function () {
-        Route::post('/check-bluejay',[LtlLoadController::class, 'checkBluejay']);
-        Route::post('/bluejay-table',[LtlLoadController::class, 'bluejayTable']);
-    });
+        Route::prefix('/load')->group(function () {
+            Route::post('/check-bluejay',[LtlLoadController::class, 'checkBluejay']);
+            Route::post('/bluejay-table',[LtlLoadController::class, 'bluejayTable']);
+        });
 
-    Route::prefix('/report')->group(function () {
-        Route::post('/generate',[LtlReportController::class, 'generateReport']);
-        Route::get('/get-preview',[LtlReportController::class, 'getPreviewResult']);
-        Route::get('/get-warning',[LtlReportController::class, 'getPreviewWarning']);
-        Route::get('/downloadReport',[LtlReportController::class, 'downloadExcel']);
-    });
-});
-
-//GREENFIELDS
-Route::prefix('/greenfields')->group(function () {
-    Route::get('/',[GreenfieldsViewController::class, 'gotoLandingPage']);
-    Route::get('/nav-so-new',[GreenfieldsViewController::class, 'gotoSoNew']);
-    Route::get('/nav-so-list',[GreenfieldsViewController::class, 'gotoSoList']);
-    Route::get('/nav-report-generate',[GreenfieldsViewController::class, 'gotoReportGenerate']);
-
-    //View Function
-    Route::prefix('/data')->group(function () {
-        //Surat Jalan
-        Route::get('/get-sj',[GreenfieldsViewController::class, 'getSj']);
-    });
-
-    //Surat Jalan
-    Route::prefix('/suratjalan')->group(function (){
-        Route::get('/check/{id1}/{id2}',[GreenfieldsSuratjalanController::class, 'checkSj']);
-        Route::post('/delete',[GreenfieldsSuratjalanController::class, 'delete']);
-        Route::post('/addSj',[GreenfieldsSuratjalanController::class, 'addSj']);
-    });
-
-    //Reporting
-    Route::prefix('/load')->group(function () {
-        Route::post('/check-bluejay',[GreenfieldsLoadController::class, 'checkBluejay']);
-        Route::post('/bluejay-table',[GreenfieldsLoadController::class, 'bluejayTable']);
-    });
-
-    Route::prefix('/report')->group(function () {
-        Route::post('/generate',[GreenfieldsReportController::class, 'generateReport']);
-        Route::get('/get-preview',[GreenfieldsReportController::class, 'getPreviewResult']);
-        Route::get('/get-warning',[GreenfieldsReportController::class, 'getPreviewWarning']);
-        Route::get('/downloadReport',[GreenfieldsReportController::class, 'downloadExcel']);
+        Route::prefix('/report')->group(function () {
+            Route::post('/generate',[LtlReportController::class, 'generateReport']);
+            Route::get('/get-preview',[LtlReportController::class, 'getPreviewResult']);
+            Route::get('/get-warning',[LtlReportController::class, 'getPreviewWarning']);
+            Route::get('/downloadReport',[LtlReportController::class, 'downloadExcel']);
+        });
     });
 });
 
-//LOA
-Route::prefix('/loa')->group(function (){
-    //View Navigation
-    Route::get('/',[LoaViewController::class, 'gotoLandingPage']);
-    Route::get('/nav-loa-new',[LoaViewController::class, 'gotoInputLoa']);
+Route::middleware(['auth','priviledge:gfs,master'])->group(function () {
+    //GREENFIELDS
+    Route::prefix('/greenfields')->group(function () {
+        Route::get('/',[GreenfieldsViewController::class, 'gotoLandingPage']);
+        Route::get('/nav-so-new',[GreenfieldsViewController::class, 'gotoSoNew']);
+        Route::get('/nav-so-list',[GreenfieldsViewController::class, 'gotoSoList']);
+        Route::get('/nav-report-generate',[GreenfieldsViewController::class, 'gotoReportGenerate']);
+
+        //View Function
+        Route::prefix('/data')->group(function () {
+            //Surat Jalan
+            Route::get('/get-sj',[GreenfieldsViewController::class, 'getSj']);
+        });
+
+        //Surat Jalan
+        Route::prefix('/suratjalan')->group(function (){
+            Route::get('/check/{id1}/{id2}',[GreenfieldsSuratjalanController::class, 'checkSj']);
+            Route::post('/delete',[GreenfieldsSuratjalanController::class, 'delete']);
+            Route::post('/addSj',[GreenfieldsSuratjalanController::class, 'addSj']);
+        });
+
+        //Reporting
+        Route::prefix('/load')->group(function () {
+            Route::post('/check-bluejay',[GreenfieldsLoadController::class, 'checkBluejay']);
+            Route::post('/bluejay-table',[GreenfieldsLoadController::class, 'bluejayTable']);
+        });
+
+        Route::prefix('/report')->group(function () {
+            Route::post('/generate',[GreenfieldsReportController::class, 'generateReport']);
+            Route::get('/get-preview',[GreenfieldsReportController::class, 'getPreviewResult']);
+            Route::get('/get-warning',[GreenfieldsReportController::class, 'getPreviewWarning']);
+            Route::get('/downloadReport',[GreenfieldsReportController::class, 'downloadExcel']);
+        });
+    });
+});
+
+Route::middleware(['auth','priviledge:loa,master'])->group(function () {
+    //LOA
+    Route::prefix('/loa')->group(function (){
+        //View Navigation
+        Route::get('/',[LoaViewController::class, 'gotoLandingPage']);
+        Route::get('/nav-loa-new',[LoaViewController::class, 'gotoInputLoa']);
+    });
 });
 

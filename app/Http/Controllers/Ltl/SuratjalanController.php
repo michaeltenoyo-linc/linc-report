@@ -19,11 +19,6 @@ use App\Models\Suratjalan_ltl;
 class SuratjalanController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    public function __construct()
-    {
-        //Check log in status
-        $this->middleware('auth');
-    }
 
     public function checkSj(Request $req, $id_so, $no_do){
         $temp = Suratjalan_ltl::where('id_so','=',$id_so)->where('no_do','=',$no_do)->first();

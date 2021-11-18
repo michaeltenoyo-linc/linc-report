@@ -26,12 +26,6 @@ class ReportController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function __construct()
-    {
-        //Check log in status
-        $this->middleware('auth');
-    }
-
     public function generateReport(Request $req){
         $req->validate([
             'startDate' => 'required',

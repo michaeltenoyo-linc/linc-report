@@ -17,11 +17,6 @@ use App\Models\Suratjalan;
 class ItemController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    public function __construct()
-    {
-        //Check log in status
-        $this->middleware('auth');
-    }
 
     public function checkItemExist(Request $req, $material_code){
         $temp = Item::where('material_code','=',$material_code)->first();
