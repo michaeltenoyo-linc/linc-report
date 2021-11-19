@@ -42,6 +42,8 @@ Linc | Generate Report
                             <option class="py-1" value="smart consumer">SMART CONSUMER</option>
                             <option class="py-1" value="smart industrial">SMART INDUSTRIAL</option>
                             <option class="py-1" value="smart mt">SMART MT</option>
+                            <option class="py-1" value="smart pallet">SMART PALLET</option>
+                            <option class="py-1" value="smart ecommerce">SMART E-COM</option>
                         </select>
                     </div>
                 </div>
