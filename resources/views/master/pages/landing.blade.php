@@ -135,7 +135,7 @@
 						<span>Data Services</span>
 						<h4 class="mb-3">Greenfields Customer</h4>
 						<p class="mb-4">Order database for Greenfields customer, auto-generate report for Greenfields.</p>
-						<a href="" class="btn btn-main btn-round-full">UNDER CONSTRUCTION :)</a>
+						<a href="{{ url('/greenfields') }}" class="btn btn-main btn-round-full">GO TO GREENFIELDS</a>
 					</div>
 				</div>
 			</div>
