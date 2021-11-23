@@ -47,6 +47,13 @@ Linc | Generate Report
                         </select>
                     </div>
                 </div>
+                <div class="w-full lg:w-12/12 px-4">
+                    <div class="relative w-full mb-3">
+                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                            htmlFor="name"> Filter Load ID <div style="color: red;">*Pisahkan dengan tanda semicolon (5040123;4000123;3201230)</div></label>
+                        <textarea class="input-customer-loadid w-full border bg-white rounded px-3 py-2 outline-none" name="loadId" id="" cols="100" rows="5"></textarea>
+                    </div>
+                </div>
                 <div class="flex flex-wrap">
                     <!--Requirement SMART 1-->
                     <div class="requirement-reportSmart1 w-full lg:w-1/2 px-4">

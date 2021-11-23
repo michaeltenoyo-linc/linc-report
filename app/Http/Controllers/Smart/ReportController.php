@@ -26,12 +26,14 @@ class ReportController extends BaseController
 
     public function generateReport(Request $req){
         $req->validate([
-            'bluejay' => 'required',
+            'customerType' => 'required',
+            'loadId' => 'required',
         ]);
 
         $bluejayList = Session::get('bluejayArray');
         $reports = new Collection;
         $warning = new Collection;
+        $listLoadId = explode(';',$req->input('loadId'));
         $ctr = 1;
 
         if($req->input('reportType') == "smart_1"){
@@ -47,7 +49,15 @@ class ReportController extends BaseController
 
                 if(count($listSJ) > 0 && !$loadExist){
                     foreach ($listSJ as $sj) {
-                        if($sj->customer_type == $req->input('customerType')){
+                        $isWanted = false;
+
+                        foreach ($listLoadId as $load) {
+                            if($sj->load_id == $load){
+                                $isWanted = true;
+                            }
+                        }
+                        
+                        if($sj->customer_type == $req->input('customerType') && $isWanted){
                             $truck = Trucks::where('nopol','=',$sj->nopol)->first();
                             $totalHarga = intval($row['Billable Total Rate']) + intval($sj->biaya_bongkar);
                             $splitID = explode('$',$sj->id_so);
