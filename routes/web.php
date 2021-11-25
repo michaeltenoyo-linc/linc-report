@@ -28,6 +28,7 @@ use App\Http\Controllers\Greenfields\ReportController as GreenfieldsReportContro
 
 //LOA CONTROLLEr
 use App\Http\Controllers\Loa\ViewController as LoaViewController;
+use App\Http\Controllers\Loa\WarehouseController as LoaWarehouseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -186,6 +187,12 @@ Route::middleware(['auth','priviledge:loa,master'])->group(function () {
         //View Navigation
         Route::get('/',[LoaViewController::class, 'gotoLandingPage']);
         Route::get('/nav-loa-new',[LoaViewController::class, 'gotoInputLoa']);
+        Route::get('/nav-loa-list', [LoaViewController::class, 'gotoListLoa']);
+    
+        Route::prefix('/action/warehouse')->group(function (){
+            //CRUD
+            Route::post('/insert',[LoaWarehouseController::class, 'insert']);
+        });
     });
 });
 

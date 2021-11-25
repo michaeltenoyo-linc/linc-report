@@ -21,6 +21,56 @@ __webpack_require__.r(__webpack_exports__);
 var AdminLoa = function AdminLoa() {
   console.log("loading adminLoa JS");
 
+  var saveLoa = function saveLoa() {
+    $('#form-loa-new').on('submit', function (e) {
+      var _this = this;
+
+      e.preventDefault();
+      console.log("Saving new LOA...");
+      sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+        title: 'Are you sure?',
+        text: "Pastikan data sudah benar semua!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Iya, simpan!'
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            processData: false,
+            contentType: false,
+            dataType: 'JSON'
+          });
+          $.ajax({
+            url: '/loa/action/warehouse/insert',
+            type: 'POST',
+            data: new FormData($(_this)[0]),
+            success: function success(data) {
+              sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+                title: 'Tersimpan!',
+                text: 'Data surat jalan sudah disimpan.',
+                icon: 'success'
+              }).then(function () {
+                location.reload();
+              });
+            },
+            error: function error(request, status, _error) {
+              sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: JSON.parse(request.responseText).message
+              });
+            }
+          });
+        }
+      });
+    });
+  };
+
   var onChangeLoaDivision = function onChangeLoaDivision() {
     $('#form-loa-new .input-divisi').on('change', function (e) {
       e.preventDefault();
@@ -43,6 +93,7 @@ var AdminLoa = function AdminLoa() {
   };
 
   onChangeLoaDivision();
+  saveLoa();
 };
 
 /***/ }),

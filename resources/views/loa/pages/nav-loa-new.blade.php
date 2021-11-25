@@ -28,7 +28,7 @@ Linc | Input LOA
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                                 htmlFor="name">Nama Customer</label>
-                            <input class="input-divisi border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text" list="customers">
+                            <input required name="customer" class="input-divisi border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text" list="customers">
                             <datalist id="customers">
                                 <option value="smart">[ALL] Sinar Mas Agro Resources and Technology (SMART)</option>
                                 <option value="smart mt">[MT] Sinar Mas Agro Resources and Technology (SMART)</option>
@@ -68,6 +68,7 @@ Linc | Input LOA
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                                 htmlFor="name">Periode Mulai</label>
                             <input type="date"
+                                required
                                 name="periode_start"
                                 class="input-periode-start border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                 value=""/>
@@ -79,6 +80,7 @@ Linc | Input LOA
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                                 htmlFor="name">Periode Akhir</label>
                             <input type="date"
+                                required
                                 name="periode_end"
                                 class="input-periode-end border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                 value=""/>
@@ -353,6 +355,18 @@ Linc | Input LOA
                         <input type="file"
                         accept="application/pdf"
                         name="filePDF"
+                        class="input-file border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
+                        value="0"
+                        multiple="multiple"/>
+                        <small style="color:red;">*Tidak wajib, silahkan sesuaikan dengan format file LOA</small>
+                    </div>
+
+                    <div class="w-full lg:w-12/12 px-4 py-6" >
+                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                            htmlFor="grid-password"> Upload Scan IMAGES Letter of Agreement </label>
+                        <input type="file"
+                        accept="image/*"
+                        name="fileImages"
                         class="input-file border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
                         value="0"
                         multiple="multiple"/>

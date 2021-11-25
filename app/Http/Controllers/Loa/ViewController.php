@@ -25,4 +25,8 @@ class ViewController extends BaseController
     public function gotoInputLoa(){
         return view('loa.pages.nav-loa-new');
     }
+
+    public function gotoListLoa(){
+        return view('loa.pages.nav-loa-list');
+    }
 }
