@@ -191,6 +191,7 @@ Route::middleware(['auth','priviledge:loa,master'])->group(function () {
     
         Route::prefix('/action/warehouse')->group(function (){
             //CRUD
+            Route::get('/nav-insert',[LoaViewController::class, 'gotoInputWarehouse']);
             Route::post('/insert',[LoaWarehouseController::class, 'insert']);
         });
     });

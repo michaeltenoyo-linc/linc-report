@@ -36,20 +36,20 @@ class WarehouseController extends BaseController
             $other_rate = "";
             $uom = "";
 
-            for ($i=0; $i < count($inputOtherName); $i++) { 
-                if($inputOtherName[$i]){
+            for ($i=0; $i < $req->input('ctrOtherName'); $i++) { 
+                if(isset($inputOtherName[$i])){
                     $other_name .= strval($inputOtherName[$i]).";";
                 }
             }
 
-            for ($i=0; $i < count($inputOtherRate); $i++) { 
-                if($inputOtherRate[$i]){
+            for ($i=0; $i < $req->input('ctrOtherRate'); $i++) { 
+                if(isset($inputOtherRate[$i])){
                     $other_rate .= strval($inputOtherRate[$i]).";";
                 }
             }
 
-            for ($i=0; $i < count($inputUom); $i++) { 
-                if($inputUom[$i]){
+            for ($i=0; $i < $req->input('ctrOtherUomWarehouse'); $i++) { 
+                if(isset($inputUom[$i])){
                     $uom .= strval($inputUom[$i]).";";
                 }
             }
