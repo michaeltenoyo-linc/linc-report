@@ -15,6 +15,8 @@ class CreateLoaWarehousesTable extends Migration
     {
         Schema::create('loa_warehouse', function (Blueprint $table) {
             $table->id();
+            $table->string('customer');
+            $table->string('lokasi');
             $table->date('periode_start');
             $table->date('periode_end');
             $table->float('jasa_titip',12);
@@ -27,7 +29,9 @@ class CreateLoaWarehousesTable extends Migration
             $table->longText('other_name');
             $table->longText('other_rate');
             $table->longText('uom');
+            $table->longText('files');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

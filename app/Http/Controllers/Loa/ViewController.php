@@ -11,6 +11,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 //Model
 use App\Models\Item;
+use App\Models\Loa_warehouse;
 use App\Models\Trucks;
 
 class ViewController extends BaseController
@@ -33,5 +34,12 @@ class ViewController extends BaseController
     //New LOA
     public function gotoInputWarehouse(){
         return view('loa.pages.nav-loa-new-warehouse');
+    }
+
+    //Master Monitor LOA
+    public function gotoListWarehouse(){
+        $data['warehouse_cust'] = Loa_warehouse::select('customer')->groupBy('customer')->get();
+
+        return view('loa.pages.nav-loa-list-warehouse', $data);
     }
 }

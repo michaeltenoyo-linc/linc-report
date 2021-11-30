@@ -36,7 +36,7 @@ export const AdminLoa = () => {
                                 +'<input type="text"'
                                 +'name="uom['+ctrOtherUom+']"'
                                 +'class="input-other-uom-'+ctrOtherUom+' border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "'
-                                +'value=""/>'
+                                +'value="" list="uom"/>'
                                 +'</div>';
 
             let htmlOtherDelete = '<div class="inline-block w-full lg:w-1/12 px-4 mb-6" >'
@@ -77,6 +77,9 @@ export const AdminLoa = () => {
             let division = $('#form-loa-new .input-division').val();
 
             if(division == "warehouse"){
+                let pdf = $('#form-loa-new .input-file-pdf').val();
+                console.log(pdf);
+                
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "Pastikan data sudah benar semua!",
@@ -98,7 +101,8 @@ export const AdminLoa = () => {
                         $.ajax({
                             url: '/loa/action/warehouse/insert',
                             type: 'POST',
-                            data: new FormData($(this)[0]),
+                            enctype: 'multipart/form-data',
+                            data: new FormData($('#form-loa-new')[0]),
                             success: (data) => {
                                 Swal.fire({
                                     title: 'Tersimpan!',

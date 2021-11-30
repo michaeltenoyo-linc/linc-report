@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Storage;
 
 //Model
 use App\Models\Item;
@@ -22,6 +23,7 @@ class WarehouseController extends BaseController
     public function insert(Request $req){
         $req->validate([
             'customer' => 'required',
+            'lokasi' => 'required',
             'periode_start' => 'required',
             'periode_end' => 'required',
             'divisi' => 'required',
@@ -54,7 +56,9 @@ class WarehouseController extends BaseController
                 }
             }
             
-            Loa_warehouse::create([
+            $newLoa = Loa_warehouse::create([
+                'customer' => $req->input('customer'),
+                'lokasi' => $req->input('lokasi'),
                 'periode_start' => $req->input('periode_start'),
                 'periode_end' => $req->input('periode_end'),
                 'jasa_titip' => $req->input('titip'),
@@ -67,7 +71,41 @@ class WarehouseController extends BaseController
                 'other_name' => $other_name,
                 'other_rate' => $other_rate,
                 'uom' => $uom,
+                'files' => "none",
             ]);
+            $filenames = "";
+
+            //FILES CONTROL PDF
+            if($req->hasFile('filePDF')){
+                $filename = "loa_warehouse_".strval($newLoa->id).".pdf";
+                $req->file('filePDF')->storeAs(
+                    'loa_warehouse', $filename
+                );
+                $filenames .= $filename.";";
+            }
+
+            //IMAGES
+            if($req->hasFile('fileImages')){
+                $filename = "loa_warehouse_".strval($newLoa->id).".png";
+                $req->file('filePDF')->storeAs(
+                    'loa_warehouse', $filename
+                );
+                $filenames .= $filename.";";
+            }
+
+            //excel
+            if($req->hasFile('fileExcel')){
+                $filename = "loa_warehouse_".strval($newLoa->id).".xlxs";
+                $req->file('filePDF')->storeAs(
+                    'loa_warehouse', $filename
+                );
+                $filenames .= $filename.";";
+            }
+
+            if($filenames != ""){
+                $newLoa->files = $filenames;
+                $newLoa->save();
+            }
 
             return response()->json(['message' => "Berhasil menyimpan LOA baru."],200);
         }else{

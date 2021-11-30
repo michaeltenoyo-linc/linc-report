@@ -67,6 +67,18 @@ Linc | Input LOA
                         </div>
                     </div>
 
+                    <div class="w-full lg:w-12/12 px-4">
+                        <div class="relative w-full mb-3">
+                            <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                htmlFor="name">Lokasi</label>
+                            <input type="text"
+                                required
+                                name="lokasi"
+                                class="input-lokasi border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                value=""/>
+                        </div>
+                    </div>
+
                     <div class="w-full lg:w-6/12 px-4">
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
@@ -288,9 +300,8 @@ Linc | Input LOA
                         <input type="file"
                         accept="application/pdf"
                         name="filePDF"
-                        class="input-file border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
-                        value="0"
-                        multiple="multiple"/>
+                        class="input-file-pdf border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
+                        />
                         <small style="color:red;">*Tidak wajib, silahkan sesuaikan dengan format file LOA</small>
                     </div>
 
@@ -300,7 +311,7 @@ Linc | Input LOA
                         <input type="file"
                         accept="image/*"
                         name="fileImages"
-                        class="input-file border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
+                        class="input-file-images border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
                         value="0"
                         multiple="multiple"/>
                         <small style="color:red;">*Tidak wajib, silahkan sesuaikan dengan format file LOA</small>
@@ -312,7 +323,7 @@ Linc | Input LOA
                         <input type="file"
                         accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
                         name="fileEXCEL"
-                        class="input-file border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
+                        class="input-file-excel border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
                         value="0"
                         multiple="multiple"/>
                         <small style="color:red;">*Tidak wajib, silahkan sesuaikan dengan format file LOA</small>

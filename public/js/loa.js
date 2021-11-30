@@ -29,7 +29,7 @@ var AdminLoa = function AdminLoa() {
       var ctrOtherUom = parseInt($('#form-loa-new .ctrOtherUomWarehouse').val());
       var htmlOtherName = '<div class="inline-block w-5/12 lg:w-5/12 px-4 mb-6" >' + '<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"' + 'htmlFor="grid-password"> Nama Biaya </label>' + '<input type="text"' + 'name="other_name[' + ctrOtherName + ']"' + 'class="input-other-name-' + ctrOtherName + ' border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "' + 'value=""/>' + '</div>';
       var htmlOtherRate = '<div class="inline-block w-3/12 lg:w-4/12 px-4 mb-6" >' + '<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"' + 'htmlFor="grid-password"> Biaya </label>' + '<input type="text"' + 'name="other_rate[' + ctrOtherRate + ']"' + 'class="input-other-rate-' + ctrOtherRate + ' border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "' + 'value=""/>' + '</div>';
-      var htmlOtherUom = '<div class="inline-block w-full lg:w-2/12 px-4 mb-6" >' + '<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"' + 'htmlFor="grid-password"> UoM </label>' + '<input type="text"' + 'name="uom[' + ctrOtherUom + ']"' + 'class="input-other-uom-' + ctrOtherUom + ' border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "' + 'value=""/>' + '</div>';
+      var htmlOtherUom = '<div class="inline-block w-full lg:w-2/12 px-4 mb-6" >' + '<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"' + 'htmlFor="grid-password"> UoM </label>' + '<input type="text"' + 'name="uom[' + ctrOtherUom + ']"' + 'class="input-other-uom-' + ctrOtherUom + ' border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "' + 'value="" list="uom"/>' + '</div>';
       var htmlOtherDelete = '<div class="inline-block w-full lg:w-1/12 px-4 mb-6" >' + '<button type="button"' + 'id="btn-delete-other-rate" name="other_delete[' + ctrOtherName + ']"' + 'class="input-other-delete-' + ctrOtherName + ' bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded full"' + 'value=' + ctrOtherName + '>X</button>' + '</div>';
       var newInputOther = "<div class='input-other-" + ctrOtherName + "'>" + htmlOtherName + htmlOtherRate + htmlOtherUom + htmlOtherDelete + "</div>";
       ctrOtherName += 1;
@@ -52,13 +52,13 @@ var AdminLoa = function AdminLoa() {
 
   var saveLoa = function saveLoa() {
     $('#form-loa-new').on('submit', function (e) {
-      var _this = this;
-
       e.preventDefault();
       console.log("Saving new LOA...");
       var division = $('#form-loa-new .input-division').val();
 
       if (division == "warehouse") {
+        var pdf = $('#form-loa-new .input-file-pdf').val();
+        console.log(pdf);
         sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
           title: 'Are you sure?',
           text: "Pastikan data sudah benar semua!",
@@ -80,7 +80,8 @@ var AdminLoa = function AdminLoa() {
             $.ajax({
               url: '/loa/action/warehouse/insert',
               type: 'POST',
-              data: new FormData($(_this)[0]),
+              enctype: 'multipart/form-data',
+              data: new FormData($('#form-loa-new')[0]),
               success: function success(data) {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
                   title: 'Tersimpan!',

@@ -193,6 +193,7 @@ Route::middleware(['auth','priviledge:loa,master'])->group(function () {
             //CRUD
             Route::get('/nav-insert',[LoaViewController::class, 'gotoInputWarehouse']);
             Route::post('/insert',[LoaWarehouseController::class, 'insert']);
+            Route::get('/list',[LoaViewController::class, 'gotoListWarehouse']);
         });
     });
 });

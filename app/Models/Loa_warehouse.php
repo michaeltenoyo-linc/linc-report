@@ -12,6 +12,8 @@ class Loa_warehouse extends Model
     protected $table = 'loa_warehouse';
     public $incrementing = true;
     protected $fillable = [
+        'customer',
+        'lokasi',
         'periode_start',
         'periode_end',
         'jasa_titip',
@@ -23,6 +25,7 @@ class Loa_warehouse extends Model
         'management',
         'other_name',
         'other_rate',
-        'uom'
+        'uom',
+        'files',
     ];
 }
