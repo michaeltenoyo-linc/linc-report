@@ -150,6 +150,22 @@ export const AdminLoa = () => {
         });
     }    
 
+    const getLoaWarehouse = () => {
+        $('#yajra-datatable-warehouse-list').DataTable({
+            processing: true,
+            serverSide: false,
+            ajax: '/loa/action/warehouse/read',
+            columns: [
+                {data: 'no', name: 'TMS ID'},
+                {data: 'customer', name: 'Closed Data'},
+                {data: 'lokasi', name: 'Last Drop Location City'},
+                {data: 'periode', name: 'Billable Total Rate'},
+                {data: 'action', name: 'action', orderable: false, searchable: false},
+            ]
+        })
+    }
+
+    getLoaWarehouse();
     onDeleteOtherRate();
     onAddOtherRateLoa();
     onChangeLoaDivision();

@@ -54,20 +54,23 @@ Linc | List LOA Warehouse
 
                 <!-- LIST TABEL LOA -->
 
-                <table id="yajra-datatable-sj-list" class="items-center w-full bg-transparent border-collapse yajra-datatable-sj-list">
+                <table id="yajra-datatable-warehouse-list" class="items-center w-full bg-transparent border-collapse yajra-datatable-warehouse-list">
                     <thead>
                       <tr>
                         <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
                             
                         </th>
                         <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                          Nama Customer
+                            Nama Customer
                         </th>
                         <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                          Periode
+                            Lokasi
                         </th>
                         <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                          Action
+                            Periode
+                        </th>
+                        <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                            Action
                         </th>
                       </tr>
                     </thead>

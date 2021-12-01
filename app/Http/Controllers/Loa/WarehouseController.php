@@ -112,4 +112,10 @@ class WarehouseController extends BaseController
             return response()->json(['message' => 'Server saat ini hanya menyediakan manajemen LOA Warehouse'],500);
         }
     }
+
+    public function gotoDetailWarehouse(Request $req, $id){
+        $data['loa'] = Loa_warehouse::find($id);
+
+        return $data;
+    }
 }

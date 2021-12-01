@@ -82,7 +82,7 @@ class SuratjalanController extends BaseController
 
 
 
-        if(!isNull($req->input('item'))){
+        if(($req->input('total_utility')) > 0){
             //DLOADS
             $itemList = $req->input('item');
             $qtyList = $req->input('qty');
