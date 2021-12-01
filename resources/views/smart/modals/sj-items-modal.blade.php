@@ -14,8 +14,14 @@
                             htmlFor="grid-password"> Material Description </label>
                         <input type="text"
                             name="material_name"
-                            class="input-item-name autocomplete-items border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                            value=""/>
+                            class="input-item-name border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                            value="" list="items"/>
+                        
+                        <datalist id="items">
+                            @foreach ($items as $i)
+                                <option value="{{ $i->description }}">{{ $i->material_code }}</option>
+                            @endforeach
+                        </datalist>
                     </div>
                 </div>
     

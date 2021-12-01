@@ -27,7 +27,7 @@ Linc | Register Surat Jalan
                     <div class="w-full lg:w-8/12 px-4">
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="name"> No. SJ </label>
+                                htmlFor="name"> No. SJ SMART </label>
                             <input type="text"
                                 name="id_so"
                                 class="input-id-so border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
@@ -38,7 +38,7 @@ Linc | Register Surat Jalan
                     <div class="w-full lg:w-8/12 px-4">
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="name"> No. DO </label>
+                                htmlFor="name"> No. DO Surat Jalan <small style="color:red;">*Kosongkan bila tidak perlu</small></label>
                             <input type="text"
                                 name="no_do"
                                 class="input-no-do border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
@@ -146,6 +146,7 @@ Linc | Register Surat Jalan
                     </div>
 
                     <!-- Driver -->
+                    <!--
                     <div class="w-full lg:w-full px-4">
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
@@ -167,17 +168,24 @@ Linc | Register Surat Jalan
                                 value="" readonly/>
                         </div>
                     </div>
+                    -->
 
                     <div class="w-full lg:w-8/12 px-4">
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="grid-password"> Kendaraan </label>
+                                htmlFor="grid-password">Nopol Kendaraan <small style="color:red;"> *Bila tidak terdaftar (vendor/baru) dapat di register pada menu REGISTER TRUCK</small></label>
                             <input type="text"
                                 name="nopol"
-                                class="input-nopol autocomplete-trucks border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                value="" readonly/>
+                                class="input-nopol border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                value="" list="nopol" readonly/>
                         </div>
                     </div>
+
+                    <datalist id="nopol">
+                    @foreach ($kendaraan as $k)
+                        <option value="{{ $k->nopol }}">{{ $k->type }}</option>
+                    @endforeach
+                    </datalist>
 
                     <div class="w-full lg:w-4/12 px-4">
                         <div class="relative w-full mb-3">
@@ -258,4 +266,4 @@ Linc | Register Surat Jalan
 
 <div class="dot-elastic"></div>
 @endsection
-@include('smart.modals.sj-items-modal');
+@include('smart.modals.sj-items-modal', ['items' => $items]);

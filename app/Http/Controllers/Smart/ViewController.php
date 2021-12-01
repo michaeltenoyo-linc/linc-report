@@ -44,7 +44,10 @@ class ViewController extends BaseController
     }
 
     public function gotoSoNew(){
-        return view('smart.pages.nav-so-new');
+        $data['kendaraan'] = Trucks::get();
+        $data['items'] = Item::get();
+
+        return view('smart.pages.nav-so-new', $data);
     }
 
     public function gotoReportGenerate(){
