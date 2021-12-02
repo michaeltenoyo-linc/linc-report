@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Carbon;
 
 //Model
 use App\Models\Item;
@@ -115,7 +116,89 @@ class WarehouseController extends BaseController
 
     public function gotoDetailWarehouse(Request $req, $id){
         $data['loa'] = Loa_warehouse::find($id);
+        $start = Carbon::createFromFormat('Y-m-d',$data['loa']->periode_start)->format("d/m/Y");
+        $end = Carbon::createFromFormat('Y-m-d',$data['loa']->periode_end)->format('d/m/Y');
+        $data['periode'] = $start." - ".$end;
 
-        return $data;
+        //LIST BIAYA
+        $rateName = [];
+        $rate = [];
+        $rateUom = [];
+
+        $splitUom = explode(';',$data['loa']->uom);
+        $splitOtherName = explode(';',$data['loa']->other_name);
+        $splitOtherRate = explode(';',$data['loa']->other_rate);
+
+        //Biaya Umum
+        if($data['loa']->jasa_titip > 0){
+            array_push($rateName, "Jasa Titip");
+            array_push($rate, $data['loa']->jasa_titip);
+            array_push($rateUom, $splitUom[0]);
+        }
+
+        if($data['loa']->handling_in > 0){
+            array_push($rateName, "HI");
+            array_push($rate, $data['loa']->handling_in);
+            array_push($rateUom, $splitUom[1]);
+        }
+        
+        if($data['loa']->handling_out > 0){
+            array_push($rateName, "HO");
+            array_push($rate, $data['loa']->handling_out);
+            array_push($rateUom, $splitUom[2]);
+        }
+
+        if($data['loa']->rental_pallete > 0){
+            array_push($rateName, "Rental Pallete");
+            array_push($rate, $data['loa']->rental_pallete);
+            array_push($rateUom, $splitUom[3]);
+        }
+
+        if($data['loa']-> loading > 0){
+            array_push($rateName, "Loading");
+            array_push($rate, $data['loa']->loading);
+            array_push($rateUom, $splitUom[4]);
+        }
+
+        if($data['loa']->unloading > 0){
+            array_push($rateName, "Unloading");
+            array_push($rate, $data['loa']->unloading);
+            array_push($rateUom, $splitUom[5]);
+        }
+
+        if($data['loa']->management > 0){
+            array_push($rateName, "Management");
+            array_push($rate, $data['loa']->management);
+            array_push($rateUom, $splitUom[6]);
+        }
+
+        foreach ($splitOtherName as $d) {
+            array_push($rateName, $d);
+        }
+
+        $ctrUom = 7;
+        foreach ($splitOtherRate as $r) {
+            array_push($rate, $r);
+            array_push($rateUom, $splitUom[$ctrUom]);
+            $ctrUom++;
+        }
+
+        $data['rateName'] = $rateName;
+        $data['rate'] = $rate;
+        $data['rateUom'] = $rateUom;
+        $data['rateCount'] = count($rate) - 1;
+        $data['files'] = explode(';',$data['loa']->files);
+        $data['filesFormat'] = [];
+        $data['filesCount'] = 0;
+
+        foreach ($data['files'] as $file) {
+            if($file != ""){
+                $splitName = explode('.',$file);
+                array_push($data['filesFormat'],$splitName[1]);
+                $data['filesCount']++;
+            }
+        }        
+
+        return view('loa.pages.nav-loa-detail-warehouse',$data);
     }
 }

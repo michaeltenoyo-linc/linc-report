@@ -1,4 +1,5 @@
 import { AdminLoa } from "./pages/AdminLoa";
+import PDFObject from 'pdfobject';
 
 export const load = () => {
     //Loading Spinner

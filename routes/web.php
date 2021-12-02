@@ -198,5 +198,10 @@ Route::middleware(['auth','priviledge:loa,master'])->group(function () {
             Route::get('/detail/{id}',[LoaWarehouseController::class, 'gotoDetailWarehouse']);
         });
     });
+
+    //FILES GET
+    Route::get('/show-pdf/{filename}', function($filename){
+        return response()->file(storage_path("app/loa_warehouse/".$filename));
+    })->name('show-pdf');
 });
 

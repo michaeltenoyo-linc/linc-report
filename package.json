@@ -25,6 +25,7 @@
         "lodash": "^4.17.19",
         "moment": "^2.29.1",
         "node-snackbar": "^0.1.16",
+        "pdfobject": "^2.2.7",
         "postcss": "^8.3.9",
         "postcss-import": "^13.0",
         "postcss-nested": "^4.2",
