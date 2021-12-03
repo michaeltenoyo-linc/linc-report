@@ -88,7 +88,7 @@ class WarehouseController extends BaseController
             //IMAGES
             if($req->hasFile('fileImages')){
                 $filename = "loa_warehouse_".strval($newLoa->id).".png";
-                $req->file('filePDF')->storeAs(
+                $req->file('fileImages')->storeAs(
                     'loa_warehouse', $filename
                 );
                 $filenames .= $filename.";";
@@ -97,7 +97,7 @@ class WarehouseController extends BaseController
             //excel
             if($req->hasFile('fileExcel')){
                 $filename = "loa_warehouse_".strval($newLoa->id).".xlxs";
-                $req->file('filePDF')->storeAs(
+                $req->file('fileExcel')->storeAs(
                     'loa_warehouse', $filename
                 );
                 $filenames .= $filename.";";

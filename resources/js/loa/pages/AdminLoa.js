@@ -165,6 +165,19 @@ export const AdminLoa = () => {
         })
     }
 
+    const filesNavigation = () => {
+        $(document).on('click','.btn-nav-files', function(e){
+            e.preventDefault();
+
+            console.log("Files navigation clicked!");
+            let idFiles = $(this).val();
+
+            $('.files').addClass('hidden');
+            $('.files-'+idFiles).removeClass('hidden');
+        });
+    }
+
+    filesNavigation();
     getLoaWarehouse();
     onDeleteOtherRate();
     onAddOtherRateLoa();
