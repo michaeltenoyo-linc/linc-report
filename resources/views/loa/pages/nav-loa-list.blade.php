@@ -35,9 +35,11 @@ Linc | List LOA
                     </button>
                 </div>
                 <div class="w-1/2 mb-3">
-                    <button id="btn-loa-transport" class="w-3/4 bg-blue-500 text-white font-bold py-10 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
-                        Transport
-                    </button>
+                    <a href="{{ url('/loa/action/transport/list') }}">
+                        <button id="btn-loa-transport" class="w-3/4 bg-blue-500 text-white font-bold py-10 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
+                            Transport
+                        </button>
+                    </a>
                 </div>
                 <div class="w-1/2 mb-3">
                     <button id="btn-loa-exim" class="w-3/4 bg-blue-500 text-white font-bold py-10 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">

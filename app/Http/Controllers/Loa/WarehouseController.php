@@ -192,7 +192,7 @@ class WarehouseController extends BaseController
         $data['filesCount'] = 0;
 
         foreach ($data['files'] as $file) {
-            if($file != ""){
+            if($file != "" && $file !="none"){
                 $splitName = explode('.',$file);
                 array_push($data['filesFormat'],$splitName[1]);
                 $data['filesCount']++;

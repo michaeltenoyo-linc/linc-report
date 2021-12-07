@@ -32,6 +32,7 @@ use App\Http\Controllers\Greenfields\ReportController as GreenfieldsReportContro
 //LOA CONTROLLEr
 use App\Http\Controllers\Loa\ViewController as LoaViewController;
 use App\Http\Controllers\Loa\WarehouseController as LoaWarehouseController;
+use App\Http\Controllers\Loa\TransportController as LoaTransportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -199,6 +200,15 @@ Route::middleware(['auth','priviledge:loa,master'])->group(function () {
             Route::get('/list',[LoaViewController::class, 'gotoListWarehouse']);
             Route::get('/read',[LoaViewController::class, 'getWarehouseData']);
             Route::get('/detail/{id}',[LoaWarehouseController::class, 'gotoDetailWarehouse']);
+        });
+
+        Route::prefix('/action/transport')->group(function (){
+            //CRUD
+            Route::get('/nav-insert',[LoaViewController::class, 'gotoInputTransport']);
+            Route::post('/insert',[LoaTransportController::class, 'insert']);
+            Route::get('/list',[LoaViewController::class, 'gotoListTransport']);
+            Route::get('/read',[LoaViewController::class, 'getTransportData']);
+            Route::get('/detail/{id}',[LoaTransportController::class, 'gotoDetailTransport']);
         });
     });
 

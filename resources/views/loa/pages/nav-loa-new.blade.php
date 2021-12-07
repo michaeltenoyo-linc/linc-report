@@ -34,7 +34,7 @@ Linc | Input LOA
                         </button>
                     </div>
                     <div class="w-1/2 mb-3">
-                        <button id="btn-new-transport" class="w-3/4 bg-blue-500 text-white font-bold py-10 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
+                        <button onclick="window.location='{{ url('/loa/action/transport/nav-insert') }}'" id="btn-new-warehouse" class="w-3/4 bg-blue-500 text-white font-bold py-10 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
                             Transport
                         </button>
                     </div>

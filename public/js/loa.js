@@ -57,6 +57,7 @@ var AdminLoa = function AdminLoa() {
       var division = $('#form-loa-new .input-division').val();
 
       if (division == "warehouse") {
+        console.log(division);
         var pdf = $('#form-loa-new .input-file-pdf').val();
         console.log(pdf);
         sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
@@ -92,6 +93,49 @@ var AdminLoa = function AdminLoa() {
                 });
               },
               error: function error(request, status, _error) {
+                sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+                  icon: 'error',
+                  title: 'Oops...',
+                  text: JSON.parse(request.responseText).message
+                });
+              }
+            });
+          }
+        });
+      } else if (division == "transport") {
+        sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+          title: 'Are you sure?',
+          text: "Pastikan data sudah benar semua!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Iya, simpan!'
+        }).then(function (result) {
+          if (result.isConfirmed) {
+            $.ajaxSetup({
+              headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              },
+              processData: false,
+              contentType: false,
+              dataType: 'JSON'
+            });
+            $.ajax({
+              url: '/loa/action/transport/insert',
+              type: 'POST',
+              enctype: 'multipart/form-data',
+              data: new FormData($('#form-loa-new')[0]),
+              success: function success(data) {
+                sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+                  title: 'Tersimpan!',
+                  text: 'Data surat jalan sudah disimpan.',
+                  icon: 'success'
+                }).then(function () {
+                  location.reload();
+                });
+              },
+              error: function error(request, status, _error2) {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
                   icon: 'error',
                   title: 'Oops...',
@@ -152,6 +196,29 @@ var AdminLoa = function AdminLoa() {
     });
   };
 
+  var getLoaTransport = function getLoaTransport() {
+    $('#yajra-datatable-transport-list').DataTable({
+      processing: true,
+      serverSide: false,
+      ajax: '/loa/action/transport/read',
+      columns: [{
+        data: 'no',
+        name: 'TMS ID'
+      }, {
+        data: 'customer',
+        name: 'Closed Data'
+      }, {
+        data: 'periode',
+        name: 'Billable Total Rate'
+      }, {
+        data: 'action',
+        name: 'action',
+        orderable: false,
+        searchable: false
+      }]
+    });
+  };
+
   var filesNavigation = function filesNavigation() {
     $(document).on('click', '.btn-nav-files', function (e) {
       e.preventDefault();
@@ -165,6 +232,7 @@ var AdminLoa = function AdminLoa() {
   filesNavigation();
   getLoaWarehouse();
   onDeleteOtherRate();
+  getLoaTransport();
   onAddOtherRateLoa();
   onChangeLoaDivision();
   saveLoa();

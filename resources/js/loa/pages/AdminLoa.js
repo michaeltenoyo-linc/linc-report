@@ -77,6 +77,7 @@ export const AdminLoa = () => {
             let division = $('#form-loa-new .input-division').val();
 
             if(division == "warehouse"){
+                console.log(division);
                 let pdf = $('#form-loa-new .input-file-pdf').val();
                 console.log(pdf);
                 
@@ -120,10 +121,51 @@ export const AdminLoa = () => {
                                 })
                             },
                         });
-    
-    
                     }
                   })
+            }else if(division == "transport"){
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "Pastikan data sudah benar semua!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Iya, simpan!'
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            processData: false,
+                            contentType: false,
+                            dataType: 'JSON',
+                        });
+                        $.ajax({
+                            url: '/loa/action/transport/insert',
+                            type: 'POST',
+                            enctype: 'multipart/form-data',
+                            data: new FormData($('#form-loa-new')[0]),
+                            success: (data) => {
+                                Swal.fire({
+                                    title: 'Tersimpan!',
+                                    text: 'Data surat jalan sudah disimpan.',
+                                    icon: 'success'
+                                }).then(function(){
+                                    location.reload();
+                                });
+                            },
+                            error : function(request, status, error){
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: (JSON.parse(request.responseText)).message,
+                                })
+                            },
+                        });
+                    }
+                })
             }
             
         });
@@ -165,6 +207,20 @@ export const AdminLoa = () => {
         })
     }
 
+    const getLoaTransport = () => {
+        $('#yajra-datatable-transport-list').DataTable({
+            processing: true,
+            serverSide: false,
+            ajax: '/loa/action/transport/read',
+            columns: [
+                {data: 'no', name: 'TMS ID'},
+                {data: 'customer', name: 'Closed Data'},
+                {data: 'periode', name: 'Billable Total Rate'},
+                {data: 'action', name: 'action', orderable: false, searchable: false},
+            ]
+        })
+    }
+
     const filesNavigation = () => {
         $(document).on('click','.btn-nav-files', function(e){
             e.preventDefault();
@@ -180,6 +236,7 @@ export const AdminLoa = () => {
     filesNavigation();
     getLoaWarehouse();
     onDeleteOtherRate();
+    getLoaTransport();
     onAddOtherRateLoa();
     onChangeLoaDivision();
     saveLoa();
