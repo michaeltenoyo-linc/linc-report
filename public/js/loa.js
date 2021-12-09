@@ -126,13 +126,14 @@ var AdminLoa = function AdminLoa() {
               type: 'POST',
               enctype: 'multipart/form-data',
               data: new FormData($('#form-loa-new')[0]),
-              success: function success(data) {
+              success: function success(response) {
                 sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
                   title: 'Tersimpan!',
                   text: 'Data surat jalan sudah disimpan.',
                   icon: 'success'
                 }).then(function () {
-                  location.reload();
+                  console.log(response);
+                  location.replace('/loa/action/transport/detail/' + response['id']);
                 });
               },
               error: function error(request, status, _error2) {
@@ -219,6 +220,29 @@ var AdminLoa = function AdminLoa() {
     });
   };
 
+  var getTransportDetail = function getTransportDetail() {
+    $('#yajra-datatable-dtransport-list').DataTable({
+      processing: true,
+      serverSide: false,
+      ajax: '/loa/action/transport/get-routes/' + $('#id_loa').val(),
+      columns: [{
+        data: 'route_start',
+        name: 'TMS ID'
+      }, {
+        data: 'route_end',
+        name: 'Closed Data'
+      }, {
+        data: 'rate',
+        name: 'Billable Total Rate'
+      }, {
+        data: 'action',
+        name: 'action',
+        orderable: false,
+        searchable: false
+      }]
+    });
+  };
+
   var filesNavigation = function filesNavigation() {
     $(document).on('click', '.btn-nav-files', function (e) {
       e.preventDefault();
@@ -229,6 +253,7 @@ var AdminLoa = function AdminLoa() {
     });
   };
 
+  getTransportDetail();
   filesNavigation();
   getLoaWarehouse();
   onDeleteOtherRate();

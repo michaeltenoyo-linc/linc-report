@@ -13,9 +13,11 @@ use Illuminate\Support\Carbon;
 
 //Model
 use App\Models\Item;
+use App\Models\dloa_transport;
 use App\Models\Loa_transport;
 use App\Models\Trucks;
 use App\Models\Loa_warehouse;
+use Illuminate\Support\Facades\Session;
 
 class TransportController extends BaseController
 {
@@ -72,10 +74,22 @@ class TransportController extends BaseController
                 $newLoa->save();
             }
 
-            return response()->json(['message' => "Berhasil menyimpan LOA baru."],200);
+            return response()->json(['message' => "Berhasil menyimpan LOA baru.", 'id' => $newLoa->id],200);
         }else{
             return response()->json(['message' => 'Server saat ini hanya menyediakan manajemen LOA Warehouse'],500);
         }
+    }
+
+    public function getRoutes(Request $req, $id){
+        $data = dloa_transport::where('id_loa',$id)->get();
+
+        return DataTables::of($data)
+            ->addColumn('action', function($row){
+                $open = '<a class="inline-flex" href="'.url('/loa/action/transport/detail/'.$row->id).'"><button class="btn_yellow">Open</button></a>';
+                $btn = $open.'<form id="btn-transport-delete" class="inline-flex"><input name="id" type="hidden" value="'.$row->id.'"><button type="submit" class="btn_red">Delete</button></form>';
+                return $btn;
+            })
+            ->make(true);
     }
 
     public function gotoDetailTransport(Request $req, $id){
@@ -95,7 +109,7 @@ class TransportController extends BaseController
                 array_push($data['filesFormat'],$splitName[1]);
                 $data['filesCount']++;
             }
-        }        
+        }
 
         return view('loa.pages.nav-loa-detail-transport',$data);
     }

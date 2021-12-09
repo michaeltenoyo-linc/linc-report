@@ -32,8 +32,33 @@ Linc | List LOA
         </div>
         <div class="flex flex-nowrap p-8 text-center">
             <div class="w-full lg:w-12/12 px-4">
+                <hr>
+            </div>
+        </div>
+        <div class="flex flex-nowrap p-8 text-center">
+            <div class="w-full lg:w-12/12 px-4">
                 <!-- LIST TABEL RUTE DAN UNIT TRANSPORT -->
-                
+                <input type="hidden" name="id_loa" id="id_loa" value="{{ $loa->id }}">
+                <table id="yajra-datatable-dtransport-list" class="items-center w-full bg-transparent border-collapse yajra-datatable-dtransport-list">
+                    <thead>
+                      <tr>
+                        <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                            Rute Awal
+                        </th>
+                        <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                            Rute Akhir
+                        </th>
+                        <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                            Rate
+                        </th>
+                        <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                            Action
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
         </div>
 

@@ -15,7 +15,14 @@ class CreateDloaTransportsTable extends Migration
     {
         Schema::create('dloa_transports', function (Blueprint $table) {
             $table->id();
+            $table->integer('id_loa');
+            $table->string("rute_start");
+            $table->string("rute_end");
+            $table->float("rate",12);
+            $table->longText("otherName");
+            $table->longText("otherRate");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

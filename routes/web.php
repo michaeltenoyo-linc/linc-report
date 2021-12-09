@@ -206,6 +206,7 @@ Route::middleware(['auth','priviledge:loa,master'])->group(function () {
             //CRUD
             Route::get('/nav-insert',[LoaViewController::class, 'gotoInputTransport']);
             Route::post('/insert',[LoaTransportController::class, 'insert']);
+            Route::get('/get-routes/{id}',[LoaTransportController::class, 'getRoutes']);
             Route::get('/list',[LoaViewController::class, 'gotoListTransport']);
             Route::get('/read',[LoaViewController::class, 'getTransportData']);
             Route::get('/detail/{id}',[LoaTransportController::class, 'gotoDetailTransport']);

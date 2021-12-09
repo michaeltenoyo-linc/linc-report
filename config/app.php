@@ -163,6 +163,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        AzisHapidin\IndoRegion\IndoRegionServiceProvider::class,
 
         /*
          * Package Service Providers...
