@@ -13,9 +13,14 @@ class dloa_transport extends Model
     public $incrementing = true;
     protected $fillable = [
         'id_loa',
+        'unit',
+        'kapasitas',
         'rute_start',
         'rute_end',
         'rate',
+        'multidrop',
+        'loading',
+        'overnight',
         'otherName',
         'otherRate',
     ];

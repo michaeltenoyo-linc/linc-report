@@ -60,12 +60,65 @@ export const AdminLoa = () => {
         });
     }
 
+    const onAddOtherRateDloaTransport = () => {
+        $('#form-dloa-transport .btn-tambahan').on('click', function(e){
+            e.preventDefault();
+
+            let ctrOtherName = parseInt($('#form-dloa-transport .ctrOtherName').val());
+            let ctrOtherRate = parseInt($('#form-dloa-transport .ctrOtherRate').val());
+
+            let htmlOtherName = '<div class="inline-block w-5/12 lg:w-5/12 px-4 mb-6" >'
+                                +'<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"'
+                                +'htmlFor="grid-password"> Nama Biaya </label>'
+                                +'<input type="text"'
+                                +'name="other_name['+ctrOtherName+']"'
+                                +'class="input-other-name-'+ctrOtherName+' border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "'
+                                +'value=""/>'
+                                +'</div>';
+            
+            let htmlOtherRate = '<div class="inline-block w-3/12 lg:w-5/12 px-4 mb-6" >'
+                                +'<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"'
+                                +'htmlFor="grid-password"> Biaya </label>'
+                                +'<input type="number"'
+                                +'name="other_rate['+ctrOtherRate+']"'
+                                +'class="input-other-rate-'+ctrOtherRate+' border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "'
+                                +'value="0" min="0"/>'
+                                +'</div>';
+
+            let htmlOtherDelete = '<div class="inline-block w-full lg:w-1/12 px-4 mb-6" >'
+                                +'<button type="button"'
+                                +'id="btn-delete-other-rate" name="other_delete['+ctrOtherName+']"'
+                                +'class="input-other-delete-'+ctrOtherName+' bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded full"'
+                                +'value='+ctrOtherName+'>X</button>'
+                                +'</div>';
+
+            let newInputOther = "<div class='input-other-"+ctrOtherName+"'>"+htmlOtherName+htmlOtherRate+htmlOtherDelete+"</div>"
+            
+            ctrOtherName += 1;
+            ctrOtherRate += 1;
+
+            $('#form-dloa-transport .ctrOtherName').val(ctrOtherName);
+            $('#form-dloa-transport .ctrOtherRate').val(ctrOtherRate);
+
+            $('#form-dloa-transport .other-rate-container-transport').append(newInputOther);
+        });
+    }
+
     const onDeleteOtherRate = () => {
         $(document).on('click', '#btn-delete-other-rate', function(e){
             e.preventDefault();
 
             let idOtherRate = $(this).val();
             $('#form-loa-new .input-other-'+idOtherRate).remove();
+        });
+    }
+
+    const onDeleteOtherRateDloaTransport = () => {
+        $(document).on('click', '#btn-delete-other-rate', function(e){
+            e.preventDefault();
+
+            let idOtherRate = $(this).val();
+            $('#form-dloa-transport .input-other-'+idOtherRate).remove();
         });
     }
 
@@ -228,8 +281,9 @@ export const AdminLoa = () => {
             serverSide: false,
             ajax: '/loa/action/transport/get-routes/'+$('#id_loa').val(),
             columns: [
-                {data: 'route_start', name: 'TMS ID'},
-                {data: 'route_end', name: 'Closed Data'},
+                {data: 'unit', name: 'TMS ID'},
+                {data: 'rute_start', name: 'TMS ID'},
+                {data: 'rute_end', name: 'Closed Data'},
                 {data: 'rate', name: 'Billable Total Rate'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ]
@@ -252,6 +306,8 @@ export const AdminLoa = () => {
     filesNavigation();
     getLoaWarehouse();
     onDeleteOtherRate();
+    onDeleteOtherRateDloaTransport();
+    onAddOtherRateDloaTransport();
     getLoaTransport();
     onAddOtherRateLoa();
     onChangeLoaDivision();

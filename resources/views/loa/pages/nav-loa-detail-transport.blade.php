@@ -35,6 +35,102 @@ Linc | List LOA
                 <hr>
             </div>
         </div>
+        <!-- INPUT RUTE BARU -->
+        <div class="relative p-8 ">
+            <form id="form-dloa-transport" autocomplete="off" enctype="multipart/form-data">
+                <input type="hidden" class="ctrOtherName" name="ctrOtherName" value="0">
+                <input type="hidden" name="ctrOtherRate" class="ctrOtherRate" value="0">
+                <input type="hidden" name="id_loa" class="input-id-loa" value="{{ $loa->id }}">
+                <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase"> Routes Information </h6>
+                    <div class="w-full lg:w-12/12 px-4">
+                        <div class="w-full mb-3">
+                            <label class="uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                htmlFor="name">Lokasi</label>
+                            <input type="text"
+                                required
+                                name="lokasi"
+                                class="input-lokasi border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                value=""/>
+                        </div>
+                    </div>
+
+                    <div class="w-full lg:w-12/12 px-4 my-8">
+                        <hr>
+                    </div>
+
+                    <div class="w-full lg:w-12/12 px-4">
+                        <label class="uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                htmlFor="grid-password"> Detail Biaya </label>
+                        <small style="color:red;">
+                            *Jika biaya tidak ada di LOA, bisa dibiarkan "0"
+                        </small>
+                    </div>                    
+
+                    <!--Biaya Tambahan Transport-->
+                    <div class="transport w-full lg:w-12/12 px-4">
+                        <div class="w-full mb-3 border-4 border-dashed border-blue-300 py-8 px-4">
+                            <div class="inline-block w-full lg:w-12/12 px-4 mb-6" >
+                                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                    htmlFor="grid-password"> Rate Kirim </label>
+                                    <input type="number"
+                                    min=0
+                                    name="rate"
+                                    class="input-rate border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
+                                    value="0"/>
+                            </div>
+
+                            <div class="inline-block w-full lg:w-12/12 px-4 mb-6" >
+                                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                    htmlFor="grid-password"> Multidrop </label>
+                                    <input type="number"
+                                    min=0
+                                    name="multidrop"
+                                    class="input-multidrop border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
+                                    value="0"/>
+                            </div>
+
+                            <div class="inline-block w-full lg:w-12/12 px-4 mb-6" >
+                                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                    htmlFor="grid-password"> Overnight </label>
+                                    <input type="number"
+                                    min=0
+                                    name="overnight"
+                                    class="input-overnight border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
+                                    value="0"/>
+                            </div>
+
+                            <div class="inline-block w-full lg:w-12/12 px-4 mb-6" >
+                                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                    htmlFor="grid-password"> Loading </label>
+                                    <input type="number"
+                                    min=0
+                                    name="loading"
+                                    class="input-loading border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
+                                    value="0"/>
+                            </div>
+
+                            <div class="other-rate-container-transport">
+
+                            </div>
+
+                            <div class="w-full lg:w-12/12 px-4 flex justify-center" >
+                                <button class=" btn-tambahan bg-blue-500 rounded-full h-12 w-12 flex items-center justify-center">+</button>
+                            </div>
+                            <div class="w-full lg:w-12/12 px-4 flex justify-center" >
+                                <small style="color:red;text-align: center;">*Detail tambahan biaya yang kompleks tidak perlu ditambahkan<br>dapat dilihat melalui file LOA yang diupload.</small>    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- END RUTE BARU -->
+
+        <div class="flex flex-nowrap p-8 text-center">
+            <div class="w-full lg:w-12/12 px-4">
+                <hr>
+            </div>
+        </div>
         <div class="flex flex-nowrap p-8 text-center">
             <div class="w-full lg:w-12/12 px-4">
                 <!-- LIST TABEL RUTE DAN UNIT TRANSPORT -->
@@ -42,6 +138,9 @@ Linc | List LOA
                 <table id="yajra-datatable-dtransport-list" class="items-center w-full bg-transparent border-collapse yajra-datatable-dtransport-list">
                     <thead>
                       <tr>
+                        <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                            Unit
+                        </th>
                         <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
                             Rute Awal
                         </th>
