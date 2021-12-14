@@ -302,7 +302,34 @@ export const AdminLoa = () => {
         });
     }
 
+    const searchTransport = () => {
+        $('#form-search-transport').on('submit', function(e){
+            e.preventDefault();
+            
+            console.log("Searching Area...");
+
+            //AJAX
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                processData: false,
+                contentType: false,
+                dataType: 'JSON',
+            });
+            $.ajax({
+                url: '/loa/action/transport/search-routes',
+                type: 'POST',
+                data: new FormData($(this)[0]),
+                success: (data) => {
+                    console.log(data);
+                }
+            });
+        });
+    }
+
     getTransportDetail();
+    searchTransport();
     filesNavigation();
     getLoaWarehouse();
     onDeleteOtherRate();

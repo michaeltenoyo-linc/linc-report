@@ -58,7 +58,9 @@ class ViewController extends BaseController
 
     //Search Engine
     public function gotoSearchTransport(){
-        return view('loa.pages.nav-loa-search-transport');
+        $data['transport_cust'] = Loa_transport::select('customer')->groupBy('customer')->get();
+
+        return view('loa.pages.nav-loa-search-transport', $data);
     }
 
     //Data Ajax

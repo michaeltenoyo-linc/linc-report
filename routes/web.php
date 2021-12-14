@@ -192,6 +192,7 @@ Route::middleware(['auth','priviledge:loa,master'])->group(function () {
         Route::get('/',[LoaViewController::class, 'gotoLandingPage']);
         Route::get('/nav-loa-new',[LoaViewController::class, 'gotoInputLoa']);
         Route::get('/nav-loa-list', [LoaViewController::class, 'gotoListLoa']);
+        Route::get('/nav-search-transport',[LoaViewController::class, 'gotoSearchTransport']);
     
         Route::prefix('/action/warehouse')->group(function (){
             //CRUD
@@ -208,6 +209,7 @@ Route::middleware(['auth','priviledge:loa,master'])->group(function () {
             Route::post('/insert',[LoaTransportController::class, 'insert']);
             Route::get('/get-routes/{id}',[LoaTransportController::class, 'getRoutes']);
             Route::get('/list',[LoaViewController::class, 'gotoListTransport']);
+            Route::post('/search-routes',[LoaTransportController::class, 'searchTransport']);
             Route::get('/read',[LoaViewController::class, 'getTransportData']);
             Route::get('/detail/{id}',[LoaTransportController::class, 'gotoDetailTransport']);
         });
