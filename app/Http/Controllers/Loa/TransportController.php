@@ -17,7 +17,13 @@ use App\Models\dloa_transport;
 use App\Models\Loa_transport;
 use App\Models\Trucks;
 use App\Models\Loa_warehouse;
+use Illuminate\Mail\Transport\ArrayTransport;
 use Illuminate\Support\Facades\Session;
+//Model Area
+use App\Models\Province;
+use App\Models\Regency;
+use App\Models\District;
+use App\Models\Village;
 
 class TransportController extends BaseController
 {
@@ -112,5 +118,126 @@ class TransportController extends BaseController
         }
 
         return view('loa.pages.nav-loa-detail-transport',$data);
+    }
+
+    public function searchTransport(Request $req){
+        $customer = $req->input('customer');    
+
+        $loa = Loa_transport::where('customer', $customer)->whereDate('periode_end', '>=', Carbon::now())->first();
+        $dloa = dloa_transport::where('id_loa', $loa->id)->get();
+
+        
+        $ruteStart = $req->input('route_start');
+        $ruteEnd = $req->input('route_end');
+
+        $listStart = [];
+        $listEnd = [];
+        //CEK AREA RUTE START
+        if(! Province::where('name', $ruteStart)->first() === null){
+            $prov = Province::where('name', $ruteStart)->first();
+
+            //down
+            $kota = Regency::where('province_id', $prov->id)->get();
+            $kec = District::whereIn('regency_id', $kota->pluck('id'))->get();
+            $kel = Village::whereIn('district_id', $kec->pluck('id'))->get();
+
+            array_push($listStart, $prov->name);
+            array_push($listStart, $kota->name);
+            array_push($listStart, $kec->name);
+            array_push($listStart, $kel->name);
+        }else if(! Regency::where('name', $ruteStart)->first() === null){
+            $kota = Regency::where('name', $ruteStart)->first();
+
+            //up
+            $prov = Province::where('id', $kota->province_id)->first();
+            //down
+            $kec = District::where('regency_id', $kota->pluck('id'))->get();
+            $kel = Village::whereIn('district_id', $kec->pluck('id'))->get();
+
+            array_push($listStart, $prov->pluck('name'));
+            array_push($listStart, $kota->pluck('name'));
+            array_push($listStart, $kec->pluck('name'));
+            array_push($listStart, $kel->pluck('name'));
+        }else if(! District::where('name', $ruteStart)->first() === null){
+            $kec = District::where('name', $ruteStart)->first();
+
+            //up
+            $kota = Regency::where('id',$kec->district_id)->first();
+            $prov = Province::where('id',$kec->province_id)->first();
+            //down
+            $kel = Village::where('district_id',$kec->id)->get();
+
+            array_push($listStart, $prov->name);
+            array_push($listStart, $kota->name);
+            array_push($listStart, $kec->name);
+            array_push($listStart, $kel->name);
+        }else{
+            $kel = Village::where('name',$ruteStart)->first();
+
+            //up
+            $kec = District::where('id',$kel->district_id)->first();
+            $kota = Regency::where('id', $kec->regency_id)->first();
+            $prov = Province::where('id', $kota->province_id)->first();
+
+            array_push($listStart, $prov->name);
+            array_push($listStart, $kota->name);
+            array_push($listStart, $kec->name);
+            array_push($listStart, $kel->name);
+        }
+
+        //CEK AREA RUTE END
+        if(! Province::where('name', $ruteEnd)->first() === null){
+            $prov = Province::where('name', $ruteEnd)->first();
+
+            //down
+            $kota = Regency::where('province_id', $prov->id)->get();
+            $kec = District::whereIn('regency_id', $kota->id)->get();
+            $kel = Village::whereIn('district_id', $kec->id)->get();
+
+            array_push($listStart, $prov->name);
+            array_push($listStart, $kota->name);
+            array_push($listStart, $kec->name);
+            array_push($listStart, $kel->name);
+        }else if(! Regency::where('name', $ruteEnd)->first() === null){
+            $kota = Regency::where('name', $ruteEnd)->first();
+
+            //up
+            $prov = Province::where('id', $kota->province_id)->first();
+            //down
+            $kec = District::where('regency_id', $kota->pluck('id'))->get();
+            $kel = Village::whereIn('district_id', $kec->pluck('id'))->get();
+
+            array_push($listStart, $prov->pluck('name'));
+            array_push($listStart, $kota->pluck('name'));
+            array_push($listStart, $kec->pluck('name'));
+            array_push($listStart, $kel->pluck('name'));
+        }else if(! District::where('name', $ruteEnd)->first() === null){
+            $kec = District::where('name', $ruteEnd)->first();
+
+            //up
+            $kota = Regency::where('id',$kec->district_id)->first();
+            $prov = Province::where('id',$kec->province_id)->first();
+            //down
+            $kel = Village::where('district_id',$kec->id)->get();
+
+            array_push($listStart, $prov->name);
+            array_push($listStart, $kota->name);
+            array_push($listStart, $kec->name);
+            array_push($listStart, $kel->name);
+        }else{
+            $kel = Village::where('name',$ruteEnd)->first();
+
+            //up
+            $kec = District::where('id',$kel->district_id)->first();
+            $kota = Regency::where('id', $kec->regency_id)->first();
+            $prov = Province::where('id', $kota->province_id)->first();
+
+            array_push($listStart, $prov->name);
+            array_push($listStart, $kota->name);
+            array_push($listStart, $kec->name);
+            array_push($listStart, $kel->name);
+        }
+
+        return response()->json(['start'=>$listStart, 'end'=>$listEnd], 200);
     }
 }
