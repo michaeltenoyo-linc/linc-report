@@ -56,6 +56,11 @@ class ViewController extends BaseController
         return view('loa.pages.nav-loa-list-transport', $data);
     }
 
+    //Search Engine
+    public function gotoSearchTransport(){
+        return view('loa.pages.nav-loa-search-transport');
+    }
+
     //Data Ajax
     public function getWarehouseData(){
         $data = Loa_warehouse::get();

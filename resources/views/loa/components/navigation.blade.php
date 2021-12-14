@@ -130,22 +130,22 @@
             <hr class="my-4 md:min-w-full" />
             <!-- Heading -->
             <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                Report
+                Search Engine
             </h6>
             <!-- Navigation Product -->
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
                 <li class="items-center">
-                    @if (Request::path() == 'loa/nav-report-generate')
-                        <a href="{{url('/loa/nav-report-generate')}}"
+                    @if (Request::path() == 'loa/nav-search-transport')
+                        <a href="{{url('/loa/nav-search-transport')}}"
                             class="page_nav_active">
                             <i class="far fa-clipboard"></i>
-                            Generate Report
+                            Transport Routes
                         </a>
                     @else
-                        <a href="{{url('/loa/nav-report-generate')}}"
+                        <a href="{{url('/loa/nav-search-transport')}}"
                             class="page_nav">
                             <i class="far fa-clipboard"></i>
-                            Generate Report
+                            Transport Routes
                         </a>
                     @endif
                 </li>

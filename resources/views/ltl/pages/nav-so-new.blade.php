@@ -160,4 +160,3 @@ Linc | Register Surat Jalan
 
 <div class="dot-elastic"></div>
 @endsection
-@include('smart.modals.sj-items-modal');
