@@ -31,7 +31,7 @@ Linc | List LOA Transport
                             class="input-customer border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                             value=""
                             list="transport-customers"/>
-                        
+
                         <datalist id="transport-customers">
                             @foreach ( $transport_cust as $c)
                                 <option value="{{ $c->customer }}"></option>
@@ -58,7 +58,7 @@ Linc | List LOA Transport
                     <thead>
                       <tr>
                         <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                            
+
                         </th>
                         <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
                             Nama Customer

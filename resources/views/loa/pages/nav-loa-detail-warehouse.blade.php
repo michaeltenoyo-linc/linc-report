@@ -72,7 +72,7 @@ Linc | List LOA
             </div>
         @endfor
         </div>
-        
+
         <!-- FILES CONTAINER -->
         @for ($i=0; $i<$filesCount; $i++)
             @if ($filesFormat[$i] == "pdf")

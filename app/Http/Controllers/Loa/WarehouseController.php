@@ -34,29 +34,29 @@ class WarehouseController extends BaseController
             $inputOtherName = ($req->input('other_name'))?$req->input('other_name'):[];
             $inputOtherRate = ($req->input('other_rate'))?$req->input('other_rate'):[];
             $inputUom = $req->input('uom');
-            
+
             $other_name = "";
             $other_rate = "";
             $uom = "";
 
-            for ($i=0; $i < $req->input('ctrOtherName'); $i++) { 
+            for ($i=0; $i < $req->input('ctrOtherName'); $i++) {
                 if(isset($inputOtherName[$i])){
                     $other_name .= strval($inputOtherName[$i]).";";
                 }
             }
 
-            for ($i=0; $i < $req->input('ctrOtherRate'); $i++) { 
+            for ($i=0; $i < $req->input('ctrOtherRate'); $i++) {
                 if(isset($inputOtherRate[$i])){
                     $other_rate .= strval($inputOtherRate[$i]).";";
                 }
             }
 
-            for ($i=0; $i < $req->input('ctrOtherUomWarehouse'); $i++) { 
+            for ($i=0; $i < $req->input('ctrOtherUomWarehouse'); $i++) {
                 if(isset($inputUom[$i])){
                     $uom .= strval($inputUom[$i]).";";
                 }
             }
-            
+
             $newLoa = Loa_warehouse::create([
                 'customer' => $req->input('customer'),
                 'lokasi' => $req->input('lokasi'),
@@ -141,7 +141,7 @@ class WarehouseController extends BaseController
             array_push($rate, $data['loa']->handling_in);
             array_push($rateUom, $splitUom[1]);
         }
-        
+
         if($data['loa']->handling_out > 0){
             array_push($rateName, "HO");
             array_push($rate, $data['loa']->handling_out);
@@ -197,7 +197,7 @@ class WarehouseController extends BaseController
                 array_push($data['filesFormat'],$splitName[1]);
                 $data['filesCount']++;
             }
-        }        
+        }
 
         return view('loa.pages.nav-loa-detail-warehouse',$data);
     }

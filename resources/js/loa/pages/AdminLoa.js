@@ -20,7 +20,7 @@ export const AdminLoa = () => {
                                 +'class="input-other-name-'+ctrOtherName+' border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "'
                                 +'value=""/>'
                                 +'</div>';
-            
+
             let htmlOtherRate = '<div class="inline-block w-3/12 lg:w-4/12 px-4 mb-6" >'
                                 +'<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"'
                                 +'htmlFor="grid-password"> Biaya </label>'
@@ -47,7 +47,7 @@ export const AdminLoa = () => {
                                 +'</div>';
 
             let newInputOther = "<div class='input-other-"+ctrOtherName+"'>"+htmlOtherName+htmlOtherRate+htmlOtherUom+htmlOtherDelete+"</div>"
-            
+
             ctrOtherName += 1;
             ctrOtherRate += 1;
             ctrOtherUom += 1;
@@ -75,7 +75,7 @@ export const AdminLoa = () => {
                                 +'class="input-other-name-'+ctrOtherName+' border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "'
                                 +'value=""/>'
                                 +'</div>';
-            
+
             let htmlOtherRate = '<div class="inline-block w-3/12 lg:w-5/12 px-4 mb-6" >'
                                 +'<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"'
                                 +'htmlFor="grid-password"> Biaya </label>'
@@ -93,7 +93,7 @@ export const AdminLoa = () => {
                                 +'</div>';
 
             let newInputOther = "<div class='input-other-"+ctrOtherName+"'>"+htmlOtherName+htmlOtherRate+htmlOtherDelete+"</div>"
-            
+
             ctrOtherName += 1;
             ctrOtherRate += 1;
 
@@ -133,7 +133,7 @@ export const AdminLoa = () => {
                 console.log(division);
                 let pdf = $('#form-loa-new .input-file-pdf').val();
                 console.log(pdf);
-                
+
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "Pastikan data sudah benar semua!",
@@ -221,7 +221,7 @@ export const AdminLoa = () => {
                     }
                 })
             }
-            
+
         });
     }
 
@@ -244,7 +244,7 @@ export const AdminLoa = () => {
                 $('#form-loa-new .bulk').removeClass("hidden");
             }
         });
-    }    
+    }
 
     const getLoaWarehouse = () => {
         $('#yajra-datatable-warehouse-list').DataTable({
@@ -305,7 +305,7 @@ export const AdminLoa = () => {
     const searchTransport = () => {
         $('#form-search-transport').on('submit', function(e){
             e.preventDefault();
-            
+
             console.log("Searching Area...");
 
             //AJAX
@@ -323,6 +323,84 @@ export const AdminLoa = () => {
                 data: new FormData($(this)[0]),
                 success: (data) => {
                     console.log(data);
+                    let start = data['start'];
+                    let end = data['end'];
+                    let startIs = data['startIs'];
+                    let endIs = data['endIs'];
+
+                    //START INFORMATION
+                    $('#container-route-start').empty();
+
+                    if(startIs == "prov"){
+                        $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-red-600 rounded-md'>Provinsi</span> <b>"+start[0]+"</b></div>");
+                        $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-orange-600 rounded-md'>Kota</span> "+start[1].length+"</div>");
+                        $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-green-600 rounded-md'>Kecamatan</span> "+start[2].length+"</div>");
+                        $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-blue-600 rounded-md'>Kelurahan</span> "+start[3].length+"</div>");
+                    }else if(startIs == "kota"){
+                        $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-red-600 rounded-md'>Provinsi</span> "+start[0]+"</div>");
+                        $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-orange-600 rounded-md'>Kota</span> <b>"+start[1]+"</b></div>");
+                        $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-green-600 rounded-md'>Kecamatan</span> "+start[2].length+"</div>");
+                        $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-blue-600 rounded-md'>Kelurahan</span> "+start[3].length+"</div>");
+                    }else if(startIs == "kec"){
+                        $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-red-600 rounded-md'>Provinsi</span> "+start[0]+"</div>");
+                        $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-orange-600 rounded-md'>Kota</span> "+start[1]+"</div>");
+                        $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-green-600 rounded-md'>Kecamatan</span> <b>"+start[2]+"</b></div>");
+                        $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-blue-600 rounded-md'>Kelurahan</span> "+start[3].length+"</div>");
+                    }else{
+                        $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-red-600 rounded-md'>Provinsi</span> "+start[0]+"</div>");
+                        $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-orange-600 rounded-md'>Kota</span> "+start[1]+"</div>");
+                        $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-green-600 rounded-md'>Kecamatan</span> "+start[2]+"</div>");
+                        $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-blue-600 rounded-md'>Kelurahan</span> <b>"+start[3]+"</b></div>");
+                    }
+
+                    //END INFORMATION
+                    $('#container-route-end').empty();
+
+                    if(endIs == "prov"){
+                        $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-red-600 rounded-md'>Provinsi</span> <b>"+end[0]+"</b></div>");
+                        $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-orange-600 rounded-md'>Kota</span> "+end[1].length+"</div>");
+                        $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-green-600 rounded-md'>Kecamatan</span> "+end[2].length+"</div>");
+                        $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-blue-600 rounded-md'>Kelurahan</span> "+end[3].length+"</div>");
+                    }else if(endIs == "kota"){
+                        $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-red-600 rounded-md'>Provinsi</span> "+end[0]+"</div>");
+                        $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-orange-600 rounded-md'>Kota</span> <b>"+end[1]+"</b></div>");
+                        $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-green-600 rounded-md'>Kecamatan</span> "+end[2].length+"</div>");
+                        $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-blue-600 rounded-md'>Kelurahan</span> "+end[3].length+"</div>");
+                    }else if(endIs == "kec"){
+                        $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-red-600 rounded-md'>Provinsi</span> "+end[0]+"</div>");
+                        $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-orange-600 rounded-md'>Kota</span> "+end[1]+"</div>");
+                        $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-green-600 rounded-md'>Kecamatan</span> <b>"+end[2]+"</b></div>");
+                        $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-blue-600 rounded-md'>Kelurahan</span> "+end[3].length+"</div>");
+                    }else{
+                        $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-red-600 rounded-md'>Provinsi</span> "+end[0]+"</div>");
+                        $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-orange-600 rounded-md'>Kota</span> "+end[1]+"</div>");
+                        $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-green-600 rounded-md'>Kecamatan</span> "+end[2]+"</div>");
+                        $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-blue-600 rounded-md'>Kelurahan</span> <b>"+end[3]+"</b></div>");
+                    }
+
+                    //SHOW DLOA LIST
+                    $('#content-dloa-list').empty();
+
+                    var idListed = [];
+                    data['listDloa'].forEach(e => {
+                        let notListed = true;
+                        idListed.forEach(idl => {
+                            if (e['id'] == idl){
+                                notListed = false;
+                            }
+                        });
+
+                        if(notListed){
+                            let col1 = "<td class='p-2 whitespace-nowrap text-left'>"+e['id'].toString().toUpperCase()+"</td>";
+                            let col2 = "<td class='p-2 whitespace-nowrap text-left'>"+e['rute_start'].toString().toUpperCase()+"</td>";
+                            let col3 = "<td class='p-2 whitespace-nowrap text-left'>"+e['rute_end'].toString().toUpperCase()+"</td>";
+                            let col4 = "<td class='p-2 whitespace-nowrap text-left'>"+e['unit'].toString().toUpperCase()+"</td>";
+                            let col5 = "<td class='p-2 whitespace-nowrap text-left'>"+"<button class='bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded'>Detail</button>"+"</td>";
+
+                            $('#content-dloa-list').append("<tr>"+col1+col2+col3+col4+col5+"</tr>");
+                            idListed.push(e['id']);
+                        }
+                    });
                 }
             });
         });

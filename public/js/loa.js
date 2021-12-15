@@ -300,6 +300,81 @@ var AdminLoa = function AdminLoa() {
         data: new FormData($(this)[0]),
         success: function success(data) {
           console.log(data);
+          var start = data['start'];
+          var end = data['end'];
+          var startIs = data['startIs'];
+          var endIs = data['endIs']; //START INFORMATION
+
+          $('#container-route-start').empty();
+
+          if (startIs == "prov") {
+            $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-red-600 rounded-md'>Provinsi</span> <b>" + start[0] + "</b></div>");
+            $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-orange-600 rounded-md'>Kota</span> " + start[1].length + "</div>");
+            $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-green-600 rounded-md'>Kecamatan</span> " + start[2].length + "</div>");
+            $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-blue-600 rounded-md'>Kelurahan</span> " + start[3].length + "</div>");
+          } else if (startIs == "kota") {
+            $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-red-600 rounded-md'>Provinsi</span> " + start[0] + "</div>");
+            $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-orange-600 rounded-md'>Kota</span> <b>" + start[1] + "</b></div>");
+            $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-green-600 rounded-md'>Kecamatan</span> " + start[2].length + "</div>");
+            $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-blue-600 rounded-md'>Kelurahan</span> " + start[3].length + "</div>");
+          } else if (startIs == "kec") {
+            $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-red-600 rounded-md'>Provinsi</span> " + start[0] + "</div>");
+            $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-orange-600 rounded-md'>Kota</span> " + start[1] + "</div>");
+            $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-green-600 rounded-md'>Kecamatan</span> <b>" + start[2] + "</b></div>");
+            $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-blue-600 rounded-md'>Kelurahan</span> " + start[3].length + "</div>");
+          } else {
+            $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-red-600 rounded-md'>Provinsi</span> " + start[0] + "</div>");
+            $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-orange-600 rounded-md'>Kota</span> " + start[1] + "</div>");
+            $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-green-600 rounded-md'>Kecamatan</span> " + start[2] + "</div>");
+            $('#container-route-start').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-blue-600 rounded-md'>Kelurahan</span> <b>" + start[3] + "</b></div>");
+          } //END INFORMATION
+
+
+          $('#container-route-end').empty();
+
+          if (endIs == "prov") {
+            $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-red-600 rounded-md'>Provinsi</span> <b>" + end[0] + "</b></div>");
+            $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-orange-600 rounded-md'>Kota</span> " + end[1].length + "</div>");
+            $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-green-600 rounded-md'>Kecamatan</span> " + end[2].length + "</div>");
+            $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-blue-600 rounded-md'>Kelurahan</span> " + end[3].length + "</div>");
+          } else if (endIs == "kota") {
+            $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-red-600 rounded-md'>Provinsi</span> " + end[0] + "</div>");
+            $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-orange-600 rounded-md'>Kota</span> <b>" + end[1] + "</b></div>");
+            $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-green-600 rounded-md'>Kecamatan</span> " + end[2].length + "</div>");
+            $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-blue-600 rounded-md'>Kelurahan</span> " + end[3].length + "</div>");
+          } else if (endIs == "kec") {
+            $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-red-600 rounded-md'>Provinsi</span> " + end[0] + "</div>");
+            $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-orange-600 rounded-md'>Kota</span> " + end[1] + "</div>");
+            $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-green-600 rounded-md'>Kecamatan</span> <b>" + end[2] + "</b></div>");
+            $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-blue-600 rounded-md'>Kelurahan</span> " + end[3].length + "</div>");
+          } else {
+            $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-red-600 rounded-md'>Provinsi</span> " + end[0] + "</div>");
+            $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-orange-600 rounded-md'>Kota</span> " + end[1] + "</div>");
+            $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-green-600 rounded-md'>Kecamatan</span> " + end[2] + "</div>");
+            $('#container-route-end').append("<div class='mb-2'><span class='text-white text-xs p-1 m-1 bg-blue-600 rounded-md'>Kelurahan</span> <b>" + end[3] + "</b></div>");
+          } //SHOW DLOA LIST
+
+
+          $('#content-dloa-list').empty();
+          var idListed = [];
+          data['listDloa'].forEach(function (e) {
+            var notListed = true;
+            idListed.forEach(function (idl) {
+              if (e['id'] == idl) {
+                notListed = false;
+              }
+            });
+
+            if (notListed) {
+              var col1 = "<td class='p-2 whitespace-nowrap text-left'>" + e['id'].toString().toUpperCase() + "</td>";
+              var col2 = "<td class='p-2 whitespace-nowrap text-left'>" + e['rute_start'].toString().toUpperCase() + "</td>";
+              var col3 = "<td class='p-2 whitespace-nowrap text-left'>" + e['rute_end'].toString().toUpperCase() + "</td>";
+              var col4 = "<td class='p-2 whitespace-nowrap text-left'>" + e['unit'].toString().toUpperCase() + "</td>";
+              var col5 = "<td class='p-2 whitespace-nowrap text-left'>" + "<button class='bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded'>Detail</button>" + "</td>";
+              $('#content-dloa-list').append("<tr>" + col1 + col2 + col3 + col4 + col5 + "</tr>");
+              idListed.push(e['id']);
+            }
+          });
         }
       });
     });

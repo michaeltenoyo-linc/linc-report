@@ -66,7 +66,61 @@ Linc | Input LOA
                 </div>
             </div>
 
-            
+            <!-- SHOW ROUTE INFORMATION -->
+
+            <div class="inline-block w-full lg:w-5/12 px-4">
+                <div class="relative w-full mb-3">
+                    <!--START-->
+                    <div id="container-route-start">
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="inline-block w-full lg:w-5/12 px-4">
+                <div class="relative w-full mb-3">
+                    <!--END-->
+                    <div id="container-route-end">
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full lg:w-12/12 my-4">
+                <div class="relative w-full">
+                    <hr>
+                </div>
+            </div>
+
+            <!-- Detail LOA Search Result -->
+            <div class="w-full lg:w-12/12 my-4">
+                <div class="relative w-full">
+                    <table id="table-warehouse-detail" class="table-auto w-full">
+                        <thead class="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
+                          <tr>
+                            <th class="p-2 whitespace-nowrap">
+                                <div class="font-semibold text-left">ID</div>
+                            </th>
+                            <th class="p-2 whitespace-nowrap">
+                                <div class="font-semibold text-left">Rute Awal</div>
+                            </th>
+                            <th class="p-2 whitespace-nowrap">
+                                <div class="font-semibold text-left">Rute Akhir</div>
+                            </th>
+                            <th class="p-2 whitespace-nowrap">
+                                <div class="font-semibold text-left">Unit</div>
+                            </th>
+                            <th class="p-2 whitespace-nowrap">
+                                <div class="font-semibold text-left"></div>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody id="content-dloa-list">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
