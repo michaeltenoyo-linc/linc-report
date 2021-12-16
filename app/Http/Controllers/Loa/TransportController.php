@@ -136,8 +136,8 @@ class TransportController extends BaseController
         $start = "";
         $end = "";
         //CEK AREA RUTE START
-        if(Province::where('name', 'LIKE','%'.$ruteStart.'%')->first() != null){
-            $prov = Province::where('name', 'LIKE','%'.$ruteStart.'%')->first();
+        if(Province::where('name', '=',$ruteStart)->first() != null){
+            $prov = Province::where('name', '=',$ruteStart)->first();
 
             //down
             $kota = Regency::where('province_id', $prov->id)->get();
@@ -160,8 +160,8 @@ class TransportController extends BaseController
             foreach ($listStart[3] as $a) {
                 array_push($listAreaStart, $a);
             }
-        }else if(Regency::where('name', 'LIKE','%'.$ruteStart.'%')->first() != null){
-            $kota = Regency::where('name', 'LIKE','%'.$ruteStart.'%')->first();
+        }else if(Regency::where('name', '=',$ruteStart)->first() != null){
+            $kota = Regency::where('name', '=',$ruteStart)->first();
 
             //up
             $prov = Province::where('id', $kota->province_id)->first();
@@ -183,8 +183,8 @@ class TransportController extends BaseController
             foreach ($listStart[3] as $a) {
                 array_push($listAreaStart, $a);
             }
-        }else if(District::where('name', 'LIKE','%'.$ruteStart.'%')->first() != null){
-            $kec = District::where('name', 'LIKE','%'.$ruteStart.'%')->first();
+        }else if(District::where('name', '=',$ruteStart)->first() != null){
+            $kec = District::where('name', '=',$ruteStart)->first();
 
             //up
             $kota = Regency::where('id',$kec->regency_id)->first();
@@ -205,7 +205,7 @@ class TransportController extends BaseController
                 array_push($listAreaStart, $a);
             }
         }else{
-            $kel = Village::where('name', 'LIKE','%'.$ruteStart.'%')->first();
+            $kel = Village::where('name', '=',$ruteStart)->first();
 
             //up
             $kec = District::where('id',$kel->district_id)->first();
@@ -225,8 +225,8 @@ class TransportController extends BaseController
         }
 
         //CEK AREA RUTE END
-        if(Province::where('name', 'LIKE','%'.$ruteEnd.'%')->first() != null){
-            $prov = Province::where('name', 'LIKE','%'.$ruteEnd.'%')->first();
+        if(Province::where('name', '=',$ruteEnd)->first() != null){
+            $prov = Province::where('name', '=',$ruteEnd)->first();
 
             //down
             $kota = Regency::where('province_id', $prov->id)->get();
@@ -249,8 +249,8 @@ class TransportController extends BaseController
             foreach ($listEnd[3] as $a) {
                 array_push($listAreaEnd, $a);
             }
-        }else if(Regency::where('name', 'LIKE','%'.$ruteEnd.'%')->first() != null){
-            $kota = Regency::where('name', 'LIKE','%'.$ruteEnd.'%')->first();
+        }else if(Regency::where('name', '=',$ruteEnd)->first() != null){
+            $kota = Regency::where('name', '=',$ruteEnd)->first();
 
             //up
             $prov = Province::where('id', $kota->province_id)->first();
@@ -272,8 +272,8 @@ class TransportController extends BaseController
             foreach ($listEnd[3] as $a) {
                 array_push($listAreaEnd, $a);
             }
-        }else if(District::where('name', 'LIKE','%'.$ruteEnd.'%')->first() != null){
-            $kec = District::where('name', 'LIKE','%'.$ruteEnd.'%')->first();
+        }else if(District::where('name', '=',$ruteEnd)->first() != null){
+            $kec = District::where('name', '=',$ruteEnd)->first();
 
             //up
             $kota = Regency::where('id',$kec->regency_id)->first();
@@ -294,7 +294,7 @@ class TransportController extends BaseController
                 array_push($listAreaEnd, $a);
             }
         }else{
-            $kel = Village::where('name', 'LIKE','%'.$ruteEnd.'%')->first();
+            $kel = Village::where('name', '=',$ruteEnd)->first();
 
             //up
             $kec = District::where('id',$kel->district_id)->first();
@@ -317,13 +317,22 @@ class TransportController extends BaseController
         //GET DLOA WITH LOOP ALL AREA
         foreach ($listAreaStart as $s) {
             foreach ($listAreaEnd as $e) {
-                $tempDloa = dloa_transport::where('id_loa',$loa->id)->where('rute_start',$s)->where('rute_end',$e)->first();
+                $tempDloa = dloa_transport::where('id_loa',$loa->id)->where('rute_start','LIKE','%'.$s.'%')->where('rute_end','LIKE','%'.$e.'%')->get();
                 if($tempDloa != null){
-                    array_push($listDloa, $tempDloa);
+                    foreach ($tempDloa as $td) {
+                        array_push($listDloa, $td);
+                    }
                 }
             }
         }
 
         return response()->json(['listDloa' => $listDloa,'start'=>$listStart, 'end'=>$listEnd, 'startIs'=>$start, 'endIs'=>$end, 'allAreaStart' => $listAreaStart, 'allAreaEnd' => $listAreaEnd], 200);
+    }
+
+    public function getDetailLoa(Request $req, $id){
+        $dloa = dloa_transport::where('id',$id)->first();
+        $loa = Loa_transport::where('id',$dloa->id_loa)->first();
+
+        return response()->json(['data' => $dloa, 'loa' => $loa], 200);
     }
 }

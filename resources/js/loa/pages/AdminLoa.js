@@ -395,7 +395,7 @@ export const AdminLoa = () => {
                             let col2 = "<td class='p-2 whitespace-nowrap text-left'>"+e['rute_start'].toString().toUpperCase()+"</td>";
                             let col3 = "<td class='p-2 whitespace-nowrap text-left'>"+e['rute_end'].toString().toUpperCase()+"</td>";
                             let col4 = "<td class='p-2 whitespace-nowrap text-left'>"+e['unit'].toString().toUpperCase()+"</td>";
-                            let col5 = "<td class='p-2 whitespace-nowrap text-left'>"+"<button class='bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded'>Detail</button>"+"</td>";
+                            let col5 = "<td class='p-2 whitespace-nowrap text-left'>"+"<button value='"+e['id']+"' id='transport-open-detail' class='bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded'>Detail</button>"+"</td>";
 
                             $('#content-dloa-list').append("<tr>"+col1+col2+col3+col4+col5+"</tr>");
                             idListed.push(e['id']);

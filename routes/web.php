@@ -212,6 +212,7 @@ Route::middleware(['auth','priviledge:loa,master'])->group(function () {
             Route::post('/search-routes',[LoaTransportController::class, 'searchTransport']);
             Route::get('/read',[LoaViewController::class, 'getTransportData']);
             Route::get('/detail/{id}',[LoaTransportController::class, 'gotoDetailTransport']);
+            Route::get('/dloa/{id}', [LoaTransportController::class, 'getDetailLoa']);
         });
     });
 

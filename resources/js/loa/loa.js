@@ -1,4 +1,5 @@
 import { AdminLoa } from "./pages/AdminLoa";
+import { TransportModal } from "./modals/TransportModal";
 import PDFObject from 'pdfobject';
 
 export const load = () => {
@@ -14,6 +15,7 @@ export const load = () => {
     })
 
     AdminLoa();
+    TransportModal();
 };
 
 load();

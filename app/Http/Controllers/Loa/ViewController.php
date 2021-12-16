@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Loa;
 
 use App\dloa_transport;
+use App\Models\District;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -14,7 +15,10 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Models\Item;
 use App\Models\Loa_transport;
 use App\Models\Loa_warehouse;
+use App\Models\Province;
+use App\Models\Regency;
 use App\Models\Trucks;
+use App\Models\Village;
 use Carbon\Carbon;
 
 class ViewController extends BaseController
@@ -59,6 +63,10 @@ class ViewController extends BaseController
     //Search Engine
     public function gotoSearchTransport(){
         $data['transport_cust'] = Loa_transport::select('customer')->groupBy('customer')->get();
+        $data['kel'] = Village::get();
+        $data['kec'] = District::get();
+        $data['kota'] = Regency::get();
+        $data['prov'] = Province::get();
 
         return view('loa.pages.nav-loa-search-transport', $data);
     }

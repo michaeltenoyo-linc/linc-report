@@ -1,10 +1,10 @@
 {
-    "/js/app.js": "/js/app.js",
-    "/js/auth.js": "/js/auth.js",
-    "/js/smart.js": "/js/smart.js",
-    "/js/ltl.js": "/js/ltl.js",
-    "/js/loa.js": "/js/loa.js",
-    "/js/greenfields.js": "/js/greenfields.js",
-    "/js/master.js": "/js/master.js",
-    "/css/app.css": "/css/app.css"
+    "/js/app.js": "/js/app.js?id=ab96f09cd4564f36e0e2",
+    "/js/auth.js": "/js/auth.js?id=09072c4cf5dc3518f07a",
+    "/js/smart.js": "/js/smart.js?id=5279d4e7b28fb5d2e170",
+    "/js/ltl.js": "/js/ltl.js?id=899c340cbba8ce731bc4",
+    "/js/loa.js": "/js/loa.js?id=7504b5b3f32bd78ba4ca",
+    "/js/greenfields.js": "/js/greenfields.js?id=37a5f7f217ca678a0bd2",
+    "/js/master.js": "/js/master.js?id=f574d41c6fb48265885a",
+    "/css/app.css": "/css/app.css?id=b4b73beeda6e26e220d8"
 }
