@@ -10,7 +10,7 @@ Linc | List LOA Transport
 
 @section('content')
 <div class="w-full mb-12 px-4">
-    <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
+    <div class="relative min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
         <div class="rounded-t mb-0 px-4 py-3 border-0">
             <div class="flex flex-wrap items-center">
                 <div class="relative w-full px-4 max-w-full flex-grow flex-1">
@@ -20,8 +20,8 @@ Linc | List LOA Transport
                 </div>
             </div>
         </div>
-        <div class="flex flex-nowrap p-8 ">
-            <div class="flex flex-wrap w-full">
+        <div class="p-8 ">
+            <div class="w-full">
                 <div class="w-full lg:w-12/12 px-4 mb-8">
                     <div class="relative w-full mb-3">
                         <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
@@ -53,27 +53,30 @@ Linc | List LOA Transport
                 </div>
 
                 <!-- LIST TABEL LOA -->
-
-                <table id="yajra-datatable-transport-list" class="items-center w-full bg-transparent border-collapse yajra-datatable-transport-list">
-                    <thead>
-                      <tr>
-                        <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-
-                        </th>
-                        <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                            Nama Customer
-                        </th>
-                        <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                            Periode
-                        </th>
-                        <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                            Action
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+                <div class="w-full lg:w-12/12 px-4 mb-8">
+                    <div class="relative w-full mb-3">
+                        <table id="yajra-datatable-transport-list" class="items-center w-full bg-transparent border-collapse yajra-datatable-transport-list">
+                            <thead>
+                              <tr>
+                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+        
+                                </th>
+                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                    Nama Customer
+                                </th>
+                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                    Periode
+                                </th>
+                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                    Action
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

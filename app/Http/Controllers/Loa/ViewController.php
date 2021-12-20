@@ -47,6 +47,10 @@ class ViewController extends BaseController
         return view('loa.pages.nav-loa-new-transport');
     }
 
+    public function gotoInputExim(){
+        return view('loa.pages.nav-loa-new-exim');
+    }
+
     //Master Monitor LOA
     public function gotoListWarehouse(){
         $data['warehouse_cust'] = Loa_warehouse::select('customer')->groupBy('customer')->get();
@@ -94,7 +98,7 @@ class ViewController extends BaseController
     }
 
     public function getTransportData(){
-        $data = Loa_transport::get();
+        $data = Loa_transport::whereDate('periode_end','>=', Carbon::now())->get();
 
         return DataTables::of($data)
             ->addColumn('no', function($row){

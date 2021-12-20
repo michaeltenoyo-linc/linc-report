@@ -47,6 +47,13 @@ class UsersTableSeeder extends Seeder
                 'email_verified_at' => Carbon::today(),
                 'password' => Hash::make('admin'),
                 'active' => 1,
+            ],
+            [
+                'name' => 'LOA Admin',
+                'email' => 'admin.loa@lincgrp.com',
+                'email_verified_at' => Carbon::today(),
+                'password' => Hash::make('adminloa12345'),
+                'active' => 1,
             ]
         ];
 

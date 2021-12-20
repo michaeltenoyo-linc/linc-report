@@ -121,13 +121,15 @@ class TransportController extends BaseController
     }
 
     public function searchTransport(Request $req){
-        $customer = $req->input('customer');
-
-        $loa = Loa_transport::where('customer', $customer)->whereDate('periode_end', '>=', Carbon::now())->first();
-
-
+        $customer = "";
         $ruteStart = $req->input('route_start');
         $ruteEnd = $req->input('route_end');
+
+        if($req->has('customer')){
+            $customer = $req->input('customer');
+        }
+
+        $loas = Loa_transport::where('customer','LIKE', '%'.$customer.'%')->whereDate('periode_end', '>=', Carbon::now())->get();
 
         $listStart = [];
         $listEnd = [];
@@ -315,16 +317,24 @@ class TransportController extends BaseController
 
         $listDloa = [];
         //GET DLOA WITH LOOP ALL AREA
-        foreach ($listAreaStart as $s) {
-            foreach ($listAreaEnd as $e) {
-                $tempDloa = dloa_transport::where('id_loa',$loa->id)->where('rute_start','LIKE','%'.$s.'%')->where('rute_end','LIKE','%'.$e.'%')->get();
-                if($tempDloa != null){
-                    foreach ($tempDloa as $td) {
-                        array_push($listDloa, $td);
+        foreach ($loas as $loa) {
+            foreach ($listAreaStart as $s) {
+                foreach ($listAreaEnd as $e) {
+                    $tempDloa = dloa_transport::where('id_loa',$loa->id)->where('rute_start','LIKE','%'.$s.'%')->where('rute_end','LIKE','%'.$e.'%')->get();
+                    if($tempDloa != null){
+                        foreach ($tempDloa as $td) {
+                            $td->customer = $loa->customer;
+                            array_push($listDloa, $td);
+                        }
                     }
                 }
             }
         }
+        
+        //sort array by customer
+        usort($listDloa, function($a, $b){
+            return $a->customer <=> $b->customer;
+        });
 
         return response()->json(['listDloa' => $listDloa,'start'=>$listStart, 'end'=>$listEnd, 'startIs'=>$start, 'endIs'=>$end, 'allAreaStart' => $listAreaStart, 'allAreaEnd' => $listAreaEnd], 200);
     }
