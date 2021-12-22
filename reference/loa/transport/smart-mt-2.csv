@@ -1,12 +1,12 @@
 id_loa;unit;kapasitas;rute_start;rute_end;rate;multidrop;overnight;loading;otherName;otherRate
 2;fuso;0;Rungkut;Semarang;3250000;0;0;0;;
 2;fuso;0;Rungkut;Yogyakarta;3250000;0;0;0;;
-2;fuso;0;Rungkut;Solo;3250000;0;0;0;;
+2;fuso;0;Rungkut;Surakarta;3250000;0;0;0;;
 2;fuso;0;Rungkut;Klaten;3250000;0;0;0;;
 2;fuso;0;Rungkut;Rembang;3250000;0;0;0;;
 2;wingbox;0;Rungkut;Semarang;3500000;0;0;0;;
 2;wingbox;0;Rungkut;Yogyakarta;3500000;0;0;0;;
-2;wingbox;0;Rungkut;Solo;3500000;0;0;0;;
+2;wingbox;0;Rungkut;Surakarta;3500000;0;0;0;;
 2;wingbox;0;Rungkut;Klaten;3500000;0;0;0;;
 2;wingbox;0;Rungkut;Rembang;3500000;0;0;0;;
 2;wingbox;0;Rungkut;Jember;3000000;0;0;0;;

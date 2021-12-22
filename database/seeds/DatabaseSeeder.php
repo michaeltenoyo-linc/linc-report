@@ -18,7 +18,9 @@ class DatabaseSeeder extends Seeder
             TrucksTableSeeder::class,
             UsersTableSeeder::class,
             PriviledgesTableSeeder::class,
-            //LoaTransportSeeder::class,
+            //CompanyLocationSeeder::class, => Seed Manual
+            //LoaTransportSeeder::class, => Seed Manual
+            //IndoRegionSeeder::class, => Seed Manual
         ]);
     }
 }
