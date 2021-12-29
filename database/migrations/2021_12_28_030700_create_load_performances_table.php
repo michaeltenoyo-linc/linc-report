@@ -30,20 +30,20 @@ class CreateLoadPerformancesTable extends Migration
             $table->longText('last_drop_original_plan_date_start');
             $table->longText('last_drop_appt_end_date');
             $table->longText('routing_guide_name');
-            $table->longText('payable_total_base_rate');
-            $table->longText('payable_total_accessorials');
-            $table->longText('payable_total_rate');
-            $table->longText('billable_total_rate');
+            $table->float('payable_total_base_rate',12);
+            $table->float('payable_total_accessorials',12);
+            $table->float('payable_total_rate',12);
+            $table->float('billable_total_rate',12);
             $table->datetime('closed_date')->nullable();
             $table->longText('websettle_batch_status');
             $table->longText('websettle_batch_transmit_date');
             $table->longText('trailer_number');
-            $table->longText('weight_lb');
-            $table->longText('weight_kg');
+            $table->float('weight_lb',12);
+            $table->float('weight_kg',12);
             $table->longText('void_date');
             $table->longText('transportation_mode');
             $table->longText('tour_id');
-            $table->longText('total_distance_km');
+            $table->float('total_distance_km');
             $table->longText('shipper_load_number');
             $table->longText('routing_guide_first_carrier_carrier_reference');
             $table->longText('routing_guide');
@@ -51,7 +51,7 @@ class CreateLoadPerformancesTable extends Migration
             $table->longText('required_equipment_short_description');
             $table->longText('required_equipment');
             $table->longText('related_order_identifiers');
-            $table->longText('purchase_price');
+            $table->float('purchase_price',12);
             $table->longText('profit_or_loss_pct');
             $table->longText('priority');
             $table->longText('pieces_sum');
@@ -72,7 +72,7 @@ class CreateLoadPerformancesTable extends Migration
             $table->longText('last_drop_calculated_date');
             $table->longText('last_drop_arrival_date');
             $table->longText('intermediate_stops');
-            $table->longText('first_routing_guide_carrier_base_rate');
+            $table->float('first_routing_guide_carrier_base_rate',12);
             $table->longText('first_pick_original_plan_date_end');
             $table->longText('first_pick_location_reference_number');
             $table->longText('first_pick_location_city');
@@ -97,6 +97,7 @@ class CreateLoadPerformancesTable extends Migration
             $table->longText('driver_name2');
             $table->longText('execution_plan_rank');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -39,6 +39,7 @@ Linc | Generate Report
                         <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                             htmlFor="name"> Customer Type </label>
                         <select class="input-customer-type w-full border bg-white rounded px-3 py-2 outline-none" name="customerType">
+                            <option class="py-1" value="all">ALL</option>
                             <option class="py-1" value="smart consumer">SMART CONSUMER</option>
                             <option class="py-1" value="smart industrial">SMART INDUSTRIAL</option>
                             <option class="py-1" value="smart mt">SMART MT</option>
@@ -51,7 +52,7 @@ Linc | Generate Report
                     <div class="relative w-full mb-3">
                         <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                             htmlFor="name"> Filter Load ID <div style="color: red;">*Pisahkan dengan tanda semicolon (5040123;4000123;3201230)</div></label>
-                        <textarea class="input-customer-loadid w-full border bg-white rounded px-3 py-2 outline-none" name="loadId" id="" cols="100" rows="5"></textarea>
+                        <textarea required class="input-customer-loadid w-full border bg-white rounded px-3 py-2 outline-none" name="loadId" id="" cols="100" rows="5"></textarea>
                     </div>
                 </div>
                 <div class="flex flex-wrap">
@@ -119,6 +120,7 @@ Linc | Generate Report
                         </div>
                     </div>
                     
+                    <!--
                     <div class="w-full lg:w-6/12 px-4" >
                         <div class="relative w-full w-full mb-3">
                             <h1 class="text-red-600">Pastikan sudah ada/konversi file blujay dalam format .CSV</h1>
@@ -135,7 +137,7 @@ Linc | Generate Report
                     </div>
 
                     <div class="block w-full p-8  overflow-x-auto">
-                        <!-- Projects table -->
+                        
                         <table id="yajra-datatable-loads-list" class="items-center w-full bg-transparent border-collapse yajra-datatable-loads-list">
                             <thead>
                             <tr>
@@ -160,11 +162,12 @@ Linc | Generate Report
                             </tbody>
                         </table>
                     </div>
+                    -->
                     <div class="w-full lg:w-12/12 px-4" >
                         <div class="flex flex-row-reverse w-full mb-3">
                             <input type="submit"
                                 class="report-btn-preview bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded text-right"
-                                value="Preview and Generate" disabled/>
+                                value="Preview and Generate"/>
                         </div>
                     </div>
                 </div>

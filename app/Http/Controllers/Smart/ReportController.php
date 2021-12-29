@@ -18,6 +18,7 @@ use App\Models\Item;
 use App\Models\Trucks;
 use App\Models\Suratjalan;
 use App\Models\Dload;
+use App\Models\LoadPerformance;
 use Yajra\DataTables\Contracts\DataTable;
 
 class ReportController extends BaseController
@@ -30,13 +31,97 @@ class ReportController extends BaseController
             'loadId' => 'required',
         ]);
 
+        /*
         $bluejayList = Session::get('bluejayArray');
+        */
         $reports = new Collection;
         $warning = new Collection;
         $listLoadId = explode(';',$req->input('loadId'));
         $ctr = 1;
 
         if($req->input('reportType') == "smart_1"){
+            foreach ($listLoadId as $wantedLoad) {
+                $row = LoadPerformance::where('tms_id',$wantedLoad)->first();
+                $listSJ = Suratjalan::where('load_id','=',$row->tms_id)->get();
+                $loadExist = False;
+                foreach ($reports as $r) {
+                    if($r['Load ID'] == $row->tms_id){
+                        $loadExist = True;
+                    }
+                }
+
+                if(count($listSJ) > 0 && !$loadExist){
+                    foreach ($listSJ as $sj) {
+                        $isWanted = false;
+
+                        foreach ($listLoadId as $load) {
+                            if($sj->load_id == $load){
+                                $isWanted = true;
+                            }
+                        }
+                        
+                        if($req->input('customerType') == "all"){
+                            $truck = Trucks::where('nopol','=',$sj->nopol)->first();
+                            $totalHarga = intval($row->billable_total_rate) + intval($sj->biaya_bongkar) + intval($sj->biaya_multidrop) + intval($sj->biaya_overnight);
+                            $splitID = explode('$',$sj->id_so);
+                            $reports->push([
+                                'No' => $ctr,
+                                'Load ID' => $row->tms_id,
+                                'Tgl Muat' => Carbon::parse($sj->tgl_muat)->format('d-M-Y'),
+                                'No SJ' => $splitID[0],
+                                'No DO' => (isset($splitID[1])?$splitID[1]:""),
+                                'Penerima' => $sj->penerima,
+                                'Kota Tujuan' => $row->last_drop_location_city,
+                                'Kuantitas' => $sj->total_qtySO,
+                                'Berat' => $sj->total_weightSO,
+                                'Utilitas' => strval($sj->utilitas)."%",
+                                'Nopol' => $sj->nopol,
+                                'Tipe Kendaraan' => $truck->type,
+                                'Kontainer' => "-",
+                                'Biaya Kirim' => $row->billable_total_rate,
+                                'Biaya Bongkar' => $sj->biaya_bongkar,
+                                'Overnight Charge' => $sj->biaya_overnight,
+                                'Multidrop' => $sj->biaya_multidrop,
+                                'Total' => $totalHarga,
+                            ]);
+                            $ctr++;
+                        }
+                    }
+                    $reports->push([
+                        'No' => " ",
+                        'Load ID' => " ",
+                        'Tgl Muat' => " ",
+                        'No SJ' => " ",
+                        'No DO' => " ",
+                        'Penerima' => " ",
+                        'Kota Tujuan' => " ",
+                        'Kuantitas' => " ",
+                        'Berat' => " ",
+                        'Utilitas' => " ",
+                        'Nopol' => " ",
+                        'Tipe Kendaraan' => " ",
+                        'Kontainer' => " ",
+                        'Biaya Kirim' => " ",
+                        'Biaya Bongkar' => " ",
+                        'Overnight Charge' =>" ",
+                        'Multidrop' => " ",
+                        'Total' => " ",
+                    ]);
+                }else{
+                    $custId = substr($row->first_pick_location_name,0,3);
+
+                    if($custId == "SMR"){
+                        $warning->push([
+                            'Load ID' => $row->tms_id,
+                            'Customer Pick Location' => $row->first_pick_location_name,
+                            'Suggestion' => (isset($row->shipment_reference)?$row->shipment_reference:"None"),
+
+                        ]);
+                    }
+                }
+            }
+
+            /*
             for ($i=0; $i < count($bluejayList); $i++) {
                 $row = $bluejayList[$i];
                 $listSJ = Suratjalan::where('load_id','=',(isset($row['TMS ID'])?$row['TMS ID']:$row['Load ID']))->get();
@@ -57,9 +142,9 @@ class ReportController extends BaseController
                             }
                         }
                         
-                        if($sj->customer_type == $req->input('customerType') && $isWanted){
+                        if($req->input('customerType') == "all" && $isWanted || $sj->customer_type == $req->input('customerType') && $isWanted){
                             $truck = Trucks::where('nopol','=',$sj->nopol)->first();
-                            $totalHarga = intval($row['Billable Total Rate']) + intval($sj->biaya_bongkar);
+                            $totalHarga = intval($row['Billable Total Rate']) + intval($sj->biaya_bongkar) + intval($sj->biaya_multidrop) + intval($sj->biaya_overnight);
                             $splitID = explode('$',$sj->id_so);
                             $reports->push([
                                 'No' => $ctr,
@@ -77,8 +162,8 @@ class ReportController extends BaseController
                                 'Kontainer' => "-",
                                 'Biaya Kirim' => $row['Billable Total Rate'],
                                 'Biaya Bongkar' => $sj->biaya_bongkar,
-                                'Overnight Charge' => 0,
-                                'Multidrop' => 0,
+                                'Overnight Charge' => $sj->biaya_overnight,
+                                'Multidrop' => $sj->biaya_multidrop,
                                 'Total' => $totalHarga,
                             ]);
                             $ctr++;
@@ -117,6 +202,7 @@ class ReportController extends BaseController
                     }
                 }
             }
+            */
 
             Session::put('warningReport',$warning);
             Session::put('resultReport',$reports);
@@ -124,7 +210,9 @@ class ReportController extends BaseController
 
             return view('smart.pages.report-preview-smart-1');
 
-        }else if($req->input('reportType') == "smart_2"){
+        }
+        /*
+        else if($req->input('reportType') == "smart_2"){
             for ($i=0; $i < count($bluejayList); $i++) {
                 $row = $bluejayList[$i];
                 $listSJ = Suratjalan::where('load_id','=',(isset($row['TMS ID'])?$row['TMS ID']:$row['Load ID']))->get();
@@ -346,7 +434,7 @@ class ReportController extends BaseController
 
             return view('smart.pages.report-preview-smart-2');
         }
-
+        */
 
     }
 
