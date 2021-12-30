@@ -40,7 +40,7 @@ class LoadPerformanceSeeder extends Seeder
         LoadPerformance::truncate();
 
         //FUSO dan WB
-        $csvFile = fopen(base_path("reference/Load_Performance_2021.csv"),"r");
+        $csvFile = fopen(base_path("reference/Load_Performance_2021_AUG_DES.csv"),"r");
         
         $firstline = true;
         
@@ -68,18 +68,18 @@ class LoadPerformanceSeeder extends Seeder
                     'routing_guide_name' => $data['15'],
                     'payable_total_base_rate' => round($data['16'],2),
                     'payable_total_accessorials' => round($data['17'],2),
-                    'payable_total_rate' => round($data['18'],2),
+                    'payable_total_rate' => round(floatval(str_replace(',','',$data['18'])),2),
                     'billable_total_rate' => round(floatval(str_replace(',','',$data['19'])),2),
                     'closed_date' =>  ($this->checkDateString($data['20']))?Carbon::createFromFormat('d/m/Y H:i', $data['20']):null,
                     'websettle_batch_status' => $data['21'],
                     'websettle_batch_transmit_date' => $data['22'],
                     'trailer_number' => $data['23'],
-                    'weight_lb' => round($data['24'],2),
-                    'weight_kg' => round($data['25'],2),
+                    'weight_lb' => round(floatval(str_replace(',','',$data['24'])),2),
+                    'weight_kg' => round(floatval(str_replace(',','',$data['25'])),2),
                     'void_date' => $data['26'],
                     'transportation_mode' => $data['27'],
                     'tour_id' => $data['28'],
-                    'total_distance_km' => round($data['29'],2),
+                    'total_distance_km' => round(floatval(str_replace(',','',$data['29'])),2),
                     'shipper_load_number' => $data['30'],
                     'routing_guide_first_carrier_carrier_reference' => $data['31'],
                     'routing_guide' => $data['32'],
@@ -87,7 +87,7 @@ class LoadPerformanceSeeder extends Seeder
                     'required_equipment_short_description' => $data['34'],
                     'required_equipment' => $data['35'],
                     'related_order_identifiers' => $data['36'],
-                    'purchase_price' => round($data['37'],2),
+                    'purchase_price' => round(floatval(str_replace(',','',$data['37'])),2),
                     'profit_or_loss_pct' => $data['38'],
                     'priority' => $data['39'],
                     'pieces_sum' => $data['40'],
@@ -108,7 +108,7 @@ class LoadPerformanceSeeder extends Seeder
                     'last_drop_calculated_date' => $data['55'],
                     'last_drop_arrival_date' => $data['56'],
                     'intermediate_stops' => $data['57'],
-                    'first_routing_guide_carrier_base_rate' => round($data['58'],2),
+                    'first_routing_guide_carrier_base_rate' => round(floatval(str_replace(',','',$data['58'])),2),
                     'first_pick_original_plan_date_end' => $data['59'],
                     'first_pick_location_reference_number' => $data['60'],
                     'first_pick_location_city' => $data['61'],
