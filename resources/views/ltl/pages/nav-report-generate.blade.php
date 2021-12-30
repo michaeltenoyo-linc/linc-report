@@ -20,7 +20,7 @@ Linc | Generate Report
                 </div>
             </div>
         </div>
-        <div class="flex flex-nowrap p-8 ">
+        <div class="relative p-8 ">
             <form id="form-report-generate" method="POST" action="report/generate" enctype="multipart/form-data">
                 @csrf
                 <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase"> Loads Information </h6>
@@ -53,7 +53,7 @@ Linc | Generate Report
                 </div>
 
                 <div class="flex flex-wrap">
-                    <!--Requirement Proforma LTL-->
+                    <!--
                     <div class="requirement-reportSmart1 w-full lg:w-1/2 px-4">
                         <div class="relative w-full mb-3">
                             <h1 class="text-red-600 font-bold">Requirement Report Proforma LTL</h1>
@@ -104,7 +104,6 @@ Linc | Generate Report
                     </div>
 
                     <div class="block w-full p-8  overflow-x-auto">
-                        <!-- Projects table -->
                         <table id="yajra-datatable-loads-list" class="items-center w-full bg-transparent border-collapse yajra-datatable-loads-list">
                             <thead>
                             <tr>
@@ -129,11 +128,12 @@ Linc | Generate Report
                             </tbody>
                         </table>
                     </div>
+                    -->
                     <div class="w-full lg:w-12/12 px-4" >
                         <div class="flex flex-row-reverse w-full mb-3">
                             <input type="submit"
                                 class="report-btn-preview bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded text-right"
-                                value="Preview and Generate" disabled/>
+                                value="Preview and Generate"/>
                         </div>
                     </div>
                 </div>
