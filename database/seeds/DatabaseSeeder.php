@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             //LoaTransportSeeder::class, => Seed Manual
             //IndoRegionSeeder::class, => Seed Manual
             //LoadPerformanceSeeder::class, => Seed Manual
+            //CustomerBlujaySeeder::class, => Seed Manual
         ]);
     }
 }
