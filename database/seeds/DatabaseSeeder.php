@@ -18,11 +18,21 @@ class DatabaseSeeder extends Seeder
             TrucksTableSeeder::class,
             UsersTableSeeder::class,
             PriviledgesTableSeeder::class,
-            //CompanyLocationSeeder::class, => Seed Manual
-            //LoaTransportSeeder::class, => Seed Manual
-            //IndoRegionSeeder::class, => Seed Manual
-            //LoadPerformanceSeeder::class, => Seed Manual
-            //CustomerBlujaySeeder::class, => Seed Manual
+
+            /*SEED MANUAL
+
+                !!Seed if needed only!!
+                LoaTransportSeeder::class, => Seeding format ulang loa transport yang berlaku
+                IndoRegionSeeder::class, => inject area" di indonesia pada db
+
+                !!BLUJAY!!
+                CompanyLocationSeeder::class, => inject lokasi - lokasi stop area dari customer                
+                CustomerBlujaySeeder::class, => inject data customer blujay
+                BillableBlujaySeeder::class, => inject data biaya kirim dari loa pada blujay
+            
+                !!Seed daily/weekly!!
+                LoadPerformanceSeeder::class, => Data load id
+            */
         ]);
     }
 }
