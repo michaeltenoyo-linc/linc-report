@@ -203,7 +203,7 @@
 					<h2 class="title-color">Data services <br>& database</h2>
 					<p class="mt-4 mb-5">We provide best services and database to maintain data more easily and organized.</p>
 
-					<a href="service.html" class="btn btn-main-2 btn-round-full btn-icon">Services<i class="icofont-simple-right ml-3"></i></a>
+					<a href="https://drive.google.com/file/d/1DVmyI2nLSMJ0qdBHchLEoXlhqBt8zvU9/view?usp=sharing" class="btn btn-main-2 btn-round-full btn-icon">Services<i class="icofont-simple-right ml-3"></i></a>
 				</div>
 			</div>
 		</div>
