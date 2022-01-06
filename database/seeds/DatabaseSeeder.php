@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
                 !!Seed if needed only!!
                 LoaTransportSeeder::class, => Seeding format ulang loa transport yang berlaku
                 IndoRegionSeeder::class, => inject area" di indonesia pada db
+                PostalCodeSeeder::class, => inject kode pos di indonesia pada db
 
                 !!BLUJAY!!
                 CompanyLocationSeeder::class, => inject lokasi - lokasi stop area dari customer                
