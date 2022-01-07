@@ -43,7 +43,8 @@ class CompanyLocationSeeder extends Seeder
             error_log($counter,0);
             $counter++;
             if (!$firstline){
-                $postalBPS = postal_code::where('postal_code',$data['8'])->first();
+                error_log($data['8']);
+                $postalBPS = postal_code::where('postal_code',strval($data['8']))->first();
                 $province = Province::where('name',$postalBPS->province)->first();
                 $city = Regency::where('name',$postalBPS->city)->first();
                 $district = District::where('name',$postalBPS->district)->first();

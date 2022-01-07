@@ -20,6 +20,8 @@ class CreateCompaniesTable extends Migration
             $table->string('address_2');
             $table->string('address_3');
             $table->string('country');
+            $table->string('urban');
+            $table->string('district');
             $table->string('city');
             $table->string('province');
             $table->string('postal_code');

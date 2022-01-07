@@ -19,6 +19,8 @@ class Company extends Model
         'address_2',
         'address_3',
         'country',
+        'urban',
+        'district',
         'city',
         'province',
         'postal_code',
