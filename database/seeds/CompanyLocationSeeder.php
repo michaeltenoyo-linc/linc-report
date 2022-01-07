@@ -19,6 +19,7 @@ use Illuminate\Database\Seeder;
 use AzisHapidin\IndoRegion\RawDataGetter;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class CompanyLocationSeeder extends Seeder
 {
@@ -43,10 +44,10 @@ class CompanyLocationSeeder extends Seeder
             error_log($counter,0);
             $counter++;
             if (!$firstline){
-                error_log($data['8']);
                 $postalBPS = postal_code::where('postal_code',strval($data['8']))->first();
                 $province = Province::where('name',$postalBPS->province)->first();
-                $city = Regency::where('name',$postalBPS->city)->first();
+                $city = Regency::where('name','LIKE','%'.$postalBPS->city.'%')->first();
+                error_log($postalBPS->district);
                 $district = District::where('name',$postalBPS->district)->first();
                 $urban = Village::where('name',$postalBPS->urban)->first();
                 Company::create([
@@ -56,10 +57,10 @@ class CompanyLocationSeeder extends Seeder
                     'address_2' => $data['3'],
                     'address_3' => $data['4'],
                     'country' => $data['5'],
-                    'urban' => $urban,
-                    'district' => $district,
-                    'city' => $city,
-                    'province' => $province,
+                    'urban' => $urban->name,
+                    'district' => $district->name,
+                    'city' => $city->name,
+                    'province' => $province->name,
                     'postal_code' => $data['8'],
                     'timezone' => $data['9'],
                     'latitude' => $data['10'],
