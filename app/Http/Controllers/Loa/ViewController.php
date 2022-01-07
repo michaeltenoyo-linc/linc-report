@@ -67,12 +67,13 @@ class ViewController extends BaseController
     //Search Engine
     public function gotoSearchTransport(){
         $data['transport_cust'] = Loa_transport::select('customer')->groupBy('customer')->get();
-        $data['kel'] = Village::get();
-        $data['kec'] = District::get();
-        $data['kota'] = Regency::get();
-        $data['prov'] = Province::get();
+        //$data['kel'] = Village::get();
+        //$data['kec'] = District::get();
+        //$data['kota'] = Regency::get();
+        //$data['prov'] = Province::get();
 
-        return view('loa.pages.nav-loa-search-transport', $data);
+        //return view('loa.pages.nav-loa-search-transport', $data);
+        return view('loa.pages.nav-loa-search-billable', $data);
     }
 
     //Data Ajax

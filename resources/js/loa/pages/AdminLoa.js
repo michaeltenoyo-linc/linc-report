@@ -407,7 +407,37 @@ export const AdminLoa = () => {
         });
     }
 
+    const DependentDropdown = () => {
+        function onChangeSelect(url, name) {
+            // send ajax request to get the cities of the selected province and append to the select tag
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (data) {
+                    console.log(data);
+                    $('#' + name).empty();
+                    $('#' + name).append('<option>==Pilih Salah Satu==</option>');
+    
+                    $.each(data, function (key, value) {
+                        $('#' + name).append('<option value="' + key + '">' + value + '</option>');
+                    });
+                }
+            });
+        }
+        $(function () {
+            $('#provinsi1').on('change', function () {
+                console.log($(this).val());
+                onChangeSelect('/cities/'+$(this).val(), 'kota1');
+            });
+            $('#provinsi2').on('change', function () {
+                console.log($(this).val());
+                onChangeSelect('/cities/'+$(this).val(), 'kota2');
+            });
+        });
+    }
+
     getTransportDetail();
+    DependentDropdown();
     searchTransport();
     filesNavigation();
     getLoaWarehouse();

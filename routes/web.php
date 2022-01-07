@@ -278,3 +278,9 @@ Route::middleware(['auth','priviledge:loa,master'])->group(function () {
     })->name('show-xlxs');
 });
 
+//DEPENDENT INDONESIA DROPDOWN
+Route::get('/provinces/{id}', 'IndonesiaDropdownController@provinces')->name('provinces');
+Route::get('/cities/{id}', 'IndonesiaDropdownController@cities')->name('cities');
+Route::get('/districts/{id}', 'IndonesiaDropdownController@districts')->name('districts');
+Route::get('/villages/{id}', 'IndonesiaDropdownController@villages')->name('villages');
+
