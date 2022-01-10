@@ -40,37 +40,49 @@ class CompanyLocationSeeder extends Seeder
         $firstline = true;
         
         $counter = 1;
+        $errorLog = [];
         while(($data = fgetcsv($csvFile, 0, ';','"')) != FALSE){
             error_log($counter,0);
             $counter++;
-            if (!$firstline){
-                $postalBPS = postal_code::where('postal_code',strval($data['8']))->first();
-                $province = Province::where('name',$postalBPS->province)->first();
-                $city = Regency::where('name','LIKE','%'.$postalBPS->city.'%')->first();
-                error_log($postalBPS->district);
-                $district = District::where('name',$postalBPS->district)->first();
-                $urban = Village::where('name',$postalBPS->urban)->first();
-                Company::create([
-                    'reference' => $data['0'],
-                    'location' => $data['1'],
-                    'address_1' => $data['2'],
-                    'address_2' => $data['3'],
-                    'address_3' => $data['4'],
-                    'country' => $data['5'],
-                    'urban' => $urban->name,
-                    'district' => $district->name,
-                    'city' => $city->name,
-                    'province' => $province->name,
-                    'postal_code' => $data['8'],
-                    'timezone' => $data['9'],
-                    'latitude' => $data['10'],
-                    'longitude' => $data['11'],
-                ]);
+            if (!$firstline && $counter){
+                try {
+                    $postalBPS = postal_code::where('postal_code',strval($data['8']))->first();
+                    $province = $postalBPS->province;
+                    $city = $postalBPS->city;
+                    $district = $postalBPS->district;
+                    $urban = $postalBPS->urban;
+                    Company::create([
+                        'reference' => $data['0'],
+                        'location' => $data['1'],
+                        'address_1' => $data['2'],
+                        'address_2' => $data['3'],
+                        'address_3' => $data['4'],
+                        'country' => $data['5'],
+                        'urban' => $urban,
+                        'district' => $district,
+                        'city' => $city,
+                        'province' => $province,
+                        'postal_code' => $data['8'],
+                        'timezone' => $data['9'],
+                        'latitude' => $data['10'],
+                        'longitude' => $data['11'],
+                    ]);
+                } catch (\Throwable $th) {
+                    array_push($errorLog, [$counter, $data['8']]);
+                    print("ERROR POSTCODE");
+                }
             }
-
+            
             $firstline = false;
         }
-
         fclose($csvFile);
+
+        //write ERRORLOG
+        $fp = fopen('postal_error.csv', 'w');
+        foreach ($errorLog as $fields) {
+            
+            fputcsv($fp, $fields);
+        }
+        fclose($fp);
     }
 }
