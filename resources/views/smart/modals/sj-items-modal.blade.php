@@ -31,7 +31,19 @@
                             htmlFor="grid-password"> Qty. </label>
                         <input type="number"
                             name="qty"
-                            class="input-item-qty autocomplete-trucks border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                            class="input-item-qty border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                            value="0"
+                            min=0/>
+                    </div>
+                </div>
+
+                <div class="w-full lg:w-12/12 px-4">
+                    <div class="relative w-full mb-3">
+                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                            htmlFor="grid-password"> Retur </label>
+                        <input type="number"
+                            name="retur"
+                            class="input-item-retur border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                             value="0"
                             min=0/>
                     </div>

@@ -86,6 +86,7 @@ class SuratjalanController extends BaseController
             //DLOADS
             $itemList = $req->input('item');
             $qtyList = $req->input('qty');
+            $returList = $req->input('retur');
             for ($i=0; $i < count($itemList); $i++) {
                 $tempItem = Item::where('material_code','=',$itemList[$i])->first();
                 $subtotal_weight = $tempItem->gross_weight * $qtyList[$i];
@@ -95,6 +96,7 @@ class SuratjalanController extends BaseController
                     'nopol' => $req->input('nopol'),
                     'material_code' => $itemList[$i],
                     'qty' => $qtyList[$i],
+                    'retur' => $returList[$i],
                     'subtotal_weight' => $subtotal_weight,
                 ]);
             }

@@ -67,7 +67,7 @@ Linc | Register Surat Jalan
                     <div class="w-full lg:w-12/12 px-4">
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="grid-password"> Tanggal Muat </label>
+                                htmlFor="grid-password"> Tanggal Surat Jalan </label>
                             <input type="date"
                                 name="tgl_terima"
                                 class="input-muat border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
@@ -211,6 +211,9 @@ Linc | Register Surat Jalan
                                     </th>
                                     <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
                                         Qty.
+                                    </th>
+                                    <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                        Retur
                                     </th>
                                     <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
                                         Gross Weight
