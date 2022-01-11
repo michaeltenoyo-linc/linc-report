@@ -23,6 +23,8 @@ class BillableBlujay extends Model
         'precedence',
         'origin_location',
         'destination_location',
+        'origin_city',
+        'destination_city',
         'no_intermediate_stop',
         'basis',
         'sku',

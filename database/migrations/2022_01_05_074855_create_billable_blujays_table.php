@@ -26,6 +26,8 @@ class CreateBillableBlujaysTable extends Migration
             $table->string('precedence');
             $table->string('origin_location');
             $table->string('destination_location');
+            $table->string('origin_city');
+            $table->string('destination_city');
             $table->string('no_intermediate_stop');
             $table->string('basis');
             $table->string('sku');

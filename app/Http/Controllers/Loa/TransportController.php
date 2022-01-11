@@ -12,6 +12,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 //Model
 use App\Models\Item;
@@ -357,31 +358,55 @@ class TransportController extends BaseController
 
         $prov1 = Province::where('id','=',$req->input('provinsi1'))->first();
         $prov2 = Province::where('id','=',$req->input('provinsi2'))->first();
-        $kota1 = District::where('id','=',$req->input('kota1'))->first();
-        $kota2 = District::where('id','=',$req->input('kota2'))->first();
+        $kota1 = Regency::where('id','=',$req->input('kota1'))->first();
+        $kota2 = Regency::where('id','=',$req->input('kota2'))->first();
         $splitKota1 = explode(' ',$kota1->name, 2);
         $splitKota2 = explode(' ',$kota2->name, 2);
         $kota1name = $splitKota1[1];
         $kota2name = $splitKota2[1];
-        error_log($kota1name);
         
 
         $outData = [];
-        $listBillable = BillableBlujay::get();
+
+        $selectedBillable = BillableBlujay::where('origin_city','=',$kota1name)->where('destination_city','=',$kota2name)->get();
+        
+        /* CARA 2 GAGAL
+        $fromCompanies = Company::where('city','=',$kota1name)->get();
+        $destCompanies = Company::where('city','=',$kota2name)->get();
+
+        error_log("FROM COMP : ".count($fromCompanies));
+        error_log("DEST COMP : ".count($destCompanies));
+
+        foreach ($fromCompanies as $from) {
+            foreach ($destCompanies as $dest) {
+                $tempList = BillableBlujay::where('origin_location','=',$from->reference)->where('destination_location','=',$dest->reference)->get();
+                array_push($outData, $tempList);
+            }
+        }
+        */
+
+        /* CARA 1 GAGAL
+        $counterSearch = 1;
         foreach ($listBillable as $bill) {
+            error_log($counterSearch);
             if($bill->origin_location == "ANYWHERE" && $bill->destination_location == "ANYWHERE"){
                 array_push($outData, $bill);
             }else{
-                $from = Company::where('referencec','=',$bill->origin_location)->first();
+                $from = Company::where('reference','=',$bill->origin_location)->first();
                 $dest = Company::where('reference','=',$bill->destination_location)->first();
 
                 if(!is_null($dest) && !is_null($from)){
-                    
+                    if(strtoupper($prov1) == strtoupper($from->province) && strtoupper($prov2) == strtoupper($dest->province) && strtoupper($kota1name) == strtoupper($from->city) && strtoupper($kota2name) == strtoupper($dest->city)){
+                        array_push($outData, $bill);
+                        error_log("IN BILLABLE");
+                    }
                 }
             }
+            $counterSearch++;
         }
+        */
 
-        return response()->json(['requestData' => $req->input('kota1')], 200);
+        return response()->json(['billableData' => $selectedBillable], 200);
     }
 
     public function getDetailLoa(Request $req, $id){
