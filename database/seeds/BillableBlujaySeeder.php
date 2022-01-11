@@ -58,6 +58,8 @@ class BillableBlujaySeeder extends Seeder
                         'destination_location'=> $data['10'],
                         'origin_city' => $fromCompanies->city,
                         'destination_city' => $destCompanies->city,
+                        'origin_province' => $fromCompanies->province,
+                        'destination_province' => $destCompanies->province,
                         'no_intermediate_stop'=> $data['11'],
                         'basis'=> $data['12'],
                         'sku'=> $data['13'],
