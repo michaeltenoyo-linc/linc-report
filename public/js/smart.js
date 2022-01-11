@@ -46,12 +46,14 @@ var ItemsModal = function ItemsModal() {
       success: function success(data) {
         var currItem = data['item'];
         var mcode = currItem['material_code'];
-        var qty = $('#form-so-add-item .input-item-qty').val(); //append item to table
+        var qty = $('#form-so-add-item .input-item-qty').val();
+        var retur = $('#form-so-add-item .input-item-retur').val(); //append item to table
 
         $('#yajra-datatable-so-items-list .so-items-list-body').append('<tr class="row-item-' + ctr + '">');
         $('#yajra-datatable-so-items-list .so-items-list-body').append('<td>' + currItem['material_code'] + '</td>');
         $('#yajra-datatable-so-items-list .so-items-list-body').append('<td>' + currItem['description'] + '</td>');
         $('#yajra-datatable-so-items-list .so-items-list-body').append('<td>' + qty + '</td>');
+        $('#yajra-datatable-so-items-list .so-items-list-body').append('<td>' + retur + '</td>');
         $('#yajra-datatable-so-items-list .so-items-list-body').append('<td>' + currItem['gross_weight'] + '</td>');
         var subtotal_weight = parseFloat(currItem['gross_weight']) * parseFloat(qty);
         subtotal_weight = subtotal_weight.toFixed(2);
@@ -61,6 +63,7 @@ var ItemsModal = function ItemsModal() {
 
         $('#form-so-new').append('<input value="' + mcode + '" type="hidden" name="item[' + ctr + ']" class="input-so-item-' + ctr + '">');
         $('#form-so-new').append('<input value="' + qty + '" type="hidden" name="qty[' + ctr + ']" class="input-so-qty-' + ctr + '">');
+        $('#form-so-new').append('<input value="' + retur + '" type="hidden" name="retur[' + ctr + ']" class="input-so-retur-' + ctr + '">');
         ctr = ctr + 1;
         $('#form-so-new .ctr-item').val(ctr); //update total value
 

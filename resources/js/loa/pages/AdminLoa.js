@@ -304,7 +304,36 @@ export const AdminLoa = () => {
 
     const searchBillable = () => {
         $('#form-search-billable').on('submit', function(e){
-            
+            e.preventDefault();
+
+            console.log("Searching Area...");
+
+
+
+            //AJAX
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                processData: false,
+                contentType: false,
+                dataType: 'JSON',
+            });
+            $.ajax({
+                url: '/loa/action/transport/search-billable',
+                type: 'POST',
+                data: new FormData($(this)[0]),
+                success: (data) => {
+                    console.log(data);
+                },
+                error : function(request, status, error){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: "Invalid data input!",
+                    });
+                }
+            });
         });
     }
 
@@ -422,7 +451,7 @@ export const AdminLoa = () => {
                 success: function (data) {
                     console.log(data);
                     $('#' + name).empty();
-                    $('#' + name).append('<option>==Pilih Salah Satu==</option>');
+                    $('#' + name).append('<option value="-1">==Pilih Salah Satu==</option>');
     
                     $.each(data, function (key, value) {
                         $('#' + name).append('<option value="' + key + '">' + value + '</option>');

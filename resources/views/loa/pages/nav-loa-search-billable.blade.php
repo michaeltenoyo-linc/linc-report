@@ -45,7 +45,7 @@ Linc | Input LOA
                         <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                             htmlFor="name">Provinsi Awal</label>
                         <select required id="provinsi1" name="provinsi1" class="input-route-start border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text">
-                            <option>==Pilih Salah Satu==</option>
+                            <option value="-1">==Pilih Salah Satu==</option>
                             @foreach ($provinces as $item)
                                 <option value="{{ $item->id ?? '' }}">{{ $item->name ?? '' }}</option>
                             @endforeach
@@ -56,7 +56,7 @@ Linc | Input LOA
                         <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                             htmlFor="name">Kota Awal</label>
                         <select required id="kota1" name="kota1" class="input-route-start border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text">
-                            <option>==Pilih Salah Satu==</option>
+                            <option value="-1">==Pilih Salah Satu==</option>
                         </select>
                     </div>
                 </div>
@@ -71,7 +71,7 @@ Linc | Input LOA
                         <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                             htmlFor="name">Provinsi Tujuan</label>
                         <select required id="provinsi2" name="provinsi2" class="input-route-start border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text">
-                            <option>==Pilih Salah Satu==</option>
+                            <option value="-1">==Pilih Salah Satu==</option>
                             @foreach ($provinces as $item)
                                 <option value="{{ $item->id ?? '' }}">{{ $item->name ?? '' }}</option>
                             @endforeach
@@ -82,7 +82,7 @@ Linc | Input LOA
                         <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                             htmlFor="name">Kota Tujuan</label>
                         <select required id="kota2" name="kota2" class="input-route-start border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text">
-                            <option>==Pilih Salah Satu==</option>
+                            <option value="-1">==Pilih Salah Satu==</option>
                         </select>
                     </div>
                 </div>

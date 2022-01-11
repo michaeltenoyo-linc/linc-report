@@ -365,6 +365,37 @@ var AdminLoa = function AdminLoa() {
     });
   };
 
+  var searchBillable = function searchBillable() {
+    $('#form-search-billable').on('submit', function (e) {
+      e.preventDefault();
+      console.log("Searching Area..."); //AJAX
+
+      $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        processData: false,
+        contentType: false,
+        dataType: 'JSON'
+      });
+      $.ajax({
+        url: '/loa/action/transport/search-billable',
+        type: 'POST',
+        data: new FormData($(this)[0]),
+        success: function success(data) {
+          console.log(data);
+        },
+        error: function error(request, status, _error3) {
+          sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: "Invalid data input!"
+          });
+        }
+      });
+    });
+  };
+
   var searchTransport = function searchTransport() {
     $('#form-search-transport').on('submit', function (e) {
       e.preventDefault();
@@ -474,7 +505,7 @@ var AdminLoa = function AdminLoa() {
         success: function success(data) {
           console.log(data);
           $('#' + name).empty();
-          $('#' + name).append('<option>==Pilih Salah Satu==</option>');
+          $('#' + name).append('<option value="-1">==Pilih Salah Satu==</option>');
           $.each(data, function (key, value) {
             $('#' + name).append('<option value="' + key + '">' + value + '</option>');
           });
@@ -505,6 +536,7 @@ var AdminLoa = function AdminLoa() {
   getLoaTransport();
   onAddOtherRateLoa();
   onChangeLoaDivision();
+  searchBillable();
   saveLoa();
 };
 

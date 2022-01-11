@@ -210,7 +210,7 @@ Route::middleware(['auth','priviledge:loa,master'])->group(function () {
             Route::get('/get-routes/{id}',[LoaTransportController::class, 'getRoutes']);
             Route::get('/list',[LoaViewController::class, 'gotoListTransport']);
             Route::post('/search-routes',[LoaTransportController::class, 'searchTransport']);
-            Route::post('/search-billable',[LoaTransportController::class, 'searchTransportBillable']);
+            Route::post('/search-billable',[LoaTransportController::class, 'searchBillableBlujay']);
             Route::get('/read',[LoaViewController::class, 'getTransportData']);
             Route::get('/detail/{id}',[LoaTransportController::class, 'gotoDetailTransport']);
             Route::get('/dloa/{id}', [LoaTransportController::class, 'getDetailLoa']);

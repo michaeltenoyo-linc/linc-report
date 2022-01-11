@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Loa;
 
+use App\Models\BillableBlujay;
+use App\Models\Company;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -24,6 +26,8 @@ use App\Models\Province;
 use App\Models\Regency;
 use App\Models\District;
 use App\Models\Village;
+
+use function PHPUnit\Framework\isNull;
 
 class TransportController extends BaseController
 {
@@ -347,7 +351,37 @@ class TransportController extends BaseController
             'kota2' => 'required',
         ]);
 
-        return response()->json(['message' => 'test'], 200);
+        if($req->input('provinsi1') == -1 || $req->input('provinsi2') == -1 || $req->input('kota1') == -1 || $req->input('kota2') == -1){
+            return response()->json(['error' => "Invalid input"], 400);
+        }
+
+        $prov1 = Province::where('id','=',$req->input('provinsi1'))->first();
+        $prov2 = Province::where('id','=',$req->input('provinsi2'))->first();
+        $kota1 = District::where('id','=',$req->input('kota1'))->first();
+        $kota2 = District::where('id','=',$req->input('kota2'))->first();
+        $splitKota1 = explode(' ',$kota1->name, 2);
+        $splitKota2 = explode(' ',$kota2->name, 2);
+        $kota1name = $splitKota1[1];
+        $kota2name = $splitKota2[1];
+        error_log($kota1name);
+        
+
+        $outData = [];
+        $listBillable = BillableBlujay::get();
+        foreach ($listBillable as $bill) {
+            if($bill->origin_location == "ANYWHERE" && $bill->destination_location == "ANYWHERE"){
+                array_push($outData, $bill);
+            }else{
+                $from = Company::where('referencec','=',$bill->origin_location)->first();
+                $dest = Company::where('reference','=',$bill->destination_location)->first();
+
+                if(!is_null($dest) && !is_null($from)){
+                    
+                }
+            }
+        }
+
+        return response()->json(['requestData' => $req->input('kota1')], 200);
     }
 
     public function getDetailLoa(Request $req, $id){
