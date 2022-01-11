@@ -44,7 +44,7 @@ class CompanyLocationSeeder extends Seeder
         while(($data = fgetcsv($csvFile, 0, ';','"')) != FALSE){
             error_log($counter,0);
             $counter++;
-            if (!$firstline && $counter){
+            if (!$firstline){
                 try {
                     $postalBPS = postal_code::where('postal_code',strval($data['8']))->first();
                     $province = $postalBPS->province;
@@ -68,11 +68,11 @@ class CompanyLocationSeeder extends Seeder
                         'longitude' => $data['11'],
                     ]);
                 } catch (\Throwable $th) {
-                    array_push($errorLog, [$counter, $data['8']]);
+                    array_push($errorLog,[$counter, $data['0'], $data['1'], $data['2'], $data['3'], $data['4'], $data['10'], $data['11'], $data['8']]);
                     print("ERROR POSTCODE");
                 }
             }
-            
+
             $firstline = false;
         }
         fclose($csvFile);
