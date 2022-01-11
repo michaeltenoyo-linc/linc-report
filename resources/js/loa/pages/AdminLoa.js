@@ -302,6 +302,12 @@ export const AdminLoa = () => {
         });
     }
 
+    const searchBillable = () => {
+        $('#form-search-billable').on('submit', function(e){
+            
+        });
+    }
+
     const searchTransport = () => {
         $('#form-search-transport').on('submit', function(e){
             e.preventDefault();
@@ -447,5 +453,6 @@ export const AdminLoa = () => {
     getLoaTransport();
     onAddOtherRateLoa();
     onChangeLoaDivision();
+    searchBillable();
     saveLoa();
 };

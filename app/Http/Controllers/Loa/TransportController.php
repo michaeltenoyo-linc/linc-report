@@ -339,6 +339,17 @@ class TransportController extends BaseController
         return response()->json(['listDloa' => $listDloa,'start'=>$listStart, 'end'=>$listEnd, 'startIs'=>$start, 'endIs'=>$end, 'allAreaStart' => $listAreaStart, 'allAreaEnd' => $listAreaEnd], 200);
     }
 
+    public function searchBillableBlujay(Request $req){
+        $req->validate([
+            'provinsi1' => 'required',
+            'kota1' => 'required',
+            'provinsi2' => 'required',
+            'kota2' => 'required',
+        ]);
+
+        return response()->json(['message' => 'test'], 200);
+    }
+
     public function getDetailLoa(Request $req, $id){
         $dloa = dloa_transport::where('id',$id)->first();
         $loa = Loa_transport::where('id',$dloa->id_loa)->first();

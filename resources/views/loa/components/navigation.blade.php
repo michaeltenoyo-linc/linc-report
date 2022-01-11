@@ -139,13 +139,13 @@
                         <a href="{{url('/loa/nav-search-transport')}}"
                             class="page_nav_active">
                             <i class="far fa-clipboard"></i>
-                            Transport Routes
+                            Transport Routes Pengiriman Blujay
                         </a>
                     @else
                         <a href="{{url('/loa/nav-search-transport')}}"
                             class="page_nav">
                             <i class="far fa-clipboard"></i>
-                            Transport Routes
+                            Transport Routes Pengiriman Blujay
                         </a>
                     @endif
                 </li>
