@@ -55,5 +55,6 @@
 </script>
 
 @endsection
+@include('smart.modals.sj-edit-modal'); 
 
 
