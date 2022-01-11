@@ -12,10 +12,10 @@ export const AdminSjalan = () => {
             columns: [
               {data: 'splitId', name: 'id_so'},
               {data: 'load_id', name: 'load_id'},
-              {data: 'nopol', name: 'nopol'},
+              {data: 'created_at_format', name: 'created_at_format'},
               {data: 'penerima', name: 'penerima'},
-              {data: 'total_weightSO', name: 'total_weightSO'},
-              {data: 'utilitas', name: 'utilitas'},
+              //{data: 'total_weightSO', name: 'total_weightSO'},
+              //{data: 'utilitas', name: 'utilitas'},
               {data: 'action', name: 'action', orderable: false, searchable: false}
             ],
         });

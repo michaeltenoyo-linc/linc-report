@@ -60,8 +60,12 @@ class ViewController extends BaseController
 
         return DataTables::of($data)
             ->addColumn('action', function($row){
-                $btn = '<form id="btn-sj-delete" class="inline-flex"><input name="id_so" type="hidden" value="'.$row->id_so.'"><button type="submit" class="btn_red">Delete</button></form>';
+                $btn = '<form id="btn-sj-edit" class="inline-flex"><input name="id_so" type="hidden" value="'.$row->id_so.'"><button type="submit" class="btn_yellow">:)</button></form>';
+                $btn = $btn.'<form id="btn-sj-delete" class="inline-flex"><input name="id_so" type="hidden" value="'.$row->id_so.'"><button type="submit" class="btn_red">Delete</button></form>';
                 return $btn;
+            })
+            ->addColumn('created_at_format', function($row){
+                return date('d-m-Y H:i:s', strtotime($row->created_at));
             })
             ->addColumn('splitId', function($row){
                 $splitId = explode('$',$row->id_so);
