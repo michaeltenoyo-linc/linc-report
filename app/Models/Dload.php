@@ -15,6 +15,7 @@ class Dload extends Model
         'nopol',
         'material_code',
         'qty',
+        'retur',
         'subtotal_weight'
     ];
 }

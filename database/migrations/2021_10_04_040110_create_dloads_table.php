@@ -19,6 +19,7 @@ class CreateDloadsTable extends Migration
             $table->string('nopol',10);
             $table->string('material_code',6);
             $table->float('qty',10);
+            $table->float('retur',10);
             $table->float('subtotal_weight',12);
             $table->timestamps();
             $table->softDeletes();
