@@ -109,6 +109,10 @@ class SuratjalanController extends BaseController
 
     public function delete(Request $req){
         $sj = Suratjalan::where('id_so','=',$req->input('id_so'))->first();
+        $dload = Dload::where('id_so','=',$req->input('id_so'))->get();
+        foreach ($dload as $r) {
+            $r->forceDelete();
+        }
         $sj->forceDelete();
 
         return response()->json(['message' => 'berhasil menghapus data.'], 200);
