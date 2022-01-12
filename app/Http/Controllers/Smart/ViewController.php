@@ -11,6 +11,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 //Model
 use App\Models\Item;
+use App\Models\Addcost;
 use App\Models\Trucks;
 use App\Models\Suratjalan;
 
@@ -60,7 +61,7 @@ class ViewController extends BaseController
 
         return DataTables::of($data)
             ->addColumn('action', function($row){
-                $btn = '<button id="btn-sj-edit" type="button" value="'.$row->id_so.'" class="btn_yellow">:)</button>';
+                $btn = '<button id="btn-sj-edit" type="button" value="'.$row->id_so.'" class="btn_yellow">Edit</button>';
                 $btn = $btn.'<form id="btn-sj-delete" class="inline-flex"><input name="id_so" type="hidden" value="'.$row->id_so.'"><button type="submit" class="btn_red">Delete</button></form>';
                 return $btn;
             })
@@ -77,6 +78,27 @@ class ViewController extends BaseController
                 }
             })
             ->make(true);
+    }
+
+    public function getSjById($id){
+        $sj = Suratjalan::where('id_so','=',$id)->first();
+
+        //ADDCOST BLUJAY
+        $bongkar = Addcost::where('load_id','=',$sj->load_id)->where('type','=','TMB_BONGKAR')->first();
+
+        if(is_null($bongkar)){
+            $bongkar = 0;
+        }else{
+            $bongkar = $bongkar->rate;
+        }
+
+
+        $out = [
+            'sj' => $sj,
+            'bongkar' => $bongkar,
+        ];
+
+        return response()->json(['data' => $out], 200);
     }
 
     public function getItems(){

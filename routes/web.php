@@ -80,6 +80,7 @@ Route::middleware(['auth','priviledge:smart,master'])->group(function () {
             Route::get('/autocomplete-trucks',[SmartViewController::class,'search_getTrucks']);
             //Surat Jalan
             Route::get('/get-sj',[SmartViewController::class, 'getSj']);
+            Route::get('/get-sj-byid/{id}',[SmartViewController::class, 'getSjById']);
         });
 
         Route::prefix('/suratjalan')->group(function () {
