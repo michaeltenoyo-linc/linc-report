@@ -27,10 +27,10 @@ class DatabaseSeeder extends Seeder
                 PostalCodeSeeder::class, => inject kode pos di indonesia pada db
 
                 !!BLUJAY!!
-                CompanyLocationSeeder::class, => inject lokasi - lokasi stop area dari customer                
+                CompanyLocationSeeder::class, => inject lokasi - lokasi stop area dari customer
                 CustomerBlujaySeeder::class, => inject data customer blujay
                 BillableBlujaySeeder::class, => inject data biaya kirim dari loa pada blujay
-            
+
                 !!Seed daily/weekly!!
                 LoadPerformanceSeeder::class, => Data load id
             */

@@ -60,7 +60,7 @@ class ViewController extends BaseController
 
         return DataTables::of($data)
             ->addColumn('action', function($row){
-                $btn = '<form id="btn-sj-edit" class="inline-flex"><input name="id_so" type="hidden" value="'.$row->id_so.'"><button type="submit" class="btn_yellow">:)</button></form>';
+                $btn = '<button id="btn-sj-edit" type="button" value="'.$row->id_so.'" class="btn_yellow">:)</button>';
                 $btn = $btn.'<form id="btn-sj-delete" class="inline-flex"><input name="id_so" type="hidden" value="'.$row->id_so.'"><button type="submit" class="btn_red">Delete</button></form>';
                 return $btn;
             })

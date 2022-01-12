@@ -86,8 +86,8 @@ export const AdminItems = () => {
                             $('#form-items-new .input-item-deskripsi').prop('readonly', false);
                             $('#form-items-new .input-item-grossw').prop('readonly', false);
                             $('#form-items-new .input-item-nettw').prop('readonly', false);
-                            $('#form-items-new .input-item-category').prop('readonly', false);     
-                            $('#form-items-new .input-item-submit').prop('disabled', false);                            
+                            $('#form-items-new .input-item-category').prop('readonly', false);
+                            $('#form-items-new .input-item-submit').prop('disabled', false);
 
                             Snackbar.show({
                                 text: "Item belum terdaftar.",
@@ -114,8 +114,8 @@ export const AdminItems = () => {
                 $('#form-items-new .input-item-deskripsi').prop('readonly', true);
                 $('#form-items-new .input-item-grossw').prop('readonly', true);
                 $('#form-items-new .input-item-nettw').prop('readonly', true);
-                $('#form-items-new .input-item-category').prop('readonly', true);     
-                $('#form-items-new .input-item-submit').prop('disabled', true);  
+                $('#form-items-new .input-item-category').prop('readonly', true);
+                $('#form-items-new .input-item-submit').prop('disabled', true);
 
                 Snackbar.show({
                     text: "Silahkan cek kembali material code.",
@@ -127,7 +127,7 @@ export const AdminItems = () => {
 
 
             return false;
-        }); 
+        });
 
     }
 
@@ -178,7 +178,7 @@ export const AdminItems = () => {
 
                 }
             });
-        });    
+        });
     }
 
     const deleteItem = () => {

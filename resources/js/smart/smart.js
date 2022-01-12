@@ -3,10 +3,11 @@ import { AdminTrucks } from "./pages/AdminTrucks";
 import { AdminSjalan } from "./pages/AdminSjalan";
 import { ItemsModal } from "./modals/ItemsModal";
 import { AdminReport } from "./pages/AdminReport";
+import { EditModal } from "./modals/EditModal";
 
 export const load = () => {
     //Loading Spinner
-    
+
     $(document).on({
         ajaxStart: function(){
             $('#loader').removeClass('hidden');
@@ -26,12 +27,13 @@ export const load = () => {
     $('form').on('blur', 'input[type=number]', function(e){
         $(this).off('wheel.disableScroll');
     });
-    
+
 
     AdminItems();
     AdminTrucks();
     AdminSjalan();
     ItemsModal();
+    EditModal();
     AdminReport();
 };
 
