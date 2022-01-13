@@ -118,4 +118,17 @@ class SuratjalanController extends BaseController
         return response()->json(['message' => 'berhasil menghapus data.'], 200);
     }
 
+    public function update(Request $req){
+        $req->validate([
+            'id_so' => 'required',
+            'penerima' => 'required',
+            'customer_type' => 'required',
+            'note' => 'required',
+            'bongkar' => 'required',
+            'overnight' => 'required',
+            'multidrop' => 'required',
+        ]);
+
+        return response()->json(['message' => "Connected."],200);
+    }
 }

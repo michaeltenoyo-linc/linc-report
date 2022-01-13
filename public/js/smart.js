@@ -1,6 +1,99 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./resources/js/smart/modals/EditModal.js":
+/*!************************************************!*\
+  !*** ./resources/js/smart/modals/EditModal.js ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "EditModal": () => (/* binding */ EditModal)
+/* harmony export */ });
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _utilities_helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../utilities/helpers */ "./resources/js/utilities/helpers.js");
+/* harmony import */ var node_snackbar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! node-snackbar */ "./node_modules/node-snackbar/src/js/snackbar.js");
+/* harmony import */ var node_snackbar__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(node_snackbar__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+var EditModal = function EditModal() {
+  $(document).on('click', '#btn-sj-edit', function (e) {
+    e.preventDefault();
+    var id_so = $(this).val();
+    console.log("Open Modal :" + id_so); //GET SO DATA BY ID
+
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      processData: false,
+      contentType: false,
+      dataType: 'JSON'
+    });
+    $.ajax({
+      url: '/smart/data/get-sj-byid/' + id_so,
+      type: 'GET',
+      success: function success(data) {
+        $('#sj-edit-modal .container-id-so').html(data['data']['sj']['id_so']);
+        $('#sj-edit-modal .id_so').val(data['data']['sj']['id_so']);
+        $('#sj-edit-modal .input-load-id').val(data['data']['sj']['load_id']);
+        $('#sj-edit-modal .input-penerima').val(data['data']['sj']['penerima']);
+        $('#sj-edit-modal .input-customer-type').val(data['data']['sj']['customer_type']);
+        $('#sj-edit-modal .input-note').val(data['data']['sj']['note']); //ADDCOST   
+
+        $('#sj-edit-modal .blujay-bongkar').html(data['data']['bongkar']);
+      }
+    });
+    $('#sj-edit-modal .modal').removeClass('hidden');
+  });
+  $('#form-so-edit').on('submit', function (e) {
+    var _this = this;
+
+    e.preventDefault();
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Data akan dihapus secara permanen!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Iya, hapus!'
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+          processData: false,
+          contentType: false,
+          dataType: 'JSON'
+        });
+        $.ajax({
+          url: '/smart/suratjalan/update',
+          type: 'POST',
+          data: new FormData($(_this)[0]),
+          success: function success(data) {
+            console.log(data);
+          },
+          error: function error(request, status, _error) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: JSON.parse(request.responseText).message
+            });
+          }
+        });
+      }
+    });
+  });
+};
+
+/***/ }),
+
 /***/ "./resources/js/smart/modals/ItemsModal.js":
 /*!*************************************************!*\
   !*** ./resources/js/smart/modals/ItemsModal.js ***!
@@ -696,18 +789,14 @@ var AdminSjalan = function AdminSjalan() {
         data: 'load_id',
         name: 'load_id'
       }, {
-        data: 'nopol',
-        name: 'nopol'
+        data: 'created_at_format',
+        name: 'created_at_format'
       }, {
         data: 'penerima',
         name: 'penerima'
-      }, {
-        data: 'total_weightSO',
-        name: 'total_weightSO'
-      }, {
-        data: 'utilitas',
-        name: 'utilitas'
-      }, {
+      }, //{data: 'total_weightSO', name: 'total_weightSO'},
+      //{data: 'utilitas', name: 'utilitas'},
+      {
         data: 'action',
         name: 'action',
         orderable: false,
@@ -21943,6 +22032,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_AdminSjalan__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pages/AdminSjalan */ "./resources/js/smart/pages/AdminSjalan.js");
 /* harmony import */ var _modals_ItemsModal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modals/ItemsModal */ "./resources/js/smart/modals/ItemsModal.js");
 /* harmony import */ var _pages_AdminReport__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pages/AdminReport */ "./resources/js/smart/pages/AdminReport.js");
+/* harmony import */ var _modals_EditModal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modals/EditModal */ "./resources/js/smart/modals/EditModal.js");
+
 
 
 
@@ -21971,6 +22062,7 @@ var load = function load() {
   (0,_pages_AdminTrucks__WEBPACK_IMPORTED_MODULE_1__.AdminTrucks)();
   (0,_pages_AdminSjalan__WEBPACK_IMPORTED_MODULE_2__.AdminSjalan)();
   (0,_modals_ItemsModal__WEBPACK_IMPORTED_MODULE_3__.ItemsModal)();
+  (0,_modals_EditModal__WEBPACK_IMPORTED_MODULE_5__.EditModal)();
   (0,_pages_AdminReport__WEBPACK_IMPORTED_MODULE_4__.AdminReport)();
 };
 load();
