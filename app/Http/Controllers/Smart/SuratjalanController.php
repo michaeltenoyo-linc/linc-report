@@ -14,6 +14,7 @@ use App\Models\Item;
 use App\Models\Trucks;
 use App\Models\Suratjalan;
 use App\Models\Dload;
+use App\Models\LoadPerformance;
 
 use function PHPUnit\Framework\isEmpty;
 use function PHPUnit\Framework\isNull;
@@ -121,6 +122,7 @@ class SuratjalanController extends BaseController
     public function update(Request $req){
         $req->validate([
             'id_so' => 'required',
+            'load_id' => 'required',
             'penerima' => 'required',
             'customer_type' => 'required',
             'note' => 'required',
@@ -128,6 +130,8 @@ class SuratjalanController extends BaseController
             'overnight' => 'required',
             'multidrop' => 'required',
         ]);
+
+        
 
         return response()->json(['message' => "Connected."],200);
     }
