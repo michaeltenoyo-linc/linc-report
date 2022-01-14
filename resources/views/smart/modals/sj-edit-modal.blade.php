@@ -10,7 +10,7 @@
             <hr>
 
             <form action="" id="form-so-edit" autocomplete="off">
-                <input type="hidden" val="" class="id_so"/>
+                <input type="hidden" val="" class="id_so" name="id_so"/>
                 <div class="w-full lg:w-12/12 px-4">
                     <div class="relative w-full mb-3">
                         <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
@@ -38,10 +38,16 @@
                     <div class="relative w-full mb-3">
                         <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                             htmlFor="grid-password"> Customer Type </label>
-                        <input type="text"
+                        <select
                             name="customer_type"
                             class="input-customer-type border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                            />
+                            >
+                            <option value="smart industrial">SMART INDUSTRIAL</option>
+                            <option value="smart consumer">SMART CONSUMER</option>
+                            <option value="smart mt">SMART MT</option>
+                            <option value="smart pallet">SMART PALLET</option>
+                            <option value="smart ecommerce">SMART E-COM</option>
+                        </select>
                     </div>
                 </div>
 

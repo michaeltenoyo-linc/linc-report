@@ -1,6 +1,7 @@
 import { toInteger } from 'lodash';
 import { disableElement } from '../../utilities/helpers';
 import Snackbar from 'node-snackbar';
+import Swal from 'sweetalert2';
 
 export const EditModal = () => {
     $(document).on('click', '#btn-sj-edit', function(e){
@@ -43,12 +44,12 @@ export const EditModal = () => {
 
         Swal.fire({
             title: 'Are you sure?',
-            text: "Data akan dihapus secara permanen!",
+            text: "Data akan diubah secara permanen!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Iya, hapus!'
+            confirmButtonText: 'Iya, simpan!'
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajaxSetup({
@@ -64,7 +65,15 @@ export const EditModal = () => {
                     type: 'POST',
                     data: new FormData($(this)[0]),
                     success: (data) => {
-                        console.log(data);
+                        Swal.fire({
+                            title: 'Tersimpan!',
+                            text: 'Data item sudah diubah.',
+                            icon: 'success'
+                        }).then(function(){
+                            console.log("Done Edit");
+                            var table = $('#yajra-datatable-sj-list').DataTable();
+                            table.ajax.reload(null, false);
+                        });
                     },
                     error : function(request, status, error){
                         Swal.fire({

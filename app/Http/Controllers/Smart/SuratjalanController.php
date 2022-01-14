@@ -131,8 +131,17 @@ class SuratjalanController extends BaseController
             'multidrop' => 'required',
         ]);
 
-        
+        $selectedSmart = Suratjalan::where('id_so','=',$req->input('id_so'))->first();
 
-        return response()->json(['message' => "Connected."],200);
+        $selectedSmart->update([
+            'penerima' => $req->input('penerima'),
+            'customer_type' => $req->input('customer_type'),
+            'note' => $req->input('note'),
+            'biaya_bongkar' => $req->input('bongkar'),
+            'biaya_overnight' => $req->input('overnight'),
+            'biaya_multidrop' => $req->input('multidrop'),
+        ]);
+
+        return response()->json(['message' => "success"],200);
     }
 }
