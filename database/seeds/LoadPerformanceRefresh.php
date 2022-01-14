@@ -51,6 +51,12 @@ class LoadPerformanceRefresh extends Seeder
             if (!$firstline){
                 LoadPerformance::find($data['0'])->forceDelete();
 
+                $exist = LoadPerformance::find($data['0']);
+
+                if(!is_null($exist)){
+                    $exist->forceDelete();
+                }
+
                 LoadPerformance::create([
                     'tms_id' => $data['0'],
                     'created_date' => Carbon::createFromFormat('d/m/Y H:i', $data['1']),
