@@ -73,7 +73,13 @@ Linc | Register Surat Jalan
                             <input type="text"
                                 name="customer_name"
                                 class="input-customer border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                value="" readonly/>
+                                value="" list="customers" readonly/>
+                            
+                            <datalist id="customers">
+                                @foreach ($customers as $c)
+                                    <option value="{{ $c->name }}">{{ $c->name }}</option>
+                                @endforeach
+                            </datalist>
                         </div>
                     </div>
 

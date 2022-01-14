@@ -15,6 +15,7 @@ use App\Models\Trucks;
 use App\Models\Suratjalan;
 use App\Models\Dload;
 use App\Models\Suratjalan_ltl;
+use App\Models\CustomerLtl;
 
 class SuratjalanController extends BaseController
 {

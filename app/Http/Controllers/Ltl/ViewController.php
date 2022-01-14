@@ -14,6 +14,7 @@ use App\Models\Item;
 use App\Models\Trucks;
 use App\Models\Suratjalan;
 use App\Models\Suratjalan_ltl;
+use App\Models\CustomerLtl;
 
 class ViewController extends BaseController
 {
@@ -25,7 +26,8 @@ class ViewController extends BaseController
     }
 
     public function gotoSoNew(){
-        return view('ltl.pages.nav-so-new');
+        $data['customers'] = CustomerLtl::get();
+        return view('ltl.pages.nav-so-new', $data);
     }
 
     public function gotoSoList(){
