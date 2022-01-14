@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
                 CompanyLocationSeeder::class, => inject lokasi - lokasi stop area dari customer
                 CustomerBlujaySeeder::class, => inject data customer blujay
                 BillableBlujaySeeder::class, => inject data biaya kirim dari loa pada blujay
+                AddcostRateSeeder::class, => inject data addcost dari loa blujay ke DB
 
                 !!Seed daily/weekly!!
                 LoadPerformanceSeeder::class, => Data load id

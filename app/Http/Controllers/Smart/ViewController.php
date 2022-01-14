@@ -84,12 +84,18 @@ class ViewController extends BaseController
         $sj = Suratjalan::where('id_so','=',$id)->first();
 
         //ADDCOST BLUJAY
-        $bongkar = Addcost::where('load_id','=',$sj->load_id)->where('type','=','TMB_BONGKAR')->first();
+        $bongkar = Addcost::where('load_id','=',$sj->load_id)->where('type','=','TMB_BONGKAR')->get();
 
         if(is_null($bongkar)){
             $bongkar = 0;
         }else{
-            $bongkar = $bongkar->rate;
+            $nominalBongkar = 0;
+
+            foreach ($bongkar as $b) {
+                $nominalBongkar += $b->rate;
+            }
+
+            $bongkar = $nominalBongkar;
         }
 
 
