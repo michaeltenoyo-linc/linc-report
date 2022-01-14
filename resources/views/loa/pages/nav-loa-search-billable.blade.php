@@ -138,9 +138,6 @@ Linc | Input LOA
                                 <div class="font-semibold text-left">ID</div>
                             </th>
                             <th class="p-2 whitespace-nowrap">
-                                <div class="font-semibold text-left">Customer</div>
-                            </th>
-                            <th class="p-2 whitespace-nowrap">
                                 <div class="font-semibold text-left">Rute Awal</div>
                             </th>
                             <th class="p-2 whitespace-nowrap">

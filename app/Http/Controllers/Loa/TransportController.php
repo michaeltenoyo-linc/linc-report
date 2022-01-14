@@ -410,9 +410,11 @@ class TransportController extends BaseController
     }
 
     public function getDetailLoa(Request $req, $id){
-        $dloa = dloa_transport::where('id',$id)->first();
-        $loa = Loa_transport::where('id',$dloa->id_loa)->first();
+        //$dloa = dloa_transport::where('id',$id)->first();
+        //$loa = Loa_transport::where('id',$dloa->id_loa)->first();
+        $loa = BillableBlujay::where('id', $id)->first();
+        $loa->rate = number_format($loa->rate, 2, ',', '.');
 
-        return response()->json(['data' => $dloa, 'loa' => $loa], 200);
+        return response()->json(['loa' => $loa], 200);
     }
 }

@@ -324,7 +324,16 @@ export const AdminLoa = () => {
                 type: 'POST',
                 data: new FormData($(this)[0]),
                 success: (data) => {
-                    console.log(data);
+                    $('#content-dloa-list').empty();
+                    data['billableData'].forEach(e => {
+                        let col1 = "<td class='p-2 whitespace-nowrap text-left'>"+e['id'].toString().toUpperCase()+"</td>";
+                        let col2 = "<td class='p-2 whitespace-nowrap text-left'>"+e['origin_location'].toString().toUpperCase()+"</td>";
+                        let col3 = "<td class='p-2 whitespace-nowrap text-left'>"+e['destination_location'].toString().toUpperCase()+"</td>";
+                        let col4 = "<td class='p-2 whitespace-nowrap text-left'>"+e['sku'].toString().toUpperCase()+"</td>";
+                        let col5 = "<td class='p-2 whitespace-nowrap text-left'>"+"<button value='"+e['id']+"' id='transport-open-detail' class='bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded'>Detail</button>"+"</td>";
+
+                        $('#content-dloa-list').append("<tr>"+col1+col2+col3+col4+col5+"</tr>");
+                    });
                 },
                 error : function(request, status, error){
                     Swal.fire({
