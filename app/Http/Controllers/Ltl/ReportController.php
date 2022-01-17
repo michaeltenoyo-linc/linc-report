@@ -20,6 +20,7 @@ use App\Models\Suratjalan;
 use App\Models\Dload;
 use App\Models\LoadPerformance;
 use App\Models\Suratjalan_ltl;
+use App\Models\ShipmentBlujay;
 use phpDocumentor\Reflection\PseudoTypes\True_;
 use Yajra\DataTables\Contracts\DataTable;
 
@@ -62,7 +63,8 @@ class ReportController extends BaseController
                 }
 
                 if(count($listSJ) > 0 && !$loadExist){
-                    $transRate = floatval(floatval(str_replace(',','',$row->billable_total_rate)));
+                    $listBlujayReference = ShipmentBlujay::where('load_id','=',$row->tms_id)->orderBy('billable_total_rate','desc')->first();
+                    $transRate = floatval($listBlujayReference->billable_total_rate);
                     $totalWeight = 0;
                     $multidrop = 0;
                     foreach ($listSJ as $sj) {

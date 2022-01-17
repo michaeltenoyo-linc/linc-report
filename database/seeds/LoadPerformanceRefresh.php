@@ -49,8 +49,6 @@ class LoadPerformanceRefresh extends Seeder
             error_log($counter,0);
             $counter++;
             if (!$firstline){
-                LoadPerformance::find($data['0'])->forceDelete();
-
                 $exist = LoadPerformance::find($data['0']);
 
                 if(!is_null($exist)){
