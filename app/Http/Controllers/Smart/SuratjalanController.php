@@ -137,10 +137,17 @@ class SuratjalanController extends BaseController
             'penerima' => $req->input('penerima'),
             'customer_type' => $req->input('customer_type'),
             'note' => $req->input('note'),
-            'biaya_bongkar' => $req->input('bongkar'),
-            'biaya_overnight' => $req->input('overnight'),
-            'biaya_multidrop' => $req->input('multidrop'),
         ]);
+
+        $selectedLoad = Suratjalan::where('load_id','=',$req->input('load_id'))->get();
+        
+        foreach ($selectedLoad as $sj) {
+            $sj->update([ 
+                'biaya_bongkar' => $req->input('bongkar'),
+                'biaya_overnight' => $req->input('overnight'),
+                'biaya_multidrop' => $req->input('multidrop'),
+            ]);
+        }
 
         return response()->json(['message' => "success"],200);
     }
