@@ -53,8 +53,8 @@ Linc | List LOA Transport
                 </div>
 
                 <!-- LIST TABEL LOA -->
-                <div class="w-full lg:w-12/12 px-4 mb-8">
-                    <div class="relative w-full mb-3">
+                <div class="block w-full lg:w-12/12 px-4 mb-8 overflow-x-auto">
+                    <div class="w-full mb-3 flex flex-auto">
                         <table id="yajra-datatable-transport-list" class="items-center w-full bg-transparent border-collapse yajra-datatable-transport-list">
                             <thead>
                               <tr>

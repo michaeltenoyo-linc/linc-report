@@ -150,12 +150,12 @@
 				<div class="feature-block d-lg-flex">
 					<div class="feature-item mb-5 mb-lg-0">
 						<div class="feature-icon mb-4">
-							<i class="icofont-surgeon-alt"></i>
+							<img height="50rem" src="{{ asset('assets/novena/images/service/logo/loa.jpg') }}" alt="">
 						</div>
 						<span>Data Services</span>
 						<h4 class="mb-3">LOA Data</h4>
 						<p class="mb-4">Database for letter of agreement, with report, and easier monitoring for LOA.</p>
-						<a href="" class="btn btn-main btn-round-full">UNDER CONSTRUCTION :)</a>
+						<a href="{{ url('/loa') }}" class="btn btn-main btn-round-full">GO TO LETTER OF AGREEMENT</a>
 					</div>
 
 					<div class="feature-item mb-5 mb-lg-0">

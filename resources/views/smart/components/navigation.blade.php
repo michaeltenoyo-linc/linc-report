@@ -9,7 +9,7 @@
         </button>
         <a class="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
             href="#">
-            SMART CUSTOMER
+            <img src="{{ asset('assets/novena/images/service/logo/smart.jpg') }}" alt="">
         </a>
         <ul class="md:hidden items-center flex flex-wrap list-none">
             <li class="inline-block relative">
@@ -18,10 +18,10 @@
                 <div class="hidden bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
                     id="notification-dropdown">
                     <a href="#pablo"
-                        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700">Action</a><a
-                        href="#pablo"
+                        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700">Home</a><a
+                        href="/"
                         class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700">Another
-                        action</a><a href="#pablo"
+                        Home</a><a href="#pablo"
                         class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700">Something
                         else here</a>
                     <div class="h-0 my-2 border border-solid border-blueGray-100"></div>
@@ -42,10 +42,10 @@
                 <div class="hidden bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
                     id="user-responsive-dropdown">
                     <a href="#pablo"
-                        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700">Action</a><a
-                        href="#pablo"
+                        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700">Home</a><a
+                        href="/"
                         class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700">Another
-                        action</a><a href="#pablo"
+                        Home</a><a href="#pablo"
                         class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700">Something
                         else here</a>
                     <div class="h-0 my-2 border border-solid border-blueGray-100"></div>
