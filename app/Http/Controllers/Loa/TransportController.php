@@ -368,7 +368,13 @@ class TransportController extends BaseController
 
         $outData = [];
 
-        $selectedBillable = BillableBlujay::where('origin_city','=',$kota1name)->where('destination_city','=',$kota2name)->get();
+        $selectedBillable = BillableBlujay::where('billable_tariff','=',$req->input('customer'))
+                                            ->where('origin_city','=',$kota1name)
+                                            ->where('destination_city','=',$kota2name)
+                                            ->where('expiration_date','>=',Carbon::today()->toDateString())
+                                            ->where('effective_date','<=',Carbon::today()->toDateString())
+                                            ->orderBy('origin_location')
+                                            ->get();
         
         /* CARA 2 GAGAL
         $fromCompanies = Company::where('city','=',$kota1name)->get();

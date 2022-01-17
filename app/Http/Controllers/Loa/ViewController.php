@@ -13,6 +13,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 //Model
 use App\Models\Item;
+use App\Models\BillableBlujay;
 use App\Models\Loa_transport;
 use App\Models\Loa_warehouse;
 use App\Models\Province;
@@ -67,6 +68,7 @@ class ViewController extends BaseController
     //Search Engine
     public function gotoSearchTransport(){
         $data['transport_cust'] = Loa_transport::select('customer')->groupBy('customer')->get();
+        $data['blujay_tariff'] = BillableBlujay::select('billable_tariff')->groupBy('billable_tariff')->get();
         //$data['kel'] = Village::get();
         //$data['kec'] = District::get();
         //$data['kota'] = Regency::get();

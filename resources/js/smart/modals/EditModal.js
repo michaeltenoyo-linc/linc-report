@@ -30,6 +30,9 @@ export const EditModal = () => {
                 $('#sj-edit-modal .input-penerima').val(data['data']['sj']['penerima']);
                 $('#sj-edit-modal .input-customer-type').val(data['data']['sj']['customer_type']);
                 $('#sj-edit-modal .input-note').val(data['data']['sj']['note']);
+                $('#sj-edit-modal .input-bongkar').val(data['data']['sj']['biaya_bongkar']);
+                $('#sj-edit-modal .input-overnight').val(data['data']['sj']['biaya_overnight']);
+                $('#sj-edit-modal .input-multidrop').val(data['data']['sj']['biaya_multidrop']);
                                
                 //ADDCOST   
                 $('#sj-edit-modal .blujay-bongkar').html(data['data']['bongkar']);
