@@ -34,6 +34,9 @@ use App\Http\Controllers\Loa\ViewController as LoaViewController;
 use App\Http\Controllers\Loa\WarehouseController as LoaWarehouseController;
 use App\Http\Controllers\Loa\TransportController as LoaTransportController;
 
+//SALES CONTROLLER
+use App\Http\Controllers\Sales\ViewController as SalesViewController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -241,6 +244,51 @@ Route::middleware(['auth','priviledge:loa,master'])->group(function () {
             Route::get('/detail/{id}',[LoaTransportController::class, 'gotoDetailTransport']);
             Route::get('/dloa/{id}', [LoaTransportController::class, 'getDetailLoa']);
         });
+    });
+
+    //GET LOA FILES
+    Route::get('/show-pdf/{filename}/{content_path}', function($filename, $content_path){
+        return response()->file(storage_path("app/".$content_path."/".$filename));
+    })->name('show-pdf');
+
+    Route::get('/show-png/{filename}/{content_path}', function($filename, $content_path){
+        $path = storage_path("app/".$content_path."/".$filename);
+
+        if(!File::exists($path)){
+            return response()->json(["message" => "image not found!"], 404);
+        }
+
+        $file = File::get($path);
+        $type = File::mimeType($path);
+
+        $response = Response::make($file, 200);
+        $response->header("Content-Type", $type);
+
+        return $response;
+    })->name('show-png');
+
+    Route::get('/show-xlxs/{filename}/{content_path}', function($filename, $content_path){
+        $path = storage_path("app/".$content_path."/".$filename);
+
+        if(!File::exists($path)){
+            return response()->json(["message" => "file not found!"], 404);
+        }
+
+        $file = File::get($path);
+        $type = File::mimeType($path);
+
+        $response = Response::make($file, 200);
+        $response->header("Content-Type", $type);
+
+        return $response;
+    })->name('show-xlxs');
+});
+
+Route::middleware(['auth','priviledge:loa,master'])->group(function () {
+    //LOA
+    Route::prefix('/sales')->group(function (){
+        //View Navigation
+        Route::get('/',[SalesViewController::class, 'gotoLandingPage']);
     });
 
     //GET LOA FILES

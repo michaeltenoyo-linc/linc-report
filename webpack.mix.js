@@ -21,6 +21,7 @@ mix
   .js('resources/js/ltl/ltl.js', 'public/js')
   .js('resources/js/loa/loa.js', 'public/js')
   .js('resources/js/greenfields/greenfields.js', 'public/js')
+  .js('resources/js/sales/sales.js', 'public/js')
   .js('resources/js/master/master.js', 'public/js')
   .sass('resources/sass/app.scss', 'public/css')
   .options({
