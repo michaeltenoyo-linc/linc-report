@@ -40,13 +40,13 @@ class LoadPerformanceRefresh extends Seeder
         //LoadPerformance::truncate();
 
         //FUSO dan WB
-        $csvFile = fopen(base_path("reference/Load_Performance_2021_AUG_DES.csv"),"r");
+        $csvFile = fopen(base_path("reference/local_blujay/LoadPerformanceBlujay.csv"),"r");
         
         $firstline = true;
         
         $counter = 1;
         while(($data = fgetcsv($csvFile, 0, ',','"')) != FALSE){
-            error_log($counter,0);
+            error_log("Load Performance : ".$counter,0);
             $counter++;
             if (!$firstline){
                 $exist = LoadPerformance::find($data['0']);

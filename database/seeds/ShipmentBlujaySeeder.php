@@ -30,7 +30,7 @@ class ShipmentBlujaySeeder extends Seeder
         ShipmentBlujay::truncate();
 
         //FUSO dan WB
-        $csvFile = fopen(base_path("reference/local_blujay/RefreshShipmentBlujay_17012022.csv"),"r");
+        $csvFile = fopen(base_path("reference/local_blujay/RefreshShipmentBlujay.csv"),"r");
         
         $firstline = true;
         

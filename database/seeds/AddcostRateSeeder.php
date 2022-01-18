@@ -36,13 +36,13 @@ class AddcostRateSeeder extends Seeder
         Addcost::truncate();
 
         //FUSO dan WB
-        $csvFile = fopen(base_path("reference/local_blujay/RefreshAddcost_13012022.csv"),"r");
+        $csvFile = fopen(base_path("reference/local_blujay/RefreshAddcost.csv"),"r");
         
         $firstline = true;
         
         $counter = 1;
         while(($data = fgetcsv($csvFile, 0, ';','"')) != FALSE){
-            error_log($counter,0);
+            error_log("Addcost : ".$counter,0);
             $counter++;
             if (!$firstline){
                 /*
