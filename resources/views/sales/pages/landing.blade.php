@@ -14,12 +14,139 @@ Linc | Sales Report Homepage
         <div class="rounded-t mb-0 px-4 py-3 border-0">
             <div class="flex flex-wrap items-center">
                 <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-                    <h3 class="font-semibold text-lg text-blueGray-700">
-                        Welcome to data services for SALES REPORT
-                    </h3>
+                    <canvas id="chartRevenueYearly" width="100%" height="30%"></canvas>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="w-full flex flex-row-reverse">
+        <div class="w-2/3 flex inline-block gap-4">
+            <a href="/" class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white transform transition duration-500 hover:scale-110">
+                <div class="rounded-t mb-0 px-4 py-3 border-0">
+                    <div class="flex flex-wrap items-center">
+                        <div class="flex-auto p-4">
+                            <div class="flex flex-wrap">
+                                <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
+                                    <h5 class="text-blueGray-400 uppercase font-bold text-xs">
+                                        Sales
+                                    </h5>
+                                    <span class="font-semibold text-blueGray-700">
+                                        Adit
+                                    </span>
+                                </div>
+                                <div class="relative w-auto pl-4 flex-initial">
+                                    <div
+                                        class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-blue-500">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-sm text-blueGray-400 mt-4">
+                                <span class="text-orange-500 mr-2">
+                                    <i class="fas fa-arrow-down"></i> 0.10%
+                                </span>
+                                <span class="whitespace-nowrap"> Since yesterday </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+    
+            <a href="/" class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white transform transition duration-500 hover:scale-110">
+                <div class="rounded-t mb-0 px-4 py-3 border-0">
+                    <div class="flex flex-wrap items-center">
+                        <div class="flex-auto p-4">
+                            <div class="flex flex-wrap">
+                                <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
+                                    <h5 class="text-blueGray-400 uppercase font-bold text-xs">
+                                        Sales
+                                    </h5>
+                                    <span class="font-semibold text-blueGray-700">
+                                        Edwin
+                                    </span>
+                                </div>
+                                <div class="relative w-auto pl-4 flex-initial">
+                                    <div
+                                        class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-blue-500">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-sm text-blueGray-400 mt-4">
+                                <span class="text-orange-500 mr-2">
+                                    <i class="fas fa-arrow-down"></i> 2.10%
+                                </span>
+                                <span class="whitespace-nowrap"> Since yesterday </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+    
+            <a href="/" class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white transform transition duration-500 hover:scale-110">
+                <div class="rounded-t mb-0 px-4 py-3 border-0">
+                    <div class="flex flex-wrap items-center">
+                        <div class="flex-auto p-4">
+                            <div class="flex flex-wrap">
+                                <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
+                                    <h5 class="text-blueGray-400 uppercase font-bold text-xs">
+                                        Sales
+                                    </h5>
+                                    <span class="font-semibold text-blueGray-700">
+                                        Willem
+                                    </span>
+                                </div>
+                                <div class="relative w-auto pl-4 flex-initial">
+                                    <div
+                                        class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-blue-500">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-sm text-blueGray-400 mt-4">
+                                <span class="text-orange-500 mr-2">
+                                    <i class="fas fa-arrow-down"></i> 3.10%
+                                </span>
+                                <span class="whitespace-nowrap"> Since yesterday </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    
+    <div class="w-full flex flex-row-reverse">
+        <div class="w-full flex inline-block gap-4">
+            <div class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
+                <div class="rounded-t mb-0 px-4 py-3 border-0">
+                    <div class="flex flex-wrap items-center mb-8">
+                        <div class="flex-auto p-4">
+                            <canvas id="chartBahanaMonthly" width="100%" height="30%"></canvas>
+                        </div>
+                    </div>
+                    <div class="flex justify-center">
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-right">Bahana Prestasi</button>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
+                <div class="rounded-t mb-0 px-4 py-3 border-0">
+                    <div class="flex flex-wrap items-center mb-8">
+                        <div class="flex-auto p-4">
+                            <canvas id="chartCmlMonthly" width="100%" height="30%"></canvas>
+                        </div>
+                    </div>
+                    <div class="flex justify-center">
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-right">Cipta Mapan Logistik</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
 </div>
 @endsection

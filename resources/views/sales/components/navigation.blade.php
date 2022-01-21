@@ -95,13 +95,13 @@
                     @if (Request::path() == '/greenfields/nav-so-new')
                     <a href="{{url('/greenfields/nav-so-new')}}"
                         class="page_nav_active">
-                        <i class="fas fa-plus"></i>
+                        <i class="fab fa-sellsy"></i>
                         By Sales Report
                     </a>
                     @else
                     <a href="{{url('/greenfields/nav-so-new')}}"
                         class="page_nav">
-                        <i class="fas fa-plus"></i>
+                        <i class="fab fa-sellsy"></i>
                         By Sales Report
                     </a>
                     @endif
@@ -113,13 +113,13 @@
                     @if (Request::path() == '/greenfields/nav-so-list')
                     <a href="{{url('/greenfields/nav-so-list')}}"
                         class="page_nav_active">
-                        <i class="fas fa-shipping-fast"></i>
+                        <i class="fas fa-male"></i>
                         Master Sales
                     </a>
                     @else
                     <a href="{{url('/greenfields/nav-so-list')}}"
                         class="page_nav">
-                        <i class="fas fa-shipping-fast"></i>
+                        <i class="fas fa-male"></i>
                         Master Sales
                     </a>
                     @endif
@@ -132,6 +132,25 @@
             <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
                 Division
             </h6>
+            <!-- Navigation Product -->
+            <ul class="md:flex-col md:min-w-full flex flex-col list-none">
+                <li class="items-center">
+                    @if (Request::path() == 'lautanluas/nav-report-generate')
+                        <a href="{{url('/greenfields/nav-report-generate')}}"
+                            class="page_nav_active">
+                            <i class="fab fa-sellsy"></i>
+                            By Division Report
+                        </a>
+                    @else
+                        <a href="{{url('/greenfields/nav-report-generate')}}"
+                            class="page_nav">
+                            <i class="fab fa-sellsy"></i>
+                            By Division Report
+                        </a>
+                    @endif
+                </li>
+            </ul>
+
             <!-- Navigation Product -->
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
                 <li class="items-center">

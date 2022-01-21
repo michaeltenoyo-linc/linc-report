@@ -1,3 +1,5 @@
+import { Landing } from "./pages/landing";
+
 export const load = () => {
     //Loading Spinner
 
@@ -20,6 +22,8 @@ export const load = () => {
     $('form').on('blur', 'input[type=number]', function(e){
         $(this).off('wheel.disableScroll');
     });
+
+    Landing();
 };
 
 load();
