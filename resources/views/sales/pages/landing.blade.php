@@ -117,7 +117,7 @@ Linc | Sales Report Homepage
         </div>
     </div>
     
-    <div class="w-full flex flex-row-reverse">
+    <div class="w-full flex">
         <div class="w-full flex inline-block gap-4">
             <div class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
                 <div class="rounded-t mb-0 px-4 py-3 border-0">
@@ -147,6 +147,87 @@ Linc | Sales Report Homepage
         </div>
     </div>
 
+    <div class="w-full flex">
+        <div class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
+            <div class="rounded-t mb-0 px-4 py-3 border-0">
+                <div class="flex flex-wrap items-center mb-8">
+                    <div class="w-2/3 p-4">
+                        <canvas id="chartTransportMonthly" width="100%" height="40%"></canvas>
+                    </div>
+                    <div class="w-1/3 p-4">
+                        <div class="font-bold text-xl">Transport</div> <br> 2.505/4.505 <br> 55.43%
+                        <br>
+                        <br>
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-right">Transport Log Pack</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="w-full flex">
+        <div class="w-full flex inline-block gap-4">
+            <div class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
+                <div class="rounded-t mb-0 px-4 py-3 border-0">
+                    <div class="flex flex-wrap items-center mb-8">
+                        <div class="flex-auto p-4 w-1/2">
+                            <canvas id="chartEximMonthly" width="100%" height="30%"></canvas>
+                        </div>
+                        <div class="flex-auto p-4 w-1/2">
+                            <b>EXIM</b>
+                            <br>
+                            4.235/5.404
+                            <br>
+                            78.44%
+                        </div>
+                    </div>
+                    <div class="flex justify-center">
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-right">EXIM</button>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
+                <div class="rounded-t mb-0 px-4 py-3 border-0">
+                    <div class="flex flex-wrap items-center mb-8">
+                        <div class="flex-auto p-4 w-1/2">
+                            <canvas id="chartWarehouseMonthly" width="100%" height="30%"></canvas>
+                        </div>
+                        <div class="flex-auto p-4 w-1/2">
+                            <b>Warehouse</b>
+                            <br>
+                            4.235/5.404
+                            <br>
+                            78.44%
+                        </div>
+                    </div>
+                    <div class="flex justify-center">
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-right">EXIM</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
+                <div class="rounded-t mb-0 px-4 py-3 border-0">
+                    <div class="flex flex-wrap items-center mb-8">
+                        <div class="flex-auto p-4 w-1/2">
+                            <canvas id="chartBulkMonthly" width="100%" height="30%"></canvas>
+                        </div>
+                        <div class="flex-auto p-4 w-1/2">
+                            <b>Bulk</b>
+                            <br>
+                            4.235/5.404
+                            <br>
+                            78.44%
+                        </div>
+                    </div>
+                    <div class="flex justify-center">
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-right">EXIM</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
 </div>
 @endsection

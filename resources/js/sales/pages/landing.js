@@ -149,7 +149,7 @@ export const Landing = () => {
               plugins: {
                 title: {
                     display: true,
-                    text: 'Monthly Budget By Division (Million.)'
+                    text: 'Monthly Budget By Bahana Prestasi (Million.)'
                 },
                 legend: {
                   labels: {
@@ -238,6 +238,55 @@ export const Landing = () => {
           };
 
         const chartMonthlyCml = new Chart(contMonthlyCml, configMonthlyCml);
+
+        //Chart Landing Monthly Transport
+        
+        //Dummy Data
+        const labels4 = [
+          'Adit',
+          'Edwin',
+          'Willem',
+        ];
+        const data4 = {
+            labels: labels4,
+            datasets: [
+                {
+                    label: 'Actual',
+                    data: [1050,2500,1450],
+                    backgroundColor: 'rgb(25,150,60)',
+                },
+                {
+                  label: 'Budget Remains',
+                  data: [505,233,112],
+                  backgroundColor: 'rgb(40,235,15)',
+              },
+            ]
+        };
+
+        const contMonthlyTransport = $('#chartTransportMonthly');
+        const configMonthlyTransport = {
+          type: 'bar',
+          data: data4,
+          options: {
+            plugins: {
+              title: {
+                display: true,
+                text: 'Monthly Transport by Sales'
+              },
+            },
+            responsive: true,
+            scales: {
+              x: {
+                stacked: true,
+              },
+              y: {
+                stacked: true
+              }
+            }
+          }
+        };
+
+        const chartMonthlyTransport = new Chart(contMonthlyTransport, configMonthlyTransport);
     }
 
     onLoad();
