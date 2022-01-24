@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             /*SEED MANUAL
 
                 !!Seed if needed only!!
+                SalesBudgetSeeder::class, => Seeding sales budget information (2022)
                 LoaTransportSeeder::class, => Seeding format ulang loa transport yang berlaku
                 IndoRegionSeeder::class, => inject area" di indonesia pada db
                 PostalCodeSeeder::class, => inject kode pos di indonesia pada db
@@ -30,7 +31,7 @@ class DatabaseSeeder extends Seeder
                 CompanyLocationSeeder::class, => inject lokasi - lokasi stop area dari customer
                 CustomerBlujaySeeder::class, => inject data customer blujay
                 BillableBlujaySeeder::class, => inject data biaya kirim dari loa pada blujay
-                
+
                 !!Seed daily/weekly!!
                 LoadPerformanceSeeder::class, => Data load id
                 AddcostRateSeeder::class, => Data addcost blujay
