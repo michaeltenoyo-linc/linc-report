@@ -29,6 +29,7 @@ class CreateSuratjalansTable extends Migration
             $table->float('biaya_overnight',12);
             $table->float('biaya_multidrop',12);
             $table->timestamp('tgl_terima');
+            $table->timestamp('tgl_setor_sj')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

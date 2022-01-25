@@ -27,6 +27,7 @@ class Suratjalan extends Model
         'biaya_overnight',
         'biaya_multidrop',
         'tgl_terima',
+        'tgl_setor_sj',
         'total_qtySO',
         'note',
     ];
