@@ -40,7 +40,7 @@ class ReportController extends BaseController
         $ctr = 1;
 
         //Untuk Report 2
-        $SjReport2 = LoadPerformance::whereMonth('created_at','01')->get();
+        $SjReport2 = Suratjalan::whereMonth('created_at','01')->orderBy('created_at','asc')->get();
 
         if($req->input('reportType') == "smart_1"){
             foreach ($listLoadId as $wantedLoad) {
@@ -217,20 +217,21 @@ class ReportController extends BaseController
             foreach ($SjReport2 as $sj) {
                 $firstline = true;
 
-                $dload = Dload::where('id_so','=',$sj->id_so);
+                $dload = Dload::where('id_so','=',$sj->id_so)->get();
+                $splitID = explode('$',$sj->id_so);
+                $truck = Trucks::where('nopol','=',$sj->nopol)->first();
 
 
                 foreach ($dload as $items) {
+                    $itemDetail = Item::where('material_code','=',$items->material_code)->first();
                     if ($firstline) {
-                        $splitID = explode('$',$sj->id_so);
-                        $truck = Trucks::where('nopol','=',$sj->nopol)->first();
-
+                        
                         $reports->push([
                             'No' => $ctr,
                             'No SJ' => $splitID[0],
                             'No DO' => (isset($splitID[1])?$splitID[1]:""),
                             'Tanggal Input' => $sj->created_at,
-                            'Update Terakhir' => $sj->upated_at,
+                            'Update Terakhir' => $sj->updated_at,
                             'Load ID' => $sj->load_id,
                             'Tgl Muat' => Carbon::parse($sj->tgl_muat)->format('d-M-Y'),
                             'Penerima' => $sj->penerima,
@@ -244,18 +245,20 @@ class ReportController extends BaseController
                             'Overnight Charge' => $sj->biaya_overnight,
                             'Multidrop' => $sj->biaya_multidrop,
                             'Kode SKU' => $items->material_code,
+                            'Deskripsi' => $itemDetail->description,
                             'Qty' => $items->qty,
                             'Retur' => $items->retur,
                             'Subtotal Weight' => $items->subtotal_weight,
                         ]);
+                        $firstline = false;
                         $ctr++;
                     }else{
                         $reports->push([
                             'No' => "",
                             'No SJ' => "",
                             'No DO' => "",
-                            'Tanggal Input' => $sj->created_at,
-                            'Update Terakhir' => $sj->upated_at,
+                            'Tanggal Input' => "",
+                            'Update Terakhir' => "",
                             'Load ID' => "",
                             'Tgl Muat' => "",
                             'Penerima' => "",
@@ -264,11 +267,12 @@ class ReportController extends BaseController
                             'Utilitas' => "",
                             'Nopol' => "",
                             'Tipe Kendaraan' => "",
-                            'Kontainer' => "-",
+                            'Kontainer' => "",
                             'Biaya Bongkar' => "",
                             'Overnight Charge' => "",
                             'Multidrop' => "",
                             'Kode SKU' => $items->material_code,
+                            'Deskripsi' => $itemDetail->description,
                             'Qty' => $items->qty,
                             'Retur' => $items->retur,
                             'Subtotal Weight' => $items->subtotal_weight,
@@ -280,8 +284,8 @@ class ReportController extends BaseController
                     'No' => "",
                     'No SJ' => "",
                     'No DO' => "",
-                    'Tanggal Input' => $sj->created_at,
-                    'Update Terakhir' => $sj->upated_at,
+                    'Tanggal Input' => "",
+                    'Update Terakhir' => "",
                     'Load ID' => "",
                     'Tgl Muat' => "",
                     'Penerima' => "",
@@ -295,11 +299,18 @@ class ReportController extends BaseController
                     'Overnight Charge' => "",
                     'Multidrop' => "",
                     'Kode SKU' => "",
+                    'Deskripsi' => "",
                     'Qty' => "",
                     'Retur' => "",
                     'Subtotal Weight' => "",
                 ]);
             }
+
+            Session::put('warningReport',$warning);
+            Session::put('resultReport',$reports);
+            Session::put('totalReport',$ctr-1);
+
+            return view('smart.pages.report-preview-smart-1');
         }
         /*
         else if($req->input('reportType') == "smart_2"){
