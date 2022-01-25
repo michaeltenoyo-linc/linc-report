@@ -45,6 +45,10 @@ class ReportController extends BaseController
         if($req->input('reportType') == "smart_1"){
             foreach ($listLoadId as $wantedLoad) {
                 $row = LoadPerformance::where('tms_id',$wantedLoad)->first();
+                if($row == ""){
+                    break;
+                }
+
                 $listSJ = Suratjalan::where('load_id','=',$row->tms_id)->get();
                 $loadExist = False;
                 foreach ($reports as $r) {

@@ -34,7 +34,7 @@ class ReportController extends BaseController
             'loadId' => 'required',
         ]);
         
-        $bluejayList = Session::get('bluejayArray');
+
         $reports = new Collection;
         $warning = new Collection;
         $listLoadId = explode(';',$req->input('loadId'));
@@ -43,7 +43,11 @@ class ReportController extends BaseController
         if($req->input('reportType') == "pengiriman_greenfields"){
             //REVISI BLUJAY LOCAL
             foreach ($listLoadId as $wantedLoad){
+                if($wantedLoad == ""){
+                    break;
+                }
                 $row = LoadPerformance::where('tms_id',$wantedLoad)->first();
+
                 $listSJ = Suratjalan_greenfields::where('load_id','=',$row->tms_id)
                             ->get();
                 $firstSJ = true;
@@ -97,9 +101,11 @@ class ReportController extends BaseController
                                 'REMARKS' => $sj->note,
                                 'Load ID' => $sj->load_id,
                             ]);
+
+                            $firstSJ = false;
                         }else{
                             $reports->push([
-                                'No.' => $ctr,
+                                'No.' => "",
                                 'Order Date' => "",
                                 'No Order' => $sj->no_order,
                                 'Area' => "",
@@ -116,6 +122,8 @@ class ReportController extends BaseController
                                 'Load ID' => $sj->load_id,
                             ]);
                         }
+
+
                     }
 
                 }else{
@@ -129,6 +137,26 @@ class ReportController extends BaseController
                         ]);
                     }
                 }
+
+                $reports->push([
+                    'No.' => "",
+                    'Order Date' => "",
+                    'No Order' => "",
+                    'Area' => "",
+                    'Quantity' => "",
+                    'Pol. No' => "",
+                    'Truck Type' => "",
+                    'Destination' => "",
+                    'Rate' => "",
+                    'Other' => "",
+                    'Multi Drop' => "",
+                    'Un-Loading' => "",
+                    'Total Invoices' => "",
+                    'REMARKS' => "",
+                    'Load ID' => "",
+                ]);
+
+                $ctr++;
             }
 
             /*
