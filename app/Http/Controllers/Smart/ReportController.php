@@ -39,6 +39,9 @@ class ReportController extends BaseController
         $listLoadId = explode(';',$req->input('loadId'));
         $ctr = 1;
 
+        //Untuk Report 2
+        $SjReport2 = LoadPerformance::whereMonth('created_at','01')->get();
+
         if($req->input('reportType') == "smart_1"){
             foreach ($listLoadId as $wantedLoad) {
                 $row = LoadPerformance::where('tms_id',$wantedLoad)->first();
@@ -210,6 +213,93 @@ class ReportController extends BaseController
 
             return view('smart.pages.report-preview-smart-1');
 
+        }elseif ($req->input('reportType') == "smart_2") {
+            foreach ($SjReport2 as $sj) {
+                $firstline = true;
+
+                $dload = Dload::where('id_so','=',$sj->id_so);
+
+
+                foreach ($dload as $items) {
+                    if ($firstline) {
+                        $splitID = explode('$',$sj->id_so);
+                        $truck = Trucks::where('nopol','=',$sj->nopol)->first();
+
+                        $reports->push([
+                            'No' => $ctr,
+                            'No SJ' => $splitID[0],
+                            'No DO' => (isset($splitID[1])?$splitID[1]:""),
+                            'Tanggal Input' => $sj->created_at,
+                            'Update Terakhir' => $sj->upated_at,
+                            'Load ID' => $sj->load_id,
+                            'Tgl Muat' => Carbon::parse($sj->tgl_muat)->format('d-M-Y'),
+                            'Penerima' => $sj->penerima,
+                            'Kuantitas' => $sj->total_qtySO,
+                            'Berat' => $sj->total_weightSO,
+                            'Utilitas' => strval($sj->utilitas)."%",
+                            'Nopol' => $sj->nopol,
+                            'Tipe Kendaraan' => $truck->type,
+                            'Kontainer' => "-",
+                            'Biaya Bongkar' => $sj->biaya_bongkar,
+                            'Overnight Charge' => $sj->biaya_overnight,
+                            'Multidrop' => $sj->biaya_multidrop,
+                            'Kode SKU' => $items->material_code,
+                            'Qty' => $items->qty,
+                            'Retur' => $items->retur,
+                            'Subtotal Weight' => $items->subtotal_weight,
+                        ]);
+                        $ctr++;
+                    }else{
+                        $reports->push([
+                            'No' => "",
+                            'No SJ' => "",
+                            'No DO' => "",
+                            'Tanggal Input' => $sj->created_at,
+                            'Update Terakhir' => $sj->upated_at,
+                            'Load ID' => "",
+                            'Tgl Muat' => "",
+                            'Penerima' => "",
+                            'Kuantitas' => "",
+                            'Berat' => "",
+                            'Utilitas' => "",
+                            'Nopol' => "",
+                            'Tipe Kendaraan' => "",
+                            'Kontainer' => "-",
+                            'Biaya Bongkar' => "",
+                            'Overnight Charge' => "",
+                            'Multidrop' => "",
+                            'Kode SKU' => $items->material_code,
+                            'Qty' => $items->qty,
+                            'Retur' => $items->retur,
+                            'Subtotal Weight' => $items->subtotal_weight,
+                        ]);
+                    }
+                }
+
+                $reports->push([
+                    'No' => "",
+                    'No SJ' => "",
+                    'No DO' => "",
+                    'Tanggal Input' => $sj->created_at,
+                    'Update Terakhir' => $sj->upated_at,
+                    'Load ID' => "",
+                    'Tgl Muat' => "",
+                    'Penerima' => "",
+                    'Kuantitas' => "",
+                    'Berat' => "",
+                    'Utilitas' => "",
+                    'Nopol' => "",
+                    'Tipe Kendaraan' => "",
+                    'Kontainer' => "-",
+                    'Biaya Bongkar' => "",
+                    'Overnight Charge' => "",
+                    'Multidrop' => "",
+                    'Kode SKU' => "",
+                    'Qty' => "",
+                    'Retur' => "",
+                    'Subtotal Weight' => "",
+                ]);
+            }
         }
         /*
         else if($req->input('reportType') == "smart_2"){

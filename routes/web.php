@@ -284,12 +284,22 @@ Route::middleware(['auth','priviledge:loa,master'])->group(function () {
     })->name('show-xlxs');
 });
 
-Route::middleware(['auth','priviledge:loa,master'])->group(function () {
-    //LOA
+//SALES
+Route::middleware(['auth','priviledge:sales,master'])->group(function () {
     Route::prefix('/sales')->group(function (){
         //View Navigation
         Route::get('/',[SalesViewController::class, 'gotoLandingPage']);
+        Route::get('/monitoring-master',[SalesViewController::class, 'gotoMonitoringMaster']);
+
+        Route::prefix('/data')->group(function () {
+            //DATA VIEW
+            Route::get('/get-budget-actual',[SalesViewController::class, 'getBudgetActual']);
+        });
     });
+});
+
+Route::middleware(['auth','priviledge:sales,master'])->group(function () {
+    
 
     //GET LOA FILES
     Route::get('/show-pdf/{filename}/{content_path}', function($filename, $content_path){

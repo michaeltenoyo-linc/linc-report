@@ -84,6 +84,27 @@
 
             <!-- Divider -->
             <hr class="my-4 md:min-w-full" />
+
+            <ul class="md:flex-col md:min-w-full flex flex-col list-none">
+                {{-- Active --}}
+                <li class="items-center">
+                    @if (Request::path() == '/sales/monitoring-master')
+                    <a href="{{url('/sales/monitoring-master')}}"
+                        class="page_nav_active">
+                        <i class="fab fa-sellsy"></i>
+                        Monitoring Master
+                    </a>
+                    @else
+                    <a href="{{url('/sales/monitoring-master')}}"
+                        class="page_nav">
+                        <i class="fab fa-sellsy"></i>
+                        Monitoring Master
+                    </a>
+                    @endif
+                </li>
+            </ul>
+            <!-- Divider -->
+            <hr class="my-4 md:min-w-full" />
             <!-- Heading -->
             <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
                 Sales
