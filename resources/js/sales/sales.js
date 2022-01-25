@@ -1,4 +1,5 @@
 import { Landing } from "./pages/landing";
+import { masterBudget } from "./pages/masterBudget";
 
 export const load = () => {
     //Loading Spinner
@@ -24,6 +25,7 @@ export const load = () => {
     });
 
     Landing();
+    masterBudget();
 };
 
 load();
