@@ -122,7 +122,7 @@ Linc | Generate Report
                         <div class="flex flex-row-reverse w-full mb-3">
                             <input type="submit"
                                 class="report-btn-preview bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded text-right"
-                                value="Preview and Generate" disabled/>
+                                value="Preview and Generate"/>
                         </div>
                     </div>
                 </div>
