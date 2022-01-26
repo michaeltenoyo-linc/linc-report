@@ -17,6 +17,8 @@ use App\Models\ShipmentBlujay;
 use App\Models\Suratjalan_greenfields;
 use App\Models\Trucks;
 
+use function PHPUnit\Framework\isNull;
+
 class ViewController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -37,6 +39,15 @@ class ViewController extends BaseController
             ->addColumn('completation', function($row){
                 //actual data
                 $actual = 0;
+
+                //BLUJAY DIVISION TRANSPORT
+                if($row->division == "Pack Trans"){
+                    $total = ShipmentBlujay::select('customer_name')->selectRaw('SUM(billable_total_rate) as totalActual')->groupBy('customer_name')->where('customer_name','=',$row->customer_name)->whereMonth('created_at','01')->first();
+                    
+                    if(!isNull($total)){
+                        $actual = $total->totalActual;
+                    }
+                }
 
                 $divCol = "Rp. ".$actual." / <span class='font-bold'>".number_format($row->budget,0,',','.')."</span> <span class='text-red-600'> (0 %) </span>";
 
