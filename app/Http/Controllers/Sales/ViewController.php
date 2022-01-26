@@ -17,6 +17,7 @@ use App\Models\ShipmentBlujay;
 use App\Models\Suratjalan_greenfields;
 use App\Models\Trucks;
 
+use function PHPUnit\Framework\isNan;
 use function PHPUnit\Framework\isNull;
 
 class ViewController extends BaseController
@@ -39,18 +40,45 @@ class ViewController extends BaseController
             ->addColumn('completation', function($row){
                 //actual data
                 $actual = 0;
+                $percentage = 0;
 
-                //BLUJAY DIVISION TRANSPORT
+                
                 if($row->division == "Pack Trans"){
-                    $total = ShipmentBlujay::select('customer_name')->selectRaw('SUM(billable_total_rate) as totalActual')->groupBy('customer_name')->where('customer_name','=',$row->customer_name)->whereMonth('created_at','01')->first();
-                    
-                    if(!isNull($total)){
+                    //BLUJAY DIVISION TRANSPORT
+                    $total = ShipmentBlujay::selectRaw('customer_reference, load_group, SUM(billable_total_rate) as totalActual')->where('customer_reference',$row->customer_sap)->where('load_group','SURABAYA LOG PACK')->groupBy('customer_reference','load_group')->first();
+
+                    if(!is_null($total)){
+                        $actual = $total->totalActual;
+                    }
+                }else if($row->division == "Freight Forwarding BP"){
+                    $total = ShipmentBlujay::selectRaw('customer_reference, load_group, SUM(billable_total_rate) as totalActual')->where('customer_reference',$row->customer_sap)->where('load_group','SURABAYA EXIM TRUCKING')->groupBy('customer_reference','load_group')->first();
+
+                    if(!is_null($total)){
                         $actual = $total->totalActual;
                     }
                 }
 
-                $divCol = "Rp. ".$actual." / <span class='font-bold'>".number_format($row->budget,0,',','.')."</span> <span class='text-red-600'> (0 %) </span>";
+                if($row->budget > 0){
+                    $percentage = floatval($actual)/floatval($row->budget) * 100;
+                    $percentage = round(floatval($percentage), 2);
+                }
 
+                $divCol = "";
+
+                if($percentage > 90){
+                    $divCol = "Rp. ".number_format($actual,0,',','.')." / <span class='font-bold'>".number_format($row->budget,0,',','.')."</span> <span class='text-green-700 font-bold'> (".$percentage." %) </span>";
+                }else if($percentage > 75){
+                    $divCol = "Rp. ".number_format($actual,0,',','.')." / <span class='font-bold'>".number_format($row->budget,0,',','.')."</span> <span class='text-green-500 font-bold'> (".$percentage." %) </span>";
+                }else if($percentage > 50){
+                    $divCol = "Rp. ".number_format($actual,0,',','.')." / <span class='font-bold'>".number_format($row->budget,0,',','.')."</span> <span class='text-yellow-300 font-bold'> (".$percentage." %) </span>";
+                }else if($percentage > 25){
+                    $divCol = "Rp. ".number_format($actual,0,',','.')." / <span class='font-bold'>".number_format($row->budget,0,',','.')."</span> <span class='text-orange-400 font-bold'> (".$percentage." %) </span>";
+                }else if($percentage > 10){
+                    $divCol = "Rp. ".number_format($actual,0,',','.')." / <span class='font-bold'>".number_format($row->budget,0,',','.')."</span> <span class='text-orange-600 font-bold'> (".$percentage." %) </span>";
+                }else{
+                    $divCol = "Rp. ".number_format($actual,0,',','.')." / <span class='font-bold'>".number_format($row->budget,0,',','.')."</span> <span class='text-red-600 font-bold'> (".$percentage." %) </span>";
+                }
+                
                 return $divCol;
             })
             ->addColumn('period_mon', function($row){

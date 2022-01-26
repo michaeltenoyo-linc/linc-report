@@ -8,10 +8,11 @@ export const masterBudget = () => {
     console.log("loading MasterBudgetJS");
 
     const getBudget = () => {
-      $('#yajra-datatable-monitoring-budget').DataTable({
+      var table = $('#yajra-datatable-monitoring-budget').DataTable({
           processing: true,
           serverSide: false,
           ajax: "/sales/data/get-budget-actual",
+          autoWidth: false,
           columns: [
             {data: 'sales', name: 'id_so'},
             {data: 'division', name: 'load_id'},
