@@ -25,6 +25,9 @@ export const masterBudget = () => {
           ],
       });
 
+      //Drawing graph each row
+      
+
       return false;
     }
 
