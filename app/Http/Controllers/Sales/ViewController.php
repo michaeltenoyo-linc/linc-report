@@ -45,13 +45,27 @@ class ViewController extends BaseController
                 
                 if($row->division == "Pack Trans"){
                     //BLUJAY DIVISION TRANSPORT
-                    $total = ShipmentBlujay::selectRaw('customer_reference, load_group, SUM(billable_total_rate) as totalActual')->where('customer_reference',$row->customer_sap)->where('load_group','SURABAYA LOG PACK')->groupBy('customer_reference','load_group')->first();
+                    $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                                        ->where('customer_reference',$row->customer_sap)
+                                        ->where('load_group','SURABAYA LOG PACK')
+                                        ->where('load_status','Completed')
+                                        ->whereMonth('load_closed_date',date('m'))
+                                        ->whereYear('load_closed_date',date('Y'))
+                                        ->groupBy('customer_reference')
+                                        ->first();
 
                     if(!is_null($total)){
                         $actual = $total->totalActual;
                     }
                 }else if($row->division == "Freight Forwarding BP"){
-                    $total = ShipmentBlujay::selectRaw('customer_reference, load_group, SUM(billable_total_rate) as totalActual')->where('customer_reference',$row->customer_sap)->where('load_group','SURABAYA EXIM TRUCKING')->groupBy('customer_reference','load_group')->first();
+                    $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                                        ->where('customer_reference',$row->customer_sap)
+                                        ->where('load_group','SURABAYA EXIM TRUCKING')
+                                        ->where('load_status','Completed')
+                                        ->whereMonth('load_closed_date',date('m'))
+                                        ->whereYear('load_closed_date',date('Y'))
+                                        ->groupBy('customer_reference')
+                                        ->first();
 
                     if(!is_null($total)){
                         $actual = $total->totalActual;
