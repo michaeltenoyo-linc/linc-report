@@ -51,7 +51,9 @@ class ShipmentBlujaySeeder extends Seeder
                     'customer_name'=>$data['1'],
                     'load_id'=>$data['2'],
                     'load_group'=>$data['3'],
-                    'billable_total_rate'=>round(floatval(str_replace(',','',$data['6'])),2),         
+                    'billable_total_rate'=>round(floatval(str_replace(',','',$data['6'])),2),  
+                    'load_closed_date' => Carbon::createFromFormat('d/m/Y H:i', $data['7']),
+                    'load_status' => $data['8']       
                 ]);
             }
 

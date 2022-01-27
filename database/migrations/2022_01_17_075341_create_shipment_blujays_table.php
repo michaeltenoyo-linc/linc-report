@@ -20,6 +20,8 @@ class CreateShipmentBlujaysTable extends Migration
             $table->string('load_id');
             $table->string('load_group');
             $table->float('billable_total_rate',12);
+            $table->date('load_closed_date');
+            $table->string('load_status');
             $table->timestamps();
             $table->softDeletes();
         });

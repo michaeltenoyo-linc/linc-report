@@ -19,5 +19,7 @@ class ShipmentBlujay extends Model
         'load_id',
         'load_group',
         'billable_total_rate',
+        'load_closed_date',
+        'load_status',
     ];
 }
