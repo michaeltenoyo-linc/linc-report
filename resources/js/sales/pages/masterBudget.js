@@ -19,7 +19,9 @@ export const masterBudget = () => {
             {data: 'customer_name', name: 'nopol'},
             {data: 'customer_status', name: 'penerima'},
             {data: 'period_mon', name: 'total_weightSO'},
-            {data: 'completation', name: 'utilitas'},
+            {data: 'achievement_1m', name: 'utilitas'},
+            {data: 'achievement_ytd', name: 'utilitas'},
+            {data: 'graph', name: 'utilitas', orderable: false, searchable: false},
           ],
       });
 
