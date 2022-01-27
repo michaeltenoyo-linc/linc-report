@@ -2,10 +2,20 @@ const plugin = require("tailwindcss/plugin");
 const colors = require("tailwindcss/colors");
 
 module.exports = {
-  purge: [
-    './resources/views/**/*.blade.php',
-    './resources/sass/**/*.scss',
-  ],
+  purge: {
+    content: [
+      './resources/views/**/*.blade.php',
+      './resources/sass/**/*.scss',
+    ],
+    safelist: [
+      'text-green-700',
+      'text-green-500',
+      'text-yellow-300',
+      'text-orange-400',
+      'text-orange-600',
+      'text-red-600'
+    ]
+  },
   theme: {
     colors: {
       ...colors,
