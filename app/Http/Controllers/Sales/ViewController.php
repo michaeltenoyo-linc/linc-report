@@ -34,6 +34,63 @@ class ViewController extends BaseController
         return view('sales.pages.monitoring-master');
     }
 
+    public function getYearlyAchievement(Request $req, $id){
+        $tempBudget = SalesBudget::find($id);
+
+        $data['message'] = "Sukses mengambil data budget.";
+        $data['yearly_budget'] = SalesBudget::where('customer_name',$tempBudget->customer_name)
+                                        ->where('division',$tempBudget->division)
+                                        ->whereYear('period',date('Y'))
+                                        ->orderBy('period','asc')
+                                        ->get()
+                                        ->pluck('budget');
+
+        $data['yearly_revenue'] = [];
+
+        //Trans
+        if($tempBudget->division == "Pack Trans"){
+            for ($i=1; $i <= 12 ; $i++) { 
+                $monthlyRevenue = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                                        ->where('customer_reference',$tempBudget->customer_sap)
+                                        ->where('load_group','SURABAYA LOG PACK')
+                                        ->where('load_status','Completed')
+                                        ->whereMonth('load_closed_date',date($i))
+                                        ->whereYear('load_closed_date',date('Y'))
+                                        ->groupBy('customer_reference')
+                                        ->first();
+                
+                if(!is_null($monthlyRevenue)){
+                    array_push($data['yearly_revenue'],$monthlyRevenue->totalActual);
+                }else{
+                    array_push($data['yearly_revenue'],0);
+                }
+            }
+        }else if($tempBudget->division == "Freight Forwarding BP"){
+            for ($i=1; $i <= 12 ; $i++) { 
+                $monthlyRevenue = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                                        ->where('customer_reference',$tempBudget->customer_sap)
+                                        ->where('load_group','SURABAYA EXIM TRUCKING')
+                                        ->where('load_status','Completed')
+                                        ->whereMonth('load_closed_date',date($i))
+                                        ->whereYear('load_closed_date',date('Y'))
+                                        ->groupBy('customer_reference')
+                                        ->first();
+                
+                if(!is_null($monthlyRevenue)){
+                    array_push($data['yearly_revenue'],$monthlyRevenue->totalActual);
+                }else{
+                    array_push($data['yearly_revenue'],0);
+                }
+            }
+        }else{
+            for ($i=1; $i <= 12 ; $i++) {
+                array_push($data['yearly_revenue'],0);
+            }
+        }
+
+        return response()->json($data, 200);
+    }
+
     public function getBudgetActual(){
         $data = SalesBudget::whereMonth('period',date('m'))->whereYear('period',date('Y'))->get();
 
@@ -176,7 +233,7 @@ class ViewController extends BaseController
                 return date('M-Y',strtotime($row->period));
             })
             ->addColumn('graph', function($row){
-                return "<canvas id='".$row->id."' value='".$row->id."' class='table-container-graph' width='100%' height='100px'><input type='hidden' name='budgetId' value='".$row->id."'></canvas>";
+                return "<canvas id='".$row->id."' value='".$row->id."' class='table-container-graph' height='75px'><input type='hidden' name='budgetId' value='".$row->id."'></canvas>";
             })
             ->rawColumns(['achievement_1m','achievement_ytd','period_mon','graph'])
             ->make(true);

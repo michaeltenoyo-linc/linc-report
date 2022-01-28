@@ -74,7 +74,7 @@ export const AdminReport = () => {
             serverSide: false,
             ajax: '/greenfields/report/get-preview',
             columns: [
-                {data: 'No', name: 'TMS ID'},
+                {data: 'No.', name: 'TMS ID'},
                 {data: 'Order Date', name: 'Closed Data'},
                 {data: 'No Order', name: 'Last Drop Location City'},
                 {data: 'Area', name: 'Billable Total Rate'},

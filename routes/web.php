@@ -294,13 +294,14 @@ Route::middleware(['auth','priviledge:sales,master'])->group(function () {
         Route::prefix('/data')->group(function () {
             //DATA VIEW
             Route::get('/get-budget-actual',[SalesViewController::class, 'getBudgetActual']);
+            Route::get('/get-yearly-achievement/{id}',[SalesViewController::class, 'getYearlyAchievement']);
         });
     });
 });
 
-Route::middleware(['auth','priviledge:sales,master'])->group(function () {
-    
 
+//LOA FILE MANAGEMENT
+Route::middleware(['auth','priviledge:loa,master'])->group(function () {
     //GET LOA FILES
     Route::get('/show-pdf/{filename}/{content_path}', function($filename, $content_path){
         return response()->file(storage_path("app/".$content_path."/".$filename));
