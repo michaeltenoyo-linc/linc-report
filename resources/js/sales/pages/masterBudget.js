@@ -23,9 +23,21 @@ export const masterBudget = () => {
             {data: 'achievement_ytd', name: 'utilitas'},
             {data: 'graph', name: 'utilitas', orderable: false, searchable: false},
           ],
-      });
+          initComplete: function(settings, json){
+            console.log(json);
+            //Drawing graph each row
+            let containerList = $('.table-container-graph').map(function(){
+              //get data by id
+              console.log($(this).context.id);
 
-      //Drawing graph each row
+              var chart = new Chart(this, {
+                type: "scatter",
+                data: {},
+                option: {},
+              })
+            });
+          }
+      });
       
 
       return false;

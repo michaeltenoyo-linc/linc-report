@@ -176,7 +176,7 @@ class ViewController extends BaseController
                 return date('M-Y',strtotime($row->period));
             })
             ->addColumn('graph', function($row){
-                return "<canvas id='table-container-graph' value='".$row->id."' class='container-graph-".$row->id."' width='100%' height='100px'></canvas>";
+                return "<canvas id='".$row->id."' value='".$row->id."' class='table-container-graph' width='100%' height='100px'><input type='hidden' name='budgetId' value='".$row->id."'></canvas>";
             })
             ->rawColumns(['achievement_1m','achievement_ytd','period_mon','graph'])
             ->make(true);
