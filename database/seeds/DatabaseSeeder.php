@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             TrucksTableSeeder::class,
             UsersTableSeeder::class,
             PriviledgesTableSeeder::class,
+            SalesBudgetSeeder::class,
 
             /*SEED MANUAL
 

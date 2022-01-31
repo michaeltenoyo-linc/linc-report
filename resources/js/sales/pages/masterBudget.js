@@ -21,7 +21,7 @@ export const masterBudget = async () => {
             {data: 'period_mon', name: 'total_weightSO'},
             {data: 'achievement_1m', name: 'utilitas'},
             {data: 'achievement_ytd', name: 'utilitas'},
-            {data: 'graph', name: 'utilitas', orderable: false, searchable: false},
+            {data: 'graph', name: 'utilitas',  width: "20%", orderable: false, searchable: false},
           ],
           drawCallback: async function() {
             // Get data, only from the rows displayed on the current page.
@@ -35,68 +35,107 @@ export const masterBudget = async () => {
                   var ctx = $("#"+elementId);
                   console.log(ctx);
 
-                  //Draw chart
-                  const labels = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-
-                  const blujayData = await $.get('/sales/data/get-yearly-achievement/'+elementId);
-
-                  const data = {
-                    labels: labels,
-                    datasets: [
-                      {
-                        label: 'Actual',
-                        data: blujayData['yearly_revenue'],
-                        borderColor: 'rgb(31, 48, 156)',
-                        backgroundColor: 'rgb(31, 48, 156)',
-                        type: 'bar',
-                        order: 1,
-                      },
-                      {
-                        label: 'Budget',
-                        data: blujayData['yearly_budget'],
-                        borderColor: 'rgb(81, 214, 58)',
-                        backgroundColor: 'rgb(81, 214, 58)',
-                        type: 'line',
-                        order: 0,
-                      }
-                    ]
-                  };
-
-                  const config = {
-                    type: 'line',
-                    data: data,
-                    options: {
-                      plugins: {
-                        legend: {
-                          display: false,
-                        },
-                        title: {
-                          display: false,
-                          text: 'Chart.js Stacked Line/Bar Chart'
-                        }
-                      },
-                      scales: {
-                        y: {
-                          stacked: true,
-                          ticks: {
-                            display: false,
-                          }
-                        },
-                        x: {
-                          ticks: {
-                            display: false,
-                          }
-                        }
-                      }
-                    },
-                  };
-
                   try {
-                    const chartGraph = new Chart(ctx, config);
-                  } catch (error) {
-                    console.log("Chart already exist");
-                  }
-              }
+                    const checkChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                            datasets: [{
+                                label: '# of Votes',
+                                data: [12, 19, 3, 5, 2, 3],
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(255, 206, 86, 0.2)',
+                                    'rgba(75, 192, 192, 0.2)',
+                                    'rgba(153, 102, 255, 0.2)',
+                                    'rgba(255, 159, 64, 0.2)'
+                                ],
+                                borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                    'rgba(255, 159, 64, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+
+                    checkChart.destroy();
+
+                    //Draw chart
+                    const labels = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+                    const blujayData = await $.get('/sales/data/get-yearly-achievement/'+elementId);
+
+                    const data = {
+                        labels: labels,
+                        datasets: [
+                        {
+                            label: 'Actual',
+                            data: blujayData['yearly_revenue'],
+                            borderColor: 'rgb(31, 48, 156)',
+                            backgroundColor: 'rgb(31, 48, 156)',
+                            type: 'bar',
+                            order: 1,
+                        },
+                        {
+                            label: 'Budget',
+                            data: blujayData['yearly_budget'],
+                            borderColor: 'rgb(81, 214, 58)',
+                            backgroundColor: 'rgb(81, 214, 58)',
+                            type: 'line',
+                            order: 0,
+                        }
+                        ]
+                    };
+
+                    const config = {
+                        type: 'line',
+                        data: data,
+                        options: {
+                        plugins: {
+                            legend: {
+                            display: false,
+                            },
+                            title: {
+                            display: false,
+                            text: 'Chart.js Stacked Line/Bar Chart'
+                            }
+                        },
+                        scales: {
+                            y: {
+                            stacked: true,
+                            ticks: {
+                                display: false,
+                            }
+                            },
+                            x: {
+                            ticks: {
+                                display: false,
+                            }
+                            }
+                        }
+                        },
+                    };
+
+                    const newChart = new Chart(ctx, config);
+
+
+                    } catch (error) {
+                        console.log("Chart already exist");
+                    }
+                }
             }
           },
 
@@ -163,7 +202,7 @@ export const masterBudget = async () => {
           }
           */
       });
-      
+
 
       return false;
     }
