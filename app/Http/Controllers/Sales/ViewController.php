@@ -34,6 +34,86 @@ class ViewController extends BaseController
         return view('sales.pages.monitoring-master');
     }
 
+    public function getMonthlyAchievement(Request $req){
+        $month = '01';
+        
+        //GETTING DATA BY PROGRAM
+        //transport
+        $fetchTransport = ShipmentBlujay::selectRaw('DATE(load_closed_date) as days, SUM(billable_total_rate) as totalActual')
+                                    ->whereIn('load_group',['SURABAYA LOG PACK'])
+                                    ->whereMonth('load_closed_date',$month)
+                                    ->whereYear('load_closed_date',date('Y'))
+                                    ->groupBy('days')
+                                    ->get();
+                                    
+        $data['labelTransport'] = [];
+        $data['dataTransport'] = [];
+
+        foreach ($fetchTransport as $f) {
+            array_push($data['dataTransport'], $f->totalActual);
+            array_push($data['labelTransport'], $f->days);
+        }
+
+        //exim
+        $fetchExim = ShipmentBlujay::selectRaw('DATE(load_closed_date) as days, SUM(billable_total_rate) as totalActual')
+                                    ->whereIn('load_group',['SURABAYA EXIM TRUCKING'])
+                                    ->whereMonth('load_closed_date',$month)
+                                    ->whereYear('load_closed_date',date('Y'))
+                                    ->groupBy('days')
+                                    ->get();
+                                    
+        $data['labelExim'] = [];
+        $data['dataExim'] = [];
+
+        foreach ($fetchExim as $f) {
+            array_push($data['dataExim'], $f->totalActual);
+            array_push($data['labelExim'], $f->days);
+        }
+
+        return response()->json($data, 200);
+    }
+
+    public function getYearlyRevenue (Request $req){
+        $year = date('Y');
+        $data['warehouse'] = [10000000,20000000,30000000,40000000,50000000,60000000,80000000,70000000,100000000,120000000,110000000,90000000];
+        $data['transport'] = [];
+        $data['exim'] = [];
+        $data['bulk'] = [4000000,25000000,7000000,50000000,19000000,250000000,23000000,10000000,8000000,12000000,5000000,12000000];
+
+        for ($i=1; $i <= 12; $i++) { 
+            //Blujay Transport
+            $fetchTransport = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+                                        ->where('load_group','SURABAYA LOG PACK')
+                                        ->where('load_status','Completed')
+                                        ->whereMonth('load_closed_date',$i)
+                                        ->whereYear('load_closed_date',date('Y'))
+                                        ->first();
+            
+            if(!is_null($fetchTransport->totalActual)){
+                array_push($data['transport'],$fetchTransport->totalActual);
+            }else{
+                array_push($data['transport'],0);
+            }
+            
+
+            //Blujay Exim
+            $fetchExim = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')                               
+                                        ->where('load_group','SURABAYA EXIM TRUCKING')
+                                        ->where('load_status','Completed')
+                                        ->whereMonth('load_closed_date',$i)
+                                        ->whereYear('load_closed_date',date('Y'))
+                                        ->first();
+
+            if(!is_null($fetchExim->totalActual)){
+                array_push($data['exim'],$fetchExim->totalActual);
+            }else{
+                array_push($data['exim'],0);
+            }
+        }
+
+        return response()->json($data,200);
+    }
+
     public function getYearlyAchievement(Request $req, $id){
         $tempBudget = SalesBudget::find($id);
 

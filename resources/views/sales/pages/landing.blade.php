@@ -127,7 +127,7 @@ Linc | Sales Report Homepage
                         </div>
                     </div>
                     <div class="flex justify-center">
-                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-right">Bahana Prestasi</button>
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-right">Division Unit Report</button>
                     </div>
                 </div>
             </div>
@@ -136,11 +136,11 @@ Linc | Sales Report Homepage
                 <div class="rounded-t mb-0 px-4 py-3 border-0">
                     <div class="flex flex-wrap items-center mb-8">
                         <div class="flex-auto p-4">
-                            <canvas id="chartCmlMonthly" width="100%" height="30%"></canvas>
+                            <canvas id="chartTransportDaily" width="100%" height="35%"></canvas>
                         </div>
-                    </div>
-                    <div class="flex justify-center">
-                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-right">Cipta Mapan Logistik</button>
+                        <div class="flex-auto p-4">
+                            <canvas id="chartEximDaily" width="100%" height="30%"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>

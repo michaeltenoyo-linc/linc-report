@@ -4,10 +4,10 @@ import Snackbar from 'node-snackbar';
 import Swal from 'sweetalert2';
 import Chart from 'chart.js/auto';
 
-export const Landing = () => {
+export const Landing = async () => {
     console.log("loading LandingJs");
 
-    const onLoad = () => {
+    const onLoad = async () => {
         //Chart Landing Yearly Revenue
         
         //Dummy Data
@@ -25,12 +25,14 @@ export const Landing = () => {
             'November',
             'December'
         ];
+        const revenueDataFetch = await $.get('/sales/data/get-yearly-revenue');
+        console.log(revenueDataFetch);
         const data = {
             labels: labels,
             datasets: [
                 {
                     label: 'Warehouse',
-                    data: [1,5,4,6,2,8,3,5,9,13,5,8],
+                    data: revenueDataFetch['warehouse'],
                     borderColor: 'rgb(10, 23, 79)',
                     backgroundColor: 'rgb(10, 23, 79, 0.5)',
                     fill: false,
@@ -39,7 +41,7 @@ export const Landing = () => {
                 },
                 {
                     label: 'Transport',
-                    data: [5,4,1,12,8,7,9,10,2,8,12,15],
+                    data: revenueDataFetch['transport'],
                     borderColor: 'rgb(227, 9, 9)',
                     backgroundColor: 'rgb(227, 9, 9, 0.5)',
                     fill: false,
@@ -48,7 +50,7 @@ export const Landing = () => {
                 },
                 {
                     label: 'EXIM',
-                    data: [6,17,15,16,5,8,6,1,9,10,11,6],
+                    data: revenueDataFetch['exim'],
                     borderColor: 'rgb(25, 166, 60)',
                     backgroundColor: 'rgb(25, 166, 60, 0.5)',
                     fill: false,
@@ -57,7 +59,7 @@ export const Landing = () => {
                 },
                 {
                     label: 'Bulk',
-                    data: [7,6,3,8,5,3,4,9,1,7,4,9],
+                    data: revenueDataFetch['bulk'],
                     borderColor: 'rgb(25, 23, 150)',
                     backgroundColor: 'rgb(25, 23, 150, 0.5)',
                     fill: false,
@@ -86,14 +88,14 @@ export const Landing = () => {
                 x: {
                     display: true,
                     title: {
-                    display: true
-                    }
+                      display: true
+                    },
                 },
                 y: {
                     display: true,
                     title: {
-                    display: true,
-                    text: 'Gross Profit'
+                      display: true,
+                      text: 'Gross Profit'
                     },
                     suggestedMin: 0,
                     suggestedMax: 15
@@ -108,8 +110,8 @@ export const Landing = () => {
         
         //Dummy Data
         const labels2 = [
-            'Bahana Prestasi - Yay',
-            'Bahana Prestasi - Nay',
+            'Warehouse - Yay',
+            'Warehouse - Nay',
             'Transport - Yay',
             'Transport - Nay',
             'EXIM - Yay',
@@ -149,7 +151,7 @@ export const Landing = () => {
               plugins: {
                 title: {
                     display: true,
-                    text: 'Monthly Budget By Bahana Prestasi (Million.)'
+                    text: 'Monthly Achievement by Division Unit'
                 },
                 legend: {
                   labels: {
@@ -201,43 +203,123 @@ export const Landing = () => {
 
         const chartMonthlyBahana = new Chart(contMonthlyBahana, configMonthlyBahana);
 
-        //Chart Landing Yearly Revenue
+        //Chart Monthly Achievement Transport
         
         //Dummy Data
-        const labels3 = [
-            'Warehouse - Yay',
-            'Warehouse - Nay'
-        ];
-
-        const data3 = {
-            labels: labels3,
-            datasets: [
-                {
-                    data: [1054,2056],
-                    backgroundColor: ['rgb(25,180,25)','rgb(25,180,125)'],
-                },
-            ]
+        const monthlyAchivementDataFetch = await $.get('/sales/data/get-monthly-achievement');
+        console.log(monthlyAchivementDataFetch);
+        const dataDailyTransport = {
+          labels: monthlyAchivementDataFetch['labelTransport'],
+          datasets: [
+              {
+                label: 'Blujay (Transport)',
+                fill: true,
+                backgroundColor: 'rgb(4, 1, 138)',
+                borderColor: 'rgb(2, 0, 74)',
+                data: monthlyAchivementDataFetch['dataTransport'],
+              },
+          ]
         };
 
-        const contMonthlyCml = $('#chartCmlMonthly');
-        const configMonthlyCml = {
-            type: 'pie',
-            data: data3,
-            options: {
-              responsive: true,
-              plugins: {
-                legend: {
-                  position: 'top',
-                },
+        const contDailyTransport = $('#chartTransportDaily');
+        const configDailyTransport = {
+          type: 'line',
+          data: dataDailyTransport,
+          options: {
+            responsive: true,
+            plugins: {
+              title: {
+                display: true,
+                text: 'This Month Achievement'
+              },
+            },
+            interaction: {
+              mode: 'index',
+              intersect: false
+            },
+            scales: {
+              x: {
+                display: true,
                 title: {
                   display: true,
-                  text: 'Monthly Warehouse Budget'
+                  text: 'Days'
+                },
+                ticks: {
+                  display: false,
+                }
+              },
+              y: {
+                display: true,
+                title: {
+                  display: true,
+                  text: 'Revenue'
+                },
+                ticks: {
+                  display: false,
                 }
               }
-            },
-          };
+            }
+          },
+        };
 
-        const chartMonthlyCml = new Chart(contMonthlyCml, configMonthlyCml);
+        const chartDailyTransport = new Chart(contDailyTransport, configDailyTransport);
+
+        //Chart Monthly Achievement EXIM
+        const dataDailyExim = {
+          labels: monthlyAchivementDataFetch['labelExim'],
+          datasets: [
+              {
+                label: 'Blujay (EXIM)',
+                fill: true,
+                backgroundColor: 'rgb(4, 1, 138)',
+                borderColor: 'rgb(2, 0, 74)',
+                data: monthlyAchivementDataFetch['dataExim'],
+              },
+          ]
+        };
+
+        const contDailyExim = $('#chartEximDaily');
+        const configDailyExim = {
+          type: 'line',
+          data: dataDailyExim,
+          options: {
+            responsive: true,
+            plugins: {
+              title: {
+                display: false,
+                text: 'This Month Achievement'
+              },
+            },
+            interaction: {
+              mode: 'index',
+              intersect: false
+            },
+            scales: {
+              x: {
+                display: true,
+                title: {
+                  display: true,
+                  text: 'Days'
+                },
+                ticks: {
+                  display: false,
+                }
+              },
+              y: {
+                display: true,
+                title: {
+                  display: true,
+                  text: 'Revenue'
+                },
+                ticks: {
+                  display: false,
+                }
+              }
+            }
+          },
+        };
+
+        const chartDailyExim = new Chart(contDailyExim, configDailyExim);
 
         //Chart Landing Monthly Transport
         
