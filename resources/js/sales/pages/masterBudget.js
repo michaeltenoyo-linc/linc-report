@@ -23,6 +23,22 @@ export const masterBudget = async () => {
             {data: 'achievement_ytd', name: 'utilitas'},
             {data: 'graph', name: 'utilitas',  width: "20%", orderable: false, searchable: false},
           ],
+          initComplete: function() {
+            var input = $('.dataTables_filter input').unbind(),
+                self = this.api(),
+                $searchButton = $('<button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded text-right">')
+                          .text('search')
+                          .click(function() {
+                              self.search(input.val()).draw();
+                          }),
+                $clearButton = $('<button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-right">')
+                          .text('clear')
+                          .click(function() {
+                              input.val('');
+                              $searchButton.click(); 
+                          }) 
+            $('.dataTables_filter').append($searchButton, $clearButton);
+          },          
           drawCallback: async function() {
             // Get data, only from the rows displayed on the current page.
             var elements = this.api().rows({page:'current'}).data();
