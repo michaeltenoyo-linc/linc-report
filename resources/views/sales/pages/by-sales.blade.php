@@ -1,7 +1,7 @@
 @extends('sales.layouts.admin-layout')
 
 @section('title')
-Linc | Overall Achievement
+Linc | Sales Performance
 @endsection
 
 @section('header')
@@ -12,18 +12,29 @@ Linc | Overall Achievement
 <div class="w-full mb-12 px-4">
     <div class="relative flex flex-col min-w-0 overflow-x-auto break-words w-full mb-6 shadow-lg rounded bg-white">
         <div class="block w-full p-8 overflow-x-auto">
-            <div class="w-full text-center font-bold text-xl mb-8">Overall Achievement Master</div>
+            <div class="w-full text-center font-bold text-xl mb-8">Sales Performance {{Str::ucfirst($sales)}}</div>
             
             <div class="inline-flex rounded-md shadow-sm mb-8">
-                <a href="/sales/monitoring-master" aria-current="page" class="py-2 px-4 text-sm font-medium text-blue-700 bg-white rounded-l-lg border border-gray-200 hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
-                  Overall Achievement
+                <a href="/sales/monitoring-master" class="py-2 px-4 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
+                    Overall Achievement
                 </a>
-                <a href="/sales/by-sales/adit" class="py-2 px-4 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
-                  By Sales Performance
+                <a href="/sales/by-sales/adit" aria-current="page" class="py-2 px-4 text-sm font-medium text-blue-700 bg-white rounded-l-lg border border-gray-200 hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
+                    By Sales Performance
                 </a>
                 <a href="/sales/by-division/transport" class="py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-r-md border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
-                  By Division Unit
+                    By Division Unit
                 </a>
+            </div>
+
+            <div class="relative mb-8">
+                <a href="/sales/by-sales/{{$sales}}" class="py-2 px-4 mx-2 text-sm font-medium bg-gray-100 text-blue-700">
+                    {{$sales}}
+                </a>
+                @foreach ($sales_list as $s)
+                    <a href="/sales/by-sales/{{$s}}" class="py-2 px-4 mx-2 text-sm font-medium text-gray-900 bg-white border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
+                        {{$s}}
+                    </a>
+                @endforeach
             </div>
             
             <div class="w-full mb-8">
@@ -40,7 +51,7 @@ Linc | Overall Achievement
         </div>
         <div class="block w-full p-8 overflow-x-auto">
             <!-- Projects table -->
-            <table id="yajra-datatable-monitoring-budget" style="width: 2000px;" class="items-center w-full bg-transparent border-collapse yajra-datatable-monitoring-budget">
+            <table id="yajra-datatable-sales-budget" style="width: 2000px;" class="items-center w-full bg-transparent border-collapse yajra-datatable-sales-budget">
             <thead>
                 <tr>
                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">

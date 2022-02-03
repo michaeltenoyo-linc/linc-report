@@ -290,6 +290,9 @@ Route::middleware(['auth','priviledge:sales,master'])->group(function () {
         //View Navigation
         Route::get('/',[SalesViewController::class, 'gotoLandingPage']);
         Route::get('/monitoring-master',[SalesViewController::class, 'gotoMonitoringMaster']);
+        Route::get('/by-sales/{name}',[SalesViewController::class, 'gotoBySales']);
+        Route::get('/by-division/{division}',[SalesViewController::class, 'gotoByDivision']);
+
 
         Route::prefix('/data')->group(function () {
             //DATA VIEW

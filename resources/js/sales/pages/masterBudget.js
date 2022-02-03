@@ -7,6 +7,10 @@ import Chart from 'chart.js/auto';
 export const masterBudget = async () => {
     console.log("loading MasterBudgetJS");
 
+    const onLoad = async () => {
+
+    }
+
     const getBudget = async () => {
       var table = $('#yajra-datatable-monitoring-budget').DataTable({
           processing: true,
@@ -26,12 +30,12 @@ export const masterBudget = async () => {
           initComplete: function() {
             var input = $('.dataTables_filter input').unbind(),
                 self = this.api(),
-                $searchButton = $('<button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded text-right">')
+                $searchButton = $('<button class="ml-2 bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded text-right">')
                           .text('search')
                           .click(function() {
                               self.search(input.val()).draw();
                           }),
-                $clearButton = $('<button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-right">')
+                $clearButton = $('<button class="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-right">')
                           .text('clear')
                           .click(function() {
                               input.val('');
@@ -223,6 +227,7 @@ export const masterBudget = async () => {
       return false;
     }
 
+    onLoad();
     getBudget();
 }
 

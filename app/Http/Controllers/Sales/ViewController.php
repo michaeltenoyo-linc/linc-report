@@ -16,6 +16,7 @@ use App\Models\SalesBudget;
 use App\Models\ShipmentBlujay;
 use App\Models\Suratjalan_greenfields;
 use App\Models\Trucks;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 use function PHPUnit\Framework\isNan;
@@ -32,6 +33,32 @@ class ViewController extends BaseController
 
     public function gotoMonitoringMaster(){
         return view('sales.pages.monitoring-master');
+    }
+
+    public function gotoBySales($sales){
+        $data['sales'] = $sales;
+        $data['sales_list'] = ['adit','edwin','willem'];
+
+        for ($i=0; $i < count($data['sales_list']); $i++) { 
+            if($data['sales_list'][$i] == $sales){
+                unset($data['sales_list'][$i]);
+            }
+        }
+
+        return view('sales.pages.by-sales', $data);
+    }
+
+    public function gotoByDivision($division){
+        $data['division'] = $division;
+        $data['division_list'] = ['transport','bulk','warehouse','exim'];
+
+        for ($i=0; $i < count($data['division_list']); $i++) { 
+            if($data['division_list'][$i] == $division){
+                unset($data['division_list'][$i]);
+            }
+        }
+
+        return view('sales.pages.by-division', $data);
     }
 
     public function getMonthlyAchievement(Request $req){
@@ -172,7 +199,7 @@ class ViewController extends BaseController
     }
 
     public function getBudgetActual(){
-        $data = SalesBudget::whereMonth('period',date('m'))->whereYear('period',date('Y'))->get();
+        $data = SalesBudget::whereMonth('period',date('m'))->whereYear('period',date('Y'))->get();       
 
         return DataTables::of($data)
             ->addColumn('achievement_1m', function($row){
@@ -238,7 +265,7 @@ class ViewController extends BaseController
                 $actual = 0;
                 $percentage = 0;
 
-                $currentMonth = intval('02');
+                $currentMonth = intval(date('m'));
                 $ytd_month = [];
 
                 for ($i=1; $i <= $currentMonth; $i++) { 
