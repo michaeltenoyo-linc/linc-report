@@ -74,7 +74,7 @@ class ReportController extends BaseController
                             $reports->push([
                                 'No' => $ctr,
                                 'Load ID' => $row->tms_id,
-                                'Tgl Muat' => Carbon::parse($sj->tgl_muat)->format('d-M-Y'),
+                                'Tgl Muat' => Carbon::parse($sj->tgl_terima)->format('d-M-Y'),
                                 'No SJ' => $splitID[0],
                                 'No DO' => (isset($splitID[1])?$splitID[1]:""),
                                 'Penerima' => $sj->penerima,
