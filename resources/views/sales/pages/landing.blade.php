@@ -134,12 +134,21 @@ Linc | Sales Report Homepage
     
             <div class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
                 <div class="rounded-t mb-0 px-4 py-3 border-0">
-                    <div class="flex flex-wrap items-center mb-8">
+                    <div class="flex flex-wrap items-center mb-4">
                         <div class="flex-auto p-4">
                             <canvas id="chartTransportDaily" width="100%" height="35%"></canvas>
                         </div>
                         <div class="flex-auto p-4">
                             <canvas id="chartEximDaily" width="100%" height="30%"></canvas>
+                        </div>
+                    </div>
+                    <div class="w-full p-4">
+                        <div class="flex justify-between mb-1">
+                            <span class="text-base font-medium text-blue-700 dark:text-white">Completed Order</span>
+                            <span class="text-sm font-medium text-blue-700 dark:text-white">45%</span>
+                        </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-blue-600 h-2.5 rounded-full" style="width: 45%"></div>
                         </div>
                     </div>
                 </div>
