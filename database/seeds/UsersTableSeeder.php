@@ -28,6 +28,13 @@ class UsersTableSeeder extends Seeder
 
         $seeds= [
             [
+                'name' => 'Master',
+                'email' => 'admin.master@lincgrp.com',
+                'email_verified_at' => Carbon::today(),
+                'password' => Hash::make('adminmaster12345'),
+                'active' => 1,
+            ],
+            [
                 'name' => 'ming',
                 'email' => 'michaeltenoyo.lincgroup@gmail.com',
                 'email_verified_at' => Carbon::today(),
@@ -54,7 +61,7 @@ class UsersTableSeeder extends Seeder
                 'email_verified_at' => Carbon::today(),
                 'password' => Hash::make('adminloa12345'),
                 'active' => 1,
-            ]
+            ],
         ];
 
         foreach ($seeds as $seed) {
