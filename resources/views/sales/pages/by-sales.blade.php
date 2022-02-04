@@ -51,12 +51,10 @@ Linc | Sales Performance
         </div>
         <div class="block w-full p-8 overflow-x-auto">
             <!-- Projects table -->
+            <input type="hidden" name="salesName" id="sales-name" value="{{ $sales }}">
             <table id="yajra-datatable-sales-budget" style="width: 2000px;" class="items-center w-full bg-transparent border-collapse yajra-datatable-sales-budget">
             <thead>
                 <tr>
-                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                    Sales
-                </th>
                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
                     Division
                 </th>

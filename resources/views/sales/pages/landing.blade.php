@@ -22,7 +22,7 @@ Linc | Sales Report Homepage
 
     <div class="w-full flex flex-row-reverse">
         <div class="w-2/3 flex inline-block gap-4">
-            <a href="/" class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white transform transition duration-500 hover:scale-110">
+            <a href="/sales/by-sales/adit" class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white transform transition duration-500 hover:scale-110">
                 <div class="rounded-t mb-0 px-4 py-3 border-0">
                     <div class="flex flex-wrap items-center">
                         <div class="flex-auto p-4">
@@ -53,7 +53,7 @@ Linc | Sales Report Homepage
                 </div>
             </a>
     
-            <a href="/" class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white transform transition duration-500 hover:scale-110">
+            <a href="/sales/by-sales/edwin" class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white transform transition duration-500 hover:scale-110">
                 <div class="rounded-t mb-0 px-4 py-3 border-0">
                     <div class="flex flex-wrap items-center">
                         <div class="flex-auto p-4">
@@ -84,7 +84,7 @@ Linc | Sales Report Homepage
                 </div>
             </a>
     
-            <a href="/" class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white transform transition duration-500 hover:scale-110">
+            <a href="/sales/by-sales/willem" class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white transform transition duration-500 hover:scale-110">
                 <div class="rounded-t mb-0 px-4 py-3 border-0">
                     <div class="flex flex-wrap items-center">
                         <div class="flex-auto p-4">
@@ -127,7 +127,7 @@ Linc | Sales Report Homepage
                         </div>
                     </div>
                     <div class="flex justify-center">
-                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-right">Division Unit Report</button>
+                        <a href="/sales/by-division/transport"><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-right">Division Unit Report</button></a>
                     </div>
                 </div>
             </div>

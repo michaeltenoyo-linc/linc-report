@@ -50,15 +50,13 @@ Linc | Sales Monitoring
             <div class="w-full"><hr></div>
         </div>
         <div class="block w-full p-8 overflow-x-auto">
+            <input type="hidden" name="division" id="division" value="{{ $division }}">
             <!-- Projects table -->
-            <table id="yajra-datatable-sales-budget" style="width: 2000px;" class="items-center w-full bg-transparent border-collapse yajra-datatable-sales-budget">
+            <table id="yajra-datatable-division-budget" style="width: 2000px;" class="items-center w-full bg-transparent border-collapse yajra-datatable-division-budget">
             <thead>
                 <tr>
                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
                     Sales
-                </th>
-                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
-                    Division
                 </th>
                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
                     Customer

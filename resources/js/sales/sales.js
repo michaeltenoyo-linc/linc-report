@@ -1,5 +1,7 @@
 import { Landing } from "./pages/landing";
 import { masterBudget } from "./pages/masterBudget";
+import { BySales } from "./pages/bySales";
+import { ByDivision } from "./pages/byDivision";
 
 export const load = () => {
     //Loading Spinner
@@ -26,6 +28,8 @@ export const load = () => {
 
     Landing();
     masterBudget();
+    BySales();
+    ByDivision();
 };
 
 load();
