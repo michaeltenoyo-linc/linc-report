@@ -774,4 +774,96 @@ class ViewController extends BaseController
             ->rawColumns(['achievement_1m','achievement_ytd','period_mon','graph'])
             ->make(true);
     }
+
+    public function getSalesPie($sales){
+        $year = date('Y');
+        $data['warehouse'] = [10000,20000];
+        $data['transport'] = [0,0];
+        $data['exim'] = [0,0];
+        $data['bulk'] = [0,0];
+
+        //Blujay Transport
+        $revenueTransport = 0;
+        $budgetTransport = 0;
+        $customerTransport = SalesBudget::where('sales',$sales)
+                                        ->where('division', 'Pack Trans')
+                                        ->whereMonth('period',date('m'))
+                                        ->whereYear('period',date('Y'))
+                                        ->get();
+
+        foreach ($customerTransport as $c) {
+            $budgetTransport += $c->budget;
+            $fetchTransport = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+                                    ->where('customer_reference',$c->customer_sap)
+                                    ->whereIn('load_group',$this->transportLoadGroups)
+                                    ->where('load_status','Completed')
+                                    ->whereMonth('load_closed_date',date('m'))
+                                    ->whereYear('load_closed_date',date('Y'))
+                                    ->first();
+
+            if(!is_null($fetchTransport)){
+                $revenueTransport += intval($fetchTransport->totalActual);
+            }
+        }
+
+        $budgetTransport -= $revenueTransport;
+        $data['transport'] = [$revenueTransport,$budgetTransport];
+
+        //Blujay Exim
+        $revenueExim = 0;
+        $budgetExim = 0;
+        $customerExim = SalesBudget::where('sales',$sales)
+                                        ->where('division', 'Freight Forwarding BP')
+                                        ->whereMonth('period',date('m'))
+                                        ->whereYear('period',date('Y'))
+                                        ->get();
+
+        foreach ($customerExim as $c) {
+            $budgetExim += $c->budget;
+            $fetchExim = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+                                    ->where('customer_reference',$c->customer_sap)
+                                    ->whereIn('load_group',$this->eximLoadGroups)
+                                    ->where('load_status','Completed')
+                                    ->whereMonth('load_closed_date',date('m'))
+                                    ->whereYear('load_closed_date',date('Y'))
+                                    ->first();
+
+            if(!is_null($fetchExim)){
+                $revenueExim += intval($fetchExim->totalActual);
+            }
+        }
+
+        $budgetExim -= $revenueExim;
+        $data['exim'] = [$revenueExim,$budgetExim];
+
+        //Blujay Bulk
+        $revenueBulk = 0;
+        $budgetBulk = 0;
+        $customerBulk = SalesBudget::where('sales',$sales)
+                                        ->where('division', 'Bulk Trans')
+                                        ->whereMonth('period',date('m'))
+                                        ->whereYear('period',date('Y'))
+                                        ->get();
+
+        foreach ($customerBulk as $c) {
+            $budgetBulk += $c->budget;
+            $fetchBulk = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+                                    ->where('customer_reference',$c->customer_sap)
+                                    ->whereIn('load_group',$this->bulkLoadGroups)
+                                    ->where('load_status','Completed')
+                                    ->whereMonth('load_closed_date',date('m'))
+                                    ->whereYear('load_closed_date',date('Y'))
+                                    ->first();
+
+            if(!is_null($fetchBulk)){
+                $revenueBulk += intval($fetchBulk->totalActual);
+            }
+        }
+
+        $budgetBulk -= $revenueBulk;
+        $data['bulk'] = [$revenueBulk,$budgetBulk];
+
+
+        return response()->json($data,200);
+    }
 }

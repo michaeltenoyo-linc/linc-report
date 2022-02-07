@@ -198,7 +198,7 @@ Route::middleware(['auth','priviledge:loa,master'])->group(function () {
         Route::get('/nav-loa-new',[LoaViewController::class, 'gotoInputLoa']);
         Route::get('/nav-loa-list', [LoaViewController::class, 'gotoListLoa']);
         Route::get('/nav-search-transport',[LoaViewController::class, 'gotoSearchTransport']);
-    
+
         Route::prefix('/action/warehouse')->group(function (){
             //CRUD
             Route::get('/nav-insert',[LoaViewController::class, 'gotoInputWarehouse']);
@@ -302,6 +302,7 @@ Route::middleware(['auth','priviledge:sales,master'])->group(function () {
             Route::get('/get-yearly-achievement/{id}',[SalesViewController::class, 'getYearlyAchievement']);
             Route::get('/get-yearly-revenue',[SalesViewController::class, 'getYearlyRevenue']);
             Route::get('/get-monthly-achievement',[SalesViewController::class, 'getMonthlyAchievement']);
+            Route::get('/get-sales-pie/{sales}',[SalesViewController::class, 'getSalesPie']);
         });
     });
 });

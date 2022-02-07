@@ -9,7 +9,7 @@ export const Landing = async () => {
 
     const onLoad = async () => {
         //Chart Landing Yearly Revenue
-        
+
         //Dummy Data
         const labels = [
             'January',
@@ -107,7 +107,7 @@ export const Landing = async () => {
         const chartRevenueYearly = new Chart(contYearlyRevenue, configYearlyRevenue);
 
         //Chart Landing Monthly BP
-        
+
         //Dummy Data
         const labels2 = [
             'Warehouse - Yay',
@@ -159,25 +159,25 @@ export const Landing = async () => {
                       // Get the default label list
                       const original = Chart.overrides.pie.plugins.legend.labels.generateLabels;
                       const labelsOriginal = original.call(this, chart);
-          
+
                       // Build an array of colors used in the datasets of the chart
                       var datasetColors = chart.data.datasets.map(function(e) {
                         return e.backgroundColor;
                       });
                       datasetColors = datasetColors.flat();
-          
+
                       // Modify the color and hide state of each label
                       labelsOriginal.forEach(label => {
                         // There are twice as many labels as there are datasets. This converts the label index into the corresponding dataset index
                         label.datasetIndex = (label.index - label.index % 2) / 2;
-          
+
                         // The hidden state must match the dataset's hidden state
                         label.hidden = !chart.isDatasetVisible(label.datasetIndex);
-          
+
                         // Change the color to match the dataset
                         label.fillStyle = datasetColors[label.index];
                       });
-          
+
                       return labelsOriginal;
                     }
                   },
@@ -204,7 +204,7 @@ export const Landing = async () => {
         const chartMonthlyBahana = new Chart(contMonthlyBahana, configMonthlyBahana);
 
         //Chart Monthly Achievement Transport
-        
+
         //Dummy Data
         const monthlyAchivementDataFetch = await $.get('/sales/data/get-monthly-achievement');
         console.log(monthlyAchivementDataFetch);
@@ -322,7 +322,7 @@ export const Landing = async () => {
         const chartDailyExim = new Chart(contDailyExim, configDailyExim);
 
         //Chart Landing Monthly Transport
-        
+
         //Dummy Data
         const labels4 = [
           'Adit',

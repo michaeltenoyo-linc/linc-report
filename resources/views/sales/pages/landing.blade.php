@@ -52,7 +52,7 @@ Linc | Sales Report Homepage
                     </div>
                 </div>
             </a>
-    
+
             <a href="/sales/by-sales/edwin" class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white transform transition duration-500 hover:scale-110">
                 <div class="rounded-t mb-0 px-4 py-3 border-0">
                     <div class="flex flex-wrap items-center">
@@ -83,7 +83,7 @@ Linc | Sales Report Homepage
                     </div>
                 </div>
             </a>
-    
+
             <a href="/sales/by-sales/willem" class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white transform transition duration-500 hover:scale-110">
                 <div class="rounded-t mb-0 px-4 py-3 border-0">
                     <div class="flex flex-wrap items-center">
@@ -116,7 +116,7 @@ Linc | Sales Report Homepage
             </a>
         </div>
     </div>
-    
+
     <div class="w-full flex">
         <div class="w-full flex inline-block gap-4">
             <div class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
@@ -131,7 +131,7 @@ Linc | Sales Report Homepage
                     </div>
                 </div>
             </div>
-    
+
             <div class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
                 <div class="rounded-t mb-0 px-4 py-3 border-0">
                     <div class="flex flex-wrap items-center mb-4">
@@ -195,7 +195,7 @@ Linc | Sales Report Homepage
                     </div>
                 </div>
             </div>
-    
+
             <div class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
                 <div class="rounded-t mb-0 px-4 py-3 border-0">
                     <div class="flex flex-wrap items-center mb-8">
@@ -237,6 +237,6 @@ Linc | Sales Report Homepage
             </div>
         </div>
     </div>
-    
+
 </div>
 @endsection
