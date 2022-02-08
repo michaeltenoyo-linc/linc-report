@@ -449,6 +449,8 @@ export const BySales = async () => {
         };
 
         const chartSalesBulk = new Chart(contSalesBulk, configSalesBulk);
+
+        //Line Chart Daily Revenue
     }
 
     getSalesPerformance();

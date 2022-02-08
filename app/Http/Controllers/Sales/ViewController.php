@@ -50,6 +50,72 @@ class ViewController extends BaseController
             }
         }
 
+        //Data Sales Overview
+        $customerList = SalesBudget::where('sales',$sales)
+                                ->whereMonth('period',date('m'))
+                                ->whereYear('period',date('Y'))
+                                ->get()->pluck('customer_sap');
+
+        $data['revenue_1m'] = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+                                            ->whereIn('customer_reference',$customerList)
+                                            ->where('load_status','Completed')
+                                            ->whereMonth('load_closed_date',date('m'))
+                                            ->whereYear('load_closed_date',date('Y'))
+                                            ->first();
+
+        $data['revenue_ytd'] = 0;
+
+        for ($i=1; $i <= intval(date('m')) ; $i++) { 
+            $mRevenue = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+                                            ->whereIn('customer_reference',$customerList)
+                                            ->where('load_status','Completed')
+                                            ->whereMonth('load_closed_date',$i)
+                                            ->whereYear('load_closed_date',date('Y'))
+                                            ->first();
+            $data['revenue_ytd'] += $mRevenue->totalActual;
+        }
+
+        $data['transaction_1m'] = ShipmentBlujay::selectRaw('count(*) as totalTransaction')
+                                                    ->whereIn('customer_reference',$customerList)
+                                                    ->where('load_status','Completed')
+                                                    ->whereMonth('load_closed_date',date('m'))
+                                                    ->whereYear('load_closed_date',date('Y'))
+                                                    ->first();
+        
+        $data['transaction_ytd'] = 0;
+
+        for ($i=1; $i <= intval(date('m')) ; $i++) { 
+            $mTransaction = ShipmentBlujay::selectRaw('count(*) as totalTransaction')
+                                        ->whereIn('customer_reference',$customerList)
+                                        ->where('load_status','Completed')
+                                        ->whereMonth('load_closed_date',$i)
+                                        ->whereYear('load_closed_date',date('Y'))
+                                        ->first();
+
+            $data['transaction_ytd'] += $mTransaction->totalTransaction;
+        }
+
+        //ACHIEVEMENT PROGRESS
+        $data['budget_1m'] = SalesBudget::selectRaw('SUM(budget) as totalBudget')
+                                    ->where('sales',$sales)
+                                    ->whereMonth('period',date('m'))
+                                    ->whereYear('period',date('Y'))
+                                    ->first();    
+
+        $data['achivement_1m'] = round(floatval($data['revenue_1m']->totalActual)/floatval($data['budget_1m']->totalBudget),4) * 100;
+        
+        $data['budget_ytd'] = 0;
+        for ($i=1; $i <= intval(date('m')) ; $i++) { 
+            $mBudget = SalesBudget::selectRaw('SUM(budget) as totalBudget')
+                                ->where('sales',$sales)
+                                ->whereMonth('period',$i)
+                                ->whereYear('period',date('Y'))
+                                ->first(); 
+            $data['budget_ytd'] += $mBudget->totalBudget;
+        }
+
+        $data['achivement_ytd'] = round(floatval($data['revenue_ytd'])/floatval($data['budget_ytd']),4) * 100;
+
         return view('sales.pages.by-sales', $data);
     }
 
