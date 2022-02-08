@@ -65,8 +65,32 @@ Linc | Sales Performance
                         <canvas id="chartSalesWarehouse" width="100%" height="30%"></canvas>
                     </div>
                 </div>
-                <div class="w-full p-4 inline-grid grid-cols-2">
-                    Content 2
+                <div class="w-full p-8">
+                    <div class="w-full mb-8 inline-grid grid-cols-2 text-xl font-bold text-sky-500">
+                        <span>Total Revenue</span>
+                        <span class="text-right">IDR. XXX.XXX.XXX</span>
+                    </div>
+                    <div class="w-full mb-8 inline-grid grid-cols-2 text-xl font-bold text-sky-500">
+                        <span>Total Transaction</span>
+                        <span class="text-right">XXX.XXX</span>
+                    </div>
+                    <div class="flex justify-between mb-1">
+                        <span class="text-base font-medium text-sky-500 dark:text-white">Achievement (1M)</span>
+                        <span class="text-sm font-medium text-sky-500 dark:text-white">(XXX/XXX) 23%</span>
+                    </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                        <div class="bg-sky-500 h-2.5 rounded-full" style="width: 23%"></div>
+                    </div>
+                    <div class="flex justify-between mt-8">
+                        <span class="text-base font-medium text-blue-700 dark:text-white">Achievement (Ytd.)</span>
+                        <span class="text-sm font-medium text-blue-700 dark:text-white">(X.XXX/X.XXX) 45%</span>
+                    </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 45%"></div>
+                    </div>
+                    <div class="w-full mt-8">
+                        <canvas id="chartSalesRevenue" width="100%" height="30%"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
