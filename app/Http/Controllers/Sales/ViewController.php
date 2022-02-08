@@ -337,7 +337,7 @@ class ViewController extends BaseController
 
                 for ($i=1; $i <= $currentMonth; $i++) {
                     array_push($ytd_month,$i);
-                    error_log($i);
+                    //error_log($i);
                 }
 
                 $ytd_budget = SalesBudget::selectRaw('customer_name, SUM(budget) as budget')
@@ -512,7 +512,7 @@ class ViewController extends BaseController
 
                 for ($i=1; $i <= $currentMonth; $i++) {
                     array_push($ytd_month,$i);
-                    error_log($i);
+                    //error_log($i);
                 }
 
                 $ytd_budget = SalesBudget::selectRaw('customer_name, SUM(budget) as budget')
@@ -686,7 +686,7 @@ class ViewController extends BaseController
 
                 for ($i=1; $i <= $currentMonth; $i++) {
                     array_push($ytd_month,$i);
-                    error_log($i);
+                    //error_log($i);
                 }
 
                 $ytd_budget = SalesBudget::selectRaw('customer_name, SUM(budget) as budget')
