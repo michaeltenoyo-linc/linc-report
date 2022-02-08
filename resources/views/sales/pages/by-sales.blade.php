@@ -13,7 +13,7 @@ Linc | Sales Performance
     <div class="relative flex flex-col min-w-0 overflow-x-auto break-words w-full mb-6 shadow-lg rounded bg-white">
         <div class="block w-full p-8 overflow-x-auto">
             <div class="w-full text-center font-bold text-xl mb-8">Sales Performance {{Str::ucfirst($sales)}}</div>
-            
+
             <div class="inline-flex rounded-md shadow-sm mb-8">
                 <a href="/sales/monitoring-master" class="py-2 px-4 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
                     Overall Achievement
@@ -36,7 +36,7 @@ Linc | Sales Performance
                     </a>
                 @endforeach
             </div>
-            
+
             <div class="w-full mb-8">
                 <form id="form-items-new" autocomplete="off">
                     <div class="relative">
@@ -48,6 +48,27 @@ Linc | Sales Performance
                 </form>
             </div>
             <div class="w-full"><hr></div>
+
+            <!-- Chart Overview -->
+            <div class="w-full my-4 p-8 inline-grid grid-cols-2">
+                <div class="w-full p-4 inline-grid grid-cols-2">
+                    <div class="p-4">
+                        <canvas id="chartSalesTransport" width="100%" height="30%"></canvas>
+                    </div>
+                    <div class="p-4">
+                        <canvas id="chartSalesExim" width="100%" height="30%"></canvas>
+                    </div>
+                    <div class="p-4">
+                        <canvas id="chartSalesBulk" width="100%" height="30%"></canvas>
+                    </div>
+                    <div class="p-4">
+                        <canvas id="chartSalesWarehouse" width="100%" height="30%"></canvas>
+                    </div>
+                </div>
+                <div class="w-full p-4 inline-grid grid-cols-2">
+                    Content 2
+                </div>
+            </div>
         </div>
         <div class="block w-full p-8 overflow-x-auto">
             <!-- Projects table -->
