@@ -22,6 +22,7 @@ class PriviledgesTableSeeder extends Seeder
             ltl -> Lautan Luas
             loa -> Letter of Agreements
             gfs -> Greenfields
+            sales -> Sales Area
         */
 
         Priviledge::truncate();
@@ -33,14 +34,22 @@ class PriviledgesTableSeeder extends Seeder
             ],
             [
                 'user_id' => 2,
-                'priviledge' => 'smart',
+                'priviledge' => 'master',
             ],
             [
                 'user_id' => 3,
-                'priviledge' => 'smart;ltl;gfs',
+                'priviledge' => 'smart',
             ],
             [
                 'user_id' => 4,
+                'priviledge' => 'smart;ltl;gfs',
+            ],
+            [
+                'user_id' => 5,
+                'priviledge' => 'smart;ltl;gfs;loa',
+            ],
+            [
+                'user_id' => 6,
                 'priviledge' => 'loa',
             ],
         ];
