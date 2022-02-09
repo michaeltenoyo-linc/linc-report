@@ -289,7 +289,7 @@ class ViewController extends BaseController
     }
 
     public function getMonthlyAchievement(Request $req){
-        $month = '01';
+        $month = date('m');
 
         //GETTING DATA BY PROGRAM
         //transport
