@@ -18,6 +18,7 @@ use App\Models\Suratjalan_greenfields;
 use App\Models\Trucks;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 use function PHPUnit\Framework\isNan;
 use function PHPUnit\Framework\isNull;
@@ -54,45 +55,118 @@ class ViewController extends BaseController
         $customerList = SalesBudget::where('sales',$sales)
                                 ->whereMonth('period',date('m'))
                                 ->whereYear('period',date('Y'))
-                                ->get()->pluck('customer_sap');
+                                ->get();
 
-        $data['revenue_1m'] = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
-                                            ->whereIn('customer_reference',$customerList)
+        //Revenue 1 Month
+        $data['revenue_1m'] = 0;
+
+        foreach ($customerList as $c) {
+            $division = [];
+            switch ($c->division) {
+                case 'Pack Trans':
+                    $division = $this->transportLoadGroups;
+                    break;
+                case 'Bulk Trans':
+                    $division = $this->bulkLoadGroups;
+                    break;
+                case 'Freight Forwarding BP':
+                    $division = $this->eximLoadGroups;
+                    break;
+            }
+
+            $mRevenue = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+                                            ->where('customer_reference',$c->customer_sap)
+                                            ->whereIn('load_group',$division)
                                             ->where('load_status','Completed')
                                             ->whereMonth('load_closed_date',date('m'))
                                             ->whereYear('load_closed_date',date('Y'))
                                             ->first();
+            $data['revenue_1m'] += $mRevenue->totalActual;
+        }
 
+        //Revenue YTD
         $data['revenue_ytd'] = 0;
 
-        for ($i=1; $i <= intval(date('m')) ; $i++) { 
-            $mRevenue = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
-                                            ->whereIn('customer_reference',$customerList)
+        foreach ($customerList as $c) {
+            $division = [];
+            switch ($c->division) {
+                case 'Pack Trans':
+                    $division = $this->transportLoadGroups;
+                    break;
+                case 'Bulk Trans':
+                    $division = $this->bulkLoadGroups;
+                    break;
+                case 'Freight Forwarding BP':
+                    $division = $this->eximLoadGroups;
+                    break;
+            }
+
+            for ($i=1; $i <= intval(date('m')); $i++) { 
+                $mRevenue = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+                                            ->where('customer_reference',$c->customer_sap)
+                                            ->whereIn('load_group',$division)
                                             ->where('load_status','Completed')
                                             ->whereMonth('load_closed_date',$i)
                                             ->whereYear('load_closed_date',date('Y'))
                                             ->first();
-            $data['revenue_ytd'] += $mRevenue->totalActual;
+                $data['revenue_ytd'] += $mRevenue->totalActual;
+            }
         }
 
-        $data['transaction_1m'] = ShipmentBlujay::selectRaw('count(*) as totalTransaction')
-                                                    ->whereIn('customer_reference',$customerList)
-                                                    ->where('load_status','Completed')
-                                                    ->whereMonth('load_closed_date',date('m'))
-                                                    ->whereYear('load_closed_date',date('Y'))
-                                                    ->first();
+        //Transaction 1 Month
+        $data['transaction_1m'] = 0;
+
+        foreach ($customerList as $c) {
+            $division = [];
+            switch ($c->division) {
+                case 'Pack Trans':
+                    $division = $this->transportLoadGroups;
+                    break;
+                case 'Bulk Trans':
+                    $division = $this->bulkLoadGroups;
+                    break;
+                case 'Freight Forwarding BP':
+                    $division = $this->eximLoadGroups;
+                    break;
+            }
+
+            $mTransaction = ShipmentBlujay::selectRaw('count(*) as totalTransaction')
+                                            ->where('customer_reference',$c->customer_sap)
+                                            ->whereIn('load_group',$division)
+                                            ->where('load_status','Completed')
+                                            ->whereMonth('load_closed_date',date('m'))
+                                            ->whereYear('load_closed_date',date('Y'))
+                                            ->first();
+            $data['transaction_1m'] += $mTransaction->totalTransaction;
+        }
         
+        //Transaction Ytd.
         $data['transaction_ytd'] = 0;
 
-        for ($i=1; $i <= intval(date('m')) ; $i++) { 
-            $mTransaction = ShipmentBlujay::selectRaw('count(*) as totalTransaction')
-                                        ->whereIn('customer_reference',$customerList)
-                                        ->where('load_status','Completed')
-                                        ->whereMonth('load_closed_date',$i)
-                                        ->whereYear('load_closed_date',date('Y'))
-                                        ->first();
+        foreach ($customerList as $c) {
+            $division = [];
+            switch ($c->division) {
+                case 'Pack Trans':
+                    $division = $this->transportLoadGroups;
+                    break;
+                case 'Bulk Trans':
+                    $division = $this->bulkLoadGroups;
+                    break;
+                case 'Freight Forwarding BP':
+                    $division = $this->eximLoadGroups;
+                    break;
+            }
 
-            $data['transaction_ytd'] += $mTransaction->totalTransaction;
+            for ($i=1; $i <= intval(date('m')); $i++) { 
+                $mTransaction = ShipmentBlujay::selectRaw('count(*) as totalTransaction')
+                                            ->where('customer_reference',$c->customer_sap)
+                                            ->whereIn('load_group',$division)
+                                            ->where('load_status','Completed')
+                                            ->whereMonth('load_closed_date',date('m'))
+                                            ->whereYear('load_closed_date',date('Y'))
+                                            ->first();
+                $data['transaction_ytd'] += $mTransaction->totalTransaction;
+            }
         }
 
         //ACHIEVEMENT PROGRESS
@@ -102,7 +176,7 @@ class ViewController extends BaseController
                                     ->whereYear('period',date('Y'))
                                     ->first();    
 
-        $data['achivement_1m'] = round(floatval($data['revenue_1m']->totalActual)/floatval($data['budget_1m']->totalBudget),4) * 100;
+        $data['achivement_1m'] = round(floatval($data['revenue_1m'])/floatval($data['budget_1m']->totalBudget),4) * 100;
         
         $data['budget_ytd'] = 0;
         for ($i=1; $i <= intval(date('m')) ; $i++) { 
@@ -128,6 +202,88 @@ class ViewController extends BaseController
                 unset($data['division_list'][$i]);
             }
         }
+
+        $divisionGroup = [];
+        switch ($division) {
+            case 'transport':
+                $division = "Pack Trans";
+                $divisionGroup = $this->transportLoadGroups;
+                break;
+            case 'bulk':
+                $division = "Bulk Trans";
+                $divisionGroup = $this->bulkLoadGroups;
+                break;
+            case 'exim':
+                $division = "Freight Forwarding BP";
+                $divisionGroup = $this->eximLoadGroups;
+                break;
+            case 'warehouse':
+                $division = "Package Whs";
+                $divisionGroup = [];
+        }
+
+        //Customer List
+        //Revenue
+        $data['revenue_1m'] = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+                                            ->whereIn('load_group',$divisionGroup)
+                                            ->where('load_status','Completed')
+                                            ->whereMonth('load_closed_date',date('m'))
+                                            ->whereYear('load_closed_date',date('Y'))
+                                            ->first();
+        $data['revenue_1m'] = $data['revenue_1m']->totalActual;
+
+        $data['revenue_ytd'] = 0;
+        for ($i=1; $i < intval(date('m')); $i++) { 
+            $mRevenue = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+                                        ->whereIn('load_group',$divisionGroup)
+                                        ->where('load_status','Completed')
+                                        ->whereMonth('load_closed_date',$i)
+                                        ->whereYear('load_closed_date',date('Y'))
+                                        ->first();
+            $data['revenue_ytd'] =+ $mRevenue->totalActual;
+        }
+
+        //Transaction
+        $data['transaction_1m'] = ShipmentBlujay::selectRaw('count(*) as totalTransaction')
+                                            ->whereIn('load_group',$divisionGroup)
+                                            ->where('load_status','Completed')
+                                            ->whereMonth('load_closed_date',date('m'))
+                                            ->whereYear('load_closed_date',date('Y'))
+                                            ->first();
+        $data['transaction_1m'] = $data['transaction_1m']->totalTransaction;
+
+        $data['transaction_ytd'] = 0;
+        for ($i=1; $i < intval(date('m')); $i++) { 
+            $mRevenue = ShipmentBlujay::selectRaw('count(*) as totalTransaction')
+                                        ->whereIn('load_group',$divisionGroup)
+                                        ->whereMonth('load_closed_date',$i)
+                                        ->whereYear('load_closed_date',date('Y'))
+                                        ->where('load_status','Completed')
+                                        ->first();
+            $data['transaction_ytd'] =+ $mRevenue->totalTransaction;
+        }
+
+        //Achievement
+        //ACHIEVEMENT PROGRESS
+        $data['budget_1m'] = SalesBudget::selectRaw('SUM(budget) as totalBudget')
+                                    ->where('division', $division)
+                                    ->whereMonth('period',date('m'))
+                                    ->whereYear('period',date('Y'))
+                                    ->first();    
+
+        $data['achivement_1m'] = round(floatval($data['revenue_1m'])/floatval($data['budget_1m']->totalBudget),4) * 100;
+        
+        $data['budget_ytd'] = 0;
+        for ($i=1; $i <= intval(date('m')) ; $i++) { 
+            $mBudget = SalesBudget::selectRaw('SUM(budget) as totalBudget')
+                                ->where('division',$division)
+                                ->whereMonth('period',$i)
+                                ->whereYear('period',date('Y'))
+                                ->first(); 
+            $data['budget_ytd'] += $mBudget->totalBudget;
+        }
+
+        $data['achivement_ytd'] = round(floatval($data['revenue_ytd'])/floatval($data['budget_ytd']),4) * 100;                
 
         return view('sales.pages.by-division', $data);
     }

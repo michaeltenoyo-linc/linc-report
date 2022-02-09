@@ -68,7 +68,7 @@ Linc | Sales Performance
                 <div class="w-full p-8">
                     <div class="w-full mb-8 inline-grid grid-cols-2 text-lg font-bold text-sky-500">
                         <span>Total Revenue (1M)</span>
-                        <span class="text-right">IDR. {{ number_format($revenue_1m->totalActual, 2, ',', '.') }}</span>
+                        <span class="text-right">IDR. {{ number_format($revenue_1m, 2, ',', '.') }}</span>
                     </div>
                     <div class="w-full mb-8 inline-grid grid-cols-2 text-lg font-bold text-blue-600">
                         <span>Total Revenue (Ytd)</span>
@@ -76,7 +76,7 @@ Linc | Sales Performance
                     </div>
                     <div class="w-full mb-8 inline-grid grid-cols-2 text-lg font-bold text-sky-500">
                         <span>Total Transaction (1M)</span>
-                        <span class="text-right">{{ number_format($transaction_1m->totalTransaction, 0, ',', '.') }}</span>
+                        <span class="text-right">{{ number_format($transaction_1m, 0, ',', '.') }}</span>
                     </div>
                     <div class="w-full mb-8 inline-grid grid-cols-2 text-lg font-bold text-blue-600">
                         <span>Total Transaction (Ytd)</span>
@@ -84,7 +84,7 @@ Linc | Sales Performance
                     </div>
                     <div class="flex justify-between mb-1">
                         <span class="text-base font-medium text-sky-500 dark:text-white">Achievement (1M)</span>
-                        <span class="text-sm font-medium text-sky-500 dark:text-white">({{ round($revenue_1m->totalActual/1000000,0) }}/{{ round($budget_1m->totalBudget/1000000,0) }} Mill.) {{ $achivement_1m }}%</span>
+                        <span class="text-sm font-medium text-sky-500 dark:text-white">({{ round($revenue_1m/1000000,0) }}/{{ round($budget_1m->totalBudget/1000000,0) }} Mill.) {{ $achivement_1m }}%</span>
                     </div>
                         <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                         <div class="bg-sky-500 h-2.5 rounded-full" style="width: {{ $achivement_1m }}%"></div>
