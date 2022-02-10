@@ -228,7 +228,10 @@ export const masterBudget = async () => {
     }
 
     const onChangeDate = () => {
-      
+      console.log($('#date-filter').val());
+      $('#date-filter').change(function() {
+        console.log($(this).val());
+      });
     }
 
     onLoad();

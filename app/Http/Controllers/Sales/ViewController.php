@@ -831,7 +831,7 @@ class ViewController extends BaseController
     }
 
     public function getBudgetActual(){
-        $data = SalesBudget::where('budget','>',0)->whereMonth('period',Session::get('sales-month'))->whereYear('period',date('Y'))->get();
+        $data = SalesBudget::where('budget','>',0)->whereMonth('period',Session::get('sales-month'))->whereYear('period',Session::get('sales-year'))->get();
 
         return DataTables::of($data)
             ->addColumn('achievement_1m', function($row){
@@ -847,7 +847,7 @@ class ViewController extends BaseController
                                         ->whereIn('load_group', $this->transportLoadGroups)
                                         ->where('load_status','Completed')
                                         ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                        ->whereYear('load_closed_date',date('Y'))
+                                        ->whereYear('load_closed_date',Session::get('sales-year'))
                                         ->groupBy('customer_reference')
                                         ->first();
 
@@ -860,7 +860,7 @@ class ViewController extends BaseController
                                         ->whereIn('load_group',$this->eximLoadGroups)
                                         ->where('load_status','Completed')
                                         ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                        ->whereYear('load_closed_date',date('Y'))
+                                        ->whereYear('load_closed_date',Session::get('sales-year'))
                                         ->groupBy('customer_reference')
                                         ->first();
 
@@ -873,7 +873,7 @@ class ViewController extends BaseController
                                         ->whereIn('load_group',$this->bulkLoadGroups)
                                         ->where('load_status','Completed')
                                         ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                        ->whereYear('load_closed_date',date('Y'))
+                                        ->whereYear('load_closed_date',Session::get('sales-year'))
                                         ->groupBy('customer_reference')
                                         ->first();
 
@@ -922,7 +922,7 @@ class ViewController extends BaseController
                                         ->where('customer_name','=',$row->customer_name)
                                         ->where('division',$row->division)
                                         ->whereIn(DB::raw('month(period)'),$ytd_month)
-                                        ->whereYear('period',date('Y'))
+                                        ->whereYear('period',Session::get('sales-year'))
                                         ->groupBy('customer_name')
                                         ->first();
 
@@ -936,7 +936,7 @@ class ViewController extends BaseController
                                         ->whereIn('load_group',$this->transportLoadGroups)
                                         ->where('load_status','Completed')
                                         ->whereIn(DB::raw('month(load_closed_date)'),$ytd_month)
-                                        ->whereYear('load_closed_date',date('Y'))
+                                        ->whereYear('load_closed_date',Session::get('sales-year'))
                                         ->groupBy('customer_reference')
                                         ->first();
 
@@ -949,7 +949,7 @@ class ViewController extends BaseController
                                         ->whereIn('load_group',$this->eximLoadGroups)
                                         ->where('load_status','Completed')
                                         ->whereIn(DB::raw('month(load_closed_date)'),$ytd_month)
-                                        ->whereYear('load_closed_date',date('Y'))
+                                        ->whereYear('load_closed_date',Session::get('sales-year'))
                                         ->groupBy('customer_reference')
                                         ->first();
 
@@ -962,7 +962,7 @@ class ViewController extends BaseController
                                         ->whereIn('load_group',$this->bulkLoadGroups)
                                         ->where('load_status','Completed')
                                         ->whereIn(DB::raw('month(load_closed_date)'),$ytd_month)
-                                        ->whereYear('load_closed_date',date('Y'))
+                                        ->whereYear('load_closed_date',Session::get('sales-year'))
                                         ->groupBy('customer_reference')
                                         ->first();
 
