@@ -3,12 +3,14 @@ import { disableElement } from '../../utilities/helpers';
 import Snackbar from 'node-snackbar';
 import Swal from 'sweetalert2';
 import Chart from 'chart.js/auto';
+import moment from 'moment';
 
 export const masterBudget = async () => {
     console.log("loading MasterBudgetJS");
 
     const onLoad = async () => {
-
+      //Date Default
+      $('#date-filter').val(moment().format('YYYY-MM'));
     }
 
     const getBudget = async () => {
