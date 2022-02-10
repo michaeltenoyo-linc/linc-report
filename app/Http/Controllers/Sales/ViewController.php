@@ -130,14 +130,15 @@ class ViewController extends BaseController
                     break;
             }
 
-            $mTransaction = ShipmentBlujay::selectRaw('count(*) as totalTransaction')
+            $mTransaction = ShipmentBlujay::select('load_id')
                                             ->where('customer_reference',$c->customer_sap)
                                             ->whereIn('load_group',$division)
                                             ->where('load_status','Completed')
                                             ->whereMonth('load_closed_date',date('m'))
                                             ->whereYear('load_closed_date',date('Y'))
-                                            ->first();
-            $data['transaction_1m'] += $mTransaction->totalTransaction;
+                                            ->groupBy('load_id')
+                                            ->get();
+            $data['transaction_1m'] += count($mTransaction);
         }
         
         //Transaction Ytd.
@@ -158,14 +159,15 @@ class ViewController extends BaseController
             }
 
             for ($i=1; $i <= intval(date('m')); $i++) { 
-                $mTransaction = ShipmentBlujay::selectRaw('count(*) as totalTransaction')
+                $mTransaction = ShipmentBlujay::select('load_id')
                                             ->where('customer_reference',$c->customer_sap)
                                             ->whereIn('load_group',$division)
                                             ->where('load_status','Completed')
-                                            ->whereMonth('load_closed_date',date('m'))
+                                            ->whereMonth('load_closed_date',$i)
                                             ->whereYear('load_closed_date',date('Y'))
-                                            ->first();
-                $data['transaction_ytd'] += $mTransaction->totalTransaction;
+                                            ->groupBy('load_id')
+                                            ->get();
+                $data['transaction_ytd'] += count($mTransaction);
             }
         }
 
@@ -244,23 +246,25 @@ class ViewController extends BaseController
         }
 
         //Transaction
-        $data['transaction_1m'] = ShipmentBlujay::selectRaw('count(*) as totalTransaction')
+        $data['transaction_1m'] = ShipmentBlujay::select('load_id')
                                             ->whereIn('load_group',$divisionGroup)
                                             ->where('load_status','Completed')
                                             ->whereMonth('load_closed_date',date('m'))
                                             ->whereYear('load_closed_date',date('Y'))
-                                            ->first();
-        $data['transaction_1m'] = $data['transaction_1m']->totalTransaction;
+                                            ->groupBy('load_id')
+                                            ->get();
+        $data['transaction_1m'] = count($data['transaction_1m']);
 
         $data['transaction_ytd'] = 0;
         for ($i=1; $i < intval(date('m')); $i++) { 
-            $mRevenue = ShipmentBlujay::selectRaw('count(*) as totalTransaction')
+            $mRevenue = ShipmentBlujay::select('load_id')
                                         ->whereIn('load_group',$divisionGroup)
                                         ->whereMonth('load_closed_date',$i)
                                         ->whereYear('load_closed_date',date('Y'))
                                         ->where('load_status','Completed')
-                                        ->first();
-            $data['transaction_ytd'] += $mRevenue->totalTransaction;
+                                        ->groupBy('load_id')
+                                        ->get();
+            $data['transaction_ytd'] += count($mRevenue);
         }
 
         //Achievement

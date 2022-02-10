@@ -67,7 +67,7 @@ Linc | Sales Performance
                 </div>
                 <div class="w-full p-8">
                     <div class="w-full mb-8 inline-grid grid-cols-2 text-lg font-bold text-sky-500">
-                        <span>Total Revenue (1M)</span>
+                        <span>Total Revenue (CM)</span>
                         <span class="text-right">IDR. {{ number_format($revenue_1m, 2, ',', '.') }}</span>
                     </div>
                     <div class="w-full mb-8 inline-grid grid-cols-2 text-lg font-bold text-blue-600">
@@ -75,15 +75,15 @@ Linc | Sales Performance
                         <span class="text-right">IDR. {{ number_format($revenue_ytd, 2, ',', '.') }}</span>
                     </div>
                     <div class="w-full mb-8 inline-grid grid-cols-2 text-lg font-bold text-sky-500">
-                        <span>Total Transaction (1M)</span>
-                        <span class="text-right">{{ number_format($transaction_1m, 0, ',', '.') }}</span>
+                        <span>Total Loads (CM)</span>
+                        <span class="text-right">{{ number_format($transaction_1m, 0, ',', '.') }} Load ID</span>
                     </div>
                     <div class="w-full mb-8 inline-grid grid-cols-2 text-lg font-bold text-blue-600">
-                        <span>Total Transaction (Ytd)</span>
-                        <span class="text-right">{{ number_format($transaction_ytd, 0, ',', '.') }}</span>
+                        <span>Total Loads (Ytd)</span>
+                        <span class="text-right">{{ number_format($transaction_ytd, 0, ',', '.') }} Load ID</span>
                     </div>
                     <div class="flex justify-between mb-1">
-                        <span class="text-base font-medium text-sky-500 dark:text-white">Achievement (1M)</span>
+                        <span class="text-base font-medium text-sky-500 dark:text-white">Achievement (CM)</span>
                         <span class="text-sm font-medium text-sky-500 dark:text-white">({{ round($revenue_1m/1000000,0) }}/{{ round($budget_1m->totalBudget/1000000,0) }} Mill.) {{ $achivement_1m }}%</span>
                     </div>
                         <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
