@@ -51,12 +51,15 @@ Linc | Sales Monitoring
 
             <!-- Chart Overview -->
             <div class="w-full my-4 p-8 inline-grid grid-cols-2">
-                <div class="w-full p-4">
-                    <div class="w-full">
-                        <canvas id="chartDivisionYearly" width="100%" height="30%"></canvas>
+                <div class="w-full p-4 inline-grid grid-cols-2">
+                    <div class="w-full p-4">
+                        <canvas id="chartDivisionAdit" width="100%" height="30%"></canvas>
                     </div>
-                    <div class="w-full">
-                        <canvas id="chartDivisionDaily" width="100%" height="30%"></canvas>
+                    <div class="w-full p-4">
+                        <canvas id="chartDivisionEdwin" width="100%" height="30%"></canvas>
+                    </div>
+                    <div class="w-full p-4">
+                        <canvas id="chartDivisionWillem" width="100%" height="30%"></canvas>
                     </div>
                 </div>
                 <div class="w-full p-8">
@@ -94,7 +97,7 @@ Linc | Sales Monitoring
             </div>
         </div>
         <div class="block w-full p-8 overflow-x-auto">
-            <input type="hidden" name="division" id="division" value="{{ $division }}">
+            <input type="hidden" name="division" id="division-name" value="{{ $division }}">
             <!-- Projects table -->
             <table id="yajra-datatable-division-budget" style="width: 2000px;" class="items-center w-full bg-transparent border-collapse yajra-datatable-division-budget">
             <thead>

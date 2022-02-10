@@ -113,14 +113,14 @@
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
                 {{-- Active --}}
                 <li class="items-center">
-                    @if (Request::path() == '/greenfields/nav-so-new')
-                    <a href="{{url('/greenfields/nav-so-new')}}"
+                    @if (Request::path() == '/sales/by-sales')
+                    <a href="{{url('/sales/by-sales/adit')}}"
                         class="page_nav_active">
                         <i class="fab fa-sellsy"></i>
                         By Sales Report
                     </a>
                     @else
-                    <a href="{{url('/greenfields/nav-so-new')}}"
+                    <a href="{{url('/sales/by-sales/adit')}}"
                         class="page_nav">
                         <i class="fab fa-sellsy"></i>
                         By Sales Report
@@ -156,14 +156,14 @@
             <!-- Navigation Product -->
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
                 <li class="items-center">
-                    @if (Request::path() == 'lautanluas/nav-report-generate')
-                        <a href="{{url('/greenfields/nav-report-generate')}}"
+                    @if (Request::path() == '/sales/by-division')
+                        <a href="{{url('/sales/by-division/transport')}}"
                             class="page_nav_active">
                             <i class="fab fa-sellsy"></i>
                             By Division Report
                         </a>
                     @else
-                        <a href="{{url('/greenfields/nav-report-generate')}}"
+                        <a href="{{url('/sales/by-division/transport')}}"
                             class="page_nav">
                             <i class="fab fa-sellsy"></i>
                             By Division Report

@@ -303,6 +303,7 @@ Route::middleware(['auth','priviledge:sales,master'])->group(function () {
             Route::get('/get-yearly-revenue',[SalesViewController::class, 'getYearlyRevenue']);
             Route::get('/get-monthly-achievement',[SalesViewController::class, 'getMonthlyAchievement']);
             Route::get('/get-sales-pie/{sales}',[SalesViewController::class, 'getSalesPie']);
+            Route::get('/get-division-pie/{division}',[SalesViewController::class, 'getDivisionPie']);
         });
     });
 });
