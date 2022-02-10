@@ -293,6 +293,8 @@ Route::middleware(['auth','priviledge:sales,master'])->group(function () {
         Route::get('/by-sales/{name}',[SalesViewController::class, 'gotoBySales']);
         Route::get('/by-division/{division}',[SalesViewController::class, 'gotoByDivision']);
 
+        //Utility
+        Route::get('/filter-date/{month}/{year}', [SalesViewController::class, 'filterSalesDate']);
 
         Route::prefix('/data')->group(function () {
             //DATA VIEW

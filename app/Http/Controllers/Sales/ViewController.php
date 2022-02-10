@@ -38,6 +38,9 @@ class ViewController extends BaseController
     }
 
     public function gotoMonitoringMaster(){
+        Session::put('sales-month',date('m'));
+        Session::put('sales-year', date('Y'));
+
         return view('sales.pages.monitoring-master');
     }
 
@@ -828,7 +831,7 @@ class ViewController extends BaseController
     }
 
     public function getBudgetActual(){
-        $data = SalesBudget::where('budget','>',0)->whereMonth('period',date('m'))->whereYear('period',date('Y'))->get();
+        $data = SalesBudget::where('budget','>',0)->whereMonth('period',Session::get('sales-month'))->whereYear('period',date('Y'))->get();
 
         return DataTables::of($data)
             ->addColumn('achievement_1m', function($row){
@@ -843,7 +846,7 @@ class ViewController extends BaseController
                                         ->where('customer_reference',$row->customer_sap)
                                         ->whereIn('load_group', $this->transportLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereMonth('load_closed_date',date('m'))
+                                        ->whereMonth('load_closed_date',Session::get('sales-month'))
                                         ->whereYear('load_closed_date',date('Y'))
                                         ->groupBy('customer_reference')
                                         ->first();
@@ -856,7 +859,7 @@ class ViewController extends BaseController
                                         ->where('customer_reference',$row->customer_sap)
                                         ->whereIn('load_group',$this->eximLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereMonth('load_closed_date',date('m'))
+                                        ->whereMonth('load_closed_date',Session::get('sales-month'))
                                         ->whereYear('load_closed_date',date('Y'))
                                         ->groupBy('customer_reference')
                                         ->first();
@@ -869,7 +872,7 @@ class ViewController extends BaseController
                                         ->where('customer_reference',$row->customer_sap)
                                         ->whereIn('load_group',$this->bulkLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereMonth('load_closed_date',date('m'))
+                                        ->whereMonth('load_closed_date',Session::get('sales-month'))
                                         ->whereYear('load_closed_date',date('Y'))
                                         ->groupBy('customer_reference')
                                         ->first();
@@ -907,7 +910,7 @@ class ViewController extends BaseController
                 $actual = 0;
                 $percentage = 0;
 
-                $currentMonth = intval(date('m'));
+                $currentMonth = intval(Session::get('sales-month'));
                 $ytd_month = [];
 
                 for ($i=1; $i <= $currentMonth; $i++) {
@@ -1203,5 +1206,12 @@ class ViewController extends BaseController
         $data['willem'] = [$revenueWillem,$budgetWillem];
 
         return response()->json($data,200);
+    }
+
+    public function filterSalesDate($month, $year){
+        Session::put('sales-month', $month);
+        Session::put('sales-year', $year);
+
+        return response()->json(['message' => "success"], 200);
     }
 }

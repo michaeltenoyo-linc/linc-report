@@ -227,7 +227,12 @@ export const masterBudget = async () => {
       return false;
     }
 
+    const onChangeDate = () => {
+      
+    }
+
     onLoad();
     getBudget();
+    onChangeDate();
 }
 
