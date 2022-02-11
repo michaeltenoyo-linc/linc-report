@@ -53,13 +53,13 @@ Linc | Sales Performance
             <!-- Chart Overview -->
             <div class="w-full my-4 p-8 inline-grid grid-cols-2">
                 <div class="w-full p-4 inline-grid grid-cols-2">
-                    <div class="p-4">
+                    <div class="p-4 divisionPie" id="canvas-transport">
                         <canvas id="chartSalesTransport" width="100%" height="30%"></canvas>
                     </div>
-                    <div class="p-4">
+                    <div class="p-4 divisionPie" id="canvas-exim">
                         <canvas id="chartSalesExim" width="100%" height="30%"></canvas>
                     </div>
-                    <div class="p-4">
+                    <div class="p-4 divisionPie" id="canvas-bulk">
                         <canvas id="chartSalesBulk" width="100%" height="30%"></canvas>
                     </div>
                     <div class="p-4">

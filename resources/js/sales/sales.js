@@ -1,6 +1,6 @@
 import { Landing } from "./pages/landing";
 import { masterBudget } from "./pages/masterBudget";
-import { BySales } from "./pages/bySales";
+import { BySales, RefreshSalesPie } from "./pages/bySales";
 import { ByDivision, RefreshDivisionPie } from "./pages/byDivision";
 
 export const load = () => {
@@ -42,6 +42,17 @@ export const load = () => {
         //By Sales
         try {
             $('#yajra-datatable-sales-budget').DataTable().ajax.reload(null, false);
+
+            $('.divisionPie').empty();
+
+            let canvasTransport = '<canvas id="chartSalesTransport" width="100%" height="30%"></canvas>';
+            let canvasExim = '<canvas id="chartSalesExim" width="100%" height="30%"></canvas>';
+            let canvasBulk = '<canvas id="chartSalesBulk" width="100%" height="30%"></canvas>';
+            
+            $('#canvas-transport').html(canvasTransport);
+            $('#canvas-exim').html(canvasExim);
+            $('#canvas-bulk').html(canvasBulk);
+            RefreshSalesPie();
         } catch (error) {console.log(error);}
 
         //By Division
@@ -65,6 +76,7 @@ export const load = () => {
     Landing();
     masterBudget();
     BySales();
+    RefreshSalesPie();
     ByDivision();
     RefreshDivisionPie();
 };

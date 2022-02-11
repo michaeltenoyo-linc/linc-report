@@ -4,6 +4,244 @@ import Snackbar from 'node-snackbar';
 import Swal from 'sweetalert2';
 import Chart from 'chart.js/auto';
 
+export const RefreshSalesPie = async () => {
+  const getSalesChart = async () => {
+    const salesPieFetch = await $.get('/sales/data/get-sales-pie/'+$('#sales-name').val());
+
+    //Pie Transport
+    const labelsTransport = [
+        'Transport - Yay',
+        'Transport - Nay',
+    ];
+    const dataSalesTransport = {
+        labels: labelsTransport,
+        datasets: [
+            {
+                backgroundColor: ['#4ad2ff', '#00abe3'],
+                data: salesPieFetch['transport']
+            },
+        ]
+    };
+
+    const contSalesTransport = $('#chartSalesTransport');
+    const configSalesTransport = {
+        type: 'pie',
+        data: dataSalesTransport,
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+                display: false,
+                text: 'Monthly Achievement Transport'
+            },
+            legend: {
+              labels: {
+                generateLabels: function(chart) {
+                  // Get the default label list
+                  const original = Chart.overrides.pie.plugins.legend.labels.generateLabels;
+                  const labelsOriginal = original.call(this, chart);
+
+                  // Build an array of colors used in the datasets of the chart
+                  var datasetColors = chart.data.datasets.map(function(e) {
+                    return e.backgroundColor;
+                  });
+                  datasetColors = datasetColors.flat();
+
+                  // Modify the color and hide state of each label
+                  labelsOriginal.forEach(label => {
+                    // There are twice as many labels as there are datasets. This converts the label index into the corresponding dataset index
+                    label.datasetIndex = (label.index - label.index % 2) / 2;
+
+                    // The hidden state must match the dataset's hidden state
+                    label.hidden = !chart.isDatasetVisible(label.datasetIndex);
+
+                    // Change the color to match the dataset
+                    label.fillStyle = datasetColors[label.index];
+                  });
+
+                  return labelsOriginal;
+                }
+              },
+              onClick: function(mouseEvent, legendItem, legend) {
+                // toggle the visibility of the dataset from what it currently is
+                legend.chart.getDatasetMeta(
+                  legendItem.datasetIndex
+                ).hidden = legend.chart.isDatasetVisible(legendItem.datasetIndex);
+                legend.chart.update();
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const labelIndex = (context.datasetIndex * 2) + context.dataIndex;
+                  return context.chart.data.labels[labelIndex] + ': ' + context.formattedValue;
+                }
+              }
+            }
+          }
+        },
+    };
+
+    const chartSalesTransport = new Chart(contSalesTransport, configSalesTransport);
+
+    //Pie Transport
+    const labelsExim = [
+        'Exim - Yay',
+        'Exim - Nay',
+    ];
+    const dataSalesExim = {
+        labels: labelsExim,
+        datasets: [
+            {
+                backgroundColor: ['#4ad2ff', '#00abe3'],
+                data: salesPieFetch['exim']
+            },
+        ]
+    };
+
+    const contSalesExim = $('#chartSalesExim');
+    const configSalesExim = {
+        type: 'pie',
+        data: dataSalesExim,
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+                display: false,
+                text: 'Monthly Achievement Exim'
+            },
+            legend: {
+              labels: {
+                generateLabels: function(chart) {
+                  // Get the default label list
+                  const original = Chart.overrides.pie.plugins.legend.labels.generateLabels;
+                  const labelsOriginal = original.call(this, chart);
+
+                  // Build an array of colors used in the datasets of the chart
+                  var datasetColors = chart.data.datasets.map(function(e) {
+                    return e.backgroundColor;
+                  });
+                  datasetColors = datasetColors.flat();
+
+                  // Modify the color and hide state of each label
+                  labelsOriginal.forEach(label => {
+                    // There are twice as many labels as there are datasets. This converts the label index into the corresponding dataset index
+                    label.datasetIndex = (label.index - label.index % 2) / 2;
+
+                    // The hidden state must match the dataset's hidden state
+                    label.hidden = !chart.isDatasetVisible(label.datasetIndex);
+
+                    // Change the color to match the dataset
+                    label.fillStyle = datasetColors[label.index];
+                  });
+
+                  return labelsOriginal;
+                }
+              },
+              onClick: function(mouseEvent, legendItem, legend) {
+                // toggle the visibility of the dataset from what it currently is
+                legend.chart.getDatasetMeta(
+                  legendItem.datasetIndex
+                ).hidden = legend.chart.isDatasetVisible(legendItem.datasetIndex);
+                legend.chart.update();
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const labelIndex = (context.datasetIndex * 2) + context.dataIndex;
+                  return context.chart.data.labels[labelIndex] + ': ' + context.formattedValue;
+                }
+              }
+            }
+          }
+        },
+    };
+
+    const chartSalesExim = new Chart(contSalesExim, configSalesExim);
+
+    //Pie Bulk
+    const labelsBulk = [
+        'Bulk - Yay',
+        'Bulk - Nay',
+    ];
+    const dataSalesBulk = {
+        labels: labelsBulk,
+        datasets: [
+            {
+                backgroundColor: ['#4ad2ff', '#00abe3'],
+                data: salesPieFetch['bulk']
+            },
+        ]
+    };
+
+    const contSalesBulk = $('#chartSalesBulk');
+    const configSalesBulk = {
+        type: 'pie',
+        data: dataSalesBulk,
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+                display: false,
+                text: 'Monthly Achievement Bulk'
+            },
+            legend: {
+              labels: {
+                generateLabels: function(chart) {
+                  // Get the default label list
+                  const original = Chart.overrides.pie.plugins.legend.labels.generateLabels;
+                  const labelsOriginal = original.call(this, chart);
+
+                  // Build an array of colors used in the datasets of the chart
+                  var datasetColors = chart.data.datasets.map(function(e) {
+                    return e.backgroundColor;
+                  });
+                  datasetColors = datasetColors.flat();
+
+                  // Modify the color and hide state of each label
+                  labelsOriginal.forEach(label => {
+                    // There are twice as many labels as there are datasets. This converts the label index into the corresponding dataset index
+                    label.datasetIndex = (label.index - label.index % 2) / 2;
+
+                    // The hidden state must match the dataset's hidden state
+                    label.hidden = !chart.isDatasetVisible(label.datasetIndex);
+
+                    // Change the color to match the dataset
+                    label.fillStyle = datasetColors[label.index];
+                  });
+
+                  return labelsOriginal;
+                }
+              },
+              onClick: function(mouseEvent, legendItem, legend) {
+                // toggle the visibility of the dataset from what it currently is
+                legend.chart.getDatasetMeta(
+                  legendItem.datasetIndex
+                ).hidden = legend.chart.isDatasetVisible(legendItem.datasetIndex);
+                legend.chart.update();
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const labelIndex = (context.datasetIndex * 2) + context.dataIndex;
+                  return context.chart.data.labels[labelIndex] + ': ' + context.formattedValue;
+                }
+              }
+            }
+          }
+        },
+    };
+
+    const chartSalesBulk = new Chart(contSalesBulk, configSalesBulk);
+
+    //Line Chart Daily Revenue
+  }
+  
+  getSalesChart();
+}
+
 export const BySales = async () => {
     console.log("loading BySalesJS");
 
@@ -219,240 +457,5 @@ export const BySales = async () => {
       });
     }
 
-    const getSalesChart = async () => {
-        const salesPieFetch = await $.get('/sales/data/get-sales-pie/'+$('#sales-name').val());
-
-        //Pie Transport
-        const labelsTransport = [
-            'Transport - Yay',
-            'Transport - Nay',
-        ];
-        const dataSalesTransport = {
-            labels: labelsTransport,
-            datasets: [
-                {
-                    backgroundColor: ['#4ad2ff', '#00abe3'],
-                    data: salesPieFetch['transport']
-                },
-            ]
-        };
-
-        const contSalesTransport = $('#chartSalesTransport');
-        const configSalesTransport = {
-            type: 'pie',
-            data: dataSalesTransport,
-            options: {
-              responsive: true,
-              plugins: {
-                title: {
-                    display: false,
-                    text: 'Monthly Achievement Transport'
-                },
-                legend: {
-                  labels: {
-                    generateLabels: function(chart) {
-                      // Get the default label list
-                      const original = Chart.overrides.pie.plugins.legend.labels.generateLabels;
-                      const labelsOriginal = original.call(this, chart);
-
-                      // Build an array of colors used in the datasets of the chart
-                      var datasetColors = chart.data.datasets.map(function(e) {
-                        return e.backgroundColor;
-                      });
-                      datasetColors = datasetColors.flat();
-
-                      // Modify the color and hide state of each label
-                      labelsOriginal.forEach(label => {
-                        // There are twice as many labels as there are datasets. This converts the label index into the corresponding dataset index
-                        label.datasetIndex = (label.index - label.index % 2) / 2;
-
-                        // The hidden state must match the dataset's hidden state
-                        label.hidden = !chart.isDatasetVisible(label.datasetIndex);
-
-                        // Change the color to match the dataset
-                        label.fillStyle = datasetColors[label.index];
-                      });
-
-                      return labelsOriginal;
-                    }
-                  },
-                  onClick: function(mouseEvent, legendItem, legend) {
-                    // toggle the visibility of the dataset from what it currently is
-                    legend.chart.getDatasetMeta(
-                      legendItem.datasetIndex
-                    ).hidden = legend.chart.isDatasetVisible(legendItem.datasetIndex);
-                    legend.chart.update();
-                  }
-                },
-                tooltip: {
-                  callbacks: {
-                    label: function(context) {
-                      const labelIndex = (context.datasetIndex * 2) + context.dataIndex;
-                      return context.chart.data.labels[labelIndex] + ': ' + context.formattedValue;
-                    }
-                  }
-                }
-              }
-            },
-        };
-
-        const chartSalesTransport = new Chart(contSalesTransport, configSalesTransport);
-
-        //Pie Transport
-        const labelsExim = [
-            'Exim - Yay',
-            'Exim - Nay',
-        ];
-        const dataSalesExim = {
-            labels: labelsExim,
-            datasets: [
-                {
-                    backgroundColor: ['#4ad2ff', '#00abe3'],
-                    data: salesPieFetch['exim']
-                },
-            ]
-        };
-
-        const contSalesExim = $('#chartSalesExim');
-        const configSalesExim = {
-            type: 'pie',
-            data: dataSalesExim,
-            options: {
-              responsive: true,
-              plugins: {
-                title: {
-                    display: false,
-                    text: 'Monthly Achievement Exim'
-                },
-                legend: {
-                  labels: {
-                    generateLabels: function(chart) {
-                      // Get the default label list
-                      const original = Chart.overrides.pie.plugins.legend.labels.generateLabels;
-                      const labelsOriginal = original.call(this, chart);
-
-                      // Build an array of colors used in the datasets of the chart
-                      var datasetColors = chart.data.datasets.map(function(e) {
-                        return e.backgroundColor;
-                      });
-                      datasetColors = datasetColors.flat();
-
-                      // Modify the color and hide state of each label
-                      labelsOriginal.forEach(label => {
-                        // There are twice as many labels as there are datasets. This converts the label index into the corresponding dataset index
-                        label.datasetIndex = (label.index - label.index % 2) / 2;
-
-                        // The hidden state must match the dataset's hidden state
-                        label.hidden = !chart.isDatasetVisible(label.datasetIndex);
-
-                        // Change the color to match the dataset
-                        label.fillStyle = datasetColors[label.index];
-                      });
-
-                      return labelsOriginal;
-                    }
-                  },
-                  onClick: function(mouseEvent, legendItem, legend) {
-                    // toggle the visibility of the dataset from what it currently is
-                    legend.chart.getDatasetMeta(
-                      legendItem.datasetIndex
-                    ).hidden = legend.chart.isDatasetVisible(legendItem.datasetIndex);
-                    legend.chart.update();
-                  }
-                },
-                tooltip: {
-                  callbacks: {
-                    label: function(context) {
-                      const labelIndex = (context.datasetIndex * 2) + context.dataIndex;
-                      return context.chart.data.labels[labelIndex] + ': ' + context.formattedValue;
-                    }
-                  }
-                }
-              }
-            },
-        };
-
-        const chartSalesExim = new Chart(contSalesExim, configSalesExim);
-
-        //Pie Bulk
-        const labelsBulk = [
-            'Bulk - Yay',
-            'Bulk - Nay',
-        ];
-        const dataSalesBulk = {
-            labels: labelsBulk,
-            datasets: [
-                {
-                    backgroundColor: ['#4ad2ff', '#00abe3'],
-                    data: salesPieFetch['bulk']
-                },
-            ]
-        };
-
-        const contSalesBulk = $('#chartSalesBulk');
-        const configSalesBulk = {
-            type: 'pie',
-            data: dataSalesBulk,
-            options: {
-              responsive: true,
-              plugins: {
-                title: {
-                    display: false,
-                    text: 'Monthly Achievement Bulk'
-                },
-                legend: {
-                  labels: {
-                    generateLabels: function(chart) {
-                      // Get the default label list
-                      const original = Chart.overrides.pie.plugins.legend.labels.generateLabels;
-                      const labelsOriginal = original.call(this, chart);
-
-                      // Build an array of colors used in the datasets of the chart
-                      var datasetColors = chart.data.datasets.map(function(e) {
-                        return e.backgroundColor;
-                      });
-                      datasetColors = datasetColors.flat();
-
-                      // Modify the color and hide state of each label
-                      labelsOriginal.forEach(label => {
-                        // There are twice as many labels as there are datasets. This converts the label index into the corresponding dataset index
-                        label.datasetIndex = (label.index - label.index % 2) / 2;
-
-                        // The hidden state must match the dataset's hidden state
-                        label.hidden = !chart.isDatasetVisible(label.datasetIndex);
-
-                        // Change the color to match the dataset
-                        label.fillStyle = datasetColors[label.index];
-                      });
-
-                      return labelsOriginal;
-                    }
-                  },
-                  onClick: function(mouseEvent, legendItem, legend) {
-                    // toggle the visibility of the dataset from what it currently is
-                    legend.chart.getDatasetMeta(
-                      legendItem.datasetIndex
-                    ).hidden = legend.chart.isDatasetVisible(legendItem.datasetIndex);
-                    legend.chart.update();
-                  }
-                },
-                tooltip: {
-                  callbacks: {
-                    label: function(context) {
-                      const labelIndex = (context.datasetIndex * 2) + context.dataIndex;
-                      return context.chart.data.labels[labelIndex] + ': ' + context.formattedValue;
-                    }
-                  }
-                }
-              }
-            },
-        };
-
-        const chartSalesBulk = new Chart(contSalesBulk, configSalesBulk);
-
-        //Line Chart Daily Revenue
-    }
-
     getSalesPerformance();
-    getSalesChart();
 }
