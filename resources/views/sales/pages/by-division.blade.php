@@ -40,10 +40,11 @@ Linc | Sales Monitoring
             <div class="w-full mb-8">
                 <form id="form-items-new" autocomplete="off">
                     <div class="relative">
-                        <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                          <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
-                        </div>
-                        <input datepicker datepicker-autohide datepicker-format="mm/yyyy" value="{{date('m/Y')}}" datepicker-title="Period Filter" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
+                        <input 
+                            type="month" 
+                            class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                            id="date-filter"
+                            >
                     </div>
                 </form>
             </div>
@@ -52,13 +53,13 @@ Linc | Sales Monitoring
             <!-- Chart Overview -->
             <div class="w-full my-4 p-8 inline-grid grid-cols-2">
                 <div class="w-full p-4 inline-grid grid-cols-2">
-                    <div class="w-full p-4">
+                    <div class="w-full p-4 salesPie" id="canvas-adit">
                         <canvas id="chartDivisionAdit" width="100%" height="30%"></canvas>
                     </div>
-                    <div class="w-full p-4">
+                    <div class="w-full p-4 salesPie" id="canvas-edwin">
                         <canvas id="chartDivisionEdwin" width="100%" height="30%"></canvas>
                     </div>
-                    <div class="w-full p-4">
+                    <div class="w-full p-4 salesPie" id="canvas-willem">
                         <canvas id="chartDivisionWillem" width="100%" height="30%"></canvas>
                     </div>
                 </div>
