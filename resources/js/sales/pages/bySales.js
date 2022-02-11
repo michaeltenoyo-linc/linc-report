@@ -5,6 +5,19 @@ import Swal from 'sweetalert2';
 import Chart from 'chart.js/auto';
 
 export const RefreshSalesPie = async () => {
+  const getSalesOverview = async () => {
+    const salesOverviewFetch = await $.get('/sales/data/get-sales-overview/'+$('#sales-name').val());
+    
+    $('#sales-revenue-1m').empty().html(salesOverviewFetch['revenue_1m']);
+    $('#sales-revenue-ytd').empty().html(salesOverviewFetch['revenue_ytd']);
+    $('#sales-transaction-1m').empty().html(salesOverviewFetch['transaction_1m']);
+    $('#sales-transaction-ytd').empty().html(salesOverviewFetch['transaction_ytd']);
+    $('#sales-achievement-1m').empty().html(salesOverviewFetch['achievement_1m_text']);
+    $('#sales-achievement-ytd').empty().html(salesOverviewFetch['achievement_ytd_text']);
+    $('#sales-achivementbar-1m').css("width",salesOverviewFetch['achivement_1m']+"%");
+    $('#sales-achivementbar-ytd').css("width",salesOverviewFetch['achivement_ytd']+"%");
+  }
+
   const getSalesChart = async () => {
     const salesPieFetch = await $.get('/sales/data/get-sales-pie/'+$('#sales-name').val());
 
@@ -238,8 +251,9 @@ export const RefreshSalesPie = async () => {
 
     //Line Chart Daily Revenue
   }
-  
+
   getSalesChart();
+  getSalesOverview();
 }
 
 export const BySales = async () => {

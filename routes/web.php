@@ -300,6 +300,7 @@ Route::middleware(['auth','priviledge:sales,master'])->group(function () {
             //DATA VIEW
             Route::get('/get-budget-actual',[SalesViewController::class, 'getBudgetActual']);
             Route::get('/get-sales-performance/{sales}',[SalesViewController::class, 'getSalesPerformance']);
+            Route::get('/get-sales-overview/{sales}', [SalesViewController::class, 'getSalesOverview']);
             Route::get('/get-division-performance/{division}',[SalesViewController::class, 'getDivisionPerformance']);
             Route::get('/get-yearly-achievement/{id}',[SalesViewController::class, 'getYearlyAchievement']);
             Route::get('/get-yearly-revenue',[SalesViewController::class, 'getYearlyRevenue']);
