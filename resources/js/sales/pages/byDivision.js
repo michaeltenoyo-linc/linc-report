@@ -5,6 +5,19 @@ import Swal from 'sweetalert2';
 import Chart from 'chart.js/auto';
 
 export const RefreshDivisionPie = async () => {
+  const getDivisionOverview = async () => {
+    const divisionOverviewFetch = await $.get('/sales/data/get-division-overview/'+$('#division-name').val());
+    
+    $('#division-revenue-1m').empty().html(divisionOverviewFetch['revenue_1m']);
+    $('#division-revenue-ytd').empty().html(divisionOverviewFetch['revenue_ytd']);
+    $('#division-transaction-1m').empty().html(divisionOverviewFetch['transaction_1m']);
+    $('#division-transaction-ytd').empty().html(divisionOverviewFetch['transaction_ytd']);
+    $('#division-achievement-1m').empty().html(divisionOverviewFetch['achievement_1m_text']);
+    $('#division-achievement-ytd').empty().html(divisionOverviewFetch['achievement_ytd_text']);
+    $('#division-achivementbar-1m').css("width",divisionOverviewFetch['achivement_1m']+"%");
+    $('#division-achivementbar-ytd').css("width",divisionOverviewFetch['achivement_ytd']+"%");
+  }
+
   const getDivisionPie = async () => {
     const divisionPieFetch = await $.get('/sales/data/get-division-pie/'+$('#division-name').val());
 
@@ -238,6 +251,7 @@ export const RefreshDivisionPie = async () => {
   }
 
   getDivisionPie();
+  getDivisionOverview();
 }
 
 export const ByDivision = async () => {

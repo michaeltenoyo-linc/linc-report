@@ -66,33 +66,33 @@ Linc | Sales Monitoring
                 <div class="w-full p-8">
                     <div class="w-full mb-8 inline-grid grid-cols-2 text-lg font-bold text-sky-500">
                         <span>Total Revenue (CM)</span>
-                        <span class="text-right">IDR. {{ number_format($revenue_1m, 2, ',', '.') }}</span>
+                        <span class="text-right">IDR. <span id="division-revenue-1m"></span></span>
                     </div>
                     <div class="w-full mb-8 inline-grid grid-cols-2 text-lg font-bold text-blue-600">
                         <span>Total Revenue (Ytd)</span>
-                        <span class="text-right">IDR. {{ number_format($revenue_ytd, 2, ',', '.') }}</span>
+                        <span class="text-right">IDR. <span id="division-revenue-ytd"></span></span>
                     </div>
                     <div class="w-full mb-8 inline-grid grid-cols-2 text-lg font-bold text-sky-500">
                         <span>Total Loads (CM)</span>
-                        <span class="text-right">{{ number_format($transaction_1m, 0, ',', '.') }} Load ID's</span>
+                        <span class="text-right"><span id="division-transaction-1m"></span> Load ID's</span>
                     </div>
                     <div class="w-full mb-8 inline-grid grid-cols-2 text-lg font-bold text-blue-600">
                         <span>Total Loads (Ytd)</span>
-                        <span class="text-right">{{ number_format($transaction_ytd, 0, ',', '.') }} Load ID's</span>
+                        <span class="text-right"><span id="division-transaction-ytd"></span> Load ID's</span>
                     </div>
                     <div class="flex justify-between mb-1">
                         <span class="text-base font-medium text-sky-500 dark:text-white">Achievement (CM)</span>
-                        <span class="text-sm font-medium text-sky-500 dark:text-white">({{ round($revenue_1m/1000000,0) }}/{{ round($budget_1m->totalBudget/1000000,0) }} Mill.) {{ $achivement_1m }}%</span>
+                        <span class="text-sm font-medium text-sky-500 dark:text-white"><span id="division-achievement-1m"></span></span>
                     </div>
                         <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                        <div class="bg-sky-500 h-2.5 rounded-full" style="width: {{ $achivement_1m }}%"></div>
+                        <div class="bg-sky-500 h-2.5 rounded-full" id="division-achivementbar-1m"></div>
                     </div>
                     <div class="flex justify-between mt-8">
                         <span class="text-base font-medium text-blue-700 dark:text-white">Achievement (Ytd.)</span>
-                        <span class="text-sm font-medium text-blue-700 dark:text-white">({{ round($revenue_ytd/1000000,0) }}/{{ round($budget_ytd/1000000,0) }} Mill.) {{ $achivement_ytd }}%</span>
+                        <span class="text-sm font-medium text-blue-700 dark:text-white"><span id="division-achievement-ytd"></span></span>
                     </div>
                         <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: {{ $achivement_ytd }}%"></div>
+                        <div class="bg-blue-600 h-2.5 rounded-full" id="division-achivementbar-ytd"></div>
                     </div>
                 </div>
             </div>

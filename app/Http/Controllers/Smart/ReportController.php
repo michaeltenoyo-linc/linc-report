@@ -40,7 +40,7 @@ class ReportController extends BaseController
         $ctr = 1;
 
         //Untuk Report 2
-        $SjReport2 = Suratjalan::whereMonth('created_at','01')->orderBy('created_at','asc')->get();
+        $SjReport2 = Suratjalan::orderBy('created_at','asc')->get();
 
         if($req->input('reportType') == "smart_1"){
             foreach ($listLoadId as $wantedLoad) {
@@ -237,6 +237,7 @@ class ReportController extends BaseController
                             'Tanggal Input' => $sj->created_at,
                             'Update Terakhir' => $sj->updated_at,
                             'Load ID' => $sj->load_id,
+                            'Customer Type' => $sj->customer_type,
                             'Tgl Muat' => Carbon::parse($sj->tgl_muat)->format('d-M-Y'),
                             'Penerima' => $sj->penerima,
                             'Kuantitas' => $sj->total_qtySO,
@@ -264,6 +265,7 @@ class ReportController extends BaseController
                             'Tanggal Input' => "",
                             'Update Terakhir' => "",
                             'Load ID' => "",
+                            'Customer Type' => "",
                             'Tgl Muat' => "",
                             'Penerima' => "",
                             'Kuantitas' => "",

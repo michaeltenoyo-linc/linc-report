@@ -247,6 +247,30 @@ class ViewController extends BaseController
                 $divisionGroup = [];
         }
 
+        return view('sales.pages.by-division', $data);
+    }
+
+    public function getDivisionOverview($division){
+        $divisionGroup = [];
+
+        switch ($division) {
+            case 'transport':
+                $division = "Pack Trans";
+                $divisionGroup = $this->transportLoadGroups;
+                break;
+            case 'bulk':
+                $division = "Bulk Trans";
+                $divisionGroup = $this->bulkLoadGroups;
+                break;
+            case 'exim':
+                $division = "Freight Forwarding BP";
+                $divisionGroup = $this->eximLoadGroups;
+                break;
+            case 'warehouse':
+                $division = "Package Whs";
+                $divisionGroup = [];
+        }
+
         //Customer List
         //Revenue
         $data['revenue_1m'] = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
@@ -312,7 +336,15 @@ class ViewController extends BaseController
 
         $data['achivement_ytd'] = round(floatval($data['revenue_ytd'])/floatval($data['budget_ytd']),4) * 100;                
 
-        return view('sales.pages.by-division', $data);
+        //formatting data
+        $data['achievement_1m_text'] ='('.strval(round($data['revenue_1m']/1000000,0)).'/'.strval(round($data['budget_1m']->totalBudget/1000000,0)).' Mill.) '.strval($data['achivement_1m']).'%';
+        $data['achievement_ytd_text'] ='('.strval(round($data['revenue_ytd']/1000000,0)).'/'.strval(round($data['budget_ytd']/1000000,0)).' Mill.) '.strval($data['achivement_ytd']).'%';
+        $data['revenue_1m'] = number_format($data['revenue_1m'], 2, ',', '.');
+        $data['revenue_ytd'] = number_format($data['revenue_ytd'], 2, ',', '.');
+        $data['transaction_1m'] = number_format($data['transaction_1m'], 0, ',', '.');
+        $data['transaction_ytd'] = number_format($data['transaction_ytd'], 0, ',', '.');
+
+        return response()->json($data, 200);
     }
 
     public function getMonthlyAchievement(Request $req){
