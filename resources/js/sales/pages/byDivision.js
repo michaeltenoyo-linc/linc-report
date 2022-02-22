@@ -7,7 +7,7 @@ import Chart from 'chart.js/auto';
 export const RefreshDivisionPie = async () => {
   const getDivisionOverview = async () => {
     const divisionOverviewFetch = await $.get('/sales/data/get-division-overview/'+$('#division-name').val());
-    
+
     $('#division-revenue-1m').empty().html(divisionOverviewFetch['revenue_1m']);
     $('#division-revenue-ytd').empty().html(divisionOverviewFetch['revenue_ytd']);
     $('#division-transaction-1m').empty().html(divisionOverviewFetch['transaction_1m']);
@@ -307,10 +307,10 @@ export const ByDivision = async () => {
                         .text('clear')
                         .click(function() {
                             input.val('');
-                            $searchButton.click(); 
-                        }) 
+                            $searchButton.click();
+                        })
           $('.dataTables_filter').append($searchButton, $clearButton);
-        },          
+        },
         drawCallback: async function() {
           // Get data, only from the rows displayed on the current page.
           var elements = this.api().rows({page:'current'}).data();

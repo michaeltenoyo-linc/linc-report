@@ -95,7 +95,7 @@ export const Landing = async () => {
                     display: true,
                     title: {
                       display: true,
-                      text: 'Gross Profit'
+                      text: 'Revenue (Mill.)'
                     },
                     suggestedMin: 0,
                     suggestedMax: 15
@@ -110,8 +110,6 @@ export const Landing = async () => {
 
         //Dummy Data
         const labels2 = [
-            'Warehouse - Yay',
-            'Warehouse - Nay',
             'Transport - Yay',
             'Transport - Nay',
             'EXIM - Yay',
@@ -120,24 +118,22 @@ export const Landing = async () => {
             'Bulk - Nay',
         ];
 
+        const fetchDivisionMonthlyPie = await $.get('/sales/data/get-division-pie');
+
         const data2 = {
             labels: labels2,
             datasets: [
                 {
-                    backgroundColor: ['#AAA', '#777'],
-                    data: [503, 1094]
-                },
-                {
                     backgroundColor: ['hsl(0, 100%, 60%)', 'hsl(0, 100%, 35%)'],
-                    data: [33, 67]
+                    data: fetchDivisionMonthlyPie['transport'],
                 },
                 {
                     backgroundColor: ['hsl(100, 100%, 60%)', 'hsl(100, 100%, 35%)'],
-                    data: [20, 80]
+                    data: fetchDivisionMonthlyPie['exim'],
                 },
                 {
                     backgroundColor: ['hsl(180, 100%, 60%)', 'hsl(180, 100%, 35%)'],
-                    data: [10, 90]
+                    data: fetchDivisionMonthlyPie['bulk'],
                 },
             ]
         };
@@ -151,7 +147,7 @@ export const Landing = async () => {
               plugins: {
                 title: {
                     display: true,
-                    text: 'Monthly Achievement by Division Unit'
+                    text: 'This Month Achievement by Division Unit'
                 },
                 legend: {
                   labels: {
@@ -230,7 +226,7 @@ export const Landing = async () => {
             plugins: {
               title: {
                 display: true,
-                text: 'This Month Achievement'
+                text: 'This Month Daily Revenue'
               },
             },
             interaction: {
@@ -320,6 +316,68 @@ export const Landing = async () => {
         };
 
         const chartDailyExim = new Chart(contDailyExim, configDailyExim);
+
+        //Chart Monthly Achievement Bulk
+        const dataDailyBulk = {
+            labels: monthlyAchivementDataFetch['labelBulk'],
+            datasets: [
+                {
+                  label: 'Blujay (BULK)',
+                  fill: true,
+                  backgroundColor: 'rgb(4, 1, 138)',
+                  borderColor: 'rgb(2, 0, 74)',
+                  data: monthlyAchivementDataFetch['dataBulk'],
+                },
+            ]
+          };
+
+          const contDailyBulk = $('#chartBulkDaily');
+          const configDailyBulk = {
+            type: 'line',
+            data: dataDailyBulk,
+            options: {
+              responsive: true,
+              plugins: {
+                title: {
+                  display: false,
+                  text: 'This Month Achievement'
+                },
+              },
+              interaction: {
+                mode: 'index',
+                intersect: false
+              },
+              scales: {
+                x: {
+                  display: true,
+                  title: {
+                    display: true,
+                    text: 'Days'
+                  },
+                  ticks: {
+                    display: false,
+                  }
+                },
+                y: {
+                  display: true,
+                  title: {
+                    display: true,
+                    text: 'Revenue'
+                  },
+                  ticks: {
+                    display: false,
+                  }
+                }
+              }
+            },
+          };
+
+          const chartDailyBulk = new Chart(contDailyBulk, configDailyBulk);
+
+
+        //Progressbar completed Loads
+        $('#landing-completed-loads').html(monthlyAchivementDataFetch['completedLoads']);
+        $('#landing-incompleted-loads').html(monthlyAchivementDataFetch['incompleteLoads']);
 
         //Chart Landing Monthly Transport
 

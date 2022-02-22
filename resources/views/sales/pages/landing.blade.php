@@ -141,14 +141,18 @@ Linc | Sales Report Homepage
                         <div class="flex-auto p-4">
                             <canvas id="chartEximDaily" width="100%" height="30%"></canvas>
                         </div>
+                        <div class="flex-auto p-4">
+                            <canvas id="chartBulkDaily" width="100%" height="30%"></canvas>
+                        </div>
                     </div>
                     <div class="w-full p-4">
-                        <div class="flex justify-between mb-1">
-                            <span class="text-base font-medium text-blue-700 dark:text-white">Completed Order</span>
-                            <span class="text-sm font-medium text-blue-700 dark:text-white">45%</span>
+                        <div class="w-full mb-8 inline-grid grid-cols-2 text-lg font-bold text-sky-500">
+                            <span>Completed Loads (CM)</span>
+                            <span class="text-right"><span id="landing-completed-loads"></span> Load ID</span>
                         </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                            <div class="bg-blue-600 h-2.5 rounded-full" style="width: 45%"></div>
+                        <div class="w-full mb-8 inline-grid grid-cols-2 text-lg font-bold text-blue-500">
+                            <span>Accepted Loads (Incomplete)</span>
+                            <span class="text-right"><span id="landing-incompleted-loads"></span> Load ID</span>
                         </div>
                     </div>
                 </div>
