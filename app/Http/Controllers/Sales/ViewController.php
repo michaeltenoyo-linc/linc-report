@@ -1369,4 +1369,5 @@ class ViewController extends BaseController
 
         return response()->json($data,200);
     }
+
 }

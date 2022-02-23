@@ -171,7 +171,7 @@ Linc | Sales Report Homepage
                         <div class="font-bold text-xl">Transport</div> <br> 2.505/4.505 <br> 55.43%
                         <br>
                         <br>
-                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-right">Transport Log Pack</button>
+                        <a href="/sales/by-division/transport"><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-right">Transport Log Pack</button></a>
                     </div>
                 </div>
             </div>
@@ -195,27 +195,7 @@ Linc | Sales Report Homepage
                         </div>
                     </div>
                     <div class="flex justify-center">
-                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-right">EXIM</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
-                <div class="rounded-t mb-0 px-4 py-3 border-0">
-                    <div class="flex flex-wrap items-center mb-8">
-                        <div class="flex-auto p-4 w-1/2">
-                            <canvas id="chartWarehouseMonthly" width="100%" height="30%"></canvas>
-                        </div>
-                        <div class="flex-auto p-4 w-1/2">
-                            <b>Warehouse</b>
-                            <br>
-                            4.235/5.404
-                            <br>
-                            78.44%
-                        </div>
-                    </div>
-                    <div class="flex justify-center">
-                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-right">EXIM</button>
+                        <a href="/sales/by-division/exim"><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-right">EXIM</button></a>
                     </div>
                 </div>
             </div>
@@ -235,7 +215,7 @@ Linc | Sales Report Homepage
                         </div>
                     </div>
                     <div class="flex justify-center">
-                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-right">EXIM</button>
+                        <a href="/sales/by-division/bulk"><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-right">Bulk</button></a>
                     </div>
                 </div>
             </div>

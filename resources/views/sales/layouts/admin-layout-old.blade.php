@@ -73,18 +73,21 @@
 <body class="text-blueGray-700 antialiased">
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root">
-        @include('smart.components.navigation')
+        @include('sales.components.navigation')
         <div class="relative md:ml-64 bg-blueGray-50">
             <nav class="absolute top-0 left-0 w-full z-10 bg-transparent md:flex-row md:flex-nowrap md:justify-start flex items-center p-4">
                 <div class="w-full mx-autp items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4">
                     <a class="text-white text-sm uppercase hidden lg:inline-block font-semibold"
-                        href="/">Kembali ke homepage</a>
-                    <div class="md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3">
+                        href="./index.html">Dashboard</a>
+                    <form class="md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3">
                         <div class="relative flex w-full flex-wrap items-stretch">
-                            <div type="text" placeholder="Search here..."
-                                class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full p-10 font-bold uppercase">{{ Auth::user()->name }}</div>
+                            <span
+                                class="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 pl-3 py-3"><i
+                                    class="fas fa-search"></i></span>
+                            <input type="text" placeholder="Search here..."
+                                class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10" />
                         </div>
-                    </div>
+                    </form>
                     <ul class="flex-col md:flex-row list-none items-center hidden md:flex">
                         <a class="text-blueGray-500 block" href="#pablo" onclick="openDropdown(event,'user-dropdown')">
                             <div class="items-center flex">
@@ -96,21 +99,17 @@
                         </a>
                         <div class="hidden bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
                             id="user-dropdown">
-                            <a href="/smart"
-                                class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700">SMART</a>
-                            <a href="/lautanluas"
-                                class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700">Lautan
-                                Luas</a>
-                            <a href="/greenfields"
-                            class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700">
-                            Greenfields</a>
+                            <a href="#pablo"
+                                class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700">Action</a><a
+                                href="#pablo"
+                                class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700">Another
+                                action</a><a href="#pablo"
+                                class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700">Something
+                                else here</a>
                             <div class="h-0 my-2 border border-solid border-blueGray-100"></div>
-                            <a href="/loa"
-                            class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700">
-                            Letter of Agreements</a>
-                            <a href="/sales"
-                            class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700">
-                            Sales Report</a>
+                            <a href="#pablo"
+                                class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700">Seprated
+                                link</a>
                         </div>
                     </ul>
                 </div>
@@ -144,7 +143,7 @@
                     </div> --}}
                 </div>
                 @yield('content')
-                @include('smart.components.footer')
+                @include('sales.components.footer')
             </div>
         </div>
     </div>
@@ -379,7 +378,7 @@
 
     </script>
     <!-- Scripts -->
-    @include('shared.smart-scripts')
+    @include('shared.sales-scripts')
     {{-- Sweeta Alert  --}}
     {{--@include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])--}}
 </body>

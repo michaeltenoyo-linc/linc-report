@@ -382,6 +382,8 @@ export const Landing = async () => {
         //Chart Landing Monthly Transport
 
         //Dummy Data
+        const transportSalesMonthlyAchievement = await $.get('/sales/data/get-division-pie/transport');
+
         const labels4 = [
           'Adit',
           'Edwin',
@@ -392,14 +394,14 @@ export const Landing = async () => {
             datasets: [
                 {
                     label: 'Actual',
-                    data: [1050,2500,1450],
+                    data: [transportSalesMonthlyAchievement['adit'][0], transportSalesMonthlyAchievement['edwin'][0], transportSalesMonthlyAchievement['willem'][0]],
                     backgroundColor: 'rgb(25,150,60)',
                 },
                 {
                   label: 'Budget Remains',
-                  data: [505,233,112],
+                  data: [transportSalesMonthlyAchievement['adit'][1], transportSalesMonthlyAchievement['edwin'][1], transportSalesMonthlyAchievement['willem'][1]],
                   backgroundColor: 'rgb(40,235,15)',
-              },
+                },
             ]
         };
 
@@ -428,6 +430,8 @@ export const Landing = async () => {
 
         const chartMonthlyTransport = new Chart(contMonthlyTransport, configMonthlyTransport);
     }
+
+    
 
     onLoad();
 }
