@@ -53,10 +53,11 @@
 			    <li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="department.html" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Features <i class="icofont-thin-down"></i></a>
 					<ul class="dropdown-menu" aria-labelledby="dropdown02">
-						<li><a class="dropdown-item" href="department.html">SMART Data Services</a></li>
-						<li><a class="dropdown-item" href="department-single.html">LTL Data Services</a></li>
-						<li><a class="dropdown-item" href="department-single.html">Greenfields Data Services</a></li>
-						<li><a class="dropdown-item" href="department-single.html">Letter of Agreements</a></li>
+						<li><a class="dropdown-item" href="/smart">SMART Data Services</a></li>
+						<li><a class="dropdown-item" href="/lautanluas">LTL Data Services</a></li>
+						<li><a class="dropdown-item" href="/greenfields">Greenfields Data Services</a></li>
+						<li><a class="dropdown-item" href="/loa">Letter of Agreements</a></li>
+						<li><a class="dropdown-item" href="/sales">Sales Report</a></li>
 					</ul>
 			  	</li>
 
@@ -165,7 +166,7 @@
 						<span>Data Services</span>
 						<h4 class="mb-3">Sales Report</h4>
 						<p class="mb-4">Reporting for sales performance, with visualization, and specific master in detail.</p>
-						<a href="{{ url('/sales') }}" class="btn btn-main btn-round-full">UNDER CONSTRUCTION</a>
+						<a href="{{ url('/sales') }}" class="btn btn-main btn-round-full">GO TO SALES REPORT</a>
 					</div>
 
 					<div class="feature-item mb-5 mb-lg-0">
