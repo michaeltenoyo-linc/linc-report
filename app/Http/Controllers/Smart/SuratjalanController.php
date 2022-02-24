@@ -65,6 +65,7 @@ class SuratjalanController extends BaseController
             'overnight' => 'required',
             'multidrop' => 'required',
             'tgl_terima' => 'required',
+            'driver_name' => 'required',
             'tgl_setor_sj' => 'required',
             'total_qty' => 'required',
         ]);
@@ -82,7 +83,7 @@ class SuratjalanController extends BaseController
             'total_weightSO' => $req->input('total_weight'),
             'nopol' => $req->input('nopol'),
             'driver_nmk' => "TBA",
-            'driver_name' => "TBA",
+            'driver_name' => $req->input('driver_name'),
             'customer_type' => $req->input('customer_type'),
             'note' => $req->input('note'),
             'penerima' => $req->input('penerima'),
