@@ -164,11 +164,17 @@ export const AdminReport = () => {
             var type = $(this).val();
             
             if(type == "smart_1"){
+                $('#form-report-generate .filter-reportSmart1').removeClass('hidden');
+                $('#form-report-generate .input-customer-loadid').val("");
+
                 $('#form-report-generate .requirement-reportSmart1').removeClass('hidden');
                 $('#form-report-generate .preview-reportSmart1').removeClass('hidden');
                 $('#form-report-generate .requirement-reportSmart2').addClass('hidden');
                 $('#form-report-generate .preview-reportSmart2').addClass('hidden');
             }else if(type == "smart_2"){
+                $('#form-report-generate .filter-reportSmart1').addClass('hidden');
+                $('#form-report-generate .input-customer-loadid').val(";");
+
                 $('#form-report-generate .requirement-reportSmart1').addClass('hidden');
                 $('#form-report-generate .preview-reportSmart1').addClass('hidden');
                 $('#form-report-generate .requirement-reportSmart2').removeClass('hidden');
