@@ -52,6 +52,10 @@ class PriviledgesTableSeeder extends Seeder
                 'user_id' => 6,
                 'priviledge' => 'loa',
             ],
+            [
+                'user_id' => 7,
+                'priviledge' => 'smart',
+            ],
         ];
 
         foreach ($seeds as $seed) {
