@@ -53,7 +53,7 @@ Linc | Register Surat Jalan
                         </div>
                     </div>
 
-                    <div class="w-full lg:w-12/12 px-4">
+                    <div class="w-full lg:w-8/12 px-4">
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                                 htmlFor="grid-password"> Load ID </label>
@@ -61,6 +61,13 @@ Linc | Register Surat Jalan
                                 name="load_id"
                                 class="input-loadid border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                 value="" readonly/>
+                        </div>
+                    </div>
+
+                    <div class="w-full lg:w-4/12 px-2">
+                        <div class="relative w-full mb-3">
+                            <br>
+                            <button class="check-load-smart btn_yellow" value="autofill" disabled>Autofill Surat Jalan</button>
                         </div>
                     </div>
 
@@ -81,7 +88,7 @@ Linc | Register Surat Jalan
                                 htmlFor="grid-password"> Tanggal Surat Jalan Diserahkan</label>
                             <input type="date"
                                 name="tgl_setor_sj"
-                                class="input-muat border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                class="input-setor-sj border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                 value="" readonly/>
                         </div>
                     </div>
@@ -171,7 +178,7 @@ Linc | Register Surat Jalan
                                 value="" readonly/>
                         </div>
                     </div>
-
+                --> 
                     <div class="w-full lg:w-full px-4">
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
@@ -182,7 +189,6 @@ Linc | Register Surat Jalan
                                 value="" readonly/>
                         </div>
                     </div>
-                    -->
 
                     <div class="w-full lg:w-8/12 px-4">
                         <div class="relative w-full mb-3">
@@ -204,7 +210,7 @@ Linc | Register Surat Jalan
                     <div class="w-full lg:w-4/12 px-4">
                         <div class="relative w-full mb-3">
                             <br>
-                            <button class="check-truck btn_blue" value="check">Cek Kendaraan</button>
+                            <button class="check-truck btn_blue" value="check" disabled>Cek Kendaraan</button>
                         </div>
                     </div>
 

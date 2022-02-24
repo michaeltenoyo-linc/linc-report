@@ -1,5 +1,6 @@
 import Swal from 'sweetalert2';
 import Snackbar from 'node-snackbar';
+import moment from 'moment';
 
 export const AdminSjalan = () => {
     console.log("loading adminSjalan JS");
@@ -67,9 +68,12 @@ export const AdminSjalan = () => {
                             $('#form-so-new .input-multidrop').prop('readonly',false);
                             $('#form-so-new .input-overnight').prop('readonly',false);
                             $('#form-so-new .input-muat').prop('readonly',false);
+                            $('#form-so-new .input-setor-sj').prop('readonly',false);
                             $('#form-so-new .input-note').prop('readonly',false);
                             $('#form-so-new .input-driver-nmk').prop('readonly',false);
                             $('#form-so-new .input-driver-name').prop('readonly',false);
+                            $('#form-so-new .check-truck').prop('disabled',false);
+                            $('#form-so-new .check-load-smart').prop('disabled',false);
                             $('#form-so-new .btn-simpan').prop('disabled',false);
 
                             Snackbar.show({
@@ -103,9 +107,12 @@ export const AdminSjalan = () => {
                 $('#form-so-new .input-multidrop').prop('readonly',true);
                 $('#form-so-new .input-overnight').prop('readonly',true);
                 $('#form-so-new .input-muat').prop('readonly',true);
+                $('#form-so-new .input-setor-sj').prop('readonly',true);
                 $('#form-so-new .input-note').prop('readonly',true);
                 $('#form-so-new .input-driver-nmk').prop('readonly',true);
                 $('#form-so-new .input-driver-name').prop('readonly',true);
+                $('#form-so-new .check-truck').prop('disabled',true);
+                $('#form-so-new .check-load-smart').prop('disabled',true);
                 $('#form-so-new .btn-simpan').prop('disabled',true);
 
                 Snackbar.show({
@@ -118,6 +125,85 @@ export const AdminSjalan = () => {
 
 
             return false;
+        });
+    }
+
+    const checkAutofillLoad = () => {
+        $('#form-so-new .check-load-smart').on('click', function(e){
+            e.preventDefault();
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Seluruh isian akan diubah secara otomatis!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Iya, ubah!'
+              }).then((result) => {
+                if (result.isConfirmed) {
+                    var id = $('#form-so-new .input-loadid').val();
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        processData: false,
+                        contentType: false,
+                        dataType: 'JSON',
+                    });
+                    $.ajax({
+                        url: '/smart/suratjalan/autofill-load/'+id,
+                        type: 'GET',
+                        success: (data) => {
+                            console.log(data);
+                            
+                            if(data['isExist']){
+                                //Reset Vehicle and Items
+                                $('#form-so-new .check-truck').val("check");
+                                $('#form-so-new .check-truck').html('Cek Kendaraan');
+                                $('#form-so-new .input-nopol').prop('readonly',false);
+                                $('#form-so-new .open-item-modal').prop('disabled',true);
+
+                                //reset item value
+                                $('#form-so-new .so-items-list-body').empty();
+                                $('#form-so-new .kategori_truck').val(0);
+                                $('#form-so-new .input-total-weight').val(0);
+                                $('#form-so-new .input-total-utility').val(0);
+                                $('#form-so-new .input-total-qty').val(0);
+                                $('#form-so-new .teks-total-weight').html("Total : Cek Kendaraan...");
+                                $('#form-so-new .teks-utility').html("Utilitas : Cek Kendaraan...");
+                            
+                                //Autofill Form
+                                $('#form-so-new .input-customer-type').val(data['suratjalan']['customer_type']);
+                                $('#form-so-new .input-penerima').val(data['suratjalan']['penerima']);
+                                $('#form-so-new .input-driver-name').val(data['suratjalan']['driver_name']);
+                                $('#form-so-new .input-nopol').val(data['suratjalan']['nopol']);
+                                $('#form-so-new .input-note').val(data['suratjalan']['note']);
+
+                                let date_setor = moment(data['suratjalan']['tgl_setor_sj']).format('YYYY-MM-DD');
+                                let date_terima = moment(data['suratjalan']['tgl_terima']).format('YYYY-MM-DD');
+
+                                $('#form-so-new .input-setor-sj').val(date_setor);
+                                $('#form-so-new .input-muat').val(date_terima);
+
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: "Silahkan cek kembali autofill suratjalan!",
+                                });
+                            }else{
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: "Tidak ditemukan SJ Smart dengan LOAD ID berikut. :P",
+                                });
+                            }
+                        
+                        }
+                    });
+                }
+            })
         });
     }
 
@@ -225,6 +311,7 @@ export const AdminSjalan = () => {
 
     getSj();
     addSj();
+    checkAutofillLoad();
     deleteSj();
     checkSj();
 };

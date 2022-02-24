@@ -88,6 +88,7 @@ Route::middleware(['auth','priviledge:smart,master'])->group(function () {
 
         Route::prefix('/suratjalan')->group(function () {
             Route::get('/check/{id_so}',[SmartSuratjalanController::class, 'checkSj']);
+            Route::get('/autofill-load/{load_id}',[SmartSuratjalanController::class, 'autofillSj']);
             Route::post('/delete',[SmartSuratjalanController::class, 'delete']);
             Route::post('/addSj',[SmartSuratjalanController::class, 'addSj']);
             Route::post('/update',[SmartSuratjalanController::class, 'update']);

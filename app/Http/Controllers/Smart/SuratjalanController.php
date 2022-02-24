@@ -39,6 +39,18 @@ class SuratjalanController extends BaseController
         return response()->json($data,200);
     }
 
+    public function autofillSj(Request $req, $load_id){
+        $temp = Suratjalan::where('load_id','=',$load_id)->first();
+
+        $data['isExist'] = true;
+        $data['suratjalan'] = $temp;
+        if($temp == null){
+            $data['isExist'] = false;
+        }
+
+        return response()->json($data, 200);
+    }
+
     public function addSj(Request $req){
         $this->validate($req, [
             'id_so' => 'required',
@@ -78,7 +90,7 @@ class SuratjalanController extends BaseController
             'biaya_bongkar' => $req->input('bongkar'),
             'biaya_overnight' => $req->input('overnight'),
             'biaya_multidrop' => $req->input('multidrop'),
-            'tgl_terima' => $req->input('tgl_muat'),
+            'tgl_terima' => $req->input('tgl_terima'),
             'tgl_setor_sj' => $req->input('tgl_setor_sj'),
             'total_qtySO' => $req->input('total_qty'),
         ]);
