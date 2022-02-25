@@ -10,6 +10,23 @@ Linc | Sales Report Homepage
 
 @section('content')
 <div class="w-full mb-12 px-4">
+    <div class="relative flex flex-col min-w-0 break-words w-full mb-6">
+        <div class="rounded-t mb-0 px-4 py-3 border-0">
+            <div class="flex flex-wrap items-center">
+                <div class="relative w-1/2 px-4 py-3 flex-grow flex-1 text-red-600 font-bold">
+                    <input 
+                        type="month" 
+                        class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                        id="date-filter"
+                        >
+                </div>
+                <div class="relative w-1/2 px-4 flex-grow flex-1 text-red-600 font-bold">
+                    Last Update : {{ $last_update->updated_at }}
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
         <div class="rounded-t mb-0 px-4 py-3 border-0">
             <div class="flex flex-wrap items-center">
@@ -43,10 +60,10 @@ Linc | Sales Report Homepage
                                 </div>
                             </div>
                             <p class="text-sm text-blueGray-400 mt-4">
-                                <span class="text-orange-500 mr-2">
-                                    <i class="fas fa-arrow-down"></i> 0.10%
+                                <span class="text-green-600 mr-2">
+                                    <i class="fas fa-cash-register pr-2"></i>IDR. <span id="revenue-adit"></span>
                                 </span>
-                                <span class="whitespace-nowrap"> Since yesterday </span>
+                                <span class="whitespace-nowrap"> This Month </span>
                             </p>
                         </div>
                     </div>
@@ -74,10 +91,10 @@ Linc | Sales Report Homepage
                                 </div>
                             </div>
                             <p class="text-sm text-blueGray-400 mt-4">
-                                <span class="text-orange-500 mr-2">
-                                    <i class="fas fa-arrow-down"></i> 2.10%
+                                <span class="text-green-600 mr-2">
+                                    <i class="fas fa-cash-register pr-2"></i>IDR. <span id="revenue-edwin"></span>
                                 </span>
-                                <span class="whitespace-nowrap"> Since yesterday </span>
+                                <span class="whitespace-nowrap"> This Month </span>
                             </p>
                         </div>
                     </div>
@@ -105,10 +122,10 @@ Linc | Sales Report Homepage
                                 </div>
                             </div>
                             <p class="text-sm text-blueGray-400 mt-4">
-                                <span class="text-orange-500 mr-2">
-                                    <i class="fas fa-arrow-down"></i> 3.10%
+                                <span class="text-green-600 mr-2">
+                                    <i class="fas fa-cash-register pr-2"></i>IDR. <span id="revenue-willem"></span>
                                 </span>
-                                <span class="whitespace-nowrap"> Since yesterday </span>
+                                <span class="whitespace-nowrap"> This Month </span>
                             </p>
                         </div>
                     </div>

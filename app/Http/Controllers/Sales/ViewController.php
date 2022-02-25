@@ -36,7 +36,10 @@ class ViewController extends BaseController
     public function gotoLandingPage(){
         Session::put('sales-month',date('m'));
         Session::put('sales-year', date('Y'));
-        return view('sales.pages.landing');
+
+        $data['last_update'] = ShipmentBlujay::orderBy('updated_at','desc')->first();
+
+        return view('sales.pages.landing',$data);
     }
 
     public function gotoMonitoringMaster(){
