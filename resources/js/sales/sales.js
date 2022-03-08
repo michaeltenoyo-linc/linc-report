@@ -30,7 +30,7 @@ export const load = () => {
     $('#date-filter-landing').on('change', async function(){
         var inputDate = new Date($(this).val());
         var year = inputDate.getFullYear();
-        var month = inputDate.getMonth();
+        var month = inputDate.getMonth()+1;
 
         const fetchChangeDate = await $.get('/sales/filter-date/'+month+'/'+year);
 
