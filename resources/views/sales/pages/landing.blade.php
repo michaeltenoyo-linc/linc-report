@@ -17,7 +17,7 @@ Linc | Sales Report Homepage
                     <input 
                         type="month" 
                         class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                        id="date-filter"
+                        id="date-filter-landing"
                         >
                 </div>
                 <div class="relative w-1/2 px-4 flex-grow flex-1 text-red-600 font-bold">
@@ -139,7 +139,7 @@ Linc | Sales Report Homepage
             <div class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
                 <div class="rounded-t mb-0 px-4 py-3 border-0">
                     <div class="flex flex-wrap items-center mb-8">
-                        <div class="flex-auto p-4">
+                        <div class="flex-auto p-4" id="canvas-bahana-monthly">
                             <canvas id="chartBahanaMonthly" width="100%" height="30%"></canvas>
                         </div>
                     </div>
@@ -152,13 +152,13 @@ Linc | Sales Report Homepage
             <div class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
                 <div class="rounded-t mb-0 px-4 py-3 border-0">
                     <div class="flex flex-wrap items-center mb-4">
-                        <div class="flex-auto p-4">
+                        <div class="flex-auto p-4" id="canvas-transport-daily">
                             <canvas id="chartTransportDaily" width="100%" height="35%"></canvas>
                         </div>
-                        <div class="flex-auto p-4">
+                        <div class="flex-auto p-4" id="canvas-exim-daily">
                             <canvas id="chartEximDaily" width="100%" height="30%"></canvas>
                         </div>
-                        <div class="flex-auto p-4">
+                        <div class="flex-auto p-4" id="canvas-bulk-daily">
                             <canvas id="chartBulkDaily" width="100%" height="30%"></canvas>
                         </div>
                     </div>

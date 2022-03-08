@@ -1,4 +1,4 @@
-import { Landing } from "./pages/landing";
+import { Landing, loadStaticChart, loadDynamicChart } from "./pages/landing";
 import { masterBudget } from "./pages/masterBudget";
 import { BySales, RefreshSalesPie } from "./pages/bySales";
 import { ByDivision, RefreshDivisionPie } from "./pages/byDivision";
@@ -24,6 +24,33 @@ export const load = () => {
 
     $('form').on('blur', 'input[type=number]', function(e){
         $(this).off('wheel.disableScroll');
+    });
+
+    //Filtering date landing page
+    $('#date-filter-landing').on('change', async function(){
+        var inputDate = new Date($(this).val());
+        var year = inputDate.getFullYear();
+        var month = inputDate.getMonth();
+
+        const fetchChangeDate = await $.get('/sales/filter-date/'+month+'/'+year);
+
+        //Chart Refresh
+        let chartBahanaMonthly = '<canvas id="chartBahanaMonthly" width="100%" height="30%"></canvas>';
+        let chartTransportDaily = '<canvas id="chartTransportDaily" width="100%" height="35%"></canvas>';
+        let chartEximDaily = '<canvas id="chartEximDaily" width="100%" height="30%"></canvas>';
+        let chartBulkDaily = '<canvas id="chartBulkDaily" width="100%" height="30%"></canvas>';
+
+        $('#canvas-bahana-monthly').empty();
+        $('#canvas-transport-daily').empty();
+        $('#canvas-exim-daily').empty();
+        $('#canvas-bulk-daily').empty();
+
+        $('#canvas-bahana-monthly').html(chartBahanaMonthly);
+        $('#canvas-transport-daily').html(chartTransportDaily);
+        $('#canvas-exim-daily').html(chartEximDaily);
+        $('#canvas-bulk-daily').html(chartBulkDaily);
+
+        loadDynamicChart();
     });
 
     //Filtering date

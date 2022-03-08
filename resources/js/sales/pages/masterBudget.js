@@ -11,6 +11,7 @@ export const masterBudget = async () => {
     const onLoad = async () => {
       //Date Default
       $('#date-filter').val(moment().format('YYYY-MM'));
+      $('#date-filter-landing').val(moment().format('YYYY-MM'));
     }
 
     const getBudget = async () => {
