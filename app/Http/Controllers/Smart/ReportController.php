@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Smart;
 
+use App\Models\Addcost;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -57,6 +58,34 @@ class ReportController extends BaseController
                     }
                 }
 
+                //Addcost
+                $totalBongkar = 0;
+                $totalMultidrop = 0;
+                $totalOvernight = 0;
+
+                $listBongkar = Addcost::where('type','TMB_BONGKAR')->where('load_id',$row->tms_id)->get();
+                $listMultidrop = Addcost::where('type','TMB_MULTIDROP')->where('load_id',$row->tms_id)->get();
+                $listOvernight = Addcost::where('type','TMB_BIAYA INAP (OVERNIGHT CHARGE)')->where('load_id',$row->tms_id)->get();
+
+                if(count($listBongkar) > 0){
+                    foreach ($listBongkar as $bongkar) {
+                        $totalBongkar += $bongkar->rate;
+                    }                    
+                }
+
+                if(count($listMultidrop) > 0){
+                    foreach ($listMultidrop as $multidrop) {
+                        $totalMultidrop += $multidrop->rate;
+                    }                    
+                }
+
+                if(count($listOvernight) > 0){
+                    foreach ($listOvernight as $overnight) {
+                        $totalOvernight += $overnight->rate;
+                    }                    
+                }
+
+                //LISTING SURAT JALAN
                 if(count($listSJ) > 0 && !$loadExist){
                     foreach ($listSJ as $sj) {
                         $isWanted = false;
@@ -69,7 +98,7 @@ class ReportController extends BaseController
                         
                         if($req->input('customerType') == "all"){
                             $truck = Trucks::where('nopol','=',$sj->nopol)->first();
-                            $totalHarga = intval($row->billable_total_rate) + intval($sj->biaya_bongkar) + intval($sj->biaya_multidrop) + intval($sj->biaya_overnight);
+                            $totalHarga = intval($row->billable_total_rate) + $totalOvernight + $totalBongkar + $totalMultidrop;
                             $splitID = explode('$',$sj->id_so);
                             $reports->push([
                                 'No' => $ctr,
@@ -85,10 +114,10 @@ class ReportController extends BaseController
                                 'Nopol' => $sj->nopol,
                                 'Tipe Kendaraan' => $truck->type,
                                 'Kontainer' => "-",
-                                'Biaya Kirim' => $row->billable_total_rate,
-                                'Biaya Bongkar' => $sj->biaya_bongkar,
-                                'Overnight Charge' => $sj->biaya_overnight,
-                                'Multidrop' => $sj->biaya_multidrop,
+                                'Biaya Kirim' => intval($row->billable_total_rate),
+                                'Biaya Bongkar' => $totalBongkar,
+                                'Overnight Charge' => $totalOvernight,
+                                'Multidrop' => $totalMultidrop,
                                 'Total' => $totalHarga,
                             ]);
                             $ctr++;
