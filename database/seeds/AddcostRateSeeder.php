@@ -57,8 +57,8 @@ class AddcostRateSeeder extends Seeder
 
                 Addcost::create([
                     'load_id' =>$data['0'],
-                    'rate' => round(floatval(str_replace(',','',$data['1'])),2),
-                    'type' => $data['2'],
+                    'rate' => round(floatval(str_replace(',','',$data['2'])),2),
+                    'type' => $data['7'],
                 ]);
             }
 
