@@ -41,7 +41,7 @@ class AddcostRateSeeder extends Seeder
         $firstline = true;
 
         $counter = 1;
-        while(($data = fgetcsv($csvFile, 0, ';','"')) != FALSE){
+        while(($data = fgetcsv($csvFile, 0, ',','"')) != FALSE){
             error_log("Addcost : ".$counter,0);
             $counter++;
             if (!$firstline){
