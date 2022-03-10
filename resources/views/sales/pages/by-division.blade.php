@@ -62,6 +62,9 @@ Linc | Sales Monitoring
                     <div class="w-full p-4 salesPie" id="canvas-willem">
                         <canvas id="chartDivisionWillem" width="100%" height="30%"></canvas>
                     </div>
+                    <div class="w-full p-4 salesPie" id="canvas-unlocated">
+                        <canvas id="chartDivisionUnlocated" width="100%" height="30%"></canvas>
+                    </div>
                 </div>
                 <div class="w-full p-8">
                     <div class="w-full mb-8 inline-grid grid-cols-2 text-lg font-bold text-sky-500">
@@ -93,6 +96,10 @@ Linc | Sales Monitoring
                     </div>
                         <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                         <div class="bg-blue-600 h-2.5 rounded-full" id="division-achivementbar-ytd"></div>
+                    </div>
+                    <div class="w-full mb-8 inline-grid grid-cols-1 text-lg font-bold text-blue-600 mt-8">
+                        <span>Unlocated Customers</span>
+                        <span class="text-sky-500"><span id="unlocated-division-customers"></span></span>
                     </div>
                 </div>
             </div>

@@ -21,6 +21,12 @@ export const RefreshDivisionPie = async () => {
   const getDivisionPie = async () => {
     const divisionPieFetch = await $.get('/sales/data/get-division-pie/'+$('#division-name').val());
 
+    //Unlocated Customer
+    divisionPieFetch['unlocated_customer'].forEach(e => {
+      $('#unlocated-division-customers').append(e['reference']+" - "+e['name']);
+      $('#unlocated-division-customers').append('<br>');
+    });
+
     //Pie Sales Adit
     const labelsAdit = [
         'Adit - Yay',
@@ -248,6 +254,82 @@ export const RefreshDivisionPie = async () => {
     };
 
     const chartDivisionWillem = new Chart(contDivisionWillem, configDivisionWillem);
+
+    //Pie Sales Unlocated
+    const labelsUnlocated = [
+      'Unlocated - Yay',
+      'Unlocated - Nay',
+    ];
+    const dataDivisionUnlocated = {
+        labels: labelsUnlocated,
+        datasets: [
+            {
+                backgroundColor: ['#4ad2ff', '#00abe3'],
+                data: divisionPieFetch['unlocated']
+            },
+        ]
+    };
+
+    const contDivisionUnlocated = $('#chartDivisionUnlocated');
+    const configDivisionUnlocated = {
+        type: 'pie',
+        data: dataDivisionUnlocated,
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+                display: false,
+                text: 'Monthly Achievement Unlocated'
+            },
+            legend: {
+              labels: {
+                generateLabels: function(chart) {
+                  // Get the default label list
+                  const original = Chart.overrides.pie.plugins.legend.labels.generateLabels;
+                  const labelsOriginal = original.call(this, chart);
+
+                  // Build an array of colors used in the datasets of the chart
+                  var datasetColors = chart.data.datasets.map(function(e) {
+                    return e.backgroundColor;
+                  });
+                  datasetColors = datasetColors.flat();
+
+                  // Modify the color and hide state of each label
+                  labelsOriginal.forEach(label => {
+                    // There are twice as many labels as there are datasets. This converts the label index into the corresponding dataset index
+                    label.datasetIndex = (label.index - label.index % 2) / 2;
+
+                    // The hidden state must match the dataset's hidden state
+                    label.hidden = !chart.isDatasetVisible(label.datasetIndex);
+
+                    // Change the color to match the dataset
+                    label.fillStyle = datasetColors[label.index];
+                  });
+
+                  return labelsOriginal;
+                }
+              },
+              onClick: function(mouseEvent, legendItem, legend) {
+                // toggle the visibility of the dataset from what it currently is
+                legend.chart.getDatasetMeta(
+                  legendItem.datasetIndex
+                ).hidden = legend.chart.isDatasetVisible(legendItem.datasetIndex);
+                legend.chart.update();
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const labelIndex = (context.datasetIndex * 2) + context.dataIndex;
+                  return context.chart.data.labels[labelIndex] + ': ' + context.formattedValue;
+                }
+              }
+            }
+          }
+        },
+    };
+
+    const chartDivisionUnlocated = new Chart(contDivisionUnlocated, configDivisionUnlocated);
   }
 
   getDivisionPie();

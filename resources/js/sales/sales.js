@@ -87,14 +87,17 @@ export const load = () => {
             $('#yajra-datatable-division-budget').DataTable().ajax.reload(null, false);   
             
             $('.salesPie').empty();
+            $('#unlocated-division-customers').empty();
 
             let canvasAdit = '<canvas id="chartDivisionAdit" width="100%" height="30%"></canvas>';
             let canvasEdwin = '<canvas id="chartDivisionEdwin" width="100%" height="30%"></canvas>';
             let canvasWillem = '<canvas id="chartDivisionWillem" width="100%" height="30%"></canvas>';
+            let canvasUnlocated = '<canvas id="chartDivisionUnlocated" width="100%" height="30%"></canvas>';
             
             $('#canvas-adit').html(canvasAdit);
             $('#canvas-edwin').html(canvasEdwin);
             $('#canvas-willem').html(canvasWillem);
+            $('#canvas-unlocated').html(canvasUnlocated);
 
             RefreshDivisionPie();
         } catch (error) {console.log(error);}

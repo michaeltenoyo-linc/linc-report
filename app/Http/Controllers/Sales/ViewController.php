@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Sales;
 
+use App\Models\Customer;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -30,7 +31,7 @@ class ViewController extends BaseController
     private $transportLoadGroups = ['SURABAYA LOG PACK', 'SURABAYA RENTAL', 'SURABAYA RENTAL TRIP', 'SURABAYA TIV LOKAL'];
     private $eximLoadGroups = ['SURABAYA EXIM TRUCKING', 'SURABAYA TIV IMPORT'];
     private $bulkLoadGroups = ['SURABAYA LOG BULK'];
-    private $emptyLoadGroups = ['MOB KOSONGAN'];
+    private $emptyLoadGroups = ['SURABAYA MOB KOSONGAN'];
 
     //Navigation
     public function gotoLandingPage(){
@@ -272,6 +273,9 @@ class ViewController extends BaseController
             case 'warehouse':
                 $division = "Package Whs";
                 $divisionGroup = [];
+            case 'kosongan':
+                $division = "Kosongan";
+                $divisionGroup = $this->emptyLoadGroups;
         }
 
         //Customer List
@@ -325,7 +329,7 @@ class ViewController extends BaseController
                                     ->whereYear('period',Session::get('sales-year'))
                                     ->first();
 
-        $data['achivement_1m'] = round(floatval($data['revenue_1m'])/floatval($data['budget_1m']->totalBudget),4) * 100;
+        $data['achivement_1m'] = $division=="Kosongan"?100:round(floatval($data['revenue_1m'])/floatval($data['budget_1m']->totalBudget),4) * 100;
 
         $data['budget_ytd'] = 0;
         for ($i=1; $i <= intval(Session::get('sales-month')) ; $i++) {
@@ -337,7 +341,7 @@ class ViewController extends BaseController
             $data['budget_ytd'] += $mBudget->totalBudget;
         }
 
-        $data['achivement_ytd'] = round(floatval($data['revenue_ytd'])/floatval($data['budget_ytd']),4) * 100;
+        $data['achivement_ytd'] = $division=="Kosongan"?100:round(floatval($data['revenue_ytd'])/floatval($data['budget_ytd']),4) * 100;
 
         //formatting data
         $data['achievement_1m_text'] ='('.strval(round($data['revenue_1m']/1000000,0)).'/'.strval(round($data['budget_1m']->totalBudget/1000000,0)).' Mill.) '.strval($data['achivement_1m']).'%';
@@ -1170,9 +1174,12 @@ class ViewController extends BaseController
 
     public function getDivisionPie($division){
         $year = Session::get('sales-year');
+        $reservedCustomer = [];
         $data['adit'] = [0,0];
         $data['edwin'] = [0,0];
         $data['willem'] = [0,0];
+        $data['unlocated'] = [0,0];
+        $data['unlocated_customer'] = [];
 
         $divisionGroup = [];
         switch ($division) {
@@ -1191,91 +1198,139 @@ class ViewController extends BaseController
             case 'warehouse':
                 $division = "Package Whs";
                 $divisionGroup = [];
+            case 'kosongan':
+                $division = "kosongan";
+                $divisionGroup = $this->emptyLoadGroups;
         }
 
-        //Blujay Adit
-        $revenueAdit = 0;
-        $budgetAdit = 0;
+        if($division != "kosongan"){
+            //Blujay Adit
+            $revenueAdit = 0;
+            $budgetAdit = 0;
 
-        $customerAdit = SalesBudget::where('division',$division)
-                                    ->where('sales', 'adit')
-                                    ->whereMonth('period',Session::get('sales-month'))
-                                    ->whereYear('period',Session::get('sales-year'))
-                                    ->get();
+            $customerAdit = SalesBudget::where('division',$division)
+                                        ->where('sales', 'adit')
+                                        ->whereMonth('period',Session::get('sales-month'))
+                                        ->whereYear('period',Session::get('sales-year'))
+                                        ->get();
 
-        foreach ($customerAdit as $c) {
-            $budgetAdit += $c->budget;
-            $fetchAdit = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
-                                    ->where('customer_reference',$c->customer_sap)
-                                    ->whereIn('load_group',$divisionGroup)
-                                    ->where('load_status','Completed')
-                                    ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                    ->whereYear('load_closed_date',Session::get('sales-year'))
-                                    ->first();
+            foreach ($customerAdit as $c) {
+                $budgetAdit += $c->budget;
+                $fetchAdit = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+                                        ->where('customer_reference',$c->customer_sap)
+                                        ->whereIn('load_group',$divisionGroup)
+                                        ->where('load_status','Completed')
+                                        ->whereMonth('load_closed_date',Session::get('sales-month'))
+                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->first();
 
-            if(!is_null($fetchAdit)){
-                $revenueAdit += intval($fetchAdit->totalActual);
+                if(!is_null($fetchAdit)){
+                    $revenueAdit += intval($fetchAdit->totalActual);
+                }
             }
-        }
 
-        $budgetAdit -= $revenueAdit;
-        $data['adit'] = [$revenueAdit,$budgetAdit];
+            $budgetAdit -= $revenueAdit;
+            $data['adit'] = [$revenueAdit,$budgetAdit];
 
-        //Blujay Edwin
-        $revenueEdwin = 0;
-        $budgetEdwin = 0;
+            //Blujay Edwin
+            $revenueEdwin = 0;
+            $budgetEdwin = 0;
 
-        $customerEdwin = SalesBudget::where('division',$division)
-                                    ->where('sales', 'edwin')
-                                    ->whereMonth('period',Session::get('sales-month'))
-                                    ->whereYear('period',Session::get('sales-year'))
-                                    ->get();
+            $customerEdwin = SalesBudget::where('division',$division)
+                                        ->where('sales', 'edwin')
+                                        ->whereMonth('period',Session::get('sales-month'))
+                                        ->whereYear('period',Session::get('sales-year'))
+                                        ->get();
 
-        foreach ($customerEdwin as $c) {
-            $budgetEdwin += $c->budget;
-            $fetchEdwin = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
-                                    ->where('customer_reference',$c->customer_sap)
-                                    ->whereIn('load_group',$divisionGroup)
-                                    ->where('load_status','Completed')
-                                    ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                    ->whereYear('load_closed_date',Session::get('sales-year'))
-                                    ->first();
+            foreach ($customerEdwin as $c) {
+                $budgetEdwin += $c->budget;
+                $fetchEdwin = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+                                        ->where('customer_reference',$c->customer_sap)
+                                        ->whereIn('load_group',$divisionGroup)
+                                        ->where('load_status','Completed')
+                                        ->whereMonth('load_closed_date',Session::get('sales-month'))
+                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->first();
 
-            if(!is_null($fetchEdwin)){
-                $revenueEdwin += intval($fetchEdwin->totalActual);
+                if(!is_null($fetchEdwin)){
+                    $revenueEdwin += intval($fetchEdwin->totalActual);
+                }
             }
-        }
 
-        $budgetEdwin -= $revenueEdwin;
-        $data['edwin'] = [$revenueEdwin,$budgetEdwin];
+            $budgetEdwin -= $revenueEdwin;
+            $data['edwin'] = [$revenueEdwin,$budgetEdwin];
 
-        //Blujay Willem
-        $revenueWillem = 0;
-        $budgetWillem = 0;
+            //Blujay Willem
+            $revenueWillem = 0;
+            $budgetWillem = 0;
 
-        $customerWillem = SalesBudget::where('division',$division)
-                                    ->where('sales', 'willem')
-                                    ->whereMonth('period',Session::get('sales-month'))
-                                    ->whereYear('period',Session::get('sales-year'))
-                                    ->get();
+            $customerWillem = SalesBudget::where('division',$division)
+                                        ->where('sales', 'willem')
+                                        ->whereMonth('period',Session::get('sales-month'))
+                                        ->whereYear('period',Session::get('sales-year'))
+                                        ->get();
 
-        foreach ($customerWillem as $c) {
-            $budgetWillem += $c->budget;
-            $fetchWillem = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
-                                    ->where('customer_reference',$c->customer_sap)
-                                    ->whereIn('load_group',$divisionGroup)
-                                    ->where('load_status','Completed')
-                                    ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                    ->whereYear('load_closed_date',Session::get('sales-year'))
-                                    ->first();
+            foreach ($customerWillem as $c) {
+                $budgetWillem += $c->budget;
+                $fetchWillem = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+                                        ->where('customer_reference',$c->customer_sap)
+                                        ->whereIn('load_group',$divisionGroup)
+                                        ->where('load_status','Completed')
+                                        ->whereMonth('load_closed_date',Session::get('sales-month'))
+                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->first();
 
-            if(!is_null($fetchWillem)){
-                $revenueWillem += intval($fetchWillem->totalActual);
+                if(!is_null($fetchWillem)){
+                    $revenueWillem += intval($fetchWillem->totalActual);
+                }
             }
-        }
 
-        $budgetWillem -= $revenueWillem;
-        $data['willem'] = [$revenueWillem,$budgetWillem];
+            $budgetWillem -= $revenueWillem;
+            $data['willem'] = [$revenueWillem,$budgetWillem];
+
+            //Blujay UNLOCATED
+            $listedCustomer = [];
+            foreach ($customerAdit as $c) {
+                array_push($listedCustomer, $c->customer_sap);
+            }
+            foreach ($customerEdwin as $c) {
+                array_push($listedCustomer, $c->customer_sap);
+            }
+            foreach ($customerWillem as $c) {
+                array_push($listedCustomer, $c->customer_sap);
+            }
+            
+
+            $revenueUnlocated = 0;
+            $budgetUnlocated = 0;
+
+            $fetchUnlocated = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+                                        ->whereNotIn('customer_reference',$listedCustomer)
+                                        ->whereIn('load_group',$divisionGroup)
+                                        ->where('load_status','Completed')
+                                        ->whereMonth('load_closed_date',Session::get('sales-month'))
+                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->first();
+
+            $revenueUnlocated = $fetchUnlocated->totalActual;
+            $budgetUnlocated -= $revenueUnlocated;
+            $data['unlocated'] = [$revenueUnlocated,0];
+
+            //Listing unlocated customer
+            $unlocated_reference = ShipmentBlujay::select('customer_reference')
+                                                ->whereNotIn('customer_reference',$listedCustomer)
+                                                ->whereIn('load_group',$divisionGroup)
+                                                ->where('load_status','Completed')
+                                                ->whereMonth('load_closed_date',Session::get('sales-month'))
+                                                ->whereYear('load_closed_date',Session::get('sales-year'))
+                                                ->groupBy('customer_reference')
+                                                ->get()->pluck('customer_reference');
+            
+            $data['unlocated_customer'] = Customer::whereIn('reference',$unlocated_reference)->get();
+        }else{
+
+        }
+        
 
         return response()->json($data,200);
     }
