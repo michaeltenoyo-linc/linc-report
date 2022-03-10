@@ -39,16 +39,20 @@ export const load = () => {
         let chartTransportDaily = '<canvas id="chartTransportDaily" width="100%" height="35%"></canvas>';
         let chartEximDaily = '<canvas id="chartEximDaily" width="100%" height="30%"></canvas>';
         let chartBulkDaily = '<canvas id="chartBulkDaily" width="100%" height="30%"></canvas>';
+        let chartTransportMonthly = '<canvas id="chartTransportMonthly" width="100%" height="30%"></canvas>';
+        let chartEximMonthly = '<canvas id="chartEximMonthly" width="100%" height="30%"></canvas>';
+        let chartBulkMonthly = '<canvas id="chartBulkMonthly" width="100%" height="30%"></canvas>';
 
-        $('#canvas-bahana-monthly').empty();
-        $('#canvas-transport-daily').empty();
-        $('#canvas-exim-daily').empty();
-        $('#canvas-bulk-daily').empty();
+
+        $('.canvas-landing-dynamic').empty();
 
         $('#canvas-bahana-monthly').html(chartBahanaMonthly);
         $('#canvas-transport-daily').html(chartTransportDaily);
         $('#canvas-exim-daily').html(chartEximDaily);
         $('#canvas-bulk-daily').html(chartBulkDaily);
+        $('#canvas-transport-monthly').html(chartTransportMonthly);
+        $('#canvas-exim-monthly').html(chartEximMonthly);
+        $('#canvas-bulk-monthly').html(chartBulkMonthly);
 
         loadDynamicChart();
     });

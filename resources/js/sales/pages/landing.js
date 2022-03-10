@@ -390,8 +390,6 @@ export const loadDynamicChart = async () => {
   $('#landing-incompleted-loads').html(monthlyAchivementDataFetch['incompleteLoads']);
 
   //Chart Landing Monthly Transport
-
-  //Dummy Data
   const transportSalesMonthlyAchievement = await $.get('/sales/data/get-division-pie/transport');
 
   const labels4 = [
@@ -439,6 +437,104 @@ export const loadDynamicChart = async () => {
   };
 
   const chartMonthlyTransport = new Chart(contMonthlyTransport, configMonthlyTransport);
+
+  //Chart Landing Monthly Exim
+  const eximSalesMonthlyAchievement = await $.get('/sales/data/get-division-pie/exim');
+
+  const labels5 = [
+    'Adit',
+    'Edwin',
+    'Willem',
+  ];
+  const data5 = {
+      labels: labels5,
+      datasets: [
+          {
+              label: 'Actual',
+              data: [eximSalesMonthlyAchievement['adit'][0], eximSalesMonthlyAchievement['edwin'][0], eximSalesMonthlyAchievement['willem'][0]],
+              backgroundColor: 'rgb(25,150,60)',
+          },
+          {
+            label: 'Budget Remains',
+            data: [eximSalesMonthlyAchievement['adit'][1], eximSalesMonthlyAchievement['edwin'][1], eximSalesMonthlyAchievement['willem'][1]],
+            backgroundColor: 'rgb(40,235,15)',
+          },
+      ]
+  };
+
+  const contMonthlyExim = $('#chartEximMonthly');
+  const configMonthlyExim = {
+    type: 'bar',
+    data: data5,
+    options: {
+      plugins: {
+        title: {
+          display: true,
+          text: 'Monthly Exim by Sales'
+        },
+      },
+      responsive: true,
+      scales: {
+        x: {
+          stacked: true,
+        },
+        y: {
+          stacked: true
+        }
+      }
+    }
+  };
+
+  const chartMonthlyExim = new Chart(contMonthlyExim, configMonthlyExim);
+
+  //Chart Landing Monthly Bulk
+  const bulkSalesMonthlyAchievement = await $.get('/sales/data/get-division-pie/bulk');
+
+  const labels6 = [
+    'Adit',
+    'Edwin',
+    'Willem',
+  ];
+  const data6 = {
+      labels: labels6,
+      datasets: [
+          {
+              label: 'Actual',
+              data: [bulkSalesMonthlyAchievement['adit'][0], bulkSalesMonthlyAchievement['edwin'][0], bulkSalesMonthlyAchievement['willem'][0]],
+              backgroundColor: 'rgb(25,150,60)',
+          },
+          {
+            label: 'Budget Remains',
+            data: [bulkSalesMonthlyAchievement['adit'][1], bulkSalesMonthlyAchievement['edwin'][1], bulkSalesMonthlyAchievement['willem'][1]],
+            backgroundColor: 'rgb(40,235,15)',
+          },
+      ]
+  };
+
+  const contMonthlyBulk = $('#chartBulkMonthly');
+  const configMonthlyBulk = {
+    type: 'bar',
+    data: data6,
+    options: {
+      plugins: {
+        title: {
+          display: true,
+          text: 'Monthly Bulk by Sales'
+        },
+      },
+      responsive: true,
+      scales: {
+        x: {
+          stacked: true,
+        },
+        y: {
+          stacked: true
+        }
+      }
+    }
+  };
+
+  const chartMonthlyBulk = new Chart(contMonthlyBulk, configMonthlyBulk);
 }
 
 export const Landing = async () => {

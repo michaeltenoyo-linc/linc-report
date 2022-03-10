@@ -139,7 +139,7 @@ Linc | Sales Report Homepage
             <div class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
                 <div class="rounded-t mb-0 px-4 py-3 border-0">
                     <div class="flex flex-wrap items-center mb-8">
-                        <div class="flex-auto p-4" id="canvas-bahana-monthly">
+                        <div class="flex-auto p-4 canvas-landing-dynamic" id="canvas-bahana-monthly">
                             <canvas id="chartBahanaMonthly" width="100%" height="30%"></canvas>
                         </div>
                     </div>
@@ -152,13 +152,13 @@ Linc | Sales Report Homepage
             <div class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
                 <div class="rounded-t mb-0 px-4 py-3 border-0">
                     <div class="flex flex-wrap items-center mb-4">
-                        <div class="flex-auto p-4" id="canvas-transport-daily">
+                        <div class="flex-auto p-4 canvas-landing-dynamic" id="canvas-transport-daily">
                             <canvas id="chartTransportDaily" width="100%" height="35%"></canvas>
                         </div>
-                        <div class="flex-auto p-4" id="canvas-exim-daily">
+                        <div class="flex-auto p-4 canvas-landing-dynamic" id="canvas-exim-daily">
                             <canvas id="chartEximDaily" width="100%" height="30%"></canvas>
                         </div>
-                        <div class="flex-auto p-4" id="canvas-bulk-daily">
+                        <div class="flex-auto p-4 canvas-landing-dynamic" id="canvas-bulk-daily">
                             <canvas id="chartBulkDaily" width="100%" height="30%"></canvas>
                         </div>
                     </div>
@@ -181,11 +181,11 @@ Linc | Sales Report Homepage
         <div class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
             <div class="rounded-t mb-0 px-4 py-3 border-0">
                 <div class="flex flex-wrap items-center mb-8">
-                    <div class="w-2/3 p-4">
+                    <div class="w-2/3 p-4 canvas-landing-dynamic" id="canvas-transport-monthly">
                         <canvas id="chartTransportMonthly" width="100%" height="40%"></canvas>
                     </div>
                     <div class="w-1/3 p-4">
-                        <div class="font-bold text-xl">Transport</div> <br> 2.505/4.505 <br> 55.43%
+                        <div class="font-bold text-xl">Transport</div>
                         <br>
                         <br>
                         <a href="/sales/by-division/transport"><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-right">Transport Log Pack</button></a>
@@ -200,15 +200,8 @@ Linc | Sales Report Homepage
             <div class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
                 <div class="rounded-t mb-0 px-4 py-3 border-0">
                     <div class="flex flex-wrap items-center mb-8">
-                        <div class="flex-auto p-4 w-1/2">
-                            <canvas id="chartEximMonthly" width="100%" height="30%"></canvas>
-                        </div>
-                        <div class="flex-auto p-4 w-1/2">
-                            <b>EXIM</b>
-                            <br>
-                            4.235/5.404
-                            <br>
-                            78.44%
+                        <div class="flex-auto p-4 w-full canvas-landing-dynamic" id="canvas-exim-monthly">
+                            <canvas id="chartEximMonthly" width="100%" height="100%"></canvas>
                         </div>
                     </div>
                     <div class="flex justify-center">
@@ -220,15 +213,8 @@ Linc | Sales Report Homepage
             <div class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
                 <div class="rounded-t mb-0 px-4 py-3 border-0">
                     <div class="flex flex-wrap items-center mb-8">
-                        <div class="flex-auto p-4 w-1/2">
-                            <canvas id="chartBulkMonthly" width="100%" height="30%"></canvas>
-                        </div>
-                        <div class="flex-auto p-4 w-1/2">
-                            <b>Bulk</b>
-                            <br>
-                            4.235/5.404
-                            <br>
-                            78.44%
+                        <div class="flex-auto p-4 w-full canvas-landing-dynamic" id="canvas-bulk-monthly">
+                            <canvas id="chartBulkMonthly" width="100%" height="100%"></canvas>
                         </div>
                     </div>
                     <div class="flex justify-center">
