@@ -36,9 +36,9 @@ class CompanyLocationSeeder extends Seeder
 
         //FUSO dan WB
         $csvFile = fopen(base_path("reference/Database_Routes_Company.csv"),"r");
-        
+
         $firstline = true;
-        
+
         $counter = 1;
         $errorLog = [];
         while(($data = fgetcsv($csvFile, 0, ';','"')) != FALSE){
@@ -80,7 +80,7 @@ class CompanyLocationSeeder extends Seeder
         //write ERRORLOG
         $fp = fopen('postal_error.csv', 'w');
         foreach ($errorLog as $fields) {
-            
+
             fputcsv($fp, $fields);
         }
         fclose($fp);
