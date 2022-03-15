@@ -10,6 +10,7 @@
 use App\Models\Company;
 use App\Models\District;
 use App\Models\dloa_transport;
+use App\Models\FixCompany;
 use App\Models\Loa_transport;
 use App\Models\postal_code;
 use App\Models\Province;
@@ -47,6 +48,12 @@ class CompanyLocationSeeder extends Seeder
             if (!$firstline){
                 try {
                     $postalBPS = postal_code::where('postal_code',strval($data['8']))->first();
+
+                    if(is_null($postalBPS)){
+                        $fixedCompany = FixCompany::where('reference',$data['0'])->first();
+                        $postalBPS = postal_code::where('postal_code',strval($fixedCompany->revision))->first();
+                    }
+
                     $province = $postalBPS->province;
                     $city = $postalBPS->city;
                     $district = $postalBPS->district;
@@ -62,7 +69,7 @@ class CompanyLocationSeeder extends Seeder
                         'district' => $district,
                         'city' => $city,
                         'province' => $province,
-                        'postal_code' => $data['8'],
+                        'postal_code' => $postalBPS->postal_code,
                         'timezone' => $data['9'],
                         'latitude' => $data['10'],
                         'longitude' => $data['11'],

@@ -9,6 +9,7 @@
 
 use App\Models\BillableBlujay;
 use App\Models\Company;
+use App\Models\Customer;
 use App\Models\dloa_transport;
 use App\Models\Loa_transport;
 use Illuminate\Database\Seeder;
@@ -43,10 +44,12 @@ class BillableBlujaySeeder extends Seeder
                 try {
                     $fromCompanies = Company::where('reference',$data['9'])->first();
                     $destCompanies = Company::where('reference',$data['10'])->first();
+                    $customer = Customer::where('billable_methods','LIKE','%'.$data['0'].'%')->first();
 
                     BillableBlujay::create([
                         'billable_tariff'=> $data['0'],
                         'billable_subtariff'=> $data['1'],
+                        'customer_reference'=>$customer->reference,
                         'division'=> $data['2'],
                         'order_group'=> $data['3'],
                         'equipment'=> $data['4'],

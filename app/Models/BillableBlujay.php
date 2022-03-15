@@ -14,6 +14,7 @@ class BillableBlujay extends Model
     protected $fillable = [
         'billable_tariff',
         'billable_subtariff',
+        'customer_reference',
         'division',
         'order_group',
         'equipment',

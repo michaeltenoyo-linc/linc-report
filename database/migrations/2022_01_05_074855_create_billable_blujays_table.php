@@ -17,6 +17,7 @@ class CreateBillableBlujaysTable extends Migration
             $table->id();
             $table->string('billable_tariff');
             $table->string('billable_subtariff');
+            $table->string('customer_reference');
             $table->string('division');
             $table->string('order_group');
             $table->string('equipment');
