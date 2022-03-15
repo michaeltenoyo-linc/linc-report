@@ -19,10 +19,12 @@ class FixCompaniesSeeder extends Seeder
 
         $counter = 1;
         $errorLog = [];
-        while(($data = fgetcsv($csvFile, 0, ',','"')) != FALSE){
+        while(($data = fgetcsv($csvFile, 0, ';','"')) != FALSE){
+            error_log($counter);
+            $counter++;
             FixCompany::create([
-                'reference' => $data['0'],
-                'revision' => $data['1'],
+                'reference' => $data['1'],
+                'revision' => $data['9']
             ]);
         }
 
