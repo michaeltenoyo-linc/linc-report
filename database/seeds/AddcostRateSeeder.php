@@ -33,27 +33,40 @@ class AddcostRateSeeder extends Seeder
      */
     public function run()
     {
-        Addcost::truncate();
+        //Addcost::truncate();
 
         //FUSO dan WB
         $csvFile = fopen(base_path("reference/local_blujay/RefreshAddcost.csv"),"r");
 
         $firstline = true;
+        $checkedLoads = [];
 
         $counter = 1;
         while(($data = fgetcsv($csvFile, 0, ',','"')) != FALSE){
             error_log("Addcost : ".$counter,0);
             $counter++;
             if (!$firstline){
-                /*
-                $isExist = Addcost::where('load_id','=',$data['0'])->get();
-
-                if(!is_null($isExist)){
-                    foreach ($isExist as $df) {
-                        $df->forceDelete();
+                //Check Duplicate Data
+                $isChecked = false;
+                
+                foreach ($checkedLoads as $ch) {
+                    if($data['0'] == $ch){
+                        $isChecked = true;
                     }
                 }
-                */
+
+                if(!$isChecked){
+                    $existCheck = Addcost::where('load_id','=',$data['0'])->get();
+
+                    if(!is_null($existCheck)){
+                        foreach ($existCheck as $df) {
+                            $df->forceDelete();
+                        }
+                    }
+
+                    array_push($checkedLoads, $data['0']);
+                }
+                //END CHECK DUPLICATE DATA
 
                 Addcost::create([
                     'load_id' =>$data['0'],
