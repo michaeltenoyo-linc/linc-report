@@ -45,11 +45,12 @@ class BillableBlujaySeeder extends Seeder
                     $fromCompanies = Company::where('reference',$data['9'])->first();
                     $destCompanies = Company::where('reference',$data['10'])->first();
                     $customer = Customer::where('billable_methods','LIKE','%'.$data['0'].'%')->first();
+                    //print($customer->reference);
 
                     BillableBlujay::create([
                         'billable_tariff'=> $data['0'],
                         'billable_subtariff'=> $data['1'],
-                        'customer_reference'=>$customer->reference,
+                        'customer_reference'=> "",//$customer->reference,
                         'division'=> $data['2'],
                         'order_group'=> $data['3'],
                         'equipment'=> $data['4'],
