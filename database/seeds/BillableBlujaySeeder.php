@@ -8,6 +8,7 @@
  */
 
 use App\Models\BillableBlujay;
+use App\Models\BillableMethod;
 use App\Models\Company;
 use App\Models\Customer;
 use App\Models\dloa_transport;
@@ -41,16 +42,27 @@ class BillableBlujaySeeder extends Seeder
             error_log($counter,0);
             $counter++;
             if (!$firstline){
+                //Error Notes
+                $passFrom = "ERR";
+                $passDest = "ERR";
+                $passBillable = "ERR";
+                $passCust = "ERR";
+
+
                 try {
                     $fromCompanies = Company::where('reference',$data['9'])->first();
+                    $passFrom = $fromCompanies->reference;
                     $destCompanies = Company::where('reference',$data['10'])->first();
-                    $customer = Customer::where('billable_methods','LIKE','%'.$data['0'].'%')->first();
-                    //print($customer->reference);
+                    $passDest = $destCompanies->reference;
+                    $billable_method = BillableMethod::where('billable_method',$data['0'])->first();
+                    $passBillable = $billable_method->billable_method;
+                    $customer = Customer::where('billable_methods','LIKE','%'.$billable_method->cross_reference.'%')->first();
+                    $passCust = $customer->reference;
 
                     BillableBlujay::create([
                         'billable_tariff'=> $data['0'],
                         'billable_subtariff'=> $data['1'],
-                        'customer_reference'=> "",//$customer->reference,
+                        'customer_reference'=> $customer->reference,
                         'division'=> $data['2'],
                         'order_group'=> $data['3'],
                         'equipment'=> $data['4'],
@@ -73,7 +85,7 @@ class BillableBlujaySeeder extends Seeder
                         'expiration_date'=> Carbon::createFromFormat('d/m/Y', $data['17']),
                     ]);
                 } catch (\Throwable $th) {
-                    array_push($errorLog,[$counter, $data['0'], $data['1'], $data['2'], $data['9'], $data['10']]);
+                    array_push($errorLog,[$counter, $data['0'], $data['1'], $data['2'], $data['9'], $data['10'], $passFrom, $passDest, $passBillable, $passCust]);
                     print("ERROR BILLABLE");
                 }
                 
