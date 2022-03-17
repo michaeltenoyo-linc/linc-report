@@ -50,19 +50,17 @@ class BillableBlujaySeeder extends Seeder
 
 
                 try {
-                    if($data['9'] != "ANYWHERE" && $data['10'] != "ANYWHERE"){
-                        //Location Markup
-                        $fromCompanies = Company::where('reference',$data['9'])->first();
-                        $passFrom = $fromCompanies->reference;
-                        $destCompanies = Company::where('reference',$data['10'])->first();
-                        $passDest = $destCompanies->reference;
+                    //Location Markup
+                    $fromCompanies =  $data['9']=="ANYWHERE"?"":Company::where('reference',$data['9'])->first();
+                    $passFrom =  $data['9']=="ANYWHERE"?"ANYWHERE":$fromCompanies->reference;
+                    $destCompanies =  $data['10']=="ANYWHERE"?"":Company::where('reference',$data['10'])->first();
+                    $passDest = $data['10']=="ANYWHERE"?"ANYWHERE":$destCompanies->reference;
 
-                        //Billable Method to Customer
-                        $billable_method = BillableMethod::where('billable_method',$data['0'])->first();
-                        $passBillable = $billable_method->billable_method;
-                        $customer = Customer::where('billable_methods','LIKE','%'.$billable_method->cross_reference.'%')->first();
-                        $passCust = $customer->reference;
-                    }
+                    //Billable Method to Customer
+                    $billable_method = BillableMethod::where('billable_method',$data['0'])->first();
+                    $passBillable = $billable_method->billable_method;
+                    $customer = Customer::where('billable_methods','LIKE','%'.$billable_method->cross_reference.'%')->first();
+                    $passCust = $customer->reference;
 
 
                     BillableBlujay::create([
