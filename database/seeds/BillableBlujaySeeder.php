@@ -33,9 +33,9 @@ class BillableBlujaySeeder extends Seeder
 
         //FUSO dan WB
         $csvFile = fopen(base_path("reference/loa/kirim_exim_transport_blujay_05012022.csv"),"r");
-        
+
         $firstline = true;
-        
+
         $counter = 1;
         $errorLog = [];
         while(($data = fgetcsv($csvFile, 0, ';','"')) != FALSE){
@@ -50,14 +50,20 @@ class BillableBlujaySeeder extends Seeder
 
 
                 try {
-                    $fromCompanies = Company::where('reference',$data['9'])->first();
-                    $passFrom = $fromCompanies->reference;
-                    $destCompanies = Company::where('reference',$data['10'])->first();
-                    $passDest = $destCompanies->reference;
-                    $billable_method = BillableMethod::where('billable_method',$data['0'])->first();
-                    $passBillable = $billable_method->billable_method;
-                    $customer = Customer::where('billable_methods','LIKE','%'.$billable_method->cross_reference.'%')->first();
-                    $passCust = $customer->reference;
+                    if($data['9'] != "ANYWHERE" && $data['10'] != "ANYWHERE"){
+                        //Location Markup
+                        $fromCompanies = Company::where('reference',$data['9'])->first();
+                        $passFrom = $fromCompanies->reference;
+                        $destCompanies = Company::where('reference',$data['10'])->first();
+                        $passDest = $destCompanies->reference;
+
+                        //Billable Method to Customer
+                        $billable_method = BillableMethod::where('billable_method',$data['0'])->first();
+                        $passBillable = $billable_method->billable_method;
+                        $customer = Customer::where('billable_methods','LIKE','%'.$billable_method->cross_reference.'%')->first();
+                        $passCust = $customer->reference;
+                    }
+
 
                     BillableBlujay::create([
                         'billable_tariff'=> $data['0'],
@@ -72,10 +78,10 @@ class BillableBlujaySeeder extends Seeder
                         'precedence'=> $data['8'],
                         'origin_location'=> $data['9'],
                         'destination_location'=> $data['10'],
-                        'origin_city' => $fromCompanies->city,
-                        'destination_city' => $destCompanies->city,
-                        'origin_province' => $fromCompanies->province,
-                        'destination_province' => $destCompanies->province,
+                        'origin_city' => $data['9']=="ANYWHERE"?"":$fromCompanies->city,
+                        'destination_city' => $data['10']=="ANYWHERE"?"":$destCompanies->city,
+                        'origin_province' => $data['9']=="ANYWHERE"?"":$fromCompanies->province,
+                        'destination_province' => $data['10']=="ANYWHERE"?"":$destCompanies->province,
                         'no_intermediate_stop'=> $data['11'],
                         'basis'=> $data['12'],
                         'sku'=> $data['13'],
@@ -88,7 +94,7 @@ class BillableBlujaySeeder extends Seeder
                     array_push($errorLog,[$counter, $data['0'], $data['1'], $data['2'], $data['9'], $data['10'], $passFrom, $passDest, $passBillable, $passCust]);
                     print("ERROR BILLABLE");
                 }
-                
+
             }
 
             $firstline = false;
@@ -99,7 +105,7 @@ class BillableBlujaySeeder extends Seeder
         //write ERRORLOG
         $fp = fopen('billable_error.csv', 'w');
         foreach ($errorLog as $fields) {
-            
+
             fputcsv($fp, $fields);
         }
         fclose($fp);
