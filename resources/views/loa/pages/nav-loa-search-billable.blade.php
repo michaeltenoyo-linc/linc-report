@@ -25,13 +25,13 @@ Linc | Input LOA
                 <div class="w-full lg:w-12/12 px-4">
                     <div class="relative w-full mb-3">
                         <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                            htmlFor="name">Tariff Type</label>
-                        <input name="customer" class="input-customer border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text" list="customers">
-                        <datalist id="customers">
-                            @foreach ($blujay_tariff as $bt)
-                                <option value="{{ $bt->billable_tariff }}">1</option>
+                            htmlFor="name">Customer</label>
+                        <select required id="customer" name="customer" class="input-route-start border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text">
+                            <option value="-1">==Pilih Salah Satu==</option>
+                            @foreach ($customer as $c)
+                                <option value="{{ $c->reference ?? '' }}">{{ $c->name ?? '' }}</option>
                             @endforeach
-                        </datalist>
+                        </select>
                     </div>
                 </div>
 
@@ -46,6 +46,7 @@ Linc | Input LOA
                             htmlFor="name">Provinsi Awal</label>
                         <select required id="provinsi1" name="provinsi1" class="input-route-start border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text">
                             <option value="-1">==Pilih Salah Satu==</option>
+                            <option value="anywhere">ANYWHERE</option>
                             @foreach ($provinces as $item)
                                 <option value="{{ $item->id ?? '' }}">{{ $item->name ?? '' }}</option>
                             @endforeach
@@ -72,6 +73,7 @@ Linc | Input LOA
                             htmlFor="name">Provinsi Tujuan</label>
                         <select required id="provinsi2" name="provinsi2" class="input-route-start border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text">
                             <option value="-1">==Pilih Salah Satu==</option>
+                            <option value="anywhere">ANYWHERE</option>
                             @foreach ($provinces as $item)
                                 <option value="{{ $item->id ?? '' }}">{{ $item->name ?? '' }}</option>
                             @endforeach

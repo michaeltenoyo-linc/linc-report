@@ -350,25 +350,35 @@ class TransportController extends BaseController
             'kota1' => 'required',
             'provinsi2' => 'required',
             'kota2' => 'required',
+            'customer' => 'required',
         ]);
 
-        if($req->input('provinsi1') == -1 || $req->input('provinsi2') == -1 || $req->input('kota1') == -1 || $req->input('kota2') == -1){
+        if( $req->input('customer') == -1 || $req->input('provinsi1') == -1 || $req->input('provinsi2') == -1 || $req->input('kota1') == -1 || $req->input('kota2') == -1){
             return response()->json(['error' => "Invalid input"], 400);
         }
 
-        $prov1 = Province::where('id','=',$req->input('provinsi1'))->first();
-        $prov2 = Province::where('id','=',$req->input('provinsi2'))->first();
-        $kota1 = Regency::where('id','=',$req->input('kota1'))->first();
-        $kota2 = Regency::where('id','=',$req->input('kota2'))->first();
-        $splitKota1 = explode(' ',$kota1->name, 2);
-        $splitKota2 = explode(' ',$kota2->name, 2);
-        $kota1name = $splitKota1[1];
-        $kota2name = $splitKota2[1];
+        $kota1name = "";
+        $kota2name = "";
         
+        if($req->input('provinsi1') == "ANYWHERE"){
+            $kota1name = "ANYWHERE";
+        }else{
+            $kota1 = Regency::where('id','=',$req->input('kota1'))->first();
+            $splitKota1 = explode(' ',$kota1->name, 2);
+            $kota1name = $splitKota1[1];
+        }
+        
+        if($req->input('provinsi2') == "ANYWHERE"){
+            $kota2name = "ANYWHERE";
+        }else{
+            $kota2 = Regency::where('id','=',$req->input('kota2'))->first();
+            $splitKota2 = explode(' ',$kota2->name, 2);
+            $kota2name = $splitKota2[1];
+        }
 
         $outData = [];
 
-        $selectedBillable = BillableBlujay::where('billable_tariff','=',$req->input('customer'))
+        $selectedBillable = BillableBlujay::where('customer_reference','=',$req->input('customer'))
                                             ->where('origin_city','=',$kota1name)
                                             ->where('destination_city','=',$kota2name)
                                             ->where('expiration_date','>=',Carbon::today()->toDateString())
