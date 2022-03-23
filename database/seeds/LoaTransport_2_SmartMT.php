@@ -44,6 +44,8 @@ class LoaTransport_2_SmartMT extends Seeder
                     'id_loa' => 2,
                     'unit' => $data['1'],
                     'kapasitas' => $data['2'],
+                    'rute_start_cross_relation' => 'district',
+                    'rute_end_cross_relation' => 'regency',
                     'rute_start' => $data['3'],
                     'rute_end' => $data['4'],
                     'rate' => $data['5'],

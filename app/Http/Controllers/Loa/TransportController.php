@@ -353,24 +353,49 @@ class TransportController extends BaseController
             'customer' => 'required',
         ]);
 
+        /*
         if( $req->input('customer') == -1 || $req->input('provinsi1') == -1 || $req->input('provinsi2') == -1 || $req->input('kota1') == -1 || $req->input('kota2') == -1){
             return response()->json(['error' => "Invalid input"], 400);
-        }
+        }*/
 
+        $province1name = "";
+        $province2name = "";
         $kota1name = "";
         $kota2name = "";
         
-        if($req->input('provinsi1') == "ANYWHERE"){
+        if($req->input('provinsi1') == "anywhere"){
+            $province1name = "ANYWHERE";
             $kota1name = "ANYWHERE";
+        }else if($req->input('provinsi1') == '-1'){
+            $province1name = "all";
+            $kota1name = "all";
+        }else if($req->input('kota1') == '-1'){
+            $province1 = Province::where('id','=',$req->input('provinsi1'))->first();
+            $province1name = $province1->name;
+            $kota1name = "all";
         }else{
+            $province1 = Province::where('id','=',$req->input('provinsi1'))->first();
+            $province1name = $province1->name;
+            
             $kota1 = Regency::where('id','=',$req->input('kota1'))->first();
             $splitKota1 = explode(' ',$kota1->name, 2);
             $kota1name = $splitKota1[1];
         }
         
-        if($req->input('provinsi2') == "ANYWHERE"){
+        if($req->input('provinsi2') == "anywhere"){
+            $province2name = "ANYWHERE";
             $kota2name = "ANYWHERE";
+        }else if($req->input('provinsi2') == '-1'){
+            $province2name = "all";
+            $kota2name = "all";
+        }else if($req->input('kota2') == '-1'){
+            $province2 = Province::where('id','=',$req->input('provinsi2'))->first();
+            $province2name = $province2->name;
+            $kota2name = "all";
         }else{
+            $province2 = Province::where('id','=',$req->input('provinsi2'))->first();
+            $province2name = $province2->name;
+            
             $kota2 = Regency::where('id','=',$req->input('kota2'))->first();
             $splitKota2 = explode(' ',$kota2->name, 2);
             $kota2name = $splitKota2[1];
@@ -379,8 +404,10 @@ class TransportController extends BaseController
         $outData = [];
 
         $selectedBillable = BillableBlujay::where('customer_reference','=',$req->input('customer'))
-                                            ->where('origin_city','=',$kota1name)
-                                            ->where('destination_city','=',$kota2name)
+                                            ->where('origin_province',$province1name=="all"?'LIKE':'=',$province1name=="all"?'%%':$province1name)
+                                            ->where('origin_city',$kota1name=="all"?'LIKE':'=',$kota1name=="all"?'%%':$kota1name)
+                                            ->where('destination_province',$province2name=="all"?'LIKE':'=',$province2name=="all"?'%%':$province2name)
+                                            ->where('destination_city',$kota2name=="all"?'LIKE':'=',$kota2name=="all"?'%%':$kota2name)
                                             ->where('expiration_date','>=',Carbon::today()->toDateString())
                                             ->where('effective_date','<=',Carbon::today()->toDateString())
                                             ->orderBy('origin_location')

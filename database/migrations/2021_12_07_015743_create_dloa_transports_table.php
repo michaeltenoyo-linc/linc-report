@@ -19,7 +19,9 @@ class CreateDloaTransportsTable extends Migration
             $table->string("unit");
             $table->float("kapasitas",12);
             $table->string("rute_start");
+            $table->string("rute_start_cross_relation");
             $table->string("rute_end");
+            $table->string("rute_end_cross_relation");
             $table->float("rate",12);
             $table->float("multidrop",12);
             $table->float("overnight",12);
