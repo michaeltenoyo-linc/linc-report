@@ -31,16 +31,22 @@ Linc | Input LOA
                     <div class="w-1/2 mb-3">
                         <button id="btn-new-bulk" class="w-3/4 bg-blue-500 text-white font-bold py-10 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
                             Bulk
+                            <br>
+                            <div class="text-red-800">(Under Construction)</div>
                         </button>
                     </div>
                     <div class="w-1/2 mb-3">
                         <button onclick="window.location='{{ url('/loa/action/transport/nav-insert') }}'" id="btn-new-warehouse" class="w-3/4 bg-blue-500 text-white font-bold py-10 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
                             Transport
+                            <br>
+                            <div class="text-red-800">(Under Construction)</div>
                         </button>
                     </div>
                     <div class="w-1/2 mb-3">
                         <button id="btn-new-exim" class="w-3/4 bg-blue-500 text-white font-bold py-10 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
                             EXIM
+                            <br>
+                            <div class="text-red-800">(Under Construction)</div>
                         </button>
                     </div>
                 </div>

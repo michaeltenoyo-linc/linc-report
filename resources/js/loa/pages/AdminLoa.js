@@ -460,7 +460,7 @@ export const AdminLoa = () => {
                 success: function (data) {
                     console.log(data);
                     $('#' + name).empty();
-                    $('#' + name).append('<option value="-1">==Pilih Salah Satu==</option>');
+                    $('#' + name).append('<option value="-1">==Semua==</option>');
     
                     $.each(data, function (key, value) {
                         $('#' + name).append('<option value="' + key + '">' + value + '</option>');

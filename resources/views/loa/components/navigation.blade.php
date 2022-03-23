@@ -86,7 +86,7 @@
             <hr class="my-4 md:min-w-full" />
             <!-- Heading -->
             <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                Letter of Agreement
+                Local Letter of Agreement
             </h6>
             <!-- Navigation Loads-->
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
@@ -130,7 +130,7 @@
             <hr class="my-4 md:min-w-full" />
             <!-- Heading -->
             <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                Search Engine
+                Blujay Data
             </h6>
             <!-- Navigation Product -->
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
@@ -139,13 +139,13 @@
                         <a href="{{url('/loa/nav-search-transport')}}"
                             class="page_nav_active">
                             <i class="far fa-clipboard"></i>
-                            Transport/EXIM Routes
+                            Blujay Routes SE
                         </a>
                     @else
                         <a href="{{url('/loa/nav-search-transport')}}"
                             class="page_nav">
                             <i class="far fa-clipboard"></i>
-                            Transport/EXIM Routes
+                            Blujay Routes SE
                         </a>
                     @endif
                 </li>
