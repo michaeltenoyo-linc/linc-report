@@ -1,12 +1,22 @@
-<div id="loa-transport-modal">
+<div id="loa-transport-modal-blujay">
     @component('shared.components.modal')
         @slot('content')
         <div class="flex flex-col gap-y-4 rounded-2xl bg-white w-2/4 mx-auto p-8">
             <button class="modal-close-button ml-auto focus:outline-none">
                 <i class="fas fa-times text-primary"></i>
             </button>
-            <h3 class="text-lg font-bold">Detail Biaya</h3>
+            <h3 class="text-lg font-bold">Detail</h3>
             <hr>
+            <div class="w-full lg:w-12/12 px-4 mb-4 grid grid-cols-2 gap-4">
+                <div><b class="bg-blue-700 text-white p-1">Prov.</b> <span class="origin_province"></span></div>
+                <div><b class="bg-blue-700 text-white p-1">Prov.</b> <span class="destination_province"></span></div>
+                <div><b class="bg-green-700 text-white p-1">Kota</b> <span class="origin_regency"></span></div>
+                <div><b class="bg-green-700 text-white p-1">Kota</b> <span class="destination_regency"></span></div>
+                <div><b class="bg-orange-700 text-white p-1">Kec.</b> <span class="origin_district"></div>
+                <div><b class="bg-orange-700 text-white p-1">Kec.</b> <span class="destination_regency"></span></div>
+                <div><b class="bg-red-700 text-white p-1">Kel.</b> <span class="origin_urban"></div>
+                <div><b class="bg-red-700 text-white p-1">Kel.</b> <span class="destination_urban"></span></div>
+            </div>
             <div class="w-full lg:w-12/12 px-4">
                 <div class="relative w-full mb-3">
                     <table id="table-warehouse-detail" class="table-auto w-full">

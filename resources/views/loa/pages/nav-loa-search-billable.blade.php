@@ -168,4 +168,4 @@ Linc | Input LOA
 <script>
 </script>
 @endsection
-@include('loa.modals.loa-transport-modal')
+@include('loa.modals.loa-transport-modal-blujay')
