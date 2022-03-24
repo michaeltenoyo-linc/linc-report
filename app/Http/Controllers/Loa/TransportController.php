@@ -351,6 +351,7 @@ class TransportController extends BaseController
             'provinsi2' => 'required',
             'kota2' => 'required',
             'customer' => 'required',
+            'unit' => 'required',
         ]);
 
         /*
@@ -362,7 +363,9 @@ class TransportController extends BaseController
         $province2name = "";
         $kota1name = "";
         $kota2name = "";
-        
+        $unitName = "";
+
+        //Origin Location        
         if($req->input('provinsi1') == "anywhere"){
             $province1name = "ANYWHERE";
             $kota1name = "ANYWHERE";
@@ -382,6 +385,7 @@ class TransportController extends BaseController
             $kota1name = $splitKota1[1];
         }
         
+        //Destination Location
         if($req->input('provinsi2') == "anywhere"){
             $province2name = "ANYWHERE";
             $kota2name = "ANYWHERE";
@@ -401,6 +405,13 @@ class TransportController extends BaseController
             $kota2name = $splitKota2[1];
         }
 
+        //Unit Information
+        if($req->input('unit') == '-1'){
+            $unitName = "all";
+        }else{
+            $unitName = $req->input('unit');
+        }
+
         $outData = [];
 
         $selectedBillable = BillableBlujay::where('customer_reference','=',$req->input('customer'))
@@ -410,6 +421,7 @@ class TransportController extends BaseController
                                             ->where('destination_city',$kota2name=="all"?'LIKE':'=',$kota2name=="all"?'%%':$kota2name)
                                             ->where('expiration_date','>=',Carbon::today()->toDateString())
                                             ->where('effective_date','<=',Carbon::today()->toDateString())
+                                            ->where('sku',$unitName=="all"?'LIKE':'=',$unitName=="all"?"%%":$unitName)
                                             ->orderBy('origin_location')
                                             ->get();
         

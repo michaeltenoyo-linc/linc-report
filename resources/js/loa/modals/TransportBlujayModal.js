@@ -56,7 +56,7 @@ export const TransportBlujayModal = () => {
                 $('#loa-transport-modal-blujay .destination_urban').html(loa['destination_urban']);
 
                 $('#loa-transport-modal-blujay .content-transport-detail').empty();
-                $('#loa-transport-modal-blujay .content-transport-detail').append('<tr><td class="font-bold p-2 whitespace-nowrap text-left">Rate</td><td class="p-2 whitespace-nowrap text-left">Rp. '+loa['rate']+'</td></tr>');
+                $('#loa-transport-modal-blujay .content-transport-detail').append('<tr><td class="font-bold p-2 whitespace-nowrap text-left">Rate Blujay</td><td class="p-2 whitespace-nowrap text-left">Rp. '+loa['rate']+'</td></tr>');
 
                 //Update table content
                 /*

@@ -7,13 +7,13 @@
             </button>
             <h3 class="text-lg font-bold">Detail</h3>
             <hr>
-            <div class="w-full lg:w-12/12 px-4 mb-4 grid grid-cols-2 gap-4">
+            <div class="w-full lg:w-12/12 px-4 mb-4 grid grid-cols-2 gap-4 text-left">
                 <div><b class="bg-blue-700 text-white p-1">Prov.</b> <span class="origin_province"></span></div>
                 <div><b class="bg-blue-700 text-white p-1">Prov.</b> <span class="destination_province"></span></div>
                 <div><b class="bg-green-700 text-white p-1">Kota</b> <span class="origin_regency"></span></div>
                 <div><b class="bg-green-700 text-white p-1">Kota</b> <span class="destination_regency"></span></div>
                 <div><b class="bg-orange-700 text-white p-1">Kec.</b> <span class="origin_district"></div>
-                <div><b class="bg-orange-700 text-white p-1">Kec.</b> <span class="destination_regency"></span></div>
+                <div><b class="bg-orange-700 text-white p-1">Kec.</b> <span class="destination_district"></span></div>
                 <div><b class="bg-red-700 text-white p-1">Kel.</b> <span class="origin_urban"></div>
                 <div><b class="bg-red-700 text-white p-1">Kel.</b> <span class="destination_urban"></span></div>
             </div>

@@ -149,6 +149,21 @@
                         </a>
                     @endif
                 </li>
+                <li class="items-center">
+                    @if (Request::path() == 'loa/nav-blujay-compare')
+                        <a href="{{url('/loa/nav-search-transport')}}"
+                            class="page_nav_active">
+                            <i class="far fa-clipboard"></i>
+                            Cross Compare LOA
+                        </a>
+                    @else
+                        <a href="{{url('/loa/nav-blujay-compare')}}"
+                            class="page_nav">
+                            <i class="far fa-clipboard"></i>
+                            Cross Compare LOA
+                        </a>
+                    @endif
+                </li>
             </ul>
         </div>
     </div>

@@ -70,6 +70,7 @@ class ViewController extends BaseController
     public function gotoSearchTransport(){
         $data['transport_cust'] = Loa_transport::select('customer')->groupBy('customer')->get();
         $data['customer'] = Customer::get();
+        $data['units'] = BillableBlujay::select('sku')->groupBy('sku')->get();
         //$data['kel'] = Village::get();
         //$data['kec'] = District::get();
         //$data['kota'] = Regency::get();
