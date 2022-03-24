@@ -92,7 +92,7 @@
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
                 {{-- Active --}}
                 <li class="items-center">
-                    @if (Request::path() == '/loa/nav-loa-new')
+                    @if (Request::path() == 'loa/nav-loa-new')
                     <a href="{{url('/loa/nav-loa-new')}}"
                         class="page_nav_active">
                         <i class="fas fa-plus"></i>
@@ -110,7 +110,7 @@
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
                 {{-- Active --}}
                 <li class="items-center">
-                    @if (Request::path() == '/loa/nav-loa-list')
+                    @if (Request::path() == 'loa/nav-loa-list')
                     <a href="{{url('/loa/nav-loa-list')}}"
                         class="page_nav_active">
                         <i class="fas fa-shipping-fast"></i>
@@ -151,7 +151,7 @@
                 </li>
                 <li class="items-center">
                     @if (Request::path() == 'loa/nav-blujay-compare')
-                        <a href="{{url('/loa/nav-search-transport')}}"
+                        <a href="{{url('/loa/nav-blujay-compare')}}"
                             class="page_nav_active">
                             <i class="far fa-clipboard"></i>
                             Cross Compare LOA
