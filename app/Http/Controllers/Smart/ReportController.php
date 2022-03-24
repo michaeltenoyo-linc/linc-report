@@ -88,6 +88,7 @@ class ReportController extends BaseController
                 //LISTING SURAT JALAN
                 if(count($listSJ) > 0 && !$loadExist){
                     foreach ($listSJ as $sj) {
+                        $firstline = true;
                         $isWanted = false;
 
                         foreach ($listLoadId as $load) {
@@ -100,26 +101,69 @@ class ReportController extends BaseController
                             $truck = Trucks::where('nopol','=',$sj->nopol)->first();
                             $totalHarga = intval($row->billable_total_rate) + $totalOvernight + $totalBongkar + $totalMultidrop;
                             $splitID = explode('$',$sj->id_so);
-                            $reports->push([
-                                'No' => $ctr,
-                                'Load ID' => $row->tms_id,
-                                'Tgl Muat' => Carbon::parse($sj->tgl_terima)->format('d-M-Y'),
-                                'No SJ' => $splitID[0],
-                                'No DO' => (isset($splitID[1])?$splitID[1]:""),
-                                'Penerima' => $sj->penerima,
-                                'Kota Tujuan' => $row->last_drop_location_city,
-                                'Kuantitas' => $sj->total_qtySO,
-                                'Berat' => $sj->total_weightSO,
-                                'Utilitas' => strval($sj->utilitas)."%",
-                                'Nopol' => $sj->nopol,
-                                'Tipe Kendaraan' => $truck->type,
-                                'Kontainer' => "-",
-                                'Biaya Kirim' => intval($row->billable_total_rate),
-                                'Biaya Bongkar' => $totalBongkar,
-                                'Overnight Charge' => $totalOvernight,
-                                'Multidrop' => $totalMultidrop,
-                                'Total' => $totalHarga,
-                            ]);
+
+                            $dload = Dload::where('id_so','=',$sj->id_so)->get();
+
+                            foreach ($dload as $item) {
+                                $itemDetail = Item::where('material_code','=',$item->material_code)->first();
+
+                                if($firstline){
+                                    $reports->push([
+                                        'No' => $ctr,
+                                        'Load ID' => $row->tms_id,
+                                        'Tgl Muat' => Carbon::parse($sj->tgl_terima)->format('d-M-Y'),
+                                        'No SJ' => $splitID[0],
+                                        'No DO' => (isset($splitID[1])?$splitID[1]:""),
+                                        'Penerima' => $sj->penerima,
+                                        'Kota Tujuan' => $row->last_drop_location_city,
+                                        'Kuantitas' => $sj->total_qtySO,
+                                        'Berat' => $sj->total_weightSO,
+                                        'Utilitas' => strval($sj->utilitas)."%",
+                                        'Nopol' => $sj->nopol,
+                                        'Tipe Kendaraan' => $truck->type,
+                                        'Kontainer' => "-",
+                                        'Biaya Kirim' => intval($row->billable_total_rate),
+                                        'Biaya Bongkar' => $totalBongkar,
+                                        'Overnight Charge' => $totalOvernight,
+                                        'Multidrop' => $totalMultidrop,
+                                        'Total' => $totalHarga,
+                                        'Kode SKU' => $item->material_code,
+                                        'Deskripsi' => $itemDetail->description,
+                                        'Qty' => $item->qty,
+                                        'Item Weight' => $itemDetail->gross_weight,
+                                        'Subtotal Weight' => $item->subtotal_weight,
+                                    ]);
+
+                                    $firstline = false;
+                                }else{
+                                    $reports->push([
+                                        'No' => " ",
+                                        'Load ID' => " ",
+                                        'Tgl Muat' => " ",
+                                        'No SJ' => " ",
+                                        'No DO' => " ",
+                                        'Penerima' => " ",
+                                        'Kota Tujuan' => " ",
+                                        'Kuantitas' => " ",
+                                        'Berat' => " ",
+                                        'Utilitas' => " ",
+                                        'Nopol' => " ",
+                                        'Tipe Kendaraan' => " ",
+                                        'Kontainer' => " ",
+                                        'Biaya Kirim' => " ",
+                                        'Biaya Bongkar' => " ",
+                                        'Overnight Charge' =>" ",
+                                        'Multidrop' => " ",
+                                        'Total' => " ",
+                                        'Kode SKU' => $item->material_code,
+                                        'Deskripsi' => $itemDetail->description,
+                                        'Qty' => $item->qty,
+                                        'Item Weight' => $itemDetail->gross_weight,
+                                        'Subtotal Weight' => $item->subtotal_weight,
+                                    ]);
+                                }
+                            }
+
                             $ctr++;
                         }
                     }
@@ -142,6 +186,11 @@ class ReportController extends BaseController
                         'Overnight Charge' =>" ",
                         'Multidrop' => " ",
                         'Total' => " ",
+                        'Kode SKU' => " ",
+                        'Deskripsi' => " ",
+                        'Qty' => " ",
+                        'Item Weight' => " ",
+                        'Subtotal Weight' => " ",
                     ]);
                 }else{
                     $custId = substr($row->first_pick_location_name,0,3);
