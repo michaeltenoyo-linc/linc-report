@@ -199,6 +199,7 @@ Route::middleware(['auth','priviledge:loa,master'])->group(function () {
         Route::get('/nav-loa-new',[LoaViewController::class, 'gotoInputLoa']);
         Route::get('/nav-loa-list', [LoaViewController::class, 'gotoListLoa']);
         Route::get('/nav-search-transport',[LoaViewController::class, 'gotoSearchTransport']);
+        Route::get('/nav-blujay-compare', [LoaViewController::class, 'gotoCrossCompare']);
 
         Route::prefix('/action/warehouse')->group(function (){
             //CRUD

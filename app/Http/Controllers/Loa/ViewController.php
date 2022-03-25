@@ -80,6 +80,11 @@ class ViewController extends BaseController
         return view('loa.pages.nav-loa-search-billable', $data);
     }
 
+    //Cross Compare
+    public function gotoCrossCompare(){
+        return view('loa.pages.nav-loa-crossfixing');
+    }
+
     //Data Ajax
     public function getWarehouseData(){
         $data = Loa_warehouse::get();
