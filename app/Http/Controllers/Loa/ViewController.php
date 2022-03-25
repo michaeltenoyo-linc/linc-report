@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Loa;
 
-use App\dloa_transport;
 use App\Models\District;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -15,6 +14,7 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Models\Item;
 use App\Models\BillableBlujay;
 use App\Models\Customer;
+use App\Models\dloa_transport;
 use App\Models\Loa_transport;
 use App\Models\Loa_warehouse;
 use App\Models\Province;
@@ -82,7 +82,10 @@ class ViewController extends BaseController
 
     //Cross Compare
     public function gotoCrossCompare(){
-        return view('loa.pages.nav-loa-crossfixing');
+        $data['transport_cust'] = Loa_transport::select('customer')->groupBy('customer')->get();
+        $data['units'] = BillableBlujay::select('sku')->groupBy('sku')->get();
+
+        return view('loa.pages.nav-loa-crossfixing', $data);
     }
 
     //Data Ajax
@@ -126,5 +129,18 @@ class ViewController extends BaseController
                 return $btn;
             })
             ->make(true);
+    }
+
+    public function getLocalData(Request $req, $customer){
+        try {
+            $loa = Loa_transport::where('customer',$customer)->whereDate('periode_end','>=', Carbon::now())->first();
+
+            $dloa = dloa_transport::where('id_loa',$loa->id)->get();
+
+            return response()->json($dloa, 200);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => "Try with another request input"],404);
+        }
+        
     }
 }
