@@ -201,6 +201,11 @@ Route::middleware(['auth','priviledge:loa,master'])->group(function () {
         Route::get('/nav-search-transport',[LoaViewController::class, 'gotoSearchTransport']);
         Route::get('/nav-blujay-compare', [LoaViewController::class, 'gotoCrossCompare']);
 
+        Route::prefix('/action/blujay')->group(function(){
+            //Action
+            Route::post('/compare', [LoaTransportController::class, 'crossCompareLoa']);
+        });
+
         Route::prefix('/action/warehouse')->group(function (){
             //CRUD
             Route::get('/nav-insert',[LoaViewController::class, 'gotoInputWarehouse']);
@@ -221,6 +226,7 @@ Route::middleware(['auth','priviledge:loa,master'])->group(function () {
             Route::get('/read',[LoaViewController::class, 'getTransportData']);
             Route::get('/detail/{id}',[LoaTransportController::class, 'gotoDetailTransport']);
             Route::get('/dloa/{id}', [LoaTransportController::class, 'getDetailLoa']);
+            Route::get('/local-info/{customer}/{route_start}/{route_end}', [LoaViewController::class, 'getLocalData']);
         });
 
         Route::prefix('/action/exim')->group(function (){

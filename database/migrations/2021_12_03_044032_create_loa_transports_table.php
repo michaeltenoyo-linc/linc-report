@@ -16,6 +16,7 @@ class CreateLoaTransportsTable extends Migration
         Schema::create('loa_transports', function (Blueprint $table) {
             $table->id();
             $table->string('customer');
+            $table->string('cross_customer_reference');
             $table->date('periode_start');
             $table->date('periode_end');
             $table->string('files');

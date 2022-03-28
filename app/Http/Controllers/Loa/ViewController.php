@@ -131,15 +131,30 @@ class ViewController extends BaseController
             ->make(true);
     }
 
-    public function getLocalData(Request $req, $customer){
+    public function getLocalData(Request $req, $customer, $route_start, $route_end){
         try {
             $loa = Loa_transport::where('customer',$customer)->whereDate('periode_end','>=', Carbon::now())->first();
 
-            $dloa = dloa_transport::where('id_loa',$loa->id)->get();
+            $data['route_start'] = dloa_transport::select('rute_start')->where('id_loa',$loa->id)
+                                            ->groupBy('rute_start')
+                                            ->get()
+                                            ->pluck('rute_start');
+            
+            $data['route_end'] = $route_start=="all"?"":dloa_transport::select('rute_end')->where('id_loa',$loa->id)
+                                            ->where('rute_start',$route_start=="all"?'LIKE':$route_start,$route_start=="all"?'%%':$route_start)
+                                            ->groupBy('rute_end')
+                                            ->get()
+                                            ->pluck('rute_end');
 
-            return response()->json($dloa, 200);
+            $data['unit'] = $route_end=="all"?"":dloa_transport::select('unit')->where('id_loa',$loa->id)
+                                        ->where('rute_start',$route_start=="all"?'LIKE':$route_start,$route_start=="all"?'%%':$route_start)
+                                        ->where('rute_end',$route_end=="all"?'LIKE':$route_end,$route_end=="all"?'%%':$route_end)
+                                        ->get()
+                                        ->pluck('unit');                                            
+
+            return response()->json($data, 200);
         } catch (\Throwable $th) {
-            return response()->json(['error' => "Try with another request input"],404);
+            return response()->json(['error' => $th],404);
         }
         
     }

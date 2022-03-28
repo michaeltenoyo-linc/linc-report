@@ -13,6 +13,7 @@ class Loa_transport extends Model
     public $incrementing = true;
     protected $fillable = [
         'customer',
+        'cross_customer_reference',
         'lokasi',
         'periode_start',
         'periode_end',

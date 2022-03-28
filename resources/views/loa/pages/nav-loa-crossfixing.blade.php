@@ -55,6 +55,16 @@ Linc | Cross Compare LOA
                     </div>
                 </div>
 
+                <div class="inline-block w-full lg:w-12/12 px-4">
+                    <div class="relative w-full mb-3">
+                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                            htmlFor="name">Unit</label>
+                        <select required name="unit" class="input-unit border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text">
+                            <option value="-1">==Semua==</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="w-full lg:w-12/12 px-4" >
                     <div class="flex flex-row-reverse w-full mb-3">
                         <input type="submit"
@@ -67,26 +77,6 @@ Linc | Cross Compare LOA
             <div class="w-full lg:w-12/12 my-4">
                 <div class="relative w-full">
                     <hr>
-                </div>
-            </div>
-
-            <!-- SHOW ROUTE INFORMATION -->
-
-            <div class="inline-block w-full lg:w-5/12 px-4">
-                <div class="relative w-full mb-3">
-                    <!--START-->
-                    <div id="container-route-start">
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="inline-block w-full lg:w-5/12 px-4">
-                <div class="relative w-full mb-3">
-                    <!--END-->
-                    <div id="container-route-end">
-
-                    </div>
                 </div>
             </div>
 
