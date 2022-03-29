@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Smart;
 
 use App\Models\Addcost;
+use App\Models\Company;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -87,6 +88,18 @@ class ReportController extends BaseController
 
                 //LISTING SURAT JALAN
                 if(count($listSJ) > 0 && !$loadExist){
+                    //Check multidrop
+                    $isMultidrop = false;
+                    $listPenerima = [];
+                    foreach ($listSJ as $sj) {
+                        array_push($listPenerima, $sj->penerima);
+                    }
+                    $uniqueCount = count(array_count_values($listPenerima));
+                    $uniqueCount>1?$isMultidrop=true:$isMultiDrop=false;
+                    if(!$isMultiDrop){
+                        $totalMultidrop = 0;
+                    }
+
                     foreach ($listSJ as $sj) {
                         $firstline = true;
                         $isWanted = false;
@@ -99,13 +112,14 @@ class ReportController extends BaseController
                         
                         if($req->input('customerType') == "all"){
                             $truck = Trucks::where('nopol','=',$sj->nopol)->first();
-                            $totalHarga = intval($row->billable_total_rate) + $totalOvernight + $totalBongkar + $totalMultidrop;
+                            //$totalHarga = intval($row->billable_total_rate) + $totalOvernight + $totalBongkar + $totalMultidrop;
                             $splitID = explode('$',$sj->id_so);
 
                             $dload = Dload::where('id_so','=',$sj->id_so)->get();
 
                             foreach ($dload as $item) {
                                 $itemDetail = Item::where('material_code','=',$item->material_code)->first();
+                                $locationDetail = Company::where('reference',$row->last_drop_location_name)->first();
 
                                 if($firstline){
                                     $reports->push([
@@ -115,18 +129,20 @@ class ReportController extends BaseController
                                         'No SJ' => $splitID[0],
                                         'No DO' => (isset($splitID[1])?$splitID[1]:""),
                                         'Penerima' => $sj->penerima,
-                                        'Kota Tujuan' => $row->last_drop_location_city,
+                                        'Lokasi Tujuan' => $row->last_drop_location_name,
+                                        'Provinsi Tujuan' => is_null($locationDetail)?"Undefined":$locationDetail->province,
+                                        'Kota Tujuan' => is_null($locationDetail)?"Undefined":$locationDetail->city,
                                         'Kuantitas' => $sj->total_qtySO,
                                         'Berat' => $sj->total_weightSO,
                                         'Utilitas' => strval($sj->utilitas)."%",
                                         'Nopol' => $sj->nopol,
-                                        'Tipe Kendaraan' => $truck->type,
+                                        'Tipe Kendaraan' => $row->equipment_description,
                                         'Kontainer' => "-",
-                                        'Biaya Kirim' => intval($row->billable_total_rate),
+                                        'Biaya Kirim' => intval($row->billable_total_rate) - $totalOvernight - $totalBongkar - $totalMultidrop,
                                         'Biaya Bongkar' => $totalBongkar,
                                         'Overnight Charge' => $totalOvernight,
                                         'Multidrop' => $totalMultidrop,
-                                        'Total' => $totalHarga,
+                                        'Total' => intval($row->billable_total_rate),
                                         'Kode SKU' => $item->material_code,
                                         'Deskripsi' => $itemDetail->description,
                                         'Qty' => $item->qty,
@@ -143,6 +159,8 @@ class ReportController extends BaseController
                                         'No SJ' => " ",
                                         'No DO' => " ",
                                         'Penerima' => " ",
+                                        'Lokasi Tujuan' => " ",
+                                        'Provinsi Tujuan' => " ",
                                         'Kota Tujuan' => " ",
                                         'Kuantitas' => " ",
                                         'Berat' => " ",
@@ -174,6 +192,8 @@ class ReportController extends BaseController
                         'No SJ' => " ",
                         'No DO' => " ",
                         'Penerima' => " ",
+                        'Lokasi Tujuan' => " ",
+                        'Provinsi Tujuan' => " ",
                         'Kota Tujuan' => " ",
                         'Kuantitas' => " ",
                         'Berat' => " ",

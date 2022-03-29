@@ -82,6 +82,7 @@ class ViewController extends BaseController
 
     //Cross Compare
     public function gotoCrossCompare(){
+        
         return view('loa.pages.nav-loa-crossfixing');
     }
 
