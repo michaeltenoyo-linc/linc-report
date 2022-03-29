@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Session;
 use App\Models\Province;
 use App\Models\Regency;
 use App\Models\District;
+use App\Models\Dload;
 use App\Models\Village;
 
 use function PHPUnit\Framework\isNull;
@@ -471,5 +472,114 @@ class TransportController extends BaseController
         $loa->rate = number_format($loa->rate, 2, ',', '.');
 
         return response()->json(['loa' => $loa], 200);
+    }
+
+    public function crossCompareLoa(Request $req){
+        try {
+            $req->validate([
+                'customer' => 'required',
+                'route_start' => 'required',
+                'route_end' => 'required',
+                'unit' => 'required',
+            ]);
+
+            $customer = $req->input('customer');
+            $route_start = $req->input('route_start');
+            $route_end = $req->input('route_end');
+            $unit = $req->input('unit');
+
+            //Local LOA
+            $local_loa = Loa_transport::where('customer',$customer)->first();
+            $local_dloa = dloa_transport::where('id_loa',$local_loa->id)
+                                        ->where('rute_start',$route_start=="-1"?'LIKE':$route_start,$route_start=="-1"?'%%':$route_start)
+                                        ->where('rute_end',$route_end=="-1"?'LIKE':$route_end,$route_end=="-1"?'%%':$route_end)
+                                        ->where('unit',$unit=="-1"?'LIKE':$unit,$unit=="-1"?'%%':$unit)
+                                        ->get();
+
+            $warningLocal = [];
+            $warningBlujay = [];
+
+
+            //Additional conditian for each customer
+            $additionalCondition = [];
+
+            if($customer == "SMART RUNGKUT"){
+                $additionalCondition = [
+                    ['destination_location','NOT LIKE','%(MT)%'],
+                ];
+            }else if($customer == "SMART MT"){
+                $additionalCondition = [
+                    ['destination_location','LIKE','%(MT)%'],
+                ];
+            }
+
+            //COMPARING EACH LOCAL BLUJAY
+            foreach ($local_dloa as $local) {
+                $start_cross = "";
+                $end_cross = "";
+                switch ($local->rute_start_cross_relation) {
+                    case 'province':
+                        $start_cross = "origin_province";
+                        break;
+                    case 'regency':
+                        $start_cross = "origin_city";
+                        break;
+                    case 'district':
+                        $start_cross = "origin_district";
+                        break;
+                    case 'urban':
+                        $start_cross = "origin_urban";
+                        break;
+                }
+
+                switch ($local->rute_end_cross_relation) {
+                    case 'province':
+                        $end_cross = "origin_province";
+                        break;
+                    case 'regency':
+                        $end_cross = "origin_city";
+                        break;
+                    case 'district':
+                        $end_cross = "origin_district";
+                        break;
+                    case 'urban':
+                        $end_cross = "origin_urban";
+                        break;
+                }
+
+
+                $similarBlujay = BillableBlujay::where('customer_reference',$local_loa->cross_customer_reference)
+                                            //->where($start_cross, 'LIKE', '%'.$local->rute_start.'%')
+                                            //->where($end_cross, 'LIKE', '%'.$local->rute_end.'%')
+                                            //->where('sku', 'LIKE', '%'.$local->unit.'%')
+                                            //->where($additionalCondition)
+                                            ->get();
+                
+                array_push($warningLocal, $local);
+                array_push($warningBlujay, $similarBlujay);
+                
+                //COMPARING EACH BLUJAY
+                /*
+                foreach ($similarBlujay as $blujay) {
+                    if($blujay->rate != $local->rate){
+                        array_push($warningLocal, $local);
+                        array_push($warningBlujay, $blujay);
+                    }
+                }
+                */
+            }
+
+            if(count($warningBlujay) < 1){
+                return response()->json(['message' => "Tidak ada perbedaan harga pada blujay", 404]);
+            }else{
+                $data['warning_local'] = $warningLocal;
+                $data['warning_blujay'] =$warningBlujay;
+                $data['message'] = "Terdapat beberapa perbedaan harga antara Bluja dan Lokal";
+
+                return response()->json($data, 200);
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['message' => $th], 400);
+        }
     }
 }

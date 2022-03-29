@@ -21,7 +21,7 @@ Linc | Cross Compare LOA
             </div>
         </div>
         <div class="p-8 ">
-            <form id="form-search-transport" autocomplete="off" enctype="multipart/form-data">
+            <form id="form-cross-compare" autocomplete="off" enctype="multipart/form-data">
                 <div class="w-full lg:w-12/12 px-4">
                     <div class="relative w-full mb-3">
                         <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
@@ -39,7 +39,9 @@ Linc | Cross Compare LOA
                     <div class="relative w-full mb-3">
                         <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                             htmlFor="name">Rute Awal</label>
-                        <input required list="area" name="route_start" class="input-route-start border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text">
+                        <select required name="route_start" class="input-route-start border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text">
+                            <option value="-1">==Semua==</option>
+                        </select>
                     </div>
                 </div>
 
@@ -47,24 +49,21 @@ Linc | Cross Compare LOA
                     <div class="relative w-full mb-3">
                         <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                             htmlFor="name">Rute Akhir</label>
-                        <input required list="area" name="route_end" class="input-route-end border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text">
+                        <select required name="route_end" class="input-route-end border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text">
+                            <option value="-1">==Semua==</option>
+                        </select>
                     </div>
                 </div>
 
-                <datalist id="area">
-                    @foreach ($prov as $pr)
-                        <option value="{{ $pr->name }}">{{ $pr->id }}</option>
-                    @endforeach
-                    @foreach ($kota as $kt)
-                        <option value="{{ $kt->name }}">{{ $kt->id }}</option>
-                    @endforeach
-                    @foreach ($kec as $kc)
-                        <option value="{{ $kc->name }}">{{ $kc->id }}</option>
-                    @endforeach
-                    @foreach ($kel as $kl)
-                        <option value="{{ $kl->name }}">{{ $kl->id }}</option>
-                    @endforeach
-                </datalist>
+                <div class="inline-block w-full lg:w-12/12 px-4">
+                    <div class="relative w-full mb-3">
+                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                            htmlFor="name">Unit</label>
+                        <select required name="unit" class="input-unit border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text">
+                            <option value="-1">==Semua==</option>
+                        </select>
+                    </div>
+                </div>
 
                 <div class="w-full lg:w-12/12 px-4" >
                     <div class="flex flex-row-reverse w-full mb-3">
@@ -78,26 +77,6 @@ Linc | Cross Compare LOA
             <div class="w-full lg:w-12/12 my-4">
                 <div class="relative w-full">
                     <hr>
-                </div>
-            </div>
-
-            <!-- SHOW ROUTE INFORMATION -->
-
-            <div class="inline-block w-full lg:w-5/12 px-4">
-                <div class="relative w-full mb-3">
-                    <!--START-->
-                    <div id="container-route-start">
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="inline-block w-full lg:w-5/12 px-4">
-                <div class="relative w-full mb-3">
-                    <!--END-->
-                    <div id="container-route-end">
-
-                    </div>
                 </div>
             </div>
 
@@ -143,4 +122,3 @@ Linc | Cross Compare LOA
     </div>
 </div>
 @endsection
-@include('loa.modals.loa-transport-modal')
