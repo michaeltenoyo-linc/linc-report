@@ -534,39 +534,41 @@ class TransportController extends BaseController
 
                 switch ($local->rute_end_cross_relation) {
                     case 'province':
-                        $end_cross = "origin_province";
+                        $end_cross = "destination_province";
                         break;
                     case 'regency':
-                        $end_cross = "origin_city";
+                        $end_cross = "destination_city";
                         break;
                     case 'district':
-                        $end_cross = "origin_district";
+                        $end_cross = "destination_district";
                         break;
                     case 'urban':
-                        $end_cross = "origin_urban";
+                        $end_cross = "destination_urban";
                         break;
                 }
 
 
                 $similarBlujay = BillableBlujay::where('customer_reference',$local_loa->cross_customer_reference)
-                                            //->where($start_cross, 'LIKE', '%'.$local->rute_start.'%')
-                                            //->where($end_cross, 'LIKE', '%'.$local->rute_end.'%')
-                                            //->where('sku', 'LIKE', '%'.$local->unit.'%')
-                                            //->where($additionalCondition)
+                                            ->where('expiration_date','>=',Carbon::today()->toDateString())
+                                            ->where('effective_date','<=',Carbon::today()->toDateString())
+                                            ->where($start_cross, 'LIKE', '%'.$local->rute_start.'%')
+                                            ->where($end_cross, 'LIKE', '%'.$local->rute_end.'%')
+                                            ->where('sku', 'LIKE', '%'.$local->unit.'%')
+                                            ->where($additionalCondition)
                                             ->get();
                 
-                array_push($warningLocal, $local);
-                array_push($warningBlujay, $similarBlujay);
+                //array_push($warningLocal, $local);
+                //array_push($warningBlujay, $similarBlujay);
                 
                 //COMPARING EACH BLUJAY
-                /*
+                
                 foreach ($similarBlujay as $blujay) {
                     if($blujay->rate != $local->rate){
                         array_push($warningLocal, $local);
                         array_push($warningBlujay, $blujay);
                     }
                 }
-                */
+                
             }
 
             if(count($warningBlujay) < 1){

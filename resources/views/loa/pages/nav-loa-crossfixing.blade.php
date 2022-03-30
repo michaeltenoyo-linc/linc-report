@@ -96,9 +96,6 @@ Linc | Cross Compare LOA
                                 <div class="font-semibold text-left">ID</div>
                             </th>
                             <th class="p-2 whitespace-nowrap">
-                                <div class="font-semibold text-left">Customer</div>
-                            </th>
-                            <th class="p-2 whitespace-nowrap">
                                 <div class="font-semibold text-left">Rute Awal</div>
                             </th>
                             <th class="p-2 whitespace-nowrap">
@@ -108,11 +105,14 @@ Linc | Cross Compare LOA
                                 <div class="font-semibold text-left">Unit</div>
                             </th>
                             <th class="p-2 whitespace-nowrap">
+                                <div class="font-semibold text-left">Rate Diff (Blujay / Local)</div>
+                            </th>
+                            <th class="p-2 whitespace-nowrap">
                                 <div class="font-semibold text-left"></div>
                             </th>
                           </tr>
                         </thead>
-                        <tbody id="content-dloa-list">
+                        <tbody id="content-crossfixing-diff">
 
                         </tbody>
                     </table>
