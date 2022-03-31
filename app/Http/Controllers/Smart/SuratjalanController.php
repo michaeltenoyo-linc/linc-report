@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Smart;
 
+use App\Models\DeletionLog;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -15,6 +16,7 @@ use App\Models\Trucks;
 use App\Models\Suratjalan;
 use App\Models\Dload;
 use App\Models\LoadPerformance;
+use Illuminate\Support\Facades\Auth;
 
 use function PHPUnit\Framework\isEmpty;
 use function PHPUnit\Framework\isNull;
@@ -124,12 +126,22 @@ class SuratjalanController extends BaseController
     }
 
     public function delete(Request $req){
+        $user = Auth::user();
         $sj = Suratjalan::where('id_so','=',$req->input('id_so'))->first();
         $dload = Dload::where('id_so','=',$req->input('id_so'))->get();
         foreach ($dload as $r) {
             $r->forceDelete();
         }
+
+        DeletionLog::create([
+            'table' => "Suratjalan Smart",
+            'deletion_id' => $sj->id_so,
+            'user' => $user->id,
+        ]);
+
         $sj->forceDelete();
+
+        
 
         return response()->json(['message' => 'berhasil menghapus data.'], 200);
     }
