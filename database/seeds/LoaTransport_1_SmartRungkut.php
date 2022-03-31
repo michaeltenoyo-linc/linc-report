@@ -35,7 +35,7 @@ class LoaTransport_1_SmartRungkut extends Seeder
         ]);
 
         //CDE
-        $csvFile = fopen(base_path("reference/loa/transport/smart-rungkut-cde-1.csv"),"r");
+        $csvFile = fopen(base_path("reference/loa/transport/1-smart-rungkut-cde.csv"),"r");
         
         $firstline = true;
         
@@ -63,7 +63,7 @@ class LoaTransport_1_SmartRungkut extends Seeder
         fclose($csvFile);
 
         //CDD
-        $csvFile = fopen(base_path("reference/loa/transport/smart-rungkut-cdd-1.csv"),"r");
+        $csvFile = fopen(base_path("reference/loa/transport/1-smart-rungkut-cdd.csv"),"r");
         
         $firstline = true;
         
@@ -91,7 +91,7 @@ class LoaTransport_1_SmartRungkut extends Seeder
         fclose($csvFile);
 
         //FUSO
-        $csvFile = fopen(base_path("reference/loa/transport/smart-rungkut-fuso-1.csv"),"r");
+        $csvFile = fopen(base_path("reference/loa/transport/1-smart-rungkut-fuso.csv"),"r");
         
         $firstline = true;
         
@@ -119,7 +119,7 @@ class LoaTransport_1_SmartRungkut extends Seeder
         fclose($csvFile);
 
         //Wingbox
-        $csvFile = fopen(base_path("reference/loa/transport/smart-rungkut-wingbox-1.csv"),"r");
+        $csvFile = fopen(base_path("reference/loa/transport/1-smart-rungkut-wingbox.csv"),"r");
         
         $firstline = true;
         

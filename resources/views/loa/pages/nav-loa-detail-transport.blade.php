@@ -36,8 +36,8 @@ Linc | List LOA
             </div>
         </div>
         <!-- INPUT RUTE BARU -->
-        <div class="relative p-8 ">
-            <form id="form-dloa-transport" autocomplete="off" enctype="multipart/form-data">
+        <div class="relative p-8">
+            <form id="form-dloa-transport" class="hidden" autocomplete="off" enctype="multipart/form-data">
                 <input type="hidden" class="ctrOtherName" name="ctrOtherName" value="0">
                 <input type="hidden" name="ctrOtherRate" class="ctrOtherRate" value="0">
                 <input type="hidden" name="id_loa" class="input-id-loa" value="{{ $loa->id }}">
@@ -123,7 +123,6 @@ Linc | List LOA
                     </div>
                 </div>
             </form>
-        </div>
         <!-- END RUTE BARU -->
 
         <div class="flex flex-nowrap p-8 text-center">

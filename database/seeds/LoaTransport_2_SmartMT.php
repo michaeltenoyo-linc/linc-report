@@ -35,7 +35,7 @@ class LoaTransport_2_SmartMT extends Seeder
         ]);
 
         //FUSO dan WB
-        $csvFile = fopen(base_path("reference/loa/transport/smart-mt-2.csv"),"r");
+        $csvFile = fopen(base_path("reference/loa/transport/2-smart-mt.csv"),"r");
         
         $firstline = true;
         

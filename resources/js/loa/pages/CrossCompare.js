@@ -1,5 +1,6 @@
 import Swal from 'sweetalert2';
 import Snackbar from 'node-snackbar';
+import { isUndefined } from 'lodash';
 
 export const CrossCompareLoa = () => {
     console.log("loading CrossCompareLoa JS");
@@ -75,17 +76,25 @@ export const CrossCompareLoa = () => {
                     $('#content-crossfixing-diff').empty();
 
                     //Appending Values
-                    for (let i = 0; i < data['warning_blujay'].length; i++) {
-                        const blujay = data['warning_blujay'][i];
-                        const local = data['warning_local'][i];
-
-                        const row1 = '<td class="p-2 whitespace-nowrap text-left">'+blujay['id']+'</td>';
-                        const row2 = '<td class="p-2 whitespace-nowrap text-left">'+blujay['origin_location']+'</td>';
-                        const row3 = '<td class="p-2 whitespace-nowrap text-left">'+blujay['destination_location']+'</td>';
-                        const row4 = '<td class="p-2 whitespace-nowrap text-left">'+blujay['sku']+'</td>';
-                        const row5 = '<td class="p-2 whitespace-nowrap text-left">'+blujay['rate']+' / '+local['rate']+'</td>';
-                        const row6 = '<td class="p-2 whitespace-nowrap text-left"><button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">Detail</button></td>';
-                        $('#content-crossfixing-diff').append('<tr>'+row1+row2+row3+row4+row5+row6+'</tr>');                        
+                    if(data['warning_bluay']){
+                        for (let i = 0; i < data['warning_blujay'].length; i++) {
+                            const blujay = data['warning_blujay'][i];
+                            const local = data['warning_local'][i];
+    
+                            const row1 = '<td class="p-2 whitespace-nowrap text-left">'+blujay['id']+'</td>';
+                            const row2 = '<td class="p-2 whitespace-nowrap text-left">'+blujay['origin_location']+'</td>';
+                            const row3 = '<td class="p-2 whitespace-nowrap text-left">'+blujay['destination_location']+'</td>';
+                            const row4 = '<td class="p-2 whitespace-nowrap text-left">'+blujay['sku']+'</td>';
+                            const row5 = '<td class="p-2 whitespace-nowrap text-left">'+blujay['rate']+' / '+local['rate']+'</td>';
+                            const row6 = '<td class="p-2 whitespace-nowrap text-left"><button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">Detail</button></td>';
+                            $('#content-crossfixing-diff').append('<tr>'+row1+row2+row3+row4+row5+row6+'</tr>');                        
+                        }
+                    }else{
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Oops...',
+                            text: "Tidak ada perbedaan/kesalahan harga LOA",
+                        })
                     }
                 },
                 error : function(request, status, error){
