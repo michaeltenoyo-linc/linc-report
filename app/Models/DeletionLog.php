@@ -10,7 +10,7 @@ class DeletionLog extends Model
     public $incrementing = true;
     protected $fillable = [
         'table',
-        'delete_id',
+        'deletion_id',
         'user'
     ];
 }
