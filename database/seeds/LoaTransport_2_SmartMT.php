@@ -25,12 +25,12 @@ class LoaTransport_2_SmartMT extends Seeder
      */
     public function run()
     {
-        // [2] SMART MT : 01/04/2021 - 31-03-2022
+        // [2] SMART MT : 01/04/2022 - 31-03-2023
         Loa_transport::create([
             'customer' => "SMART MT",
             'cross_customer_reference' => "3000005193",
-            'periode_start' => Carbon::create('2021','04','01'),
-            'periode_end' => Carbon::create('2022','03','31'),
+            'periode_start' => Carbon::create('2022','04','01'),
+            'periode_end' => Carbon::create('2023','03','31'),
             'files' => "loa_transport_2.xlxs;"
         ]);
 

@@ -32,7 +32,7 @@ class BillableBlujaySeeder extends Seeder
         BillableBlujay::truncate();
 
         //FUSO dan WB
-        $csvFile = fopen(base_path("reference/loa/kirim_exim_transport_blujay_05012022.csv"),"r");
+        $csvFile = fopen(base_path("reference/loa/kirim_exim_transport_blujay_20220401.csv"),"r");
 
         $firstline = true;
 
