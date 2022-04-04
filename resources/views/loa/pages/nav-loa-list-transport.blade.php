@@ -15,7 +15,7 @@ Linc | List LOA Transport
             <div class="flex flex-wrap items-center">
                 <div class="relative w-full px-4 max-w-full flex-grow flex-1">
                     <h3 class="font-semibold text-lg text-blueGray-700">
-                        Letter of Agreement - WAREHOUSE
+                        Letter of Agreement - TRANSPORT
                     </h3>
                 </div>
             </div>
@@ -24,25 +24,7 @@ Linc | List LOA Transport
             <div class="w-full">
                 <div class="w-full lg:w-12/12 px-4 mb-8">
                     <div class="relative w-full mb-3">
-                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                            htmlFor="name"> Customer </label>
-                        <input type="text"
-                            name="customer"
-                            class="input-customer border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                            value=""
-                            list="transport-customers"/>
-
-                        <datalist id="transport-customers">
-                            @foreach ( $transport_cust as $c)
-                                <option value="{{ $c->customer }}"></option>
-                            @endforeach
-                        </datalist>
-                    </div>
-                </div>
-
-                <div class="w-full lg:w-12/12 px-4 mb-8">
-                    <div class="relative w-full mb-3">
-                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                        <label class="block-inline uppercase text-blueGray-600 pr-4 font-bold mb-2"
                             htmlFor="grid-password">Periode Aktif</label>
                         <input type="checkbox" name="aktif" class="" checked>
                     </div>
@@ -53,8 +35,8 @@ Linc | List LOA Transport
                 </div>
 
                 <!-- LIST TABEL LOA -->
-                <div class="block w-full lg:w-12/12 px-4 mb-8 overflow-x-auto">
-                    <div class="w-full mb-3 flex flex-auto">
+                <div class="block w-full lg:w-12/12 px-4 mb-8">
+                    <div class="w-full mb-3">
                         <table id="yajra-datatable-transport-list" class="items-center w-full bg-transparent border-collapse yajra-datatable-transport-list">
                             <thead>
                               <tr>

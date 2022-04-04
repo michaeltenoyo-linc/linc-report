@@ -25,6 +25,7 @@ class LoaTransport_2_SmartMT extends Seeder
      */
     public function run()
     {
+        error_log("[2] LOA : Smart MT");
         // [2] SMART MT : 01/04/2022 - 31-03-2023
         Loa_transport::create([
             'customer' => "SMART MT",

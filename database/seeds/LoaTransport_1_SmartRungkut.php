@@ -25,6 +25,7 @@ class LoaTransport_1_SmartRungkut extends Seeder
      */
     public function run()
     {
+        error_log("[1] LOA : Smart Rungkut");
         // [1] SMARTRUNGKUT : 01/04/2022 - 31-03-2023
         Loa_transport::create([
             'customer' => "SMART RUNGKUT",
