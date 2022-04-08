@@ -155,6 +155,7 @@ Route::middleware(['auth','priviledge:ltl,master'])->group(function () {
     });
 });
 
+//Greenfields
 Route::middleware(['auth','priviledge:gfs,master'])->group(function () {
     //GREENFIELDS
     Route::prefix('/greenfields')->group(function () {
@@ -191,6 +192,7 @@ Route::middleware(['auth','priviledge:gfs,master'])->group(function () {
     });
 });
 
+//LOA
 Route::middleware(['auth','priviledge:loa,master'])->group(function () {
     //LOA
     Route::prefix('/loa')->group(function (){
@@ -226,6 +228,7 @@ Route::middleware(['auth','priviledge:loa,master'])->group(function () {
             Route::get('/read',[LoaViewController::class, 'getTransportData']);
             Route::get('/detail/{id}',[LoaTransportController::class, 'gotoDetailTransport']);
             Route::get('/dloa/{id}', [LoaTransportController::class, 'getDetailLoa']);
+            Route::get('/dloa-local/{id}', [LoaTransportController::class, 'getDetailLoaLocal']);
             Route::get('/local-info/{customer}/{route_start}/{route_end}', [LoaViewController::class, 'getLocalData']);
         });
 

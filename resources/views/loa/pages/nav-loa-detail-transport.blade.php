@@ -206,3 +206,5 @@ Linc | List LOA
 @endfor
 @endsection
 
+
+@include('loa.modals.loa-transport-modal-local')

@@ -21,7 +21,7 @@ export const TransportModal = () => {
         return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
     }
 
-    $(document).on('click', '#transport-open-detail', function(e){
+    $(document).on('click', '#transport-local-detail', function(e){
         e.preventDefault();
 
         console.log("Open Modal");
@@ -36,16 +36,62 @@ export const TransportModal = () => {
             dataType: 'JSON',
         });
         $.ajax({
-            url: '/loa/action/transport/dloa/'+$(this).val(),
+            url: '/loa/action/transport/dloa-local/'+$(this).val(),
             type: 'GET',
             enctype: 'multipart/form-data',
             success: (data) => {
-                console.log(data['data']);
+                console.log(data);
                 let info = data['data'];
                 let loa = data['loa'];
+                
+                //Location Information
+                $('#loa-transport-modal-local .origin').html(loa['rute_start']);
+                $('#loa-transport-modal-local .destination').html(loa['rute_end']);
 
-                $('#loa-transport-modal .content-transport-detail').empty();
-                $('#loa-transport-modal .content-transport-detail').append('<tr><td class="font-bold p-2 whitespace-nowrap text-left">Rate</td><td class="p-2 whitespace-nowrap text-left">Rp. '+loa['rate']+'</td></tr>');
+                switch (loa['rute_start_cross_relation']) {
+                    case "province":
+                        $('#loa-transport-modal-local .origin_type').html('Prov.');
+                        $('#loa-transport-modal-local .origin_type').addClass('bg-blue-700');
+                        break;
+                    case "regency":
+                        $('#loa-transport-modal-local .origin_type').html('Kota');
+                        $('#loa-transport-modal-local .origin_type').addClass('bg-green-700');
+                        break;
+                    case "district":
+                        $('#loa-transport-modal-local .origin_type').html('Kec.');
+                        $('#loa-transport-modal-local .origin_type').addClass('bg-orange-700');
+                        break;
+                    case "urban":
+                        $('#loa-transport-modal-local .origin_type').html('Kel.');
+                        $('#loa-transport-modal-local .origin_type').addClass('bg-red-700');
+                        break;
+                    default:
+                        break;
+                }
+
+                switch (loa['rute_end_cross_relation']) {
+                    case "province":
+                        $('#loa-transport-modal-local .destination_type').html('Prov.');
+                        $('#loa-transport-modal-local .destination_type').addClass('bg-blue-700');
+                        break;
+                    case "regency":
+                        $('#loa-transport-modal-local .destination_type').html('Kota');
+                        $('#loa-transport-modal-local .destination_type').addClass('bg-green-700');                        
+                        break;
+                    case "district":
+                        $('#loa-transport-modal-local .destination_type').html('Kec.');
+                        $('#loa-transport-modal-local .destination_type').addClass('bg-orange-700');
+                        break;
+                    case "urban":
+                        $('#loa-transport-modal-local .destination_type').html('Kel.');
+                        $('#loa-transport-modal-local .destination_type').addClass('bg-red-700');
+                        break;
+                    default:
+                        break;
+                }
+
+                $('#loa-transport-modal-local .content-transport-detail').empty();
+                $('#loa-transport-modal-local .content-transport-detail').append('<tr><td class="font-bold p-2 whitespace-nowrap text-left">Base Rate</td><td class="p-2 whitespace-nowrap text-left">Rp. '+loa['rate']+'</td></tr>');
 
                 //Update table content
                 /*
@@ -78,7 +124,7 @@ export const TransportModal = () => {
                 */
 
                 //Button HREF
-                $('#loa-transport-modal .btn-goto-loa').attr('href',"/loa/action/transport/detail/"+loa['id']);
+                $('#loa-transport-modal-local .btn-goto-loa').attr('href',"/loa/action/transport/detail/"+loa['id']);
             },
             error : function(request, status, error){
                 Swal.fire({
@@ -89,6 +135,6 @@ export const TransportModal = () => {
             },
         });
 
-        $('#loa-transport-modal .modal').removeClass('hidden');
+        $('#loa-transport-modal-local .modal').removeClass('hidden');
     });
 }

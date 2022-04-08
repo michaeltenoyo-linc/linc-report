@@ -45,6 +45,7 @@ export const TransportBlujayModal = () => {
                 let loa = data['loa'];
                 
                 //Location Information
+                $('#loa-transport-modal-blujay .loa_date').html("["+loa['effective_date']+"] sampai ["+loa['expiration_date']+"]");
                 $('#loa-transport-modal-blujay .origin_province').html(loa['origin_province']);
                 $('#loa-transport-modal-blujay .origin_regency').html(loa['origin_city']);
                 $('#loa-transport-modal-blujay .origin_district').html(loa['origin_district']);

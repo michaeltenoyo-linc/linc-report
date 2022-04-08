@@ -97,7 +97,7 @@ class TransportController extends BaseController
 
         return DataTables::of($data)
             ->addColumn('action', function($row){
-                $open = '<a class="inline-flex" href="'.url('/loa/action/transport/detail/'.$row->id).'"><button class="btn_yellow">Open</button></a>';
+                $open = '<button id="transport-local-detail" class="btn_yellow" value="'.$row->id.'">Detail</button>';
                 $btn = $open.'<form id="btn-transport-delete" class="inline-flex"><input name="id" type="hidden" value="'.$row->id.'"><button type="submit" class="btn_red">Delete</button></form>';
                 return $btn;
             })
@@ -469,6 +469,15 @@ class TransportController extends BaseController
         //$dloa = dloa_transport::where('id',$id)->first();
         //$loa = Loa_transport::where('id',$dloa->id_loa)->first();
         $loa = BillableBlujay::where('id', $id)->first();
+        $loa->rate = number_format($loa->rate, 2, ',', '.');
+
+        return response()->json(['loa' => $loa], 200);
+    }
+
+    public function getDetailLoaLocal(Request $req, $id){
+        //$dloa = dloa_transport::where('id',$id)->first();
+        //$loa = Loa_transport::where('id',$dloa->id_loa)->first();
+        $loa = dloa_transport::where('id', $id)->first();
         $loa->rate = number_format($loa->rate, 2, ',', '.');
 
         return response()->json(['loa' => $loa], 200);
