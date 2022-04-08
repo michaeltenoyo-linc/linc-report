@@ -34,10 +34,109 @@ class LoaTransport_3_LTL extends Seeder
             'files' => "LTL TRUCKING.xlxs;"
         ]);
 
-        //ALL
+        //ALL MARGOMULYO REGULER
         
         error_log("[3] LOA : Lautan Luas Margomulyo Reguler");
         $csvFile = fopen(base_path("reference/loa/transport/3-ltl-margomulyo-reguler.csv"),"r");
+        
+        $firstline = true;
+        
+        while(($data = fgetcsv($csvFile, 5000, ';','"')) != FALSE){
+            if (!$firstline){
+                //L-300
+                dloa_transport::create([
+                    'id_loa' => 3,
+                    'unit' => 'L-300',
+                    'kapasitas' => $data['1'],
+                    'rute_start_cross_relation' => 'district',
+                    'rute_end_cross_relation' => 'district',
+                    'rute_start' => $data['2'],
+                    'rute_end' => $data['3'],
+                    'rate' => $data['4'],
+                    'multidrop' => 0,
+                    'overnight' => 0,
+                    'loading' => 0,
+                    'otherName' => '',
+                    'otherRate' => ''
+                ]);
+
+                //CDE
+                dloa_transport::create([
+                    'id_loa' => 3,
+                    'unit' => 'CDE',
+                    'kapasitas' => $data['1'],
+                    'rute_start_cross_relation' => 'district',
+                    'rute_end_cross_relation' => 'district',
+                    'rute_start' => $data['2'],
+                    'rute_end' => $data['3'],
+                    'rate' => $data['5'],
+                    'multidrop' => 0,
+                    'overnight' => 0,
+                    'loading' => 0,
+                    'otherName' => '',
+                    'otherRate' => ''
+                ]);
+
+                //CDD
+                dloa_transport::create([
+                    'id_loa' => 3,
+                    'unit' => 'CDD',
+                    'kapasitas' => $data['1'],
+                    'rute_start_cross_relation' => 'district',
+                    'rute_end_cross_relation' => 'district',
+                    'rute_start' => $data['2'],
+                    'rute_end' => $data['3'],
+                    'rate' => $data['6'],
+                    'multidrop' => 0,
+                    'overnight' => 0,
+                    'loading' => 0,
+                    'otherName' => '',
+                    'otherRate' => ''
+                ]);
+
+                //Fuso Engkel
+                dloa_transport::create([
+                    'id_loa' => 3,
+                    'unit' => 'Fuso Engkel',
+                    'kapasitas' => $data['1'],
+                    'rute_start_cross_relation' => 'district',
+                    'rute_end_cross_relation' => 'district',
+                    'rute_start' => $data['2'],
+                    'rute_end' => $data['3'],
+                    'rate' => $data['7'],
+                    'multidrop' => 0,
+                    'overnight' => 0,
+                    'loading' => 0,
+                    'otherName' => '',
+                    'otherRate' => ''
+                ]);
+
+                //Tronton
+                dloa_transport::create([
+                    'id_loa' => 3,
+                    'unit' => 'Tronton',
+                    'kapasitas' => $data['1'],
+                    'rute_start_cross_relation' => 'district',
+                    'rute_end_cross_relation' => 'district',
+                    'rute_start' => $data['2'],
+                    'rute_end' => $data['3'],
+                    'rate' => $data['8'],
+                    'multidrop' => 0,
+                    'overnight' => 0,
+                    'loading' => 0,
+                    'otherName' => '',
+                    'otherRate' => ''
+                ]);
+            }
+            $firstline = false;
+        }
+
+        fclose($csvFile);
+
+        //ALL VETERAN REGULER
+        
+        error_log("[3] LOA : Lautan Luas Veteran Reguler");
+        $csvFile = fopen(base_path("reference/loa/transport/3-ltl-veteran-reguler.csv"),"r");
         
         $firstline = true;
         

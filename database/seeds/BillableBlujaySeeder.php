@@ -87,7 +87,7 @@ class BillableBlujaySeeder extends Seeder
                         'no_intermediate_stop'=> $data['11'],
                         'basis'=> $data['12'],
                         'sku'=> $data['13'],
-                        'rate'=> round(floatval($data['14']),2),
+                        'rate'=> round(floatval(str_replace(',','',$data['14'])),2),
                         'currency'=> $data['15'],
                         'effective_date'=> Carbon::createFromFormat('d/m/Y', $data['16']),
                         'expiration_date'=> Carbon::createFromFormat('d/m/Y', $data['17']),
