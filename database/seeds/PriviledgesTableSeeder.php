@@ -42,7 +42,7 @@ class PriviledgesTableSeeder extends Seeder
             ],
             [
                 'user_id' => 4,
-                'priviledge' => 'smart;ltl;gfs',
+                'priviledge' => 'smart;ltl;gfs;loa',
             ],
             [
                 'user_id' => 5,
