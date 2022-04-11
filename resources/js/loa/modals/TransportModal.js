@@ -1,4 +1,4 @@
-import { toInteger } from 'lodash';
+import { split, toInteger } from 'lodash';
 import { disableElement } from '../../utilities/helpers';
 import Snackbar from 'node-snackbar';
 import Swal from 'sweetalert2';
@@ -44,6 +44,9 @@ export const TransportModal = () => {
                 let info = data['data'];
                 let loa = data['loa'];
                 
+                //Periode
+                $('#loa-transport-modal-local .loa_date').html($('#transport-loa-periode'));
+
                 //Location Information
                 $('#loa-transport-modal-local .origin').html(loa['rute_start']);
                 $('#loa-transport-modal-local .destination').html(loa['rute_end']);
@@ -90,8 +93,27 @@ export const TransportModal = () => {
                         break;
                 }
 
+                
+                //Rates
                 $('#loa-transport-modal-local .content-transport-detail').empty();
                 $('#loa-transport-modal-local .content-transport-detail').append('<tr><td class="font-bold p-2 whitespace-nowrap text-left">Base Rate</td><td class="p-2 whitespace-nowrap text-left">Rp. '+loa['rate']+'</td></tr>');
+                //Addcost
+                let addcostName = split(loa['otherName'], ';');
+                let addcostRate = split(loa['otherRate'], ';');
+                for (let i = 0; i < addcostName.length; i++) {
+                    const add_name = addcostName[i];
+                    const add_rate = addcostRate[i];
+
+                    if(add_name != "" && add_name != undefined){
+                        $('#loa-transport-modal-local .content-transport-detail').append('<tr><td class="font-bold p-2 whitespace-nowrap text-left">'+add_name+'</td><td class="p-2 whitespace-nowrap text-left">Rp. '+add_rate+'</td></tr>');
+                    }     
+                }
+
+
+
+                
+                
+
 
                 //Update table content
                 /*

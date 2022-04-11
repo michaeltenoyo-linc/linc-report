@@ -25,7 +25,7 @@ Linc | List LOA
                 <h1 class="font-bold text-lg text-black uppercase">
                     {{ $loa->customer }}
                 </h1>
-                <h1 class="text-lg text-black uppercase">
+                <h1 id="transport-loa-periode" class="text-lg text-black uppercase">
                     ({{ $periode }})
                 </h1>
             </div>

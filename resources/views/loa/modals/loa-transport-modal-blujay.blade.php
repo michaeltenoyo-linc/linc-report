@@ -16,7 +16,6 @@
                 <div><b class="bg-orange-700 text-white p-1">Kec.</b> <span class="origin_district"></div>
                 <div><b class="bg-orange-700 text-white p-1">Kec.</b> <span class="destination_district"></span></div>
                 <div><b class="bg-red-700 text-white p-1">Kel.</b> <span class="origin_urban"></div>
-                <div><b class="bg-red-700 text-white p-1">Kel.</b> <span class="origin_urban"></div>
                 <div><b class="bg-red-700 text-white p-1">Kel.</b> <span class="destination_urban"></span></div>
             </div>
             <div class="w-full lg:w-12/12 px-4">

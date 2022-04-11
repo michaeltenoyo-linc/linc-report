@@ -26,7 +26,7 @@
                           </tr>
                         </thead>
                         <tbody class="content-transport-detail">
-
+                            
                         </tbody>
                     </table>
                 </div>

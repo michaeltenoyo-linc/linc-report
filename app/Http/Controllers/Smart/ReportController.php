@@ -125,6 +125,7 @@ class ReportController extends BaseController
                                     $reports->push([
                                         'No' => $ctr,
                                         'Load ID' => $row->tms_id,
+                                        'Customer Type' => $sj->customer_type,
                                         'Tgl Muat' => Carbon::parse($sj->tgl_terima)->format('d-M-Y'),
                                         'No SJ' => $splitID[0],
                                         'No DO' => (isset($splitID[1])?$splitID[1]:""),
@@ -155,6 +156,7 @@ class ReportController extends BaseController
                                     $reports->push([
                                         'No' => " ",
                                         'Load ID' => " ",
+                                        'Customer Type' => " ",
                                         'Tgl Muat' => " ",
                                         'No SJ' => " ",
                                         'No DO' => " ",
@@ -188,6 +190,7 @@ class ReportController extends BaseController
                     $reports->push([
                         'No' => " ",
                         'Load ID' => " ",
+                        'Customer Type' => " ",
                         'Tgl Muat' => " ",
                         'No SJ' => " ",
                         'No DO' => " ",

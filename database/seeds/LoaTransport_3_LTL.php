@@ -29,8 +29,8 @@ class LoaTransport_3_LTL extends Seeder
         Loa_transport::create([
             'customer' => "Lautan Luas (LTL)",
             'cross_customer_reference' => "8000000010",
-            'periode_start' => Carbon::create('2022','04','01'),
-            'periode_end' => Carbon::create('2023','03','31'),
+            'periode_start' => Carbon::create('2020','05','01'),
+            'periode_end' => Carbon::create('2023','06','09'),
             'files' => "LTL TRUCKING.xlxs;"
         ]);
 
