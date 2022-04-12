@@ -31,7 +31,7 @@ class LoaTransport_3_LTL extends Seeder
             'cross_customer_reference' => "8000000010",
             'periode_start' => Carbon::create('2020','05','01'),
             'periode_end' => Carbon::create('2023','06','09'),
-            'files' => "LTL TRUCKING.xlxs;"
+            'files' => "3-1-LTL Trucking List.xls"
         ]);
 
         //ALL MARGOMULYO REGULER

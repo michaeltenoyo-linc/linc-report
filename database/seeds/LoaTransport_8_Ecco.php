@@ -14,7 +14,7 @@ use AzisHapidin\IndoRegion\RawDataGetter;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class LoaTransport_5_GCM extends Seeder
+class LoaTransport_8_Ecco extends Seeder
 {
     /**
      * Run the database seeds.
@@ -27,16 +27,16 @@ class LoaTransport_5_GCM extends Seeder
     {
         // [3] Lautan Luas : 01/06/2020 - 31-12-2029
         Loa_transport::create([
-            'customer' => "PT. GCM MARKETING SOLUTIONS INDONESIA",
-            'cross_customer_reference' => "3000019518",
-            'periode_start' => Carbon::create('2020','06','01'),
-            'periode_end' => Carbon::create('2028','08','02'),
-            'files' => "5-1-Quotation to GCM April 20.pdf"
+            'customer' => "ECCO TANNERY INDONESIA",
+            'cross_customer_reference' => "3000001618",
+            'periode_start' => Carbon::create('2020','05','01'),
+            'periode_end' => Carbon::create('2029','12','31'),
+            'files' => "8-1-Quotation All Unit 2021.pdf"
         ]);
 
         //ALL MARGOMULYO REGULER
         
-        error_log("[5] GCM Marketing");
+        error_log("[8] Ecco Tanery");
 
         //DLOA Excel -- Use this to add specific routes information
         /*

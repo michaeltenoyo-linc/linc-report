@@ -32,7 +32,7 @@ class LoaTransport_1_SmartRungkut extends Seeder
             'cross_customer_reference' => "3000005193",
             'periode_start' => Carbon::create('2022','04','01'),
             'periode_end' => Carbon::create('2023','03','31'),
-            'files' => "loa_transport_1.xlxs;"
+            'files' => "1-1-SMART Trucking List.xlsx"
         ]);
 
         //CDE

@@ -20,6 +20,13 @@ class LoaTransport_0_RefreshAll extends Seeder
             LoaTransport_1_SmartRungkut::class,
             LoaTransport_2_SmartMT::class,
             LoaTransport_3_LTL::class,
+            LoaTransport_4_GFS::class,
+            LoaTransport_5_GCM::class,
+            LoaTransport_6_Sosro::class,
+            LoaTransport_7_WaruGunung::class,
+            LoaTransport_8_Ecco::class,
+            LoaTransport_9_MAL::class,
+            LoaTransport_10_LTG::class,
         ]);
     }
 }

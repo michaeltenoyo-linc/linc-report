@@ -32,7 +32,7 @@ class LoaTransport_2_SmartMT extends Seeder
             'cross_customer_reference' => "3000005193",
             'periode_start' => Carbon::create('2022','04','01'),
             'periode_end' => Carbon::create('2023','03','31'),
-            'files' => "loa_transport_2.xlxs;"
+            'files' => "2-1-SMART MT List.xlsx"
         ]);
 
         //FUSO dan WB

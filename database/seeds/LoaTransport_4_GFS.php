@@ -14,7 +14,7 @@ use AzisHapidin\IndoRegion\RawDataGetter;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class LoaTransport_3_LTL extends Seeder
+class LoaTransport_4_GFS extends Seeder
 {
     /**
      * Run the database seeds.
@@ -31,12 +31,12 @@ class LoaTransport_3_LTL extends Seeder
             'cross_customer_reference' => "3000016749",
             'periode_start' => Carbon::create('2020','06','01'),
             'periode_end' => Carbon::create('2029','12','31'),
-            'files' => "4-1-Quotation Wingbox Sumatra.pdf;4-2-Quotation Wingbox Jawa.pdf;4-3-Rate Jambi.jpg;4-4-Quotation CDD.pdf;4-5-Proposal.pdf;"
+            'files' => "4-1-Quotation Wingbox Sumatra.pdf;4-2-Quotation Wingbox Jawa.pdf;4-3-Rate Jambi.png;4-4-Quotation CDD.pdf;4-5-Proposal.pdf;"
         ]);
 
         //ALL MARGOMULYO REGULER
         
-        error_log("[3] GFS : Greenfields");
+        error_log("[4] GFS : Greenfields");
 
         //DLOA Excel -- Use this to add specific routes information
         /*
