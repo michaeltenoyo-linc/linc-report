@@ -6,6 +6,9 @@ Linc | List LOA
 
 @section('header')
 @include('loa.components.header_no_login')
+<style>
+    
+</style>
 @endsection
 
 @section('content')
@@ -161,12 +164,15 @@ Linc | List LOA
         </div>
 
         <!-- FILES AREA -->
-        <div class="flex flex-nowrap p-4 text-center">
-        @for ($i=0; $i<$filesCount; $i++)
-            <div class="inline-block w-full lg:w-2/12 px-4">
-                <button value="{{$i}}" class="btn-nav-files bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">FILES {{ $i+1 }}</button>
+        <div class="w-full p-8 text-center border">
+            <div class="w-full p-8 font-bold text-lg">
+                Files LOA
             </div>
-        @endfor
+            <div class="grid grid-cols-4 gap-4">
+                @for ($i=0; $i<$filesCount; $i++)
+                    <button value="{{$i}}" class="btn-nav-files bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{{ $i+1 }} : {{ explode('.',explode('-',$files[$i])[2])[0] }}</button>
+                @endfor
+            </div>
         </div>
         
         <!-- FILES CONTAINER -->
@@ -178,19 +184,20 @@ Linc | List LOA
                     </div>
                 </div>
             @elseif ($filesFormat[$i] == "png")
-                <div class="files files-{{$i}} flex flex-nowrap py-8 px-4 text-center hidden">
+                <div class="files files-{{$i}} flex flex-nowrap py-8 px-4 object-center hidden">
                     <!--IMAGE EMBED GOES HERE-->
-                    <img id="img-viewer-{{$i}}" src="{{ route('show-png', ['filename' => $files[$i], 'content_path' => 'loa_warehouse']) }}" alt="image not found." class="w-full lg:w-12/12 px-4">
+                    <img id="img-viewer-{{$i}}" src="{{ route('show-png', ['filename' => $files[$i], 'content_path' => 'loa_transport']) }}" alt="image not found." class="w-1/2 px-4 rounded-lg image-loa">
                 </div>
-            @elseif ($filesFormat[$i] == "xlxs")
+            @elseif ($filesFormat[$i] == "xlsx")
                 <div class="files files-{{$i}} py-8 px-4 text-center hidden">
                     <h1 style="color:red;" class="w-full">*Sorry, browser is not supported to show excel's file.</h1>
                     <h3 style="color:red;" class="w-full mb-4">IF YOU WANT TO SEE PLEASE DOWNLOAD THE FILE BELOW.</h3>
                     <!--IMAGE EMBED GOES HERE-->
-                    <a target="_blank" href="{{ route('show-xlxs', ['filename' => $files[$i], 'content_path' => 'loa_warehouse']) }}"><button class="btn_yellow">Download</button></a>
+                    <a target="_blank" href="{{ route('show-xlxs', ['filename' => $files[$i], 'content_path' => 'loa_transport']) }}"><button class="btn_yellow">Download</button></a>
                 </div>
             @endif
         @endfor
+
     </div>
 </div>
 
@@ -200,7 +207,7 @@ Linc | List LOA
 @for($i=0; $i<$filesCount; $i++)
     @if ($filesFormat[$i] == "pdf")
         <script>
-            PDFObject.embed("{{ route('show-pdf', ['filename' => $files[$i], 'content_path' => 'loa_warehouse']) }}", "#pdf-viewer-{{$i}}");
+            PDFObject.embed("{{ route('show-pdf', ['filename' => $files[$i], 'content_path' => 'loa_transport']) }}", "#pdf-viewer-{{$i}}");
         </script>
     @endif
 @endfor
