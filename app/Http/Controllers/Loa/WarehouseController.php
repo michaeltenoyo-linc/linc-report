@@ -114,6 +114,16 @@ class WarehouseController extends BaseController
         }
     }
 
+    public function prolongPeriod(Request $req){
+        $loa = Loa_warehouse::where('id',$req->input('id'))->first();
+
+        $end = Carbon::createFromFormat('Y-m-d',$loa->periode_end)->addYear();
+        $loa->periode_end = $end;
+        $loa->save();
+
+        return response()->json(['message' => 'success'],200);
+    }
+
     public function gotoDetailWarehouse(Request $req, $id){
         $data['loa'] = Loa_warehouse::find($id);
         $start = Carbon::createFromFormat('Y-m-d',$data['loa']->periode_start)->format("d/m/Y");
@@ -126,6 +136,7 @@ class WarehouseController extends BaseController
         $rateUom = [];
 
         $splitUom = explode(';',$data['loa']->uom);
+        $data['uom'] = $splitUom;
         $splitOtherName = explode(';',$data['loa']->other_name);
         $splitOtherRate = explode(';',$data['loa']->other_rate);
 

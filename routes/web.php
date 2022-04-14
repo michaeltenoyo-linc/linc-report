@@ -215,6 +215,9 @@ Route::middleware(['auth','priviledge:loa,master'])->group(function () {
             Route::get('/list',[LoaViewController::class, 'gotoListWarehouse']);
             Route::get('/read',[LoaViewController::class, 'getWarehouseData']);
             Route::get('/detail/{id}',[LoaWarehouseController::class, 'gotoDetailWarehouse']);
+
+            //Action
+            Route::post('/prolong-period',[LoaWarehouseController::class, 'prolongPeriod']);
         });
 
         Route::prefix('/action/transport')->group(function (){
