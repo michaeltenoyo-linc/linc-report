@@ -41,7 +41,7 @@ class ReportController extends BaseController
 
         //Baru pake local BLUJAY
         $listSJ = Suratjalan_ltl::whereBetween('delivery_date', [$req->input('startDate'),$req->input('endDate')])
-                                    ->get();
+                                    ->orderBy('delivery_date','asc')->get();
         
         $listLoadId = [];
         foreach ($listSJ as $sj) {
@@ -94,7 +94,7 @@ class ReportController extends BaseController
                                 'Total' => number_format($totalPay,2,'.',','),
                                 'Rate / Kg' => number_format($rateKG,2,'.',','),
                                 'Invoice To LTL' => number_format($rateKG*$sj->total_weightSO),
-                                'Remarks' => ""
+                                'Remarks' => $sj->note,
                             ]);
                             $ctr++;
                             $firstSJ = false;
@@ -116,7 +116,7 @@ class ReportController extends BaseController
                                 'Total' => number_format($totalPay,2,'.',','),
                                 'Rate / Kg' => number_format($rateKG,2,'.',','),
                                 'Invoice To LTL' => number_format($rateKG*$sj->total_weightSO),
-                                'Remarks' => ""
+                                'Remarks' => $sj->note,
                             ]);
                             $ctr++;
                         }
