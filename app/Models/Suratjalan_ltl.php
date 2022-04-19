@@ -23,7 +23,8 @@ class Suratjalan_ltl extends Model
         'total_qtySO',
         'biaya_bongkar',
         'biaya_multidrop',
-        'delivery_date'
+        'delivery_date',
+        'note'
     ];
 
     protected function setKeysForSaveQuery(Builder $query)

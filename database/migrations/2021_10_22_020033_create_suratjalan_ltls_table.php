@@ -25,6 +25,7 @@ class CreateSuratjalanLtlsTable extends Migration
             $table->float('biaya_bongkar',12);
             $table->float('biaya_multidrop',12);
             $table->date('delivery_date');
+            $table->longText('note');
             $table->timestamps();
             $table->softDeletes();
         });

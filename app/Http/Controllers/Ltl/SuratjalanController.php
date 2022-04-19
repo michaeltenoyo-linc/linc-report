@@ -62,6 +62,7 @@ class SuratjalanController extends BaseController
             'biaya_bongkar' => $req->input('bongkar'),
             'biaya_multidrop' => $req->input('multidrop'),
             'delivery_date' => $req->input('tgl_kirim'),
+            'note' => $req->input('note'),
         ]);
 
         $data['message'] = "Data surat jalan sudah disimpan.";

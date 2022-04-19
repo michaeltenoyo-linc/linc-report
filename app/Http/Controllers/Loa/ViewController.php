@@ -103,9 +103,15 @@ class ViewController extends BaseController
                 return $start." - ".$end;
             })
             ->addColumn('action', function($row){
-                $open = '<a class="inline-flex" href="'.url('/loa/action/warehouse/detail/'.$row->id).'"><button class="btn_yellow">Open</button></a>';
-                $btn = $open.'<form id="btn-warehouse-delete" class="inline-flex"><input name="id" type="hidden" value="'.$row->id.'"><button type="submit" class="btn_red">Delete</button></form>';
-                return $btn;
+                if(Carbon::createFromFormat('Y-m-d',$row->periode_end)->isPast()){
+                    $btn = '<form id="btn-warehouse-expired" class="inline-flex"><input name="id" type="hidden" value="'.$row->id.'"><button type="submit" class="btn_red">Expired</button></form>';
+                    return $btn;
+                }else{
+                    $open = '<a class="inline-flex" href="'.url('/loa/action/warehouse/detail/'.$row->id).'"><button class="btn_yellow">Open</button></a>';
+                    $btn = $open.'<form id="btn-warehouse-delete" class="inline-flex"><input name="id" type="hidden" value="'.$row->id.'"><button type="submit" class="btn_red">Delete</button></form>';
+                    return $btn;
+                }
+                
             })
             ->make(true);
     }

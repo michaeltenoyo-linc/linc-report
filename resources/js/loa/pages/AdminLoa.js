@@ -60,6 +60,62 @@ export const AdminLoa = () => {
         });
     }
 
+    const onAddEditOtherRateLoa = () => {
+        $('#form-loa-edit .btn-tambahan').on('click', function(e){
+            e.preventDefault();
+
+            let ctrOtherName = parseInt($('#form-loa-edit .ctrOtherName').val());
+            let ctrOtherRate = parseInt($('#form-loa-edit .ctrOtherRate').val());
+            let ctrOtherUom = parseInt($('#form-loa-edit .ctrOtherUomWarehouse').val());
+
+            let htmlOtherName = '<div class="inline-block w-5/12 lg:w-5/12 px-4 mb-6" >'
+                                +'<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"'
+                                +'htmlFor="grid-password"> Nama Biaya </label>'
+                                +'<input type="text"'
+                                +'name="other_name['+ctrOtherName+']"'
+                                +'class="input-other-name-'+ctrOtherName+' border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "'
+                                +'value=""/>'
+                                +'</div>';
+
+            let htmlOtherRate = '<div class="inline-block w-3/12 lg:w-4/12 px-4 mb-6" >'
+                                +'<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"'
+                                +'htmlFor="grid-password"> Biaya </label>'
+                                +'<input type="text"'
+                                +'name="other_rate['+ctrOtherRate+']"'
+                                +'class="input-other-rate-'+ctrOtherRate+' border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "'
+                                +'value=""/>'
+                                +'</div>';
+
+            let htmlOtherUom = '<div class="inline-block w-full lg:w-2/12 px-4 mb-6" >'
+                                +'<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"'
+                                +'htmlFor="grid-password"> UoM </label>'
+                                +'<input type="text"'
+                                +'name="uom['+ctrOtherUom+']"'
+                                +'class="input-other-uom-'+ctrOtherUom+' border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "'
+                                +'value="" list="uom"/>'
+                                +'</div>';
+
+            let htmlOtherDelete = '<div class="inline-block w-full lg:w-1/12 px-4 mb-6" >'
+                                +'<button type="button"'
+                                +'id="btn-delete-other-rate" name="other_delete['+ctrOtherName+']"'
+                                +'class="input-other-delete-'+ctrOtherName+' bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded full"'
+                                +'value='+ctrOtherName+'>X</button>'
+                                +'</div>';
+
+            let newInputOther = "<div class='input-other-"+ctrOtherName+"'>"+htmlOtherName+htmlOtherRate+htmlOtherUom+htmlOtherDelete+"</div>"
+
+            ctrOtherName += 1;
+            ctrOtherRate += 1;
+            ctrOtherUom += 1;
+
+            $('#form-loa-edit .ctrOtherName').val(ctrOtherName);
+            $('#form-loa-edit .ctrOtherRate').val(ctrOtherRate);
+            $('#form-loa-edit .ctrOtherUomWarehouse').val(ctrOtherUom);
+
+            $('#form-loa-edit .other-rate-container').append(newInputOther);
+        });
+    }
+
     const onAddOtherRateDloaTransport = () => {
         $('#form-dloa-transport .btn-tambahan').on('click', function(e){
             e.preventDefault();
@@ -110,6 +166,15 @@ export const AdminLoa = () => {
 
             let idOtherRate = $(this).val();
             $('#form-loa-new .input-other-'+idOtherRate).remove();
+        });
+    }
+
+    const onDeleteEditOtherRate = () => {
+        $(document).on('click', '#btn-delete-other-rate', function(e){
+            e.preventDefault();
+
+            let idOtherRate = $(this).val();
+            $('#form-loa-edit .input-other-'+idOtherRate).remove();
         });
     }
 
@@ -480,17 +545,126 @@ export const AdminLoa = () => {
         });
     }
 
-    getTransportDetail();
-    DependentDropdown();
-    searchTransport();
-    filesNavigation();
-    getLoaWarehouse();
-    onDeleteOtherRate();
+    const onClickExpiredWarehouse = () => {
+        $(document).on('submit','#btn-warehouse-expired',function(e){
+            e.preventDefault();
+            
+            Swal.fire({
+                title: 'Expired',
+                text: "Apakah LOA akan diperpanjang 1 tahun ?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Perpanjang',
+                cancelButtonText: 'Delete',
+              }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        processData: false,
+                        contentType: false,
+                        dataType: 'JSON',
+                    });
+                    $.ajax({
+                        url: '/loa/action/warehouse/prolong-period',
+                        type: 'POST',
+                        enctype: 'multipart/form-data',
+                        data: new FormData($(this)[0]),
+                        success: (data) => {
+                            Swal.fire({
+                                title: 'Diperpanjang!',
+                                text: 'Data warehouse sudah diperpanjang.',
+                                icon: 'success'
+                            }).then(function(){
+                                location.reload();
+                            });
+                        },
+                        error : function(request, status, error){
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: (JSON.parse(request.responseText)).message,
+                            })
+                        },
+                    });
+                }else if(result.isDenied) {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        processData: false,
+                        contentType: false,
+                        dataType: 'JSON',
+                    });
+                    $.ajax({
+                        url: '/loa/action/warehouse/delete',
+                        type: 'POST',
+                        enctype: 'multipart/form-data',
+                        data: new FormData($(this)[0]),
+                        success: (data) => {
+                            Swal.fire({
+                                title: 'Dihapus!',
+                                text: 'Data warehouse sudah dihapus.',
+                                icon: 'success'
+                            }).then(function(){
+                                location.reload();
+                            });
+                        },
+                        error : function(request, status, error){
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: (JSON.parse(request.responseText)).message,
+                            })
+                        },
+                    });
+                }
+              })
+        });
+    }
+
+    const editNavigation = () => {
+        $('.btn-edit-addcost').on('click', function(e){
+            switch ($(this).val()) {
+                case "edit":
+                    $(this).val('display');
+                    $(this).html('Cancel');
+                    $('.detail-display').addClass('hidden');
+                    $('.detail-edit').removeClass('hidden');
+                    break;
+                case "display":
+                    $(this).val('edit');
+                    $(this).html('Edit Detail');
+                    $('.detail-display').removeClass('hidden');
+                    $('.detail-edit').addClass('hidden');
+                    break;
+            }
+        });
+    }
+
+    //Transport
+    searchBillable();
     onDeleteOtherRateDloaTransport();
     onAddOtherRateDloaTransport();
     getLoaTransport();
+    getTransportDetail();
+    DependentDropdown();
+    searchTransport();
+    
+    //Warehouse
+    onClickExpiredWarehouse();
     onAddOtherRateLoa();
-    onChangeLoaDivision();
-    searchBillable();
+    onDeleteOtherRate();
+    onAddEditOtherRateLoa();
+    onDeleteEditOtherRate();
+    getLoaWarehouse();
+    editNavigation();
+
+    //Universal
     saveLoa();
+    onChangeLoaDivision();
+    filesNavigation();
 };
