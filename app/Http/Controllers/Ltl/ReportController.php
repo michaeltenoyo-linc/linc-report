@@ -9,7 +9,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Yajra\DataTables\Facades\DataTables;
-use Excel;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Carbon;
 
@@ -24,7 +23,16 @@ use App\Models\ShipmentBlujay;
 use phpDocumentor\Reflection\PseudoTypes\True_;
 use Yajra\DataTables\Contracts\DataTable;
 
-class ReportController extends BaseController
+//Excel
+use App\Exports\Ltl_Report1;
+use Maatwebsite\Excel\Facades\Excel;
+//use Excel;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Maatwebsite\Excel\Concerns\WithMapping;
+
+class ReportController  extends BaseController 
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
@@ -75,25 +83,25 @@ class ReportController extends BaseController
                     }
                     foreach ($listSJ as $sj) {
                         $totalPay = $transRate + $sj->biaya_bongkar + $multidrop;
-                        $rateKG = $totalPay / $totalWeight;
+                        $rateKG = floor(($totalPay / $totalWeight)*100)/100;
                         if($firstSJ){
                             $reports->push([
                                 'No' => $ctr,
                                 'Load ID' => $sj->load_id,
                                 'No SO' => $sj->id_so,
                                 'No DO' => $sj->no_do,
-                                'Delivery Date' => Carbon::parse($sj->delivery_date)->format('d/M/Y'),
+                                'Delivery Date' => Carbon::parse($sj->delivery_date)->format('d/m/Y'),
                                 'No Polisi' => $row->vehicle_number,
                                 'Customer Name' => $sj->customer_name,
                                 'Customer Address' => $sj->lokasi_pengiriman,
                                 'City' => $row->last_drop_location_city,
-                                'Qty' => number_format($sj->total_weightSO,2,'.',','),
-                                'Transport Rate' => number_format($transRate,2,'.',','),
-                                'Unloading Cost' => number_format($sj->biaya_bongkar,2,'.',','),
-                                'Multidrop' =>number_format($multidrop,2,'.',','),
-                                'Total' => number_format($totalPay,2,'.',','),
-                                'Rate / Kg' => number_format($rateKG,2,'.',','),
-                                'Invoice To LTL' => number_format($rateKG*$sj->total_weightSO),
+                                'Qty' => number_format($sj->total_weightSO,2,'.',''),
+                                'Transport Rate' => number_format($transRate,2,'.',''),
+                                'Unloading Cost' => number_format($sj->biaya_bongkar,2,'.',''),
+                                'Multidrop' =>number_format($multidrop,2,'.',''),
+                                'Total' => number_format($totalPay,2,'.',''),
+                                'Rate / Kg' => number_format($rateKG,2,'.',''),
+                                'Invoice To LTL' => number_format($rateKG*$sj->total_weightSO,2,'.',''),
                                 'Remarks' => $sj->note,
                             ]);
                             $ctr++;
@@ -104,18 +112,18 @@ class ReportController extends BaseController
                                 'Load ID' => $sj->load_id,
                                 'No SO' => $sj->id_so,
                                 'No DO' => $sj->no_do,
-                                'Delivery Date' => Carbon::parse($sj->delivery_date)->format('d/M/Y'),
+                                'Delivery Date' => Carbon::parse($sj->delivery_date)->format('d/m/Y'),
                                 'No Polisi' => $row->vehicle_number,
                                 'Customer Name' => $sj->customer_name,
                                 'Customer Address' => $sj->lokasi_pengiriman,
                                 'City' => $row->last_drop_location_city,
-                                'Qty' => number_format($sj->total_weightSO,2,'.',','),
+                                'Qty' => number_format($sj->total_weightSO,2,'.',''),
                                 'Transport Rate' => "",
-                                'Unloading Cost' => number_format($sj->biaya_bongkar,2,'.',','),
+                                'Unloading Cost' => "",//number_format($sj->biaya_bongkar,2,'.',''),
                                 'Multidrop' => "",
-                                'Total' => number_format($totalPay,2,'.',','),
-                                'Rate / Kg' => number_format($rateKG,2,'.',','),
-                                'Invoice To LTL' => number_format($rateKG*$sj->total_weightSO),
+                                'Total' => "",//number_format($totalPay,2,'.',''),
+                                'Rate / Kg' => number_format($rateKG,2,'.',''),
+                                'Invoice To LTL' => number_format($rateKG*$sj->total_weightSO,2,'.',''),
                                 'Remarks' => $sj->note,
                             ]);
                             $ctr++;
@@ -133,7 +141,7 @@ class ReportController extends BaseController
                             'Customer Name' => "",
                             'Customer Address' => "",
                             'City' => "",
-                            'Qty' => number_format($totalWeight,2,'.',','),
+                            'Qty' => number_format($totalWeight,2,'.',''),
                             'Transport Rate' => "",
                             'Unloading Cost' => "",
                             'Multidrop' =>"",
@@ -324,6 +332,7 @@ class ReportController extends BaseController
     }
 
     public function downloadExcel(Request $req){
-        return (Session::get('resultReport'))->downloadExcel("report.xlsx",null,true);
+        return Excel::download(new Ltl_Report1, 'lautanluas.xlsx');
+        //return (Session::get('resultReport'))->downloadExcel("report.xlsx",null,true);
     }
 }
