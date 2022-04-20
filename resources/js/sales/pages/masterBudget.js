@@ -8,12 +8,6 @@ import moment from 'moment';
 export const masterBudget = async () => {
     console.log("loading MasterBudgetJS");
 
-    const onLoad = async () => {
-      //Date Default
-      $('#date-filter').val(moment().format('YYYY-MM'));
-      $('#date-filter-landing').val(moment().format('YYYY-MM'));
-    }
-
     const getBudget = async () => {
       var table = $('#yajra-datatable-monitoring-budget').DataTable({
           processing: true,
@@ -230,7 +224,6 @@ export const masterBudget = async () => {
       return false;
     }
 
-    onLoad();
     getBudget();
 }
 

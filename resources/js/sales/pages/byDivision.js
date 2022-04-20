@@ -373,9 +373,9 @@ export const ByDivision = async () => {
           {data: 'customer_name', name: 'nopol'},
           {data: 'customer_status', name: 'penerima'},
           {data: 'period_mon', name: 'total_weightSO'},
-          {data: 'achievement_1m', name: 'utilitas'},
-          {data: 'achievement_ytd', name: 'utilitas'},
-          {data: 'graph', name: 'utilitas',  width: "20%", orderable: false, searchable: false},
+          {data: 'achievement_1m', width: "22%", name: 'utilitas'},
+          {data: 'achievement_ytd', width: "22%", name: 'utilitas'},
+          {data: 'graph', name: 'utilitas',  width: "15%", orderable: false, searchable: false},
         ],
         initComplete: function() {
           var input = $('.dataTables_filter input').unbind(),

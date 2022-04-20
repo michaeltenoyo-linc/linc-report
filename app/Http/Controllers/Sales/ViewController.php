@@ -254,6 +254,10 @@ class ViewController extends BaseController
         return view('sales.pages.by-division', $data);
     }
 
+    public function gotoExportPdf(){
+        return view('sales.pages.export-pdf');
+    }
+
     public function getDivisionOverview($division){
         $divisionGroup = [];
 
@@ -1428,4 +1432,31 @@ class ViewController extends BaseController
         return response()->json($data,200);
     }
 
+    public function getFilteringCustomer(Request $req, $division, $sales){
+        switch ($division) {
+            case 'transport':
+                $division = 'Pack Trans';
+                break;
+            case 'exim':
+                $division = 'Freight Forwarding BP';
+                break;
+            case 'bulk':
+                $division = 'Bulk Trans';
+                break;
+            default:
+                break;
+        }
+
+        $customer_sap = SalesBudget::select('customer_sap')
+                                    ->where('division','LIKE',$division=="all"?'%%':'%'.$division.'%')
+                                    ->where('sales','LIKE',$sales=="all"?'%%':'%'.$sales.'%')
+                                    ->where('customer_sap','!=',0)
+                                    ->groupBy('customer_sap')
+                                    ->get()
+                                    ->pluck('customer_sap');
+        $customer = Customer::whereIn('reference',$customer_sap)->get();
+
+        $data['customer'] = $customer;
+        return response()->json($data, 200);
+    }
 }

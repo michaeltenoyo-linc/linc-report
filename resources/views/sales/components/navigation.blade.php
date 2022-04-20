@@ -113,7 +113,7 @@
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
                 {{-- Active --}}
                 <li class="items-center">
-                    @if (Request::path() == '/sales/by-sales')
+                    @if (Request::path() == '/sales/by-sales/adit' || Request::path() == '/sales/by-sales/edwin' || Request::path() == '/sales/by-sales/willem')
                     <a href="{{url('/sales/by-sales/adit')}}"
                         class="page_nav_active">
                         <i class="fab fa-sellsy"></i>
@@ -124,24 +124,6 @@
                         class="page_nav">
                         <i class="fab fa-sellsy"></i>
                         By Sales Report
-                    </a>
-                    @endif
-                </li>
-            </ul>
-            <ul class="md:flex-col md:min-w-full flex flex-col list-none">
-                {{-- Active --}}
-                <li class="items-center">
-                    @if (Request::path() == '/greenfields/nav-so-list')
-                    <a href="{{url('/greenfields/nav-so-list')}}"
-                        class="page_nav_active">
-                        <i class="fas fa-male"></i>
-                        Master Sales
-                    </a>
-                    @else
-                    <a href="{{url('/greenfields/nav-so-list')}}"
-                        class="page_nav">
-                        <i class="fas fa-male"></i>
-                        Master Sales
                     </a>
                     @endif
                 </li>
@@ -156,7 +138,7 @@
             <!-- Navigation Product -->
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
                 <li class="items-center">
-                    @if (Request::path() == '/sales/by-division')
+                    @if (Request::path() == '/sales/by-division/transport' || Request::path() == '/sales/by-division/exim' || Request::path() == '/sales/by-division/bulk')
                         <a href="{{url('/sales/by-division/transport')}}"
                             class="page_nav_active">
                             <i class="fab fa-sellsy"></i>
@@ -172,20 +154,26 @@
                 </li>
             </ul>
 
+            <!-- Divider -->
+            <hr class="my-4 md:min-w-full" />
+            <!-- Heading -->
+            <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+                Export
+            </h6>
             <!-- Navigation Product -->
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
                 <li class="items-center">
-                    @if (Request::path() == 'lautanluas/nav-report-generate')
-                        <a href="{{url('/greenfields/nav-report-generate')}}"
+                    @if (Request::path() == '/sales/export/pdf')
+                        <a href="{{url('/sales/export/pdf')}}"
                             class="page_nav_active">
-                            <i class="far fa-clipboard"></i>
-                            Division List
+                            <i class="fab fa-sellsy"></i>
+                            Export to PDF
                         </a>
                     @else
-                        <a href="{{url('/greenfields/nav-report-generate')}}"
+                        <a href="{{url('/sales/export/pdf')}}"
                             class="page_nav">
-                            <i class="far fa-clipboard"></i>
-                            Division List
+                            <i class="fab fa-sellsy"></i>
+                            Export to PDF
                         </a>
                     @endif
                 </li>

@@ -306,9 +306,13 @@ Route::middleware(['auth','priviledge:sales,master'])->group(function () {
         Route::get('/monitoring-master',[SalesViewController::class, 'gotoMonitoringMaster']);
         Route::get('/by-sales/{name}',[SalesViewController::class, 'gotoBySales']);
         Route::get('/by-division/{division}',[SalesViewController::class, 'gotoByDivision']);
-
+        Route::get('/export/pdf',[SalesViewController::class, 'gotoExportPdf']);
+        
         //Utility
         Route::get('/filter-date/{month}/{year}', [SalesViewController::class, 'filterSalesDate']);
+
+        //Export
+        Route::get('/export/filter-customer/{division}/{sales}',[SalesViewController::class, 'getFilteringCustomer']);
 
         Route::prefix('/data')->group(function () {
             //DATA VIEW

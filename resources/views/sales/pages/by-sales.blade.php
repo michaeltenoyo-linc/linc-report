@@ -10,6 +10,7 @@ Linc | Sales Performance
 
 @section('content')
 <div class="w-full mb-12 px-4">
+    <input type="hidden" name="" value="BySales" id="page-content">
     <div class="relative flex flex-col min-w-0 overflow-x-auto break-words w-full mb-6 shadow-lg rounded bg-white">
         <div class="block w-full p-8 overflow-x-auto">
             <div class="w-full text-center font-bold text-xl mb-8">Sales Performance {{Str::ucfirst($sales)}}</div>
@@ -106,7 +107,7 @@ Linc | Sales Performance
         <div class="block w-full p-8 overflow-x-auto">
             <!-- Projects table -->
             <input type="hidden" name="salesName" id="sales-name" value="{{ $sales }}">
-            <table id="yajra-datatable-sales-budget" style="width: 2000px;" class="items-center w-full bg-transparent border-collapse yajra-datatable-sales-budget">
+            <table id="yajra-datatable-sales-budget" style="width: 2500px;" class="items-center w-full bg-transparent border-collapse yajra-datatable-sales-budget">
             <thead>
                 <tr>
                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">

@@ -10,6 +10,7 @@ Linc | Sales Monitoring
 
 @section('content')
 <div class="w-full mb-12 px-4">
+    <input type="hidden" name="" value="ByDivision" id="page-content">
     <div class="relative flex flex-col min-w-0 overflow-x-auto break-words w-full mb-6 shadow-lg rounded bg-white">
         <div class="block w-full p-8 overflow-x-auto">
             <div class="w-full text-center font-bold text-xl mb-8">Division Unit {{Str::ucfirst($division)}}</div>
@@ -107,7 +108,7 @@ Linc | Sales Monitoring
         <div class="block w-full p-8 overflow-x-auto">
             <input type="hidden" name="division" id="division-name" value="{{ $division }}">
             <!-- Projects table -->
-            <table id="yajra-datatable-division-budget" style="width: 2000px;" class="items-center w-full bg-transparent border-collapse yajra-datatable-division-budget">
+            <table id="yajra-datatable-division-budget" style="width: 2500px;" class="items-center w-full bg-transparent border-collapse yajra-datatable-division-budget">
             <thead>
                 <tr>
                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">

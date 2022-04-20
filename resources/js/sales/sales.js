@@ -2,10 +2,19 @@ import { Landing, loadStaticChart, loadDynamicChart } from "./pages/landing";
 import { masterBudget } from "./pages/masterBudget";
 import { BySales, RefreshSalesPie } from "./pages/bySales";
 import { ByDivision, RefreshDivisionPie } from "./pages/byDivision";
+import { ExportToPDF } from "./pages/exportPdf";
+import moment from 'moment';
 
 export const load = () => {
     //Loading Spinner
+    const viewContent = $('#page-content').val();
+    const defaultDate = async () => {
+        //Date Default
+        $('#date-filter').val(moment().format('YYYY-MM'));
+        $('#date-filter-landing').val(moment().format('YYYY-MM'));
+    }  
 
+    
     $(document).on({
         ajaxStart: function(){
             $('#loader').removeClass('hidden');
@@ -25,6 +34,7 @@ export const load = () => {
     $('form').on('blur', 'input[type=number]', function(e){
         $(this).off('wheel.disableScroll');
     });
+
 
     //Filtering date landing page
     $('#date-filter-landing').on('change', async function(){
@@ -107,12 +117,22 @@ export const load = () => {
         } catch (error) {console.log(error);}
     })
 
-    Landing();
-    masterBudget();
-    BySales();
-    RefreshSalesPie();
-    ByDivision();
-    RefreshDivisionPie();
+    
+    defaultDate();   
+    //Load Function for each Layer
+    if(viewContent == "landing"){
+        Landing();
+    }else if(viewContent == "masterMonitoring"){
+        masterBudget();
+    }else if(viewContent == "BySales"){
+        BySales();
+        RefreshSalesPie();
+    }else if(viewContent == "ByDivision"){
+        ByDivision();
+        RefreshDivisionPie();
+    }else if(viewContent == "exportPDF"){
+        ExportToPDF();
+    }
 };
 
 load();

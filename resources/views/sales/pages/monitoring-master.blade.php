@@ -10,6 +10,7 @@ Linc | Overall Achievement
 
 @section('content')
 <div class="w-full mb-12 px-4">
+    <input type="hidden" name="" value="masterMonitoring" id="page-content">
     <div class="relative flex flex-col min-w-0 overflow-x-auto break-words w-full mb-6 shadow-lg rounded bg-white">
         <div class="block w-full p-8 overflow-x-auto">
             <div class="w-full text-center font-bold text-xl mb-8">Overall Achievement Master</div>
