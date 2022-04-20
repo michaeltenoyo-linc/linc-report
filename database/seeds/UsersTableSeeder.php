@@ -76,6 +76,20 @@ class UsersTableSeeder extends Seeder
                 'password' => Hash::make('admin'),
                 'active' => 1,
             ],
+            [
+                'name' => 'edwin',
+                'email' => 'edwin@lincgrp.com',
+                'email_verified_at' => Carbon::today(),
+                'password' => Hash::make('admin'),
+                'active' => 1,
+            ],
+            [
+                'name' => 'adit',
+                'email' => 'adit@lincgrp.com',
+                'email_verified_at' => Carbon::today(),
+                'password' => Hash::make('admin'),
+                'active' => 1,
+            ],
         ];
 
         foreach ($seeds as $seed) {

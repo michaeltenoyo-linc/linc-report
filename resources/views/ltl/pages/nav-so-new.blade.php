@@ -79,6 +79,9 @@ Linc | Register Surat Jalan
                                 @foreach ($customers as $c)
                                     <option value="{{ $c->name }}">{{ $c->name }}</option>
                                 @endforeach
+                                @foreach ($customers_hist as $c)
+                                    <option value="{{ $c->customer_name }}">{{ $c->customer_name }}</option>
+                                @endforeach
                             </datalist>
                         </div>
                     </div>
@@ -90,7 +93,15 @@ Linc | Register Surat Jalan
                             <input type="text"
                                 name="alamat_kirim"
                                 class="input-alamat border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                value="" readonly/>
+                                value="" 
+                                list="location"
+                                readonly/>
+
+                            <datalist id="location">
+                                @foreach ($location_hist as $l)
+                                    <option value="{{ $l->lokasi_pengiriman }}">{{ $l->lokasi_pengiriman }}</option>
+                                @endforeach
+                            </datalist>
                         </div>
                     </div>
 

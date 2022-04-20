@@ -27,6 +27,8 @@ class ViewController extends BaseController
 
     public function gotoSoNew(){
         $data['customers'] = CustomerLtl::get();
+        $data['customers_hist'] = Suratjalan_ltl::select('customer_name')->groupBy('customer_name')->get();
+        $data['location_hist'] = Suratjalan_ltl::select('lokasi_pengiriman')->groupBy('lokasi_pengiriman')->get();
         return view('ltl.pages.nav-so-new', $data);
     }
 
