@@ -20,6 +20,7 @@ use App\Models\Trucks;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use PDF;
 
 use function PHPUnit\Framework\isNan;
 use function PHPUnit\Framework\isNull;
@@ -1458,5 +1459,27 @@ class ViewController extends BaseController
 
         $data['customer'] = $customer;
         return response()->json($data, 200);
+    }
+
+    public function generateSalesPDF(Request $req, $division, $sales, $customer){
+        
+        switch ($division) {
+            case 'transport':
+                $division = 'Pack Trans';
+                break;
+            case 'exim':
+                $division = 'Freight Forwarding BP';
+                break;
+            case 'bulk':
+                $division = 'Bulk Trans';
+                break;
+            default:
+                break;
+        }
+
+        $pdf = PDF::loadView('sales.pages.pdf.pdf-overall');
+	    return $pdf->stream();
+        
+        //return view('sales.pages.pdf.pdf-overall');
     }
 }

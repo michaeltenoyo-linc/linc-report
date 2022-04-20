@@ -10,6 +10,8 @@ Linc | Sales Report Homepage
 
 @section('content')
 <div class="w-full mb-12 px-4">
+    <input type="hidden" name="" value="landing" id="page-content">
+    
     <div class="relative flex flex-col min-w-0 break-words w-full mb-6">
         <div class="rounded-t mb-0 px-4 py-3 border-0">
             <div class="flex flex-wrap items-center">

@@ -46,8 +46,15 @@ export const ExportToPDF = async () => {
 
   const generatePDF = () => {
     $('#form-export-sales .export-pdf-generate').on('click', (e) => {
+      
       e.preventDefault();
       console.log("Generating...");
+
+      let division = $('.input-division').val();
+      let sales = $('.input-sales').val();
+      let customer = $('.input-customer').val();
+
+      window.location.href = '/sales/export/generate-pdf/'+division+'/'+sales+'/'+customer;
     })
   }
 
