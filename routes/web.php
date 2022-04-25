@@ -313,7 +313,7 @@ Route::middleware(['auth','priviledge:sales,master'])->group(function () {
 
         //Export
         Route::get('/export/filter-customer/{division}/{sales}',[SalesViewController::class, 'getFilteringCustomer']);
-        Route::get('/export/generate-pdf/{division}/{sales}/{customer}',[SalesViewController::class, 'generateSalesPDF']);
+        Route::get('/export/generate-report/{division}/{sales}/{customer}/{isDatatable}',[SalesViewController::class, 'generateSalesReport']);
 
         Route::prefix('/data')->group(function () {
             //DATA VIEW

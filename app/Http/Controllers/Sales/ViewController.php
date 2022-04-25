@@ -17,6 +17,7 @@ use App\Models\SalesBudget;
 use App\Models\ShipmentBlujay;
 use App\Models\Suratjalan_greenfields;
 use App\Models\Trucks;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -32,6 +33,7 @@ class ViewController extends BaseController
     private $transportLoadGroups = ['SURABAYA LOG PACK', 'SURABAYA RENTAL', 'SURABAYA RENTAL TRIP', 'SURABAYA TIV LOKAL'];
     private $eximLoadGroups = ['SURABAYA EXIM TRUCKING', 'SURABAYA TIV IMPORT'];
     private $bulkLoadGroups = ['SURABAYA LOG BULK'];
+    private $warehouseLoadGroups = [];
     private $emptyLoadGroups = ['SURABAYA MOB KOSONGAN'];
 
     //Navigation
@@ -256,6 +258,9 @@ class ViewController extends BaseController
     }
 
     public function gotoExportPdf(){
+        Session::put('sales-month',date('m'));
+        Session::put('sales-year', date('Y'));
+
         return view('sales.pages.export-pdf');
     }
 
@@ -1461,7 +1466,7 @@ class ViewController extends BaseController
         return response()->json($data, 200);
     }
 
-    public function generateSalesPDF(Request $req, $division, $sales, $customer){
+    public function generateSalesReport(Request $req, $division, $sales, $customer, $isDatatable){
         
         switch ($division) {
             case 'transport':
@@ -1477,9 +1482,260 @@ class ViewController extends BaseController
                 break;
         }
 
-        $pdf = PDF::loadView('sales.pages.pdf.pdf-overall');
-	    return $pdf->stream();
-        
-        //return view('sales.pages.pdf.pdf-overall');
+        //Data Filtering
+        $data['budgets'] = SalesBudget::where('budget','>',0)
+                            ->where('division','LIKE',$division=='all'?'%%':'%'.$division.'%')
+                            ->where('sales','LIKE',$sales=='all'?'%%':'%'.$sales.'%')
+                            ->where('customer_sap','LIKE',$customer=='all'?'%%':'%'.$customer.'%')
+                            ->whereMonth('period',Session::get('sales-month'))
+                            ->whereYear('period',Session::get('sales-year'))
+                            ->get();
+
+        foreach ($data['budgets'] as $row) {
+            //1MONTH ACHIEVEMENT
+            //actual data
+            $actual = 0;
+            $percentage = 0;
+
+
+            if($row->division == "Pack Trans"){
+                //BLUJAY DIVISION TRANSPORT
+                $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                                    ->where('customer_reference',$row->customer_sap)
+                                    ->whereIn('load_group', $this->transportLoadGroups)
+                                    ->where('load_status','Completed')
+                                    ->whereMonth('load_closed_date',Session::get('sales-month'))
+                                    ->whereYear('load_closed_date',Session::get('sales-year'))
+                                    ->groupBy('customer_reference')
+                                    ->first();
+
+                if(!is_null($total)){
+                    $actual = $total->totalActual;
+                }
+            }else if($row->division == "Freight Forwarding BP"){
+                $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                                    ->where('customer_reference',$row->customer_sap)
+                                    ->whereIn('load_group',$this->eximLoadGroups)
+                                    ->where('load_status','Completed')
+                                    ->whereMonth('load_closed_date',Session::get('sales-month'))
+                                    ->whereYear('load_closed_date',Session::get('sales-year'))
+                                    ->groupBy('customer_reference')
+                                    ->first();
+
+                if(!is_null($total)){
+                    $actual = $total->totalActual;
+                }
+            }else if($row->division == "Bulk Trans"){
+                $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                                    ->where('customer_reference',$row->customer_sap)
+                                    ->whereIn('load_group',$this->bulkLoadGroups)
+                                    ->where('load_status','Completed')
+                                    ->whereMonth('load_closed_date',Session::get('sales-month'))
+                                    ->whereYear('load_closed_date',Session::get('sales-year'))
+                                    ->groupBy('customer_reference')
+                                    ->first();
+
+                if(!is_null($total)){
+                    $actual = $total->totalActual;
+                }
+            }
+
+            if($row->budget > 0){
+                $percentage = floatval($actual)/floatval($row->budget) * 100;
+                $percentage = round(floatval($percentage), 2);
+            }
+
+            
+            $row->achievement_1m_raw = $actual;
+            $row->achievement_1m_actual = number_format($actual,0,',','.');
+            $row->achievement_1m_budget = number_format($row->budget,0,',','.');
+            $row->achievement_1m_percentage = $percentage;
+
+            //YTD ACHIEVEMENT
+            //actual data
+            $actual = 0;
+            $percentage = 0;
+
+            $currentMonth = intval(Session::get('sales-month'));
+            $ytd_month = [];
+
+            for ($i=1; $i <= $currentMonth; $i++) {
+                array_push($ytd_month,$i);
+                //error_log($i);
+            }
+
+            $ytd_budget = SalesBudget::selectRaw('customer_name, SUM(budget) as budget')
+                                    ->where('customer_name','=',$row->customer_name)
+                                    ->where('division',$row->division)
+                                    ->whereIn(DB::raw('month(period)'),$ytd_month)
+                                    ->whereYear('period',Session::get('sales-year'))
+                                    ->groupBy('customer_name')
+                                    ->first();
+
+
+
+            if($row->division == "Pack Trans"){
+                //BLUJAY DIVISION TRANSPORT
+
+                $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                                    ->where('customer_reference',$row->customer_sap)
+                                    ->whereIn('load_group',$this->transportLoadGroups)
+                                    ->where('load_status','Completed')
+                                    ->whereIn(DB::raw('month(load_closed_date)'),$ytd_month)
+                                    ->whereYear('load_closed_date',Session::get('sales-year'))
+                                    ->groupBy('customer_reference')
+                                    ->first();
+
+                if(!is_null($total)){
+                    $actual = $total->totalActual;
+                }
+            }else if($row->division == "Freight Forwarding BP"){
+                $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                                    ->where('customer_reference',$row->customer_sap)
+                                    ->whereIn('load_group',$this->eximLoadGroups)
+                                    ->where('load_status','Completed')
+                                    ->whereIn(DB::raw('month(load_closed_date)'),$ytd_month)
+                                    ->whereYear('load_closed_date',Session::get('sales-year'))
+                                    ->groupBy('customer_reference')
+                                    ->first();
+
+                if(!is_null($total)){
+                    $actual = $total->totalActual;
+                }
+            }else if($row->division == "Bulk Trans"){
+                $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                                    ->where('customer_reference',$row->customer_sap)
+                                    ->whereIn('load_group',$this->bulkLoadGroups)
+                                    ->where('load_status','Completed')
+                                    ->whereIn(DB::raw('month(load_closed_date)'),$ytd_month)
+                                    ->whereYear('load_closed_date',Session::get('sales-year'))
+                                    ->groupBy('customer_reference')
+                                    ->first();
+
+                if(!is_null($total)){
+                    $actual = $total->totalActual;
+                }
+            }
+
+            if($row->budget > 0){
+                $percentage = floatval($actual)/floatval($ytd_budget->budget) * 100;
+                $percentage = round(floatval($percentage), 2);
+            }
+
+            $row->achievement_ytd_raw = $actual;
+            $row->achievement_ytd_actual = number_format($actual,0,',','.');
+            $row->achievement_ytd_budget = number_format($ytd_budget->budget,0,',','.');
+            $row->achievement_ytd_percentage = $percentage;
+            if($percentage > 90){
+                $row->achievement_ytd_color = 'text-green-700';
+            }else if($percentage > 75){
+                $row->achievement_ytd_color = 'text-green-500';
+            }else if($percentage > 50){
+                $row->achievement_ytd_color = 'text-yellow-300';
+            }else if($percentage > 25){
+                $row->achievement_ytd_color = 'text-orange-400';
+            }else if($percentage > 10){
+                $row->achievement_ytd_color = 'text-orange-600';    
+            }else{
+                $row->achievement_ytd_color = 'text-red-600';    
+            }
+        }
+
+        $data['budgets'] = collect($data['budgets'])->sortBy('division')->sortBy('achievement_1m_raw')->reverse();
+
+        $data['period'] = Carbon::create()->month(Session::get('sales-month'))->format('F')." ".Session::get('sales-year');
+        $data['period_year'] = Session::get('sales-year');
+
+        //Graph Data 1 Year
+        //Transport
+        $actualTransport = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+                                        ->whereIn('load_group',$this->transportLoadGroups)
+                                        ->where('load_status','Completed')
+                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->first();
+
+        $budgetTransport = SalesBudget::selectRaw('SUM(budget) as totalBudget')
+                                    ->where('division','Pack Trans')
+                                    ->whereYear('period',Session::get('sales-year'))
+                                    ->first();
+
+        if(!is_null($actualTransport) && !is_null($budgetTransport)){
+            $actualTransport = $actualTransport->totalActual;
+            $budgetTransport = $budgetTransport->totalBudget;
+            $data['achievement_transport'] = [$actualTransport, $budgetTransport];
+        }
+
+        //Exim
+        $actualExim = 0;
+        $actualExim = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+                                        ->whereIn('load_group',$this->eximLoadGroups)
+                                        ->where('load_status','Completed')
+                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->first();
+
+        $budgetExim = SalesBudget::selectRaw('SUM(budget) as totalBudget')
+                                    ->where('division','Pack Trans')
+                                    ->whereYear('period',Session::get('sales-year'))
+                                    ->first();
+
+        if(!is_null($actualExim) && !is_null($budgetExim)){
+            $actualExim = $actualExim->totalActual;
+            $budgetExim = $budgetExim->totalBudget;
+            $data['achievement_exim'] = [$actualExim, $budgetExim];
+        }
+
+        //Bulk
+        $actualBulk = 0;
+        $actualBulk = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+                                        ->whereIn('load_group',$this->bulkLoadGroups)
+                                        ->where('load_status','Completed')
+                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->first();
+
+        $budgetBulk = SalesBudget::selectRaw('SUM(budget) as totalBudget')
+                                    ->where('division','Pack Trans')
+                                    ->whereYear('period',Session::get('sales-year'))
+                                    ->first();
+
+        if(!is_null($actualBulk) && !is_null($budgetBulk)){
+            $actualBulk = $actualBulk->totalActual;
+            $budgetBulk = $budgetBulk->totalBudget;
+            $data['achievement_bulk'] = [$actualBulk, $budgetBulk];
+        }
+
+        //Warehouse
+        $actualWarehouse = 0;
+        $actualWarehouse = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+                                        ->whereIn('load_group',$this->warehouseLoadGroups)
+                                        ->where('load_status','Completed')
+                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->first();
+
+        $budgetWarehouse = SalesBudget::selectRaw('SUM(budget) as totalBudget')
+                                    ->where('division','Pack Trans')
+                                    ->whereYear('period',Session::get('sales-year'))
+                                    ->first();
+
+        if(!is_null($actualWarehouse) && !is_null($budgetWarehouse)){
+            $actualWarehouse = $actualWarehouse->totalActual;
+            $budgetWarehouse = $budgetWarehouse->totalBudget;
+            $data['achievement_warehouse'] = [$actualWarehouse, $budgetWarehouse];
+        }
+
+
+        //Return Output
+        if($isDatatable == 'true'){
+            return DataTables::of($data['budgets'])
+            ->addColumn('period_mon', function($row){
+                return date('M-Y',strtotime($row->period));
+            })
+            ->addColumn('graph', function($row){
+                return "<canvas id='".$row->id."' value='".$row->id."' class='table-container-graph' height='75px'><input type='hidden' name='budgetId' value='".$row->id."'></canvas>";
+            })
+            ->rawColumns(['achievement_1m','achievement_ytd','period_mon','graph'])
+            ->make(true);
+        }else{
+            return view('sales.pages.pdf.pdf-overall', $data);
+        }
     }
 }

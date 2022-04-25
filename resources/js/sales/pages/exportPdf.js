@@ -54,7 +54,7 @@ export const ExportToPDF = async () => {
       let sales = $('.input-sales').val();
       let customer = $('.input-customer').val();
 
-      window.location.href = '/sales/export/generate-pdf/'+division+'/'+sales+'/'+customer;
+      window.location.href = '/sales/export/generate-report/'+division+'/'+sales+'/'+customer+'/false';
     })
   }
 
