@@ -674,7 +674,6 @@ class ReportController extends BaseController
     }
 
     public function downloadExcel(Request $req){
-        //return (Session::get('resultReport'))->downloadExcel("report.xlsx",null,true);
         if(Session::get('reportType') == 'smart_1'){
             return Excel::download(new Smart_Report1, 'smart.xlsx');
         }else if(Session::get('reportType') == "smart_2"){

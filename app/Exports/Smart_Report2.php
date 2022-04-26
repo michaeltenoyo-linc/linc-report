@@ -23,19 +23,23 @@ class Smart_Report2 implements FromCollection, WithHeadings, ShouldAutoSize, Wit
     public function styles(Worksheet $sheet)
     {
         $sheet->getStyle('1')->getFont()->setBold(true);
+        $sheet->getStyle('A1:Y1')->getFill()->applyFromArray(['fillType' => 'solid','rotation' => 0, 'color' => ['rgb' => '63cdcf'],]);
 
         return [
             // Styling an entire column.
-            'A:Z'  => ['font' => ['size' => 9, 'name' => 'Calibri']],
+            'A:Z'  => ['font' => ['size' => 12]],
         ];
     }
 
     public function columnFormats(): array
     {
         return [
-            'D' => NumberFormat::FORMAT_DATE_DDMMYYYY,
-            'K:M' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-            'Q:U' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'D:E' => NumberFormat::FORMAT_DATE_DDMMYYYY,
+            'H' => NumberFormat::FORMAT_DATE_DDMMYYYY,
+            'J:K' => NumberFormat::FORMAT_NUMBER_00,
+            'R:T' => NumberFormat::FORMAT_NUMBER_00,
+            'W:X' => NumberFormat::FORMAT_NUMBER,
+            'Y' => NumberFormat::FORMAT_NUMBER_00,
         ];
     }
 
@@ -43,31 +47,30 @@ class Smart_Report2 implements FromCollection, WithHeadings, ShouldAutoSize, Wit
     {
         return [
             'No',
+            'No SJ',
+            'No DO',
+            'Tanggal Input',
+            'Update Terakhir',
             'Load ID',
             'Customer Type',
             'Tgl Muat',
-            'No SJ Smart',
-            'No DO SDN',
             'Penerima',
-            'Lokasi Tujuan',
-            'Provinsi Tujuan',
-            'Kota Tujuan',
             'Kuantitas',
             'Berat',
             'Utilitas',
+            'City Routes',
             'Nopol',
+            'Driver',
             'Tipe Kendaraan',
             'Kontainer',
-            'Biaya Kirim',
             'Biaya Bongkar',
             'Overnight Charge',
             'Multidrop',
-            'Total',
             'Kode SKU',
             'Deskripsi',
             'Qty',
-            'Item Weight',
-            'Subtotal Weight'
+            'Retur',
+            'Subtotal Weight',
         ];
     }
 

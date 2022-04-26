@@ -97,7 +97,7 @@
 		</div>
 	</header>
 
-	<section class="overview-data">
+	<section class="overview-data-1year">
 		<!-- Big 1YEAR Chart-->
 		<div class="row mt-4">
 			<div class="col-12">
@@ -175,6 +175,132 @@
 						</div>
 					</div>
 				</center>
+			</div>
+		</div>
+	</section>
+
+	<section class="overview-data-1month">
+		<div class="row mt-4" style="height: 723px;">
+			<div class="col-8 text-white p-5" style="background-color: #9c0a16;">
+				<div class="row mb-4">
+					<div class="col-12">
+						<center>
+							<h3>This Month Performance</h3>
+							<h6>({{ $period }})</h6>
+						</center>
+					</div>
+				</div>
+				<div class="row" style="font-size: 10pt;">
+					<div class="col-6 p-3">
+						<b>Transport</b>
+						<br>
+						<div class="row">
+							<div class="col-5">
+								Revenue (CM)
+								<br>
+								Revenue (Ytd.)
+								<br>
+								Loads (CM)
+								<br>
+								Loads (Ytd.)
+								<br>
+								Achievement (CM)
+								<br>
+								Achievement (Ytd.)
+							</div>
+							<div class="col-7 text-right">
+								IDR. <span id="transport-revenue-1m"></span>
+								<br>
+								IDR. <span id="transport-revenue-ytd"></span>
+								<br>
+								<span id="transport-transaction-1m"></span> Loads
+								<br>
+								<span id="transport-transaction-ytd"></span> Loads
+								<br>
+								<span id="transport-achievement-1m"></span>
+								<br>
+								<span id="transport-achievement-ytd"></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-6 p-3">
+						<b>Exim</b>
+						<br>
+						<div class="row">
+							<div class="col-5">
+								Revenue (CM)
+								<br>
+								Revenue (Ytd.)
+								<br>
+								Loads (CM)
+								<br>
+								Loads (Ytd.)
+								<br>
+								Achievement (CM)
+								<br>
+								Achievement (Ytd.)
+							</div>
+							<div class="col-7 text-right">
+								IDR. <span id="exim-revenue-1m"></span>
+								<br>
+								IDR. <span id="exim-revenue-ytd"></span>
+								<br>
+								<span id="exim-transaction-1m"></span> Loads
+								<br>
+								<span id="exim-transaction-ytd"></span> Loads
+								<br>
+								<span id="exim-achievement-1m"></span>
+								<br>
+								<span id="exim-achievement-ytd"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row" style="font-size: 10pt;">
+					<div class="col-6 p-3">
+						<b>Bulk</b>
+						<br>
+						<div class="row">
+							<div class="col-5">
+								Revenue (CM)
+								<br>
+								Revenue (Ytd.)
+								<br>
+								Loads (CM)
+								<br>
+								Loads (Ytd.)
+								<br>
+								Achievement (CM)
+								<br>
+								Achievement (Ytd.)
+							</div>
+							<div class="col-7 text-right">
+								IDR. <span id="bulk-revenue-1m"></span>
+								<br>
+								IDR. <span id="bulk-revenue-ytd"></span>
+								<br>
+								<span id="bulk-transaction-1m"></span> Loads
+								<br>
+								<span id="bulk-transaction-ytd"></span> Loads
+								<br>
+								<span id="bulk-achievement-1m"></span>
+								<br>
+								<span id="bulk-achievement-ytd"></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-6 p-3">
+						<b>Warehouse</b>
+						<br>
+						Data is not available yet.
+					</div>
+				</div>
+				<div class="row">
+					
+				</div>
+			</div>
+			<div class="col-4">
+				
 			</div>
 		</div>
 	</section>
@@ -407,7 +533,7 @@
 			datasets: [
 				{
 					label: 'Transport',
-					data: [ {{ $achievement_transport[0] }}, {{ $achievement_transport[1] }} ],
+					data: [ {{ $achievement_transport[0] }}, {{ $achievement_transport[1]-$achievement_transport[0] }} ],
 					backgroundColor: ['rgb(255, 169, 77)', 'rgb(255, 132, 0)'],
 				},
 			]
@@ -438,7 +564,7 @@
 			datasets: [
 				{
 					label: 'Exim',
-					data: [{{ $achievement_exim[0] }}, {{ $achievement_exim[1] }}],
+					data: [{{ $achievement_exim[0] }}, {{ $achievement_exim[1]-$achievement_exim[0] }}],
 					backgroundColor: ['rgb(33, 242, 5)', 'rgb(22, 163, 3)'],
 				},
 			]
@@ -469,7 +595,7 @@
 			datasets: [
 				{
 					label: 'Bulk',
-					data: [{{ $achievement_bulk[0], $achievement_bulk[1] }}],
+					data: [{{ $achievement_bulk[0] }}, {{ $achievement_bulk[1]-$achievement_bulk[0] }}],
 					backgroundColor: ['rgb(0, 119, 255)', 'rgb(0, 30, 255)'],
 				},
 			]
@@ -525,7 +651,42 @@
 		};
 		const chartYearlyWarehouse = new Chart(contYearlyWarehouse, configYearlyWarehouse);
 		
+		//1 Month Overview
+		//Transport
+		const transportOverviewFetch = await $.get('/sales/data/get-division-overview/transport');
 		
+		$('#transport-revenue-1m').empty().html(transportOverviewFetch['revenue_1m']);
+		$('#transport-revenue-ytd').empty().html(transportOverviewFetch['revenue_ytd']);
+		$('#transport-transaction-1m').empty().html(transportOverviewFetch['transaction_1m']);
+		$('#transport-transaction-ytd').empty().html(transportOverviewFetch['transaction_ytd']);
+		$('#transport-achievement-1m').empty().html(transportOverviewFetch['achievement_1m_text']);
+		$('#transport-achievement-ytd').empty().html(transportOverviewFetch['achievement_ytd_text']);
+		$('#transport-achivementbar-1m').css("width",transportOverviewFetch['achivement_1m']+"%");
+		$('#transport-achivementbar-ytd').css("width",transportOverviewFetch['achivement_ytd']+"%");
+
+		//Exim
+		const eximOverviewFetch = await $.get('/sales/data/get-division-overview/exim');
+		
+		$('#exim-revenue-1m').empty().html(eximOverviewFetch['revenue_1m']);
+		$('#exim-revenue-ytd').empty().html(eximOverviewFetch['revenue_ytd']);
+		$('#exim-transaction-1m').empty().html(eximOverviewFetch['transaction_1m']);
+		$('#exim-transaction-ytd').empty().html(eximOverviewFetch['transaction_ytd']);
+		$('#exim-achievement-1m').empty().html(eximOverviewFetch['achievement_1m_text']);
+		$('#exim-achievement-ytd').empty().html(eximOverviewFetch['achievement_ytd_text']);
+		$('#exim-achivementbar-1m').css("width",eximOverviewFetch['achivement_1m']+"%");
+		$('#exim-achivementbar-ytd').css("width",eximOverviewFetch['achivement_ytd']+"%");
+
+		//Bulk
+		const bulkOverviewFetch = await $.get('/sales/data/get-division-overview/bulk');
+		
+		$('#bulk-revenue-1m').empty().html(bulkOverviewFetch['revenue_1m']);
+		$('#bulk-revenue-ytd').empty().html(bulkOverviewFetch['revenue_ytd']);
+		$('#bulk-transaction-1m').empty().html(bulkOverviewFetch['transaction_1m']);
+		$('#bulk-transaction-ytd').empty().html(bulkOverviewFetch['transaction_ytd']);
+		$('#bulk-achievement-1m').empty().html(bulkOverviewFetch['achievement_1m_text']);
+		$('#bulk-achievement-ytd').empty().html(bulkOverviewFetch['achievement_ytd_text']);
+		$('#bulk-achivementbar-1m').css("width",bulkOverviewFetch['achivement_1m']+"%");
+		$('#bulk-achivementbar-ytd').css("width",bulkOverviewFetch['achivement_ytd']+"%");
 
 		//Table Chart Trends
 		@php

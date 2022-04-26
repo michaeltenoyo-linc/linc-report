@@ -1674,7 +1674,7 @@ class ViewController extends BaseController
                                         ->first();
 
         $budgetExim = SalesBudget::selectRaw('SUM(budget) as totalBudget')
-                                    ->where('division','Pack Trans')
+                                    ->where('division','Freight Forwarding BP')
                                     ->whereYear('period',Session::get('sales-year'))
                                     ->first();
 
@@ -1693,7 +1693,7 @@ class ViewController extends BaseController
                                         ->first();
 
         $budgetBulk = SalesBudget::selectRaw('SUM(budget) as totalBudget')
-                                    ->where('division','Pack Trans')
+                                    ->where('division','Bulk Trans')
                                     ->whereYear('period',Session::get('sales-year'))
                                     ->first();
 
@@ -1712,7 +1712,7 @@ class ViewController extends BaseController
                                         ->first();
 
         $budgetWarehouse = SalesBudget::selectRaw('SUM(budget) as totalBudget')
-                                    ->where('division','Pack Trans')
+                                    ->where('division','Package Whs')
                                     ->whereYear('period',Session::get('sales-year'))
                                     ->first();
 
@@ -1721,6 +1721,8 @@ class ViewController extends BaseController
             $budgetWarehouse = $budgetWarehouse->totalBudget;
             $data['achievement_warehouse'] = [$actualWarehouse, $budgetWarehouse];
         }
+
+        //1 Month Graph Data
 
 
         //Return Output
