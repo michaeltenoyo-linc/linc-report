@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Smart;
 
+use App\Exports\Smart_Report1;
+use App\Exports\Smart_Report2;
 use App\Models\Addcost;
 use App\Models\Company;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -11,7 +13,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Yajra\DataTables\Facades\DataTables;
-use Excel;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Carbon;
 
@@ -21,6 +23,7 @@ use App\Models\Trucks;
 use App\Models\Suratjalan;
 use App\Models\Dload;
 use App\Models\LoadPerformance;
+use Maatwebsite\Excel\Excel as ExcelExcel;
 use Yajra\DataTables\Contracts\DataTable;
 
 class ReportController extends BaseController
@@ -45,6 +48,7 @@ class ReportController extends BaseController
         $SjReport2 = Suratjalan::orderBy('created_at','asc')->get();
 
         if($req->input('reportType') == "smart_1"){
+
             foreach ($listLoadId as $wantedLoad) {
                 $row = LoadPerformance::where('tms_id',$wantedLoad)->first();
                 if($row == ""){
@@ -315,6 +319,7 @@ class ReportController extends BaseController
             Session::put('warningReport',$warning);
             Session::put('resultReport',$reports);
             Session::put('totalReport',$ctr-1);
+            Session::put('reportType',$req->input('reportType'));
 
             return view('smart.pages.report-preview-smart-1');
 
@@ -424,6 +429,7 @@ class ReportController extends BaseController
             Session::put('warningReport',$warning);
             Session::put('resultReport',$reports);
             Session::put('totalReport',$ctr-1);
+            Session::put('reportType',$req->input('reportType'));
 
             return view('smart.pages.report-preview-smart-1');
         }
@@ -668,6 +674,11 @@ class ReportController extends BaseController
     }
 
     public function downloadExcel(Request $req){
-        return (Session::get('resultReport'))->downloadExcel("report.xlsx",null,true);
+        //return (Session::get('resultReport'))->downloadExcel("report.xlsx",null,true);
+        if(Session::get('reportType') == 'smart_1'){
+            return Excel::download(new Smart_Report1, 'smart.xlsx');
+        }else if(Session::get('reportType') == "smart_2"){
+            return Excel::download(new Smart_Report2, 'smart.xlsx');
+        }
     }
 }
