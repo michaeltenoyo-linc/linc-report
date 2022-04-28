@@ -21,6 +21,7 @@ class ViewController extends BaseController
 
     //Navigation
     public function gotoLandingPage(){
+
         return view('smart.pages.landing');
     }
 
@@ -47,6 +48,7 @@ class ViewController extends BaseController
     public function gotoSoNew(){
         $data['kendaraan'] = Trucks::get();
         $data['items'] = Item::get();
+        $data['driver'] = Suratjalan::select('driver_name')->groupBy('driver_name')->get()->pluck('driver_name');
 
         return view('smart.pages.nav-so-new', $data);
     }

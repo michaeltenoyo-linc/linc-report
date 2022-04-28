@@ -338,7 +338,7 @@ class SalesBudgetSeeder extends Seeder
         $firstline = true;
 
         $counter = 1;
-        while(($data = fgetcsv($csvFile, 0, ',','"')) != FALSE){
+        while(($data = fgetcsv($csvFile, 0, ';','"')) != FALSE){
             error_log("Budget Transport : ".$counter,0);
             $counter++;
             if (!$firstline){
@@ -485,7 +485,7 @@ class SalesBudgetSeeder extends Seeder
         $firstline = true;
 
         $counter = 1;
-        while(($data = fgetcsv($csvFile, 0, ',','"')) != FALSE){
+        while(($data = fgetcsv($csvFile, 0, ';','"')) != FALSE){
             error_log("Budget Exim : ".$counter,0);
             $counter++;
             if (!$firstline){

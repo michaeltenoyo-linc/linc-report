@@ -36,6 +36,7 @@ use App\Http\Controllers\Loa\TransportController as LoaTransportController;
 
 //SALES CONTROLLER
 use App\Http\Controllers\Sales\ViewController as SalesViewController;
+use App\Http\Controllers\SharedController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,7 +48,11 @@ use App\Http\Controllers\Sales\ViewController as SalesViewController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+/*
+Route::middleware(['auth','priviledge:ltl,master'])->group(function(){
 
+});
+*/
 //MASTER
 Route::get('/',[MasterViewController::class, 'gotoLandingPage']);
 Route::prefix('/user')->group(function (){
@@ -379,3 +384,5 @@ Route::get('/cities/{id}', 'IndonesiaDropdownController@cities')->name('cities')
 Route::get('/districts/{id}', 'IndonesiaDropdownController@districts')->name('districts');
 Route::get('/villages/{id}', 'IndonesiaDropdownController@villages')->name('villages');
 
+//SHARED API
+Route::get('/lincrest/statistic/routes/{filterDate}',[SharedController::class, 'generateRoutesReport']);

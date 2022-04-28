@@ -99,8 +99,8 @@ class ReportController extends BaseController
                         array_push($listPenerima, $sj->penerima);
                     }
                     $uniqueCount = count(array_count_values($listPenerima));
-                    $uniqueCount>1?$isMultidrop=true:$isMultiDrop=false;
-                    if(!$isMultiDrop){
+                    $uniqueCount>1?$isMultidrop=true:$isMultidrop=false;
+                    if(!$isMultidrop){
                         $totalMultidrop = 0;
                     }
 
