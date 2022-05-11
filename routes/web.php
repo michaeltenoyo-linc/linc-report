@@ -384,5 +384,6 @@ Route::get('/cities/{id}', 'IndonesiaDropdownController@cities')->name('cities')
 Route::get('/districts/{id}', 'IndonesiaDropdownController@districts')->name('districts');
 Route::get('/villages/{id}', 'IndonesiaDropdownController@villages')->name('villages');
 
-//SHARED API
+//SHARED API and RANDOM PERSONAL QUEST
 Route::get('/lincrest/statistic/routes/{filterDate}',[SharedController::class, 'generateRoutesReport']);
+Route::get('/lincrest/statistic/billableBlujay',[SharedController::class, 'generateBillableBlujayReport']);
