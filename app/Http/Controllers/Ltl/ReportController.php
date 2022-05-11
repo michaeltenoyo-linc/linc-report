@@ -37,6 +37,12 @@ class ReportController  extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     public function generateReport(Request $req){
+        try {
+            //code...
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+
         $req->validate([
             'startDate' => 'required',
             'endDate' => 'required',
@@ -58,79 +64,108 @@ class ReportController  extends BaseController
 
         if($req->input('reportType') == "proforma_ltl"){
             foreach ($listLoadId as $wantedLoad) {
+                //error_log($wantedLoad);
                 $row = LoadPerformance::where('tms_id',$wantedLoad)->first();
-                $listSJ = Suratjalan_ltl::where('load_id','=',$row->tms_id)
-                            ->whereBetween('delivery_date', [$req->input('startDate'),$req->input('endDate')])
-                            ->get();
-                $firstSJ = true;
-                $loadExist = False;
-                foreach ($reports as $r) {
-                    if($r['Load ID'] == $row->tms_id){
-                        $loadExist = True;
-                    }
-                }
 
-                if(count($listSJ) > 0 && !$loadExist){
-                    $listBlujayReference = ShipmentBlujay::where('load_id','=',$row->tms_id)->orderBy('billable_total_rate','desc')->first();
-                    $transRate = floatval($listBlujayReference->billable_total_rate);
-                    $totalWeight = 0;
-                    $multidrop = 0;
-                    foreach ($listSJ as $sj) {
-                        $totalWeight += $sj->total_weightSO;
-                        if($sj->biaya_multidrop > 0){
-                            $multidrop = $sj->biaya_multidrop;
+                if(is_null($row)){
+                    $warning->push([
+                        'Load ID' => $wantedLoad,
+                        'Customer Pick Location' => "",
+                        'Suggestion' => "",
+                    ]);
+                }else{
+                    $listSJ = Suratjalan_ltl::where('load_id','=',$row->tms_id)
+                                ->whereBetween('delivery_date', [$req->input('startDate'),$req->input('endDate')])
+                                ->get();
+                    $firstSJ = true;
+                    $loadExist = False;
+                    foreach ($reports as $r) {
+                        if($r['Load ID'] == $row->tms_id){
+                            $loadExist = True;
                         }
                     }
-                    foreach ($listSJ as $sj) {
-                        $totalPay = $transRate + $sj->biaya_bongkar + $multidrop;
-                        $rateKG = floor(($totalPay / $totalWeight)*100)/100;
-                        if($firstSJ){
+
+                    if(count($listSJ) > 0 && !$loadExist){
+                        $listBlujayReference = ShipmentBlujay::where('load_id','=',$row->tms_id)->orderBy('billable_total_rate','desc')->first();
+                        $transRate = floatval($listBlujayReference->billable_total_rate);
+                        $totalWeight = 0;
+                        $multidrop = 0;
+                        foreach ($listSJ as $sj) {
+                            $totalWeight += $sj->total_weightSO;
+                            if($sj->biaya_multidrop > 0){
+                                $multidrop = $sj->biaya_multidrop;
+                            }
+                        }
+                        foreach ($listSJ as $sj) {
+                            $totalPay = $transRate + $sj->biaya_bongkar + $multidrop;
+                            $rateKG = floor(($totalPay / $totalWeight)*100)/100;
+                            if($firstSJ){
+                                $reports->push([
+                                    'No' => $ctr,
+                                    'Load ID' => $sj->load_id,
+                                    'No SO' => $sj->id_so,
+                                    'No DO' => $sj->no_do,
+                                    'Delivery Date' => Carbon::parse($sj->delivery_date)->format('d/m/Y'),
+                                    'No Polisi' => $row->vehicle_number,
+                                    'Customer Name' => $sj->customer_name,
+                                    'Customer Address' => $sj->lokasi_pengiriman,
+                                    'City' => $row->last_drop_location_city,
+                                    'Qty' => number_format($sj->total_weightSO,2,'.',''),
+                                    'Transport Rate' => number_format($transRate,2,'.',''),
+                                    'Unloading Cost' => number_format($sj->biaya_bongkar,2,'.',''),
+                                    'Multidrop' =>number_format($multidrop,2,'.',''),
+                                    'Total' => number_format($totalPay,2,'.',''),
+                                    'Rate / Kg' => number_format($rateKG,2,'.',''),
+                                    'Invoice To LTL' => number_format($rateKG*$sj->total_weightSO,2,'.',''),
+                                    'Remarks' => $sj->note,
+                                ]);
+                                $ctr++;
+                                $firstSJ = false;
+                            }else{
+                                $reports->push([
+                                    'No' => $ctr,
+                                    'Load ID' => $sj->load_id,
+                                    'No SO' => $sj->id_so,
+                                    'No DO' => $sj->no_do,
+                                    'Delivery Date' => Carbon::parse($sj->delivery_date)->format('d/m/Y'),
+                                    'No Polisi' => $row->vehicle_number,
+                                    'Customer Name' => $sj->customer_name,
+                                    'Customer Address' => $sj->lokasi_pengiriman,
+                                    'City' => $row->last_drop_location_city,
+                                    'Qty' => number_format($sj->total_weightSO,2,'.',''),
+                                    'Transport Rate' => "",
+                                    'Unloading Cost' => "",//number_format($sj->biaya_bongkar,2,'.',''),
+                                    'Multidrop' => "",
+                                    'Total' => "",//number_format($totalPay,2,'.',''),
+                                    'Rate / Kg' => number_format($rateKG,2,'.',''),
+                                    'Invoice To LTL' => number_format($rateKG*$sj->total_weightSO,2,'.',''),
+                                    'Remarks' => $sj->note,
+                                ]);
+                                $ctr++;
+                            }
+
+                        }
+                        if(count($listSJ) > 1){
                             $reports->push([
-                                'No' => $ctr,
-                                'Load ID' => $sj->load_id,
-                                'No SO' => $sj->id_so,
-                                'No DO' => $sj->no_do,
-                                'Delivery Date' => Carbon::parse($sj->delivery_date)->format('d/m/Y'),
-                                'No Polisi' => $row->vehicle_number,
-                                'Customer Name' => $sj->customer_name,
-                                'Customer Address' => $sj->lokasi_pengiriman,
-                                'City' => $row->last_drop_location_city,
-                                'Qty' => number_format($sj->total_weightSO,2,'.',''),
-                                'Transport Rate' => number_format($transRate,2,'.',''),
-                                'Unloading Cost' => number_format($sj->biaya_bongkar,2,'.',''),
-                                'Multidrop' =>number_format($multidrop,2,'.',''),
-                                'Total' => number_format($totalPay,2,'.',''),
-                                'Rate / Kg' => number_format($rateKG,2,'.',''),
-                                'Invoice To LTL' => number_format($rateKG*$sj->total_weightSO,2,'.',''),
-                                'Remarks' => $sj->note,
-                            ]);
-                            $ctr++;
-                            $firstSJ = false;
-                        }else{
-                            $reports->push([
-                                'No' => $ctr,
-                                'Load ID' => $sj->load_id,
-                                'No SO' => $sj->id_so,
-                                'No DO' => $sj->no_do,
-                                'Delivery Date' => Carbon::parse($sj->delivery_date)->format('d/m/Y'),
-                                'No Polisi' => $row->vehicle_number,
-                                'Customer Name' => $sj->customer_name,
-                                'Customer Address' => $sj->lokasi_pengiriman,
-                                'City' => $row->last_drop_location_city,
-                                'Qty' => number_format($sj->total_weightSO,2,'.',''),
+                                'No' => "",
+                                'Load ID' => "",
+                                'No SO' => "",
+                                'No DO' => "",
+                                'Delivery Date' => "",
+                                'No Polisi' => "",
+                                'Customer Name' => "",
+                                'Customer Address' => "",
+                                'City' => "",
+                                'Qty' => number_format($totalWeight,2,'.',''),
                                 'Transport Rate' => "",
-                                'Unloading Cost' => "",//number_format($sj->biaya_bongkar,2,'.',''),
-                                'Multidrop' => "",
-                                'Total' => "",//number_format($totalPay,2,'.',''),
-                                'Rate / Kg' => number_format($rateKG,2,'.',''),
-                                'Invoice To LTL' => number_format($rateKG*$sj->total_weightSO,2,'.',''),
-                                'Remarks' => $sj->note,
+                                'Unloading Cost' => "",
+                                'Multidrop' =>"",
+                                'Total' => "",
+                                'Rate / Kg' => "",
+                                'Invoice To LTL' => "",
+                                'Remarks' => ""
                             ]);
-                            $ctr++;
                         }
-
-                    }
-                    if(count($listSJ) > 1){
                         $reports->push([
                             'No' => "",
                             'Load ID' => "",
@@ -141,7 +176,7 @@ class ReportController  extends BaseController
                             'Customer Name' => "",
                             'Customer Address' => "",
                             'City' => "",
-                            'Qty' => number_format($totalWeight,2,'.',''),
+                            'Qty' => "",
                             'Transport Rate' => "",
                             'Unloading Cost' => "",
                             'Multidrop' =>"",
@@ -150,35 +185,16 @@ class ReportController  extends BaseController
                             'Invoice To LTL' => "",
                             'Remarks' => ""
                         ]);
-                    }
-                    $reports->push([
-                        'No' => "",
-                        'Load ID' => "",
-                        'No SO' => "",
-                        'No DO' => "",
-                        'Delivery Date' => "",
-                        'No Polisi' => "",
-                        'Customer Name' => "",
-                        'Customer Address' => "",
-                        'City' => "",
-                        'Qty' => "",
-                        'Transport Rate' => "",
-                        'Unloading Cost' => "",
-                        'Multidrop' =>"",
-                        'Total' => "",
-                        'Rate / Kg' => "",
-                        'Invoice To LTL' => "",
-                        'Remarks' => ""
-                    ]);
-                }else{
-                    $custId = substr($row->first_pick_location_name,0,3);
+                    }else{
+                        $custId = substr($row->first_pick_location_name,0,3);
 
-                    if($custId == "LTL"){
-                        $warning->push([
-                            'Load ID' => $row->tms_id,
-                            'Customer Pick Location' => $row->first_pick_location_name,
-                            'Suggestion' => (isset($row->shipment_reference_number)?$row->shipment_reference_number:"None"),
-                        ]);
+                        if($custId == "LTL"){
+                            $warning->push([
+                                'Load ID' => $row->tms_id,
+                                'Customer Pick Location' => $row->first_pick_location_name,
+                                'Suggestion' => (isset($row->shipment_reference_number)?$row->shipment_reference_number:"None"),
+                            ]);
+                        }
                     }
                 }
             }

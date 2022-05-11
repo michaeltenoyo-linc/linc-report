@@ -39,5 +39,6 @@ class BillableBlujay extends Model
         'currency',
         'effective_date',
         'expiration_date',
+        'modifier'
     ];
 }

@@ -42,6 +42,7 @@ class CreateBillableBlujaysTable extends Migration
             $table->string('currency');
             $table->date('effective_date');
             $table->date('expiration_date');
+            $table->string('modifier');
             $table->timestamps();
             $table->softDeletes();
         });

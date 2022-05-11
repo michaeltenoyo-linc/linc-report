@@ -29,7 +29,7 @@ class CustomerBlujaySeeder extends Seeder
         Customer::truncate();
 
         //FUSO dan WB
-        $csvFile = fopen(base_path("reference/Database_Customers_012022.csv"),"r");
+        $csvFile = fopen(base_path("reference/Database_Customers_052022.csv"),"r");
         
         $firstline = true;
         

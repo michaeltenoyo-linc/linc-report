@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\Statistic_Billable_Blujay;
 use App\Exports\Statistic_Routes;
+use App\Models\BillableBlujay;
+use App\Models\Customer;
 use App\Models\LoadPerformance;
 use App\Models\ShipmentBlujay;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Carbon;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -76,5 +80,48 @@ class SharedController extends BaseController
         }else if('blujay'){
             
         }
+    }
+
+    public function generateBillableBlujayReport(){
+        //LISTED CUSTOMERS
+        $billable = BillableBlujay::select('customer_reference',DB::raw('count(*) as total'))
+                                    ->where('expiration_date','>=',Carbon::today()->toDateString())
+                                    ->where('effective_date','<=',Carbon::today()->toDateString())
+                                    ->where('modifier','LIKE','%LG_DNingrum%')
+                                    ->groupBy('customer_reference')
+                                    ->get();
+
+        $out1 = new Collection();
+
+        foreach ($billable as $b) {
+            $cust = Customer::where('reference','=',$b->customer_reference)->first();
+
+            $out1->push([
+                'Reference' => $b->customer_reference,
+                'Customer Name' => $b->customer_reference=="UNDEFINED"?"UNDEFINED":$cust->name,
+                'Total Data' => $b->total,
+            ]);
+        }
+
+        //UNDEFINED CUSTOMERS
+        $billable_undefined = BillableBlujay::select('billable_tariff',DB::raw('count(*) as total'))
+                                            ->where('expiration_date','>=',Carbon::today()->toDateString())
+                                            ->where('effective_date','<=',Carbon::today()->toDateString())
+                                            ->where('modifier','LIKE','%LG_DNingrum%')
+                                            ->where('customer_reference','=','UNDEFINED')
+                                            ->groupBy('billable_tariff')
+                                            ->get();
+
+        $out2 = new Collection();
+        foreach ($billable_undefined as $b) {
+            $out2->push([
+                'Billable Method' => $b->billable_tariff,
+                'Total Data' => $b->total,
+            ]);
+        }
+
+        FacadesSession::put('statistic_billable_blujay_1',$out1);
+        FacadesSession::put('statistic_billable_blujay_2',$out2);
+        return Excel::download(new Statistic_Billable_Blujay, 'routes_billable_blujay.xlsx');
     }
 }
