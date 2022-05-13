@@ -35,6 +35,7 @@ class ViewController extends BaseController
     private $bulkLoadGroups = ['SURABAYA LOG BULK'];
     private $warehouseLoadGroups = [];
     private $emptyLoadGroups = ['SURABAYA MOB KOSONGAN'];
+    private $surabayaLoadGroups = ['SURABAYA LOG PACK', 'SURABAYA RENTAL', 'SURABAYA RENTAL TRIP', 'SURABAYA TIV LOKAL','SURABAYA EXIM TRUCKING', 'SURABAYA TIV IMPORT','SURABAYA LOG BULK','SURABAYA MOB KOSONGAN'];
 
     //Navigation
     public function gotoLandingPage(){
@@ -423,12 +424,14 @@ class ViewController extends BaseController
                                     ->where('load_status','Completed')
                                     ->whereMonth('load_closed_date',Session::get('sales-month'))
                                     ->whereYear('load_closed_date',Session::get('sales-year'))
+                                    ->whereIn('load_group',$this->surabayaLoadGroups)
                                     ->groupBy('load_id')
                                     ->get());
 
         $incompleteLoads = count(ShipmentBlujay::select('load_id')
                                     ->where('load_status','Accepted')
                                     ->where('load_closed_date',null)
+                                    ->whereIn('load_group',$this->surabayaLoadGroups)
                                     ->groupBy('load_id')
                                     ->get());
 
