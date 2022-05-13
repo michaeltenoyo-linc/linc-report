@@ -14,7 +14,7 @@ export const load = () => {
         $('#date-filter-landing').val(moment().format('YYYY-MM'));
     }  
 
-    
+    /*
     $(document).on({
         ajaxStart: function(){
             $('#loader').removeClass('hidden');
@@ -23,6 +23,7 @@ export const load = () => {
             $("#loader").addClass("hidden");
         }
     });
+    */
 
     //Disable Scroll on input
     $('form').on('focus', 'input[type=number]', function(e){

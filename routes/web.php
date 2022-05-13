@@ -137,12 +137,14 @@ Route::middleware(['auth','priviledge:ltl,master'])->group(function () {
         Route::prefix('/data')->group(function () {
             //Surat Jalan
             Route::get('/get-sj',[LtlViewController::class, 'getSj']);
+            Route::get('/get-sj-byid/{id_so}',[LtlViewController::class, 'getSjById']);
         });
 
         //Surat Jalan LTL
         Route::prefix('/suratjalan')->group(function () {
             Route::get('/check/{id_so}/{no_do}',[LtlSuratjalanController::class, 'checkSj']);
             Route::post('/delete',[LtlSuratjalanController::class, 'delete']);
+            Route::post('/update',[LtlSuratjalanController::class, 'update']);
             Route::post('/addSj',[LtlSuratjalanController::class, 'addSj']);
         });
 

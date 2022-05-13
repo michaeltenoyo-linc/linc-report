@@ -51,185 +51,189 @@ class ReportController extends BaseController
 
             foreach ($listLoadId as $wantedLoad) {
                 $row = LoadPerformance::where('tms_id',$wantedLoad)->first();
-                if($row == ""){
-                    break;
-                }
-
-                $listSJ = Suratjalan::where('load_id','=',$row->tms_id)->get();
-                $loadExist = False;
-                foreach ($reports as $r) {
-                    if($r['Load ID'] == $row->tms_id){
-                        $loadExist = True;
-                    }
-                }
-
-                //Addcost
-                $totalBongkar = 0;
-                $totalMultidrop = 0;
-                $totalOvernight = 0;
-
-                $listBongkar = Addcost::where('type','TMB_BONGKAR')->where('load_id',$row->tms_id)->get();
-                $listMultidrop = Addcost::where('type','TMB_MULTIDROP')->where('load_id',$row->tms_id)->get();
-                $listOvernight = Addcost::where('type','TMB_BIAYA INAP (OVERNIGHT CHARGE)')->where('load_id',$row->tms_id)->get();
-
-                if(count($listBongkar) > 0){
-                    foreach ($listBongkar as $bongkar) {
-                        $totalBongkar += $bongkar->rate;
-                    }                    
-                }
-
-                if(count($listMultidrop) > 0){
-                    foreach ($listMultidrop as $multidrop) {
-                        $totalMultidrop += $multidrop->rate;
-                    }                    
-                }
-
-                if(count($listOvernight) > 0){
-                    foreach ($listOvernight as $overnight) {
-                        $totalOvernight += $overnight->rate;
-                    }                    
-                }
-
-                //LISTING SURAT JALAN
-                if(count($listSJ) > 0 && !$loadExist){
-                    //Check multidrop
-                    $isMultidrop = false;
-                    $listPenerima = [];
-                    foreach ($listSJ as $sj) {
-                        array_push($listPenerima, $sj->penerima);
-                    }
-                    $uniqueCount = count(array_count_values($listPenerima));
-                    $uniqueCount>1?$isMultidrop=true:$isMultidrop=false;
-                    if(!$isMultidrop){
-                        $totalMultidrop = 0;
-                    }
-
-                    foreach ($listSJ as $sj) {
-                        $firstline = true;
-                        $isWanted = false;
-
-                        foreach ($listLoadId as $load) {
-                            if($sj->load_id == $load){
-                                $isWanted = true;
-                            }
+                if($row != ""){
+                    $listSJ = Suratjalan::where('load_id','=',$row->tms_id)->get();
+                    $loadExist = False;
+                    foreach ($reports as $r) {
+                        if($r['Load ID'] == $row->tms_id){
+                            $loadExist = True;
                         }
-                        
-                        if($req->input('customerType') == "all"){
-                            $truck = Trucks::where('nopol','=',$sj->nopol)->first();
-                            //$totalHarga = intval($row->billable_total_rate) + $totalOvernight + $totalBongkar + $totalMultidrop;
-                            $splitID = explode('$',$sj->id_so);
+                    }
 
-                            $dload = Dload::where('id_so','=',$sj->id_so)->get();
+                    //Addcost
+                    $totalBongkar = 0;
+                    $totalMultidrop = 0;
+                    $totalOvernight = 0;
 
-                            foreach ($dload as $item) {
-                                $itemDetail = Item::where('material_code','=',$item->material_code)->first();
-                                $locationDetail = Company::where('reference',$row->last_drop_location_name)->first();
+                    $listBongkar = Addcost::where('type','TMB_BONGKAR')->where('load_id',$row->tms_id)->get();
+                    $listMultidrop = Addcost::where('type','TMB_MULTIDROP')->where('load_id',$row->tms_id)->get();
+                    $listOvernight = Addcost::where('type','TMB_BIAYA INAP (OVERNIGHT CHARGE)')->where('load_id',$row->tms_id)->get();
 
-                                if($firstline){
-                                    $reports->push([
-                                        'No' => $ctr,
-                                        'Load ID' => $row->tms_id,
-                                        'Customer Type' => $sj->customer_type,
-                                        'Tgl Muat' => Carbon::parse($sj->tgl_terima)->format('d-M-Y'),
-                                        'No SJ' => $splitID[0],
-                                        'No DO' => (isset($splitID[1])?$splitID[1]:""),
-                                        'Penerima' => $sj->penerima,
-                                        'Lokasi Tujuan' => $row->last_drop_location_name,
-                                        'Provinsi Tujuan' => is_null($locationDetail)?"Undefined":$locationDetail->province,
-                                        'Kota Tujuan' => is_null($locationDetail)?"Undefined":$locationDetail->city,
-                                        'Kuantitas' => $sj->total_qtySO,
-                                        'Berat' => $sj->total_weightSO,
-                                        'Utilitas' => strval($sj->utilitas)."%",
-                                        'Nopol' => $sj->nopol,
-                                        'Tipe Kendaraan' => $row->equipment_description,
-                                        'Kontainer' => "-",
-                                        'Biaya Kirim' => intval($row->billable_total_rate) - $totalOvernight - $totalBongkar - $totalMultidrop,
-                                        'Biaya Bongkar' => $totalBongkar,
-                                        'Overnight Charge' => $totalOvernight,
-                                        'Multidrop' => $totalMultidrop,
-                                        'Total' => intval($row->billable_total_rate),
-                                        'Kode SKU' => $item->material_code,
-                                        'Deskripsi' => $itemDetail->description,
-                                        'Qty' => $item->qty,
-                                        'Item Weight' => $itemDetail->gross_weight,
-                                        'Subtotal Weight' => $item->subtotal_weight,
-                                    ]);
+                    if(count($listBongkar) > 0){
+                        foreach ($listBongkar as $bongkar) {
+                            $totalBongkar += $bongkar->rate;
+                        }                    
+                    }
 
-                                    $firstline = false;
-                                }else{
-                                    $reports->push([
-                                        'No' => " ",
-                                        'Load ID' => " ",
-                                        'Customer Type' => " ",
-                                        'Tgl Muat' => " ",
-                                        'No SJ' => " ",
-                                        'No DO' => " ",
-                                        'Penerima' => " ",
-                                        'Lokasi Tujuan' => " ",
-                                        'Provinsi Tujuan' => " ",
-                                        'Kota Tujuan' => " ",
-                                        'Kuantitas' => " ",
-                                        'Berat' => " ",
-                                        'Utilitas' => " ",
-                                        'Nopol' => " ",
-                                        'Tipe Kendaraan' => " ",
-                                        'Kontainer' => " ",
-                                        'Biaya Kirim' => " ",
-                                        'Biaya Bongkar' => " ",
-                                        'Overnight Charge' =>" ",
-                                        'Multidrop' => " ",
-                                        'Total' => " ",
-                                        'Kode SKU' => $item->material_code,
-                                        'Deskripsi' => $itemDetail->description,
-                                        'Qty' => $item->qty,
-                                        'Item Weight' => $itemDetail->gross_weight,
-                                        'Subtotal Weight' => $item->subtotal_weight,
-                                    ]);
+                    if(count($listMultidrop) > 0){
+                        foreach ($listMultidrop as $multidrop) {
+                            $totalMultidrop += $multidrop->rate;
+                        }                    
+                    }
+
+                    if(count($listOvernight) > 0){
+                        foreach ($listOvernight as $overnight) {
+                            $totalOvernight += $overnight->rate;
+                        }                    
+                    }
+
+                    //LISTING SURAT JALAN
+                    if(count($listSJ) > 0 && !$loadExist){
+                        //Check multidrop
+                        $isMultidrop = false;
+                        $listPenerima = [];
+                        foreach ($listSJ as $sj) {
+                            array_push($listPenerima, $sj->penerima);
+                        }
+                        $uniqueCount = count(array_count_values($listPenerima));
+                        $uniqueCount>1?$isMultidrop=true:$isMultidrop=false;
+                        if(!$isMultidrop){
+                            $totalMultidrop = 0;
+                        }
+
+                        foreach ($listSJ as $sj) {
+                            $firstline = true;
+                            $isWanted = false;
+
+                            foreach ($listLoadId as $load) {
+                                if($sj->load_id == $load){
+                                    $isWanted = true;
                                 }
                             }
+                            
+                            if($req->input('customerType') == "all"){
+                                $truck = Trucks::where('nopol','=',$sj->nopol)->first();
+                                //$totalHarga = intval($row->billable_total_rate) + $totalOvernight + $totalBongkar + $totalMultidrop;
+                                $splitID = explode('$',$sj->id_so);
 
-                            $ctr++;
+                                $dload = Dload::where('id_so','=',$sj->id_so)->get();
+
+                                foreach ($dload as $item) {
+                                    $itemDetail = Item::where('material_code','=',$item->material_code)->first();
+                                    $locationDetail = Company::where('reference',$row->last_drop_location_name)->first();
+
+                                    if($firstline){
+                                        $reports->push([
+                                            'No' => $ctr,
+                                            'Load ID' => $row->tms_id,
+                                            'Customer Type' => strtoupper($sj->customer_type),
+                                            'Tgl Muat' => Carbon::parse($sj->tgl_terima)->format('d-M-Y'),
+                                            'No SJ' => $splitID[0],
+                                            'No DO' => (isset($splitID[1])?$splitID[1]:"-"),
+                                            'Penerima' => $sj->penerima,
+                                            'Lokasi Tujuan' => $row->last_drop_location_name,
+                                            'Provinsi Tujuan' => strtoupper(is_null($locationDetail)?"Undefined":$locationDetail->province),
+                                            'Kota Tujuan' => strtoupper(is_null($locationDetail)?"Undefined":$locationDetail->city),
+                                            'Kuantitas' => $sj->total_qtySO,
+                                            'Berat' => $sj->total_weightSO,
+                                            'Utilitas' => strval($sj->utilitas)."%",
+                                            'Nopol' => $sj->nopol,
+                                            'Tipe Kendaraan' => $row->equipment_description,
+                                            'Kontainer' => "-",
+                                            'Biaya Kirim' => intval($row->billable_total_rate) - $totalOvernight - $totalBongkar - $totalMultidrop,
+                                            'Biaya Bongkar' => $totalBongkar,
+                                            'Overnight Charge' => $totalOvernight,
+                                            'Multidrop' => $totalMultidrop,
+                                            'Total' => intval($row->billable_total_rate),
+                                            'Kode SKU' => $item->material_code,
+                                            'Deskripsi' => $itemDetail->description,
+                                            'Qty' => $item->qty,
+                                            'Item Weight' => $itemDetail->gross_weight,
+                                            'Subtotal Weight' => $item->subtotal_weight,
+                                        ]);
+
+                                        $firstline = false;
+                                    }else{
+                                        $reports->push([
+                                            'No' => " ",
+                                            'Load ID' => " ",
+                                            'Customer Type' => " ",
+                                            'Tgl Muat' => " ",
+                                            'No SJ' => " ",
+                                            'No DO' => " ",
+                                            'Penerima' => " ",
+                                            'Lokasi Tujuan' => " ",
+                                            'Provinsi Tujuan' => " ",
+                                            'Kota Tujuan' => " ",
+                                            'Kuantitas' => " ",
+                                            'Berat' => " ",
+                                            'Utilitas' => " ",
+                                            'Nopol' => " ",
+                                            'Tipe Kendaraan' => " ",
+                                            'Kontainer' => " ",
+                                            'Biaya Kirim' => " ",
+                                            'Biaya Bongkar' => " ",
+                                            'Overnight Charge' =>" ",
+                                            'Multidrop' => " ",
+                                            'Total' => " ",
+                                            'Kode SKU' => $item->material_code,
+                                            'Deskripsi' => $itemDetail->description,
+                                            'Qty' => $item->qty,
+                                            'Item Weight' => $itemDetail->gross_weight,
+                                            'Subtotal Weight' => $item->subtotal_weight,
+                                        ]);
+                                    }
+                                }
+
+                                $ctr++;
+                            }
+                        }
+                        $reports->push([
+                            'No' => " ",
+                            'Load ID' => " ",
+                            'Customer Type' => " ",
+                            'Tgl Muat' => " ",
+                            'No SJ' => " ",
+                            'No DO' => " ",
+                            'Penerima' => " ",
+                            'Lokasi Tujuan' => " ",
+                            'Provinsi Tujuan' => " ",
+                            'Kota Tujuan' => " ",
+                            'Kuantitas' => " ",
+                            'Berat' => " ",
+                            'Utilitas' => " ",
+                            'Nopol' => " ",
+                            'Tipe Kendaraan' => " ",
+                            'Kontainer' => " ",
+                            'Biaya Kirim' => " ",
+                            'Biaya Bongkar' => " ",
+                            'Overnight Charge' =>" ",
+                            'Multidrop' => " ",
+                            'Total' => " ",
+                            'Kode SKU' => " ",
+                            'Deskripsi' => " ",
+                            'Qty' => " ",
+                            'Item Weight' => " ",
+                            'Subtotal Weight' => " ",
+                        ]);
+                    }else if(count($listSJ) == 0){
+                        $custId = substr($row->first_pick_location_name,0,3);
+
+                        if($custId == "SMR"){
+                            $warning->push([
+                                'Load ID' => $row->tms_id,
+                                'Customer Pick Location' => $row->first_pick_location_name,
+                                'Suggestion' => (isset($row->shipment_reference)?$row->shipment_reference:"None"),
+
+                            ]);
                         }
                     }
-                    $reports->push([
-                        'No' => " ",
-                        'Load ID' => " ",
-                        'Customer Type' => " ",
-                        'Tgl Muat' => " ",
-                        'No SJ' => " ",
-                        'No DO' => " ",
-                        'Penerima' => " ",
-                        'Lokasi Tujuan' => " ",
-                        'Provinsi Tujuan' => " ",
-                        'Kota Tujuan' => " ",
-                        'Kuantitas' => " ",
-                        'Berat' => " ",
-                        'Utilitas' => " ",
-                        'Nopol' => " ",
-                        'Tipe Kendaraan' => " ",
-                        'Kontainer' => " ",
-                        'Biaya Kirim' => " ",
-                        'Biaya Bongkar' => " ",
-                        'Overnight Charge' =>" ",
-                        'Multidrop' => " ",
-                        'Total' => " ",
-                        'Kode SKU' => " ",
-                        'Deskripsi' => " ",
-                        'Qty' => " ",
-                        'Item Weight' => " ",
-                        'Subtotal Weight' => " ",
-                    ]);
                 }else{
-                    $custId = substr($row->first_pick_location_name,0,3);
-
-                    if($custId == "SMR"){
-                        $warning->push([
-                            'Load ID' => $row->tms_id,
-                            'Customer Pick Location' => $row->first_pick_location_name,
-                            'Suggestion' => (isset($row->shipment_reference)?$row->shipment_reference:"None"),
-
-                        ]);
-                    }
+                    $warning->push([
+                        'Load ID' => $wantedLoad,
+                        'Customer Pick Location' => "",
+                        'Suggestion' => "Load ID Not Found in database",
+                    ]);
                 }
             }
 

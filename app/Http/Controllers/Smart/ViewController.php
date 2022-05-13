@@ -49,6 +49,7 @@ class ViewController extends BaseController
         $data['kendaraan'] = Trucks::get();
         $data['items'] = Item::get();
         $data['driver'] = Suratjalan::select('driver_name')->groupBy('driver_name')->get()->pluck('driver_name');
+        $data['penerima'] = Suratjalan::select('penerima')->groupBy('penerima')->get()->pluck('penerima'); 
 
         return view('smart.pages.nav-so-new', $data);
     }
@@ -68,7 +69,7 @@ class ViewController extends BaseController
                 return $btn;
             })
             ->addColumn('created_at_format', function($row){
-                return date('d-m-Y H:i:s', strtotime($row->created_at));
+                return date('Y-m-d H:i:s', strtotime($row->created_at));
             })
             ->addColumn('splitId', function($row){
                 $splitId = explode('$',$row->id_so);
@@ -181,4 +182,6 @@ class ViewController extends BaseController
             return response()->json($data,404);
         }
     }
+
+    
 }

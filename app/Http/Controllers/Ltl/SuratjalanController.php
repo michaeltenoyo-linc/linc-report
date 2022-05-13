@@ -77,4 +77,33 @@ class SuratjalanController extends BaseController
         return response()->json(['message' => 'berhasil menghapus data.'], 200);
     }
 
+    public function update(Request $req){
+        $req->validate([
+            'id_so' => 'required',
+            'load_id' => 'required',
+            'customer' => 'required',
+            'lokasi' => 'required',
+            'tgl_kirim' => 'required',
+            'note' => 'required',
+            'totalWeight' => 'required',
+            'bongkar' => 'required',
+            'multidrop' => 'required',
+        ]);
+
+        $selectedLtl = Suratjalan_ltl::where('id_so','=',$req->input('id_so'))->first();
+
+        $selectedLtl->update([
+            'load_id' => $req->input('load_id'),
+            'customer_name' => $req->input('customer'),
+            'lokasi_pengiriman' => $req->input('lokasi'),
+            'delivery_date' => $req->input('tgl_kirim'),
+            'note' => $req->input('note'),
+            'total_weightSO' => $req->input('totalWeight'),
+            'biaya_bongkar' => $req->input('bongkar'),
+            'biaya_multidrop' => $req->input('multidrop'),
+        ]);
+        
+        return response()->json(['message' => "success"],200);
+    }
+
 }

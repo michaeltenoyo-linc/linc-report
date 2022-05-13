@@ -14,8 +14,7 @@ export const AdminSjalan = () => {
               {data: 'no_do', name: 'load_id'},
               {data: 'load_id', name: 'nopol'},
               {data: 'alamat_full', name: 'penerima'},
-              {data: 'total_qtySO', name: 'total_weightSO'},
-              {data: 'total_weightSO', name: 'utilitas'},
+              {data: 'created_at_format', name: 'created_at_format'},
               {data: 'action', name: 'action', orderable: false, searchable: false}
             ],
         });
@@ -162,6 +161,14 @@ export const AdminSjalan = () => {
         })
     }
 
+    const editSj = () => {
+        $(document).on('click','#btn-sj-edit', function(e){
+            e.preventDefault();
+            
+            console.log($(this).val());
+        });
+    }
+
     const deleteSj = () => {
         $(document).on('submit','#btn-sj-delete', function(e){
             e.preventDefault();
@@ -217,5 +224,6 @@ export const AdminSjalan = () => {
     getSj();
     addSj();
     deleteSj();
+    editSj();
     checkSj();
 };

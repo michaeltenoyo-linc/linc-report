@@ -186,6 +186,7 @@ class ReportController  extends BaseController
                             'Remarks' => ""
                         ]);
                     }else{
+                        /*
                         $custId = substr($row->first_pick_location_name,0,3);
 
                         if($custId == "LTL"){
@@ -194,7 +195,7 @@ class ReportController  extends BaseController
                                 'Customer Pick Location' => $row->first_pick_location_name,
                                 'Suggestion' => (isset($row->shipment_reference_number)?$row->shipment_reference_number:"None"),
                             ]);
-                        }
+                        }*/
                     }
                 }
             }

@@ -1,5 +1,6 @@
 import { AdminSjalan } from "./pages/AdminSjalan";
 import { AdminReport } from "./pages/AdminReport";
+import { EditModal } from "./modals/EditModal";
 
 export const load = () => {
     //Loading Spinner
@@ -26,6 +27,7 @@ export const load = () => {
 
     AdminSjalan();
     AdminReport();
+    EditModal();
 };
 
 load();
