@@ -84,31 +84,31 @@
 
             <!-- Divider -->
             <hr class="my-4 md:min-w-full" />
+            <!-- Heading -->
+            <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+                Sales
+            </h6>
 
+            <!-- Navigation Monitoring Master-->
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
                 {{-- Active --}}
                 <li class="items-center">
                     @if (Request::path() == '/sales/monitoring-master')
                     <a href="{{url('/sales/monitoring-master')}}"
                         class="page_nav_active">
-                        <i class="fab fa-sellsy"></i>
-                        Monitoring Master
+                        <i class="fas fa-chart-line"></i>
+                        Master All
                     </a>
                     @else
                     <a href="{{url('/sales/monitoring-master')}}"
                         class="page_nav">
-                        <i class="fab fa-sellsy"></i>
-                        Monitoring Master
+                        <i class="fas fa-chart-line"></i>
+                        Master All
                     </a>
                     @endif
                 </li>
             </ul>
-            <!-- Divider -->
-            <hr class="my-4 md:min-w-full" />
-            <!-- Heading -->
-            <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                Sales
-            </h6>
+
             <!-- Navigation Loads-->
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
                 {{-- Active --}}
@@ -116,39 +116,52 @@
                     @if (Request::path() == '/sales/by-sales/adit' || Request::path() == '/sales/by-sales/edwin' || Request::path() == '/sales/by-sales/willem')
                     <a href="{{url('/sales/by-sales/adit')}}"
                         class="page_nav_active">
-                        <i class="fab fa-sellsy"></i>
+                        <i class="fas fa-address-card"></i>
                         By Sales Report
                     </a>
                     @else
                     <a href="{{url('/sales/by-sales/adit')}}"
                         class="page_nav">
-                        <i class="fab fa-sellsy"></i>
+                        <i class="fas fa-address-card"></i>
                         By Sales Report
                     </a>
                     @endif
                 </li>
             </ul>
 
-            <!-- Divider -->
-            <hr class="my-4 md:min-w-full" />
-            <!-- Heading -->
-            <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                Division
-            </h6>
             <!-- Navigation Product -->
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
                 <li class="items-center">
                     @if (Request::path() == '/sales/by-division/transport' || Request::path() == '/sales/by-division/exim' || Request::path() == '/sales/by-division/bulk')
                         <a href="{{url('/sales/by-division/transport')}}"
                             class="page_nav_active">
-                            <i class="fab fa-sellsy"></i>
+                            <i class="fas fa-chart-pie"></i>
                             By Division Report
                         </a>
                     @else
                         <a href="{{url('/sales/by-division/transport')}}"
                             class="page_nav">
-                            <i class="fab fa-sellsy"></i>
+                            <i class="fas fa-chart-pie"></i>
                             By Division Report
+                        </a>
+                    @endif
+                </li>
+            </ul>
+
+            <!-- Navigation Product -->
+            <ul class="md:flex-col md:min-w-full flex flex-col list-none">
+                <li class="items-center">
+                    @if (Request::path() == '/sales/export/pdf')
+                        <a href="{{url('/sales/export/pdf')}}"
+                            class="page_nav_active">
+                            <i class="fas fa-clipboard"></i>
+                            Generate Single Page
+                        </a>
+                    @else
+                        <a href="{{url('/sales/export/pdf')}}"
+                            class="page_nav">
+                            <i class="fas fa-clipboard"></i>
+                            Generate Single Page
                         </a>
                     @endif
                 </li>
@@ -158,26 +171,46 @@
             <hr class="my-4 md:min-w-full" />
             <!-- Heading -->
             <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                Export
+                Trucking
             </h6>
+
             <!-- Navigation Product -->
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
                 <li class="items-center">
-                    @if (Request::path() == '/sales/export/pdf')
-                        <a href="{{url('/sales/export/pdf')}}"
+                    @if (Request::path() == '/sales/truck/performance')
+                        <a href="{{url('/sales/truck/performance')}}"
                             class="page_nav_active">
-                            <i class="fab fa-sellsy"></i>
-                            Export to PDF
+                            <i class="fas fa-clipboard"></i>
+                            Performance Statistic
                         </a>
                     @else
-                        <a href="{{url('/sales/export/pdf')}}"
+                        <a href="{{url('/sales/truck/performance')}}"
                             class="page_nav">
-                            <i class="fab fa-sellsy"></i>
-                            Export to PDF
+                            <i class="fas fa-clipboard"></i>
+                            Performance Statistic
                         </a>
                     @endif
                 </li>
             </ul>
+
+            <ul class="md:flex-col md:min-w-full flex flex-col list-none">
+                <li class="items-center">
+                    @if (Request::path() == '/sales/truck/utility')
+                        <a href="{{url('/sales/truck/utility')}}"
+                            class="page_nav_active">
+                            <i class="fas fa-shipping-fast"></i>
+                            Utility Performance
+                        </a>
+                    @else
+                        <a href="{{url('/sales/truck/utility')}}"
+                            class="page_nav">
+                            <i class="fas fa-shipping-fast"></i>
+                            Utility Performance
+                        </a>
+                    @endif
+                </li>
+            </ul>
+
         </div>
     </div>
 </nav>

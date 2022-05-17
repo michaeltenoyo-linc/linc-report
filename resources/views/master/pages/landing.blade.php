@@ -57,7 +57,7 @@
 						<li><a class="dropdown-item" href="/lautanluas">LTL Data Services</a></li>
 						<li><a class="dropdown-item" href="/greenfields">Greenfields Data Services</a></li>
 						<li><a class="dropdown-item" href="/loa">Letter of Agreements</a></li>
-						<li><a class="dropdown-item" href="/sales">Sales Report</a></li>
+						<li><a class="dropdown-item" href="/sales">Statistic Report</a></li>
 					</ul>
 			  	</li>
 
@@ -164,9 +164,9 @@
 							<img height="50rem" src="{{ asset('assets/novena/images/service/logo/revenue.jpg') }}" alt="">
 						</div>
 						<span>Data Services</span>
-						<h4 class="mb-3">Sales Report</h4>
-						<p class="mb-4">Reporting for sales performance, with visualization, and specific master in detail.</p>
-						<a href="{{ url('/sales') }}" class="btn btn-main btn-round-full">GO TO SALES REPORT</a>
+						<h4 class="mb-3">Statistic Report</h4>
+						<p class="mb-4">Reporting for performance statistic, with visualization, and specific master in detail.</p>
+						<a href="{{ url('/sales') }}" class="btn btn-main btn-round-full">GO TO STATISTIC REPORT</a>
 					</div>
 
 					<div class="feature-item mb-5 mb-lg-0">

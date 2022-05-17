@@ -36,6 +36,7 @@ use App\Http\Controllers\Loa\TransportController as LoaTransportController;
 
 //SALES CONTROLLER
 use App\Http\Controllers\Sales\ViewController as SalesViewController;
+use App\Http\Controllers\Sales\TruckController as SalesTruckController;
 use App\Http\Controllers\SharedController;
 
 /*
@@ -335,6 +336,16 @@ Route::middleware(['auth','priviledge:sales,master'])->group(function () {
             Route::get('/get-sales-pie/{sales}',[SalesViewController::class, 'getSalesPie']);
             Route::get('/get-division-pie/{division}',[SalesViewController::class, 'getDivisionPie']);
             Route::get('/get-division-pie',[SalesViewController::class, 'getAllDivisionPie']);
+        });
+        
+        Route::prefix('/truck')->group(function () {
+            //View
+            Route::get('/performance',[SalesViewController::class, 'gotoTruckingPerformance']);
+            Route::get('/utility',[SalesViewController::class, 'gotoTruckingUtility']);
+            
+            //Data
+            Route::get('/filter-nopol/{division}/{ownership}',[SalesTruckController::class, 'getFilteringTruck']);
+            Route::get('/filter-customer/{division}/{ownership}/{nopol}',[SalesTruckController::class, 'getFilteringCustomer']);
         });
     });
 });

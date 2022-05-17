@@ -7,9 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class lead_time extends Model
 {
     protected $table = 'lead_times';
-    public $incrementing = true;
+    protected $primaryKey = 'rg';
+    public $incrementing = false;
     protected $fillable = [
-        'route_guide',
+        'rg',
         'cluster',
         'ltpod'
     ];

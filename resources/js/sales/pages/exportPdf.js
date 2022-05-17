@@ -6,8 +6,8 @@ import Chart from 'chart.js/auto';
 
 export const ExportToPDF = async () => {
   const getCustomerList = async () => {
-    let division = $('.input-division').val();
-    let sales = $('.input-sales').val();
+    let division = $('#form-export-sales .input-division').val();
+    let sales = $('#form-export-sales .input-sales').val();
     
     $.ajaxSetup({
       headers: {
@@ -50,9 +50,9 @@ export const ExportToPDF = async () => {
       e.preventDefault();
       console.log("Generating...");
 
-      let division = $('.input-division').val();
-      let sales = $('.input-sales').val();
-      let customer = $('.input-customer').val();
+      let division = $('#form-export-sales .input-division').val();
+      let sales = $('#form-export-sales .input-sales').val();
+      let customer = $('#form-export-sales .input-customer').val();
 
       window.location.href = '/sales/export/generate-report/'+division+'/'+sales+'/'+customer+'/false';
     })

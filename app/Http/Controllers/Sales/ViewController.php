@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 //Model
 use App\Models\Item;
+use App\Models\LoadPerformance;
 use App\Models\SalesBudget;
 use App\Models\ShipmentBlujay;
 use App\Models\Suratjalan_greenfields;
@@ -38,6 +39,14 @@ class ViewController extends BaseController
     private $surabayaLoadGroups = ['SURABAYA LOG PACK', 'SURABAYA RENTAL', 'SURABAYA RENTAL TRIP', 'SURABAYA TIV LOKAL','SURABAYA EXIM TRUCKING', 'SURABAYA TIV IMPORT','SURABAYA LOG BULK','SURABAYA MOB KOSONGAN'];
 
     //Navigation
+    public function gotoTruckingPerformance(){
+        Session::put('sales-month',date('m'));
+        Session::put('sales-year', date('Y'));
+        $data['last_update'] = LoadPerformance::orderBy('updated_at','desc')->first();
+
+        return view('sales.pages.trucking.performance',$data);
+    }
+
     public function gotoLandingPage(){
         Session::put('sales-month',date('m'));
         Session::put('sales-year', date('Y'));

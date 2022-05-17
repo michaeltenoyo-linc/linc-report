@@ -14,7 +14,9 @@ class CreateLeadTimesTable extends Migration
     public function up()
     {
         Schema::create('lead_times', function (Blueprint $table) {
-            $table->id();
+            $table->string('rg')->primary();
+            $table->string('cluster');
+            $table->integer('ltpod');
             $table->timestamps();
         });
     }
