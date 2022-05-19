@@ -339,8 +339,9 @@ Route::middleware(['auth','priviledge:sales,master'])->group(function () {
         });
         
         Route::prefix('/truck')->group(function () {
-            //View
+            //View and Generate
             Route::get('/performance',[SalesViewController::class, 'gotoTruckingPerformance']);
+            Route::get('/performance-generate/{ownership}/{division}/{nopol}',[SalesTruckController::class, 'generateTruckingPerformance']);
             Route::get('/utility',[SalesViewController::class, 'gotoTruckingUtility']);
             
             //Data

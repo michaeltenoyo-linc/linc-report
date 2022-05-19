@@ -14,7 +14,7 @@ class UnitSurabayaSeeder extends Seeder
     {
         unit_surabaya::truncate();
 
-        $csvFile = fopen(base_path("reference/UnitSurabayaList.csv"),"r");
+        $csvFile = fopen(base_path("reference/unit/UnitSurabayaList.csv"),"r");
         
         $firstline = true;
 
@@ -23,6 +23,9 @@ class UnitSurabayaSeeder extends Seeder
                 unit_surabaya::create([
                     'nopol' => $data['0'],
                     'type' => $data['1'],
+                    'customer' => $data['2'],
+                    'driver' => $data['3'],
+                    'own' => $data['4'],
                 ]);
             }
             $firstline = false;

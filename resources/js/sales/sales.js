@@ -3,6 +3,7 @@ import { masterBudget } from "./pages/masterBudget";
 import { BySales, RefreshSalesPie } from "./pages/bySales";
 import { ByDivision, RefreshDivisionPie } from "./pages/byDivision";
 import { ExportToPDF } from "./pages/exportPdf";
+import { trucking } from "./pages/trucking";
 import moment from 'moment';
 
 export const load = () => {
@@ -132,7 +133,27 @@ export const load = () => {
         ByDivision();
         RefreshDivisionPie();
     }else if(viewContent == "exportPDF"){
+        $(document).on({
+            ajaxStart: function(){
+                $('#loader').removeClass('hidden');
+            },
+            ajaxStop: function(){
+                $("#loader").addClass("hidden");
+            }
+        });
+        
         ExportToPDF();
+    }else if(viewContent == "unitPerformance"){
+        $(document).on({
+            ajaxStart: function(){
+                $('#loader').removeClass('hidden');
+            },
+            ajaxStop: function(){
+                $("#loader").addClass("hidden");
+            }
+        });
+
+        trucking();
     }
 };
 

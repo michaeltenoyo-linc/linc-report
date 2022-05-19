@@ -12,5 +12,8 @@ class unit_surabaya extends Model
     protected $fillable = [
         'nopol',
         'type',
+        'customer',
+        'driver',
+        'own'
     ];
 }

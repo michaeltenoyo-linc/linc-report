@@ -10,7 +10,7 @@ Linc | Trucking Performance
 
 @section('content')
 <div class="w-full mb-12 px-4">
-    <input type="text" class="hidden" value="exportPDF" id="page-content">
+    <input type="text" class="hidden" value="unitPerformance" id="page-content">
     <div class="relative flex flex-col min-w-0 overflow-x-auto break-words w-full mb-6 shadow-lg rounded bg-white">
         <div class="block w-full p-8 overflow-x-auto">
             <div class="w-full mb-8">
@@ -31,9 +31,12 @@ Linc | Trucking Performance
                                 htmlFor="name">Ownership</label>
                             <select required name="ownership" class="input-ownership border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text">
                                 <option value="all">==Semua==</option>
-                                <option value="owned_all">Owned All</option>
-                                <option value="owned_sby">Owned Surabaya</option>
-                                <option value="vendor">Vendor</option>
+                                <option value="OWN">OWNED Surabaya</option>
+                                <option value="OPL">OPL Surabaya</option>
+                                <option value="GRAHA">GRAHA Surabaya</option>
+                                <option value="NOT_SBY_OWNED">Outside Surabaya Owned</option>
+                                <option value="NOT_SBY_VENDOR">Outside Surabaya Vendor</option>
+                                
                             </select>
                         </div>
 
@@ -41,13 +44,15 @@ Linc | Trucking Performance
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                                 htmlFor="name">Division</label>
                             <select required name="division" class="input-division border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text">
-                                <option value="all">==Semua==</option>
-                                <option value="transport">Transport</option>
-                                <option value="exim">ExIm</option>
-                                <option value="bulk">Bulk</option>
+                                <!-- <option value="all">==Semua==</option> -->
+                                <option value="surabaya">Surabaya All</option>
+                                <option value="transport">Surabaya Transport</option>
+                                <option value="exim">Surabaya ExIm</option>
+                                <option value="bulk">Surabaya Bulk</option>
                             </select>
                         </div>
-
+                        
+                        <!--
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                                 htmlFor="name">Load Group</label>
@@ -56,6 +61,7 @@ Linc | Trucking Performance
                                 <option value="surabaya">Surabaya</option>
                             </select>
                         </div>
+                        -->
 
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"

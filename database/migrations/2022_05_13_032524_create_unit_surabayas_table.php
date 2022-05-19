@@ -16,6 +16,9 @@ class CreateUnitSurabayasTable extends Migration
         Schema::create('unit_surabaya', function (Blueprint $table) {
             $table->string('nopol')->primary();
             $table->string('type');
+            $table->string('customer');
+            $table->string('driver');
+            $table->string('own');
             $table->timestamps();
         });
     }

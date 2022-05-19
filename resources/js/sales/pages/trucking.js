@@ -19,7 +19,7 @@ export const trucking = async () => {
       dataType: 'JSON',
     });
     $.ajax({
-      url: '/sales/truck/filter-nopol/'+division+'/'+ownership+'/'+group,
+      url: '/sales/truck/filter-nopol/'+division+'/'+ownership,
       type: 'GET',
       success: (data) => {
           console.log(data['nopol']);
@@ -27,7 +27,7 @@ export const trucking = async () => {
           $('#form-trucking-performance .input-nopol').empty();
           $('#form-trucking-performance .input-nopol').append('<option value="all">==Semua==</option>');
           data['nopol'].forEach(d => {
-            $('#form-trucking-performance .input-nopol').append('<option value="'+d['reference']+'">'+d['name']+'</option>');
+            $('#form-trucking-performance .input-nopol').append('<option value="'+d+'">'+d+'</option>');
           });
       }
     });
@@ -57,15 +57,14 @@ export const trucking = async () => {
       console.log("Generating...");
 
       let division = $('#form-trucking-performance .input-division').val();
-      let sales = $('#form-trucking-performance .input-sales').val();
+      let ownership = $('#form-trucking-performance .input-ownership').val();
+      let nopol = $('#form-trucking-performance .input-nopol').val();
 
-      window.location.href = '/sales/export/generate-report/'+division+'/'+sales+'/'+customer+'/false';
+      window.location.href = '/sales/truck/performance-generate/'+ownership+'/'+division+'/'+nopol;
     })
   }
 
-  onChangeCustomerFilter();
   onChangeNopolFilter();
-  getCustomerList();
   generateReport();
   getNopolList();
 }
