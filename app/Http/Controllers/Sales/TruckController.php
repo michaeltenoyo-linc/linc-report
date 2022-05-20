@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use PDF;
 
+use function PHPSTORM_META\map;
 use function PHPUnit\Framework\isNan;
 use function PHPUnit\Framework\isNull;
 
@@ -109,6 +110,7 @@ class TruckController extends BaseController
     }
 
     public function generateTruckingPerformance(Request $req, $ownership, $division, $nopol){
+        $data['division'] = $division;
         //Division Change
         $divisionGroup = [];
         switch ($division) {
@@ -215,5 +217,80 @@ class TruckController extends BaseController
         //Sorting
         $data['performance'] = collect($data['performance'])->sortBy('margin_percentage')->reverse();
         return view('sales.pages.pdf.pdf-trucking-performance', $data);
+    }
+
+    public function getCustomerData(Request $req, $nopol, $division){
+        $data['message'] = "Success";
+        $data['division'] = $division;
+        //Division Change
+        $divisionGroup = [];
+        switch ($division) {
+            case 'transport':
+                $division = 'Pack Trans';
+                $divisionGroup = $this->transportLoadGroups;
+                break;
+            case 'exim':
+                $division = 'Freight Forwarding BP';
+                $divisionGroup = $this->eximLoadGroups;
+                break;
+            case 'bulk':
+                $division = 'Bulk Trans';
+                $divisionGroup = $this->bulkLoadGroups;
+                break;
+            case 'surabaya':
+                $division = 'Surabaya';
+                $divisionGroup = $this->surabayaLoadGroups;
+            default:
+                break;
+        }
+
+        $loadList = LoadPerformance::select('tms_id')
+                                        ->where('vehicle_number',$nopol)
+                                        ->whereIn('load_group',$divisionGroup)  
+                                        ->whereMonth('created_date',Session::get('sales-month'))
+                                        ->whereYear('created_date',Session::get('sales-year'))
+                                        ->get()->pluck('tms_id');
+
+        $data['customers'] = ShipmentBlujay::selectRaw('customer_reference, customer_name')
+                                        ->whereIn('load_id',$loadList)
+                                        ->groupBy('customer_reference','customer_name')
+                                        ->get();
+
+        foreach ($data['customers'] as $row) {
+            $customerLoadList = ShipmentBlujay::select('load_id')
+                                                ->where('customer_reference',$row->customer_reference)
+                                                ->where('customer_name',$row->customer_name)
+                                                ->whereIn('load_id',$loadList)
+                                                ->get()->pluck('load_id');
+            
+            $customerRates = LoadPerformance::select('tms_id','billable_total_rate','payable_total_rate')
+                                        ->whereIn('tms_id',$customerLoadList)  
+                                        ->get();
+
+            $routeRates = LoadPerformance::selectRaw('routing_guide, SUM(billable_total_rate) as totalRevenue, SUM(payable_total_rate) as totalCost')
+                                            ->whereIn('tms_id',$customerLoadList)  
+                                            ->groupBy('routing_guide')
+                                            ->get();
+            $totalBillable = 0;
+            $totalPayable = 0;
+
+            foreach ($customerRates as $rate) {
+                $totalBillable += $rate->billable_total_rate;
+                $totalPayable += $rate->payable_total_rate;
+            }
+
+            $row->routes = $routeRates;
+            $row->loads = $customerLoadList;
+            $row->count = count($customerLoadList);
+            $row->totalRevenue = $totalBillable;
+            $row->totalCost = $totalPayable;
+            $row->totalRevenueFormat = number_format($totalBillable,0,',','.');
+            $row->totalCostFormat = number_format($totalPayable,0,',','.');
+            $row->rates = $customerRates;
+            $row->net = $totalBillable - $totalPayable;
+            $row->netFormat = number_format($row->net,0,',','.');
+        }
+
+        return response()->json($data, 200);
     }
 }

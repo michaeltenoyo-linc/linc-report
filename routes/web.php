@@ -347,6 +347,7 @@ Route::middleware(['auth','priviledge:sales,master'])->group(function () {
             //Data
             Route::get('/filter-nopol/{division}/{ownership}',[SalesTruckController::class, 'getFilteringTruck']);
             Route::get('/filter-customer/{division}/{ownership}/{nopol}',[SalesTruckController::class, 'getFilteringCustomer']);
+            Route::get('get-monthly-customers/{nopol}/{division}',[SalesTruckController::class, 'getCustomerData']);
         });
     });
 });

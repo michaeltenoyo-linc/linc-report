@@ -134,10 +134,13 @@
 								<div>
 									<div class="row my-2">
 										<div class="col">
-											<span style="color:white; background-color:darkred; padding: 2%; margin-right: 1%; border-radius: 50px; font-size: 10pt;">Payable</span><span> IDR. {{ $p->cost_format }}</b></span>
+											<span style="color:white; background-color:darkred; padding: 2%; margin-right: 1%; border-radius: 50px; font-size: 8pt;">Cost</span><span> IDR. {{ $p->cost_format }}</b></span>
+										</div>
+										<div class="col-2 text-center">
+											<b>{{ $p->totalLoads }} Loads</b> 
 										</div>
 										<div class="col text-right">
-											<span>IDR. {{ $p->revenue_format }} </b></span><span style="color:white; background-color:#067d00; padding: 2%; margin-left: 1%; border-radius: 50px; font-size: 10pt;">Billable</span>
+											<span>IDR. {{ $p->revenue_format }} </b></span><span style="color:white; background-color:#067d00; padding: 2%; margin-left: 1%; border-radius: 50px; font-size: 8pt;">Bill</span>
 										</div>
 									</div>
 									
@@ -154,9 +157,6 @@
 									<!-- Net Profit -->
 									<div class="row mt-1 px-4">
 										<div class="col">
-											<div class="row justify-content-center">
-												<span>Net Profit : IDR. {{ $p->net_format }}</span>
-											</div>
 											<div class="row justify-content-center" style="font-size: 24pt; font-weight:bold;">
 												@if ($p->totalRevenue - $p->totalCost > 0)
 													<span style="color: green;">{{ $p->margin_percentage }} %</span>
@@ -165,7 +165,9 @@
 												@else
 													<span>{{ $p->margin_percentage }} %</span>
 												@endif
-												
+											</div>
+											<div class="row justify-content-center">
+												<span style="font-size: 12pt;"><b>Net Profit : IDR. {{ $p->net_format }}</b></span>
 											</div>
 										</div>
 									</div>
@@ -179,7 +181,7 @@
 											<canvas id={{ $p->vehicle_number }} value={{ $p->vehicle_number }} class='table-container-graph' height='75px'><input type='hidden' name='budgetId' value={{ $p->vehicle_number }}></canvas>
 										</div>
 										<div class="row justify-content-center">
-											<button type="button" class="btn btn-outline-info btn-sm">Customer Detail</button>
+											<button type="button" class="btn btn-outline-info btn-sm btn-truck-customers" data-toggle="modal" data-target="#modal-truck-customers" value="{{ $p->vehicle_number }}${{ $p->unit_type }}">Customer Detail</button>
 										</div>
 									</div>
 								</div>
@@ -196,18 +198,25 @@
 	</section>
 </body>
 </html>
+@include('sales.modals.truck-customers-modal');
+
+
+
 <!--Alert Instruction-->
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script>
 	Swal.fire(
 		'How to save as PDF?',
 		'Right Click -> Print -> Save as PDF',
 		'question'
-	)
+	);
 	
 	window.onload = async function(e){
+		/*
 		@php
 			$indexLoader = 0;
 		@endphp
@@ -287,6 +296,86 @@
 
 
 		@endforeach
+		*/
 	}
-		
+	
+</script>
+<script>
+	$(document).on('click', '.btn-show-customer-routes', function(e){
+		let index = $(this).val();
+		console.log("Showing Routes "+index);
+		const boxes = document.getElementsByClassName('truck-route-list');
+		$('.route-list').addClass('d-none');
+		$('.truck-route-list #'+index).removeClass('d-none');
+	});
+
+	$(document).on('click', '.btn-truck-customers', async function(e){
+		e.preventDefault();
+        let btnData = $(this).val().split('$');
+
+		let nopol = btnData[0];
+		let unitType = btnData[1];
+		let division = "{{ $division }}";
+		console.log("Open Modal :"+nopol);
+
+		//Data Init
+		$('#modal-nopol').html(nopol);
+		$('#modal-unit-type').html(unitType);
+
+		$('#truck-customer-list').html("Please Wait...");
+		$('.truck-route-list').html("Please Wait...");
+		$('.truck-load-list').html("Please Wait...");
+
+		const customerData = await $.get('/sales/truck/get-monthly-customers/'+nopol+'/'+division);
+		console.log(customerData);
+		const customerList = customerData['customers'];
+
+		$('#truck-customer-list').empty();
+		$('.truck-route-list').empty();
+		$('.truck-load-list').empty();
+
+		customerList.forEach(row => {
+			console.log(row);
+
+			let revenueColor = "red";
+			if(row['net'] > 0){
+				revenueColor = "green";
+			}
+
+			let custBtn = '<div class="row">'
+				+'<div class="col"><button type="button" class="btn btn-warning btn-sm my-2 btn-show-customer-routes" value="'+row['customer_reference']+'">'+row['customer_name']+'</button></div>'
+				+'<div class="col py-2">'
+				+'<div class="row">'
+				+'<span style="font-size:8pt;color:green;">Billable</span>IDR. '+row['totalRevenueFormat']					
+				+'</div>'
+				+'<div class="row">'
+				+'<span style="font-size:8pt;color:darkred;">Payable</span>IDR. '+row['totalCostFormat']				
+				+'</div>'
+				+'<div class="row">'
+				+'<span style="font-size:8pt;color:blue;">Net P/L</span> <span style="color:'+revenueColor+'"><b>IDR. '+row['netFormat']+'</b></span>'
+				+'</div>'
+				+'</div>'
+				+'</div>';
+			$('#truck-customer-list').append(custBtn);
+			$('#truck-customer-list').append("<hr>");
+					
+			let listRoutes = '<div class="d-none route-list" id="'+row['customer_reference']+'"></div>';
+			$('.truck-route-list').append(listRoutes);
+
+			row['routes'].forEach(routeRow => {
+				let routeNet = routeRow['totalRevenue'] - routeRow['totalCost'];
+				let routeNetColor = "red";
+				if(routeNet > 0){
+					routeNetColor = "green";
+				}
+
+				let routeBtn = '<div class="row">'
+					+'<div class="col"><button type="button" style="background-color:'+routeNetColor+';" class="btn btn-primary btn-sm my-2 btn-show-customer-routes-loads" value="'+routeRow['routing_guide']+'">'+routeRow['routing_guide']+'</button></div>'
+					+'</div>';
+
+				$('.truck-route-list #'+row['customer_reference']).append(routeBtn);
+			});
+
+		});
+	});
 </script>
