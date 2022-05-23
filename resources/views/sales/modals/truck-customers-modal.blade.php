@@ -1,6 +1,6 @@
 <!-- Modal -->
 <div class="modal fade" id="modal-truck-customers" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header justify-content-center">
                 <div class="row">
@@ -20,16 +20,20 @@
                     </div>
                     <div class="col">
                         <div class="row justify-content-center">
-                           <b>--Choose a customer--</b>
+                            <b><span id="truck-customer-name">--Choose a customer--</span></b>
                         </div>
+                        <div class="row justify-content-center">
+                            <b><span id="cont-route-name">--Choose a route--</span></b>
+                        </div>
+                        <hr>
                         <div class="row">
-                            <div class="col text-center">
+                            <div class="col text-center border border-dark rounded mx-1">
                                 <b>--Routes List--</b><br>
                                 <span class="truck-route-list">
                                     -Route List-
                                 </span>
                             </div>
-                            <div class="col text-center">
+                            <div class="col text-center border border-dark rounded mx-1">
                                 <b>--Loads List--</b><br>
                                 <span class="truck-load-list">
                                     -Load ID List-

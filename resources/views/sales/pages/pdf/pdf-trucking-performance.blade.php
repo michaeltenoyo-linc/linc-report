@@ -302,11 +302,24 @@
 </script>
 <script>
 	$(document).on('click', '.btn-show-customer-routes', function(e){
-		let index = $(this).val();
-		console.log("Showing Routes "+index);
+		let index = $(this).val().split("$");
+		console.log("Showing Routes "+index[0]);
 		const boxes = document.getElementsByClassName('truck-route-list');
 		$('.route-list').addClass('d-none');
-		$('.truck-route-list #'+index).removeClass('d-none');
+		$('.load-list').addClass('d-none');
+		$('.truck-route-list #'+index[0]).removeClass('d-none');
+		$('#truck-customer-name').html(index[1]);
+		$('#cont-route-name').html("--Choose a route--");
+	});
+
+	$(document).on('click', '.btn-show-customer-route-loads', function(e){
+		let index = $(this).val();
+		let route = $(this).html();
+		console.log("Showing Routes "+index);
+		const boxes = document.getElementsByClassName('truck-load-list');
+		$('.load-list').addClass('d-none');
+		$('.truck-load-list #'+index).removeClass('d-none');
+		$('#cont-route-name').html(route);
 	});
 
 	$(document).on('click', '.btn-truck-customers', async function(e){
@@ -322,6 +335,8 @@
 		$('#modal-nopol').html(nopol);
 		$('#modal-unit-type').html(unitType);
 
+		$('#cont-route-name').html("--Choose a route--");
+		$('#truck-customer-name').html("--Choose a customer--");
 		$('#truck-customer-list').html("Please Wait...");
 		$('.truck-route-list').html("Please Wait...");
 		$('.truck-load-list').html("Please Wait...");
@@ -334,7 +349,8 @@
 		$('.truck-route-list').empty();
 		$('.truck-load-list').empty();
 
-		customerList.forEach(row => {
+		//Customer List
+		customerList.forEach(async row => {
 			console.log(row);
 
 			let revenueColor = "red";
@@ -343,7 +359,7 @@
 			}
 
 			let custBtn = '<div class="row">'
-				+'<div class="col"><button type="button" class="btn btn-warning btn-sm my-2 btn-show-customer-routes" value="'+row['customer_reference']+'">'+row['customer_name']+'</button></div>'
+				+'<div class="col"><button type="button" class="btn btn-warning btn-sm my-2 btn-show-customer-routes" value="'+row['customer_reference']+'$'+row['customer_name']+'">'+row['customer_name']+'</button></div>'
 				+'<div class="col py-2">'
 				+'<div class="row">'
 				+'<span style="font-size:8pt;color:green;">Billable</span>IDR. '+row['totalRevenueFormat']					
@@ -360,9 +376,10 @@
 			$('#truck-customer-list').append("<hr>");
 					
 			let listRoutes = '<div class="d-none route-list" id="'+row['customer_reference']+'"></div>';
-			$('.truck-route-list').append(listRoutes);
-
-			row['routes'].forEach(routeRow => {
+			await $('.truck-route-list').append(listRoutes);
+			
+			//Customer to Routes List
+			row['routes'].forEach(async routeRow => {
 				let routeNet = routeRow['totalRevenue'] - routeRow['totalCost'];
 				let routeNetColor = "red";
 				if(routeNet > 0){
@@ -370,12 +387,29 @@
 				}
 
 				let routeBtn = '<div class="row">'
-					+'<div class="col"><button type="button" style="background-color:'+routeNetColor+';" class="btn btn-primary btn-sm my-2 btn-show-customer-routes-loads" value="'+routeRow['routing_guide']+'">'+routeRow['routing_guide']+'</button></div>'
+					+'<div class="col"><button type="button" style="background-color:'+routeNetColor+';" class="btn btn-primary btn-sm my-2 btn-show-customer-route-loads" value="'+routeRow['route_id']+'">'+routeRow['route']+'</button></div>'
 					+'</div>';
 
 				$('.truck-route-list #'+row['customer_reference']).append(routeBtn);
-			});
+				
+				
+				//Routes to LoadID List
+				let listLoad = '<div class="d-none load-list" id="'+routeRow['route_id']+'"></div>';
+				await $('.truck-load-list').append(listLoad);
 
+				routeRow['loadList'].forEach(loadRow => {
+					let loadNetColor = "red";
+					if(loadRow['net'] > 0){
+						loadNetColor = "green";
+					}
+
+					let loadBtn = '<div class="row">'
+					+'<div class="col"><button type="button" style="background-color:'+loadNetColor+';" class="btn btn-primary btn-sm my-2 btn-show-customer-route-load-detail" value="'+loadRow['tms_id']+'">'+loadRow['tms_id']+'  <span class="caret"></span></button></div>'
+					+'</div>';
+
+					$('.truck-load-list #'+routeRow['route_id']).append(loadBtn);
+				});
+			});
 		});
 	});
 </script>

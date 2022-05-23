@@ -24,7 +24,7 @@ export const loadStaticChart = async () => {
       'December'
   ];
   const revenueDataFetch = await $.get('/sales/data/get-yearly-revenue');
-  console.log(revenueDataFetch);
+  //console.log(revenueDataFetch);
   const data = {
       labels: labels,
       datasets: [
@@ -106,6 +106,7 @@ export const loadStaticChart = async () => {
 }
 
 export const loadDynamicChart = async () => {
+  /*
   //Sales Revenue This Month
   const AditRevenue = await $.get('/sales/data/get-sales-overview/adit');
   const EdwinRevenue = await $.get('/sales/data/get-sales-overview/edwin');
@@ -114,7 +115,7 @@ export const loadDynamicChart = async () => {
   $('#revenue-adit').html(AditRevenue['revenue_1m']);
   $('#revenue-edwin').html(EdwinRevenue['revenue_1m']);
   $('#revenue-willem').html(WillemRevenue['revenue_1m']);
-
+  */
 
   //Chart Landing Monthly BP
 
@@ -206,6 +207,7 @@ export const loadDynamicChart = async () => {
         }
       },
   };
+  
 
   const chartMonthlyBahana = new Chart(contMonthlyBahana, configMonthlyBahana);
 
@@ -213,7 +215,7 @@ export const loadDynamicChart = async () => {
 
   //Dummy Data
   const monthlyAchivementDataFetch = await $.get('/sales/data/get-monthly-achievement');
-  console.log(monthlyAchivementDataFetch);
+  //console.log(monthlyAchivementDataFetch);
   const dataDailyTransport = {
     labels: monthlyAchivementDataFetch['labelTransport'],
     datasets: [
@@ -540,6 +542,6 @@ export const loadDynamicChart = async () => {
 export const Landing = async () => {
     console.log("loading LandingJs");
 
-    loadDynamicChart();
-    loadStaticChart();
+    await loadStaticChart();
+    await loadDynamicChart();
 }

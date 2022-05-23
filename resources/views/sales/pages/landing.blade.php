@@ -61,12 +61,6 @@ Linc | Sales Report Homepage
                                     </div>
                                 </div>
                             </div>
-                            <p class="text-sm text-blueGray-400 mt-4">
-                                <span class="text-green-600 mr-2">
-                                    <i class="fas fa-cash-register pr-2"></i>IDR. <span id="revenue-adit"></span>
-                                </span>
-                                <span class="whitespace-nowrap"> This Month </span>
-                            </p>
                         </div>
                     </div>
                 </div>
@@ -92,12 +86,6 @@ Linc | Sales Report Homepage
                                     </div>
                                 </div>
                             </div>
-                            <p class="text-sm text-blueGray-400 mt-4">
-                                <span class="text-green-600 mr-2">
-                                    <i class="fas fa-cash-register pr-2"></i>IDR. <span id="revenue-edwin"></span>
-                                </span>
-                                <span class="whitespace-nowrap"> This Month </span>
-                            </p>
                         </div>
                     </div>
                 </div>
@@ -123,12 +111,6 @@ Linc | Sales Report Homepage
                                     </div>
                                 </div>
                             </div>
-                            <p class="text-sm text-blueGray-400 mt-4">
-                                <span class="text-green-600 mr-2">
-                                    <i class="fas fa-cash-register pr-2"></i>IDR. <span id="revenue-willem"></span>
-                                </span>
-                                <span class="whitespace-nowrap"> This Month </span>
-                            </p>
                         </div>
                     </div>
                 </div>

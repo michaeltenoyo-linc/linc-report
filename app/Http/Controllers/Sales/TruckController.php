@@ -267,16 +267,27 @@ class TruckController extends BaseController
                                         ->whereIn('tms_id',$customerLoadList)  
                                         ->get();
 
-            $routeRates = LoadPerformance::selectRaw('routing_guide, SUM(billable_total_rate) as totalRevenue, SUM(payable_total_rate) as totalCost')
+            $routeRates = LoadPerformance::selectRaw("first_pick_location_city, last_drop_location_city, CONCAT(REPLACE(first_pick_location_city,' ',''),'-',REPLACE(last_drop_location_city,' ','')) as route_id, CONCAT(first_pick_location_city,' - ',last_drop_location_city) as route, SUM(billable_total_rate) as totalRevenue, SUM(payable_total_rate) as totalCost")
                                             ->whereIn('tms_id',$customerLoadList)  
-                                            ->groupBy('routing_guide')
+                                            ->groupBy('route_id', 'route', 'first_pick_location_city', 'last_drop_location_city')
                                             ->get();
+            
             $totalBillable = 0;
             $totalPayable = 0;
 
             foreach ($customerRates as $rate) {
                 $totalBillable += $rate->billable_total_rate;
                 $totalPayable += $rate->payable_total_rate;
+            }
+
+            //Routes to Load
+            foreach ($routeRates as $rate) {
+                $rate->route_id = $row->customer_reference."-".$rate->route_id;
+                $rate->loadList = LoadPerformance::selectRaw('tms_id, billable_total_rate, payable_total_rate, (billable_total_rate - payable_total_rate) as net')
+                                                        ->whereIn('tms_id',$customerLoadList)  
+                                                        ->where('first_pick_location_city', $rate->first_pick_location_city)
+                                                        ->where('last_drop_location_city', $rate->last_drop_location_city)
+                                                        ->get();
             }
 
             $row->routes = $routeRates;
