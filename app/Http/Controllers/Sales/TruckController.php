@@ -260,7 +260,7 @@ class TruckController extends BaseController
                                         ->whereIn('load_id',$loadList)
                                         ->groupBy('customer_reference','customer_name')
                                         ->get();
-
+                                        
         foreach ($data['customers'] as $row) {
             $customerLoadList = ShipmentBlujay::select('load_id')
                                                 ->where('customer_reference',$row->customer_reference)
@@ -287,7 +287,7 @@ class TruckController extends BaseController
 
             //Routes to Load
             foreach ($routeRates as $rate) {
-                $rate->route_id = $row->customer_reference."-".$rate->route_id;
+                $rate->route_id = str_replace(array('(',')'),'',$row->customer_reference."-".$rate->route_id);
                 $rate->loadList = LoadPerformance::selectRaw('tms_id, billable_total_rate, payable_total_rate, (billable_total_rate - payable_total_rate) as net')
                                                         ->whereIn('tms_id',$customerLoadList)  
                                                         ->where('first_pick_location_city', $rate->first_pick_location_city)

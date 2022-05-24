@@ -202,11 +202,8 @@
 							<td>
 								<div class="row">
 									<div class="col">
-										<div class="row">
-											<canvas id={{ $p->vehicle_number }} value={{ $p->vehicle_number }} class='table-container-graph' height='75px'><input type='hidden' name='budgetId' value={{ $p->vehicle_number }}></canvas>
-										</div>
-										<div class="row justify-content-center">
-											<button type="button" class="btn btn-outline-info btn-sm btn-truck-customers" data-toggle="modal" data-target="#modal-truck-customers" value="{{ $p->vehicle_number }}${{ $p->unit_type }}">Customer Detail</button>
+										<div class="row justify-content-center my-4">
+											<button type="button" class="btn btn-outline-info btn-sm btn-truck-customers" data-toggle="modal" data-target="#modal-truck-customers" value="{{ $p->vehicle_number }}${{ $p->unit_type }}">Customer<br>Detail</button>
 										</div>
 									</div>
 								</div>
