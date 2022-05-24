@@ -39,6 +39,28 @@ class ViewController extends BaseController
     private $surabayaLoadGroups = ['SURABAYA LOG PACK', 'SURABAYA RENTAL', 'SURABAYA RENTAL TRIP', 'SURABAYA TIV LOKAL','SURABAYA EXIM TRUCKING', 'SURABAYA TIV IMPORT','SURABAYA LOG BULK','SURABAYA MOB KOSONGAN'];
 
     //Navigation
+    public function showLoadDetail(Request $req, $load_id){
+        $data['load_id'] = $load_id;
+
+        $data['performance'] = LoadPerformance::where('tms_id', $load_id)->first();
+        $data['shipment'] = ShipmentBlujay::where('load_id', $load_id)->get();
+
+        $data['performance']->net = $data['performance']->billable_total_rate - $data['performance']->payable_total_rate;
+
+        if($data['performance']->net > 0){
+            $data['performance']->margin_percentage = floatval($data['performance']->net)/floatval($data['performance']->billable_total_rate) * 100;
+            $data['performance']->margin_percentage = round(floatval($data['performance']->margin_percentage), 2);
+            
+        }else if($data['performance']->net < 0){
+            $data['performance']->margin_percentage = floatval($data['performance']->net)/floatval($data['performance']->billable_total_rate) * 100;
+            $data['performance']->margin_percentage = round(floatval($data['performance']->margin_percentage), 2);
+        }else{
+            $data['performance']->margin_percentage = 0;
+        }
+
+        return view('sales.pages.pdf.pdf-load-detail',$data);
+    }
+
     public function gotoTruckingPerformance(){
         Session::put('sales-month',date('m'));
         Session::put('sales-year', date('Y'));

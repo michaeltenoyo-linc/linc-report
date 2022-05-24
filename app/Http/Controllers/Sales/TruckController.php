@@ -172,6 +172,8 @@ class TruckController extends BaseController
                                                 ->get();
         }
 
+        $data['overall_revenue'] = 0;
+        $data['overall_cost'] = 0;
         foreach ($data['performance'] as $row) {
             $unitDetail = unit_surabaya::where('nopol',$row->vehicle_number)->first();
 
@@ -208,6 +210,9 @@ class TruckController extends BaseController
                 $row->mYay = 0;
                 $row->mNay = 0;
             }
+
+            $data['overall_revenue'] += $row->totalRevenue;
+            $data['overall_cost'] += $row->totalCost;
         }
 
         //Period Data

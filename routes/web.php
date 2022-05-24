@@ -349,6 +349,9 @@ Route::middleware(['auth','priviledge:sales,master'])->group(function () {
             Route::get('/filter-customer/{division}/{ownership}/{nopol}',[SalesTruckController::class, 'getFilteringCustomer']);
             Route::get('get-monthly-customers/{nopol}/{division}',[SalesTruckController::class, 'getCustomerData']);
         });
+
+        //LOAD ID DETAIL INVOICE
+        Route::get('/load-detail/{load_id}',[SalesViewController::class, 'showLoadDetail']);
     });
 });
 

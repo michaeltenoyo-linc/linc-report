@@ -93,10 +93,35 @@
 		</div>
 
 		<div>
-			<br>
+			<br><br>
 		</div>
 	</header>
 	
+	<section class="overview">
+		<div class="row mt-5" style="height: 723px;">
+			<div class="col-8 text-white p-5 text-center" style="background-color: #9c0a16;">
+				<div class="row">
+					<div class="col">
+						<b>Overall Revenue</b><br> <span style="font-size: 24pt;">IDR. {{ number_format($overall_revenue,0,',','.') }}</span>
+					</div>
+					<div class="col">
+						<b>Overall Cost</b><br> <span style="font-size: 24pt;">IDR. {{ number_format($overall_cost,0,',','.') }}</span>
+					</div>
+				</div>
+				<div class="row mt-5">
+					<div class="col">
+						<b>Net Profit</b><br> <span style="font-size: 36pt;">IDR. {{ number_format(($overall_revenue - $overall_cost),0,',','.') }}</span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col">
+						<b><span style="font-size: 48pt;">{{ number_format(((($overall_revenue - $overall_cost)/$overall_revenue)*100),0,',','.') }}%</span></b>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
 	<section class="table-data">
 		<div class="container">
 			<div class="mb-4 mt-5 text-danger text-xs">
@@ -301,6 +326,7 @@
 	
 </script>
 <script>
+	//ON CLICK CUSTOMER TO ROUTES
 	$(document).on('click', '.btn-show-customer-routes', function(e){
 		let index = $(this).val().split("$");
 		console.log("Showing Routes "+index[0]);
@@ -312,6 +338,7 @@
 		$('#cont-route-name').html("--Choose a route--");
 	});
 
+	//ON CLICK ROUTE TO LOADS
 	$(document).on('click', '.btn-show-customer-route-loads', function(e){
 		let index = $(this).val();
 		let route = $(this).html();
@@ -322,6 +349,7 @@
 		$('#cont-route-name').html(route);
 	});
 
+	//ON CLICK TRUCK TO CUSTOMERS
 	$(document).on('click', '.btn-truck-customers', async function(e){
 		e.preventDefault();
         let btnData = $(this).val().split('$');
@@ -381,13 +409,17 @@
 			//Customer to Routes List
 			row['routes'].forEach(async routeRow => {
 				let routeNet = routeRow['totalRevenue'] - routeRow['totalCost'];
+				let routeMargin = 0;
+				if (routeNet != 0) {
+					routeMargin = ((routeNet/routeRow['totalRevenue']) * 100).toFixed(2);
+				}
 				let routeNetColor = "red";
 				if(routeNet > 0){
 					routeNetColor = "green";
 				}
 
 				let routeBtn = '<div class="row">'
-					+'<div class="col"><button type="button" style="background-color:'+routeNetColor+';" class="btn btn-primary btn-sm my-2 btn-show-customer-route-loads" value="'+routeRow['route_id']+'">'+routeRow['route']+'</button></div>'
+					+'<div class="col"><button type="button" style="background-color:'+routeNetColor+';" class="btn btn-primary btn-sm my-2 btn-show-customer-route-loads" value="'+routeRow['route_id']+'">'+routeRow['route']+' ( '+routeMargin+'% )'+'</button></div>'
 					+'</div>';
 
 				$('.truck-route-list #'+row['customer_reference']).append(routeBtn);
@@ -403,13 +435,27 @@
 						loadNetColor = "green";
 					}
 
+					let loadMargin = 0;
+					if(loadRow['net'] != 0){
+						loadMargin = (loadRow['net']/loadRow['billable_total_rate']*100).toFixed(2);
+					}
+
 					let loadBtn = '<div class="row">'
-					+'<div class="col"><button type="button" style="background-color:'+loadNetColor+';" class="btn btn-primary btn-sm my-2 btn-show-customer-route-load-detail" value="'+loadRow['tms_id']+'">'+loadRow['tms_id']+'  <span class="caret"></span></button></div>'
+					+'<div class="col"><button type="button" style="background-color:'+loadNetColor+';" class="btn btn-primary btn-sm my-2 btn-show-customer-route-load-detail" value="'+loadRow['tms_id']+'">'+loadRow['tms_id']+' ( '+loadMargin+'% )'+'</button></div>'
 					+'</div>';
 
 					$('.truck-load-list #'+routeRow['route_id']).append(loadBtn);
 				});
 			});
 		});
+	});
+
+	//ON CLICK NEW PAGE LOAD DETAIL
+	$(document).on('click', '.btn-show-customer-route-load-detail', async function(e){
+		e.preventDefault();
+		let id = $(this).val();
+
+		console.log("Opening Load : "+id);
+		window.open('{{ url('/sales/load-detail') }}/'+id, '_blank');
 	});
 </script>
