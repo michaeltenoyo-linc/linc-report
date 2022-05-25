@@ -284,8 +284,8 @@ class TruckController extends BaseController
         }
 
         //Customer List
-        $data['customer'] = LoadPerformance::selectRaw('customer_reference, customer_name, SUM(billable_total_rate) as totalRevenue, SUM(payable_total_rate) as totalCost, COUNT(load_id) as totalLoads')
-                                            ->whereIn('load_id',$performanceList)
+        $data['customer'] = LoadPerformance::selectRaw('customer_reference, customer_name, SUM(billable_total_rate) as totalRevenue, SUM(payable_total_rate) as totalCost, COUNT(tms_id) as totalLoads')
+                                            ->whereIn('tms_id',$performanceList)
                                             ->groupBy('customer_reference','customer_name')
                                             ->get();
 
