@@ -11,6 +11,7 @@ use App\Models\LoadPerformance;
 use App\Models\Company;
 use App\Models\dloa_transport;
 use App\Models\Loa_transport;
+use App\Models\ShipmentBlujay;
 use Illuminate\Database\Seeder;
 use AzisHapidin\IndoRegion\RawDataGetter;
 use Illuminate\Support\Carbon;
@@ -49,6 +50,7 @@ class LoadPerformanceSeeder extends Seeder
             error_log($counter,0);
             $counter++;
             if (!$firstline){
+                $customer = ShipmentBlujay::where('load_id',$data['0'])->first();
                 LoadPerformance::create([
                     'tms_id' => $data['0'],
                     'created_date' => Carbon::createFromFormat('d/m/Y H:i', $data['1']),
@@ -132,6 +134,8 @@ class LoadPerformanceSeeder extends Seeder
                     'creation_process' => $data['78'],
                     'driver_name2' => $data['79'],
                     'execution_plan_rank' => $data['80'],
+                    'customer_name' => $customer==null?'':$customer->customer_name,
+                    'customer_reference' => $customer==null?'':$customer->customer_reference,
                 ]);
             }
 

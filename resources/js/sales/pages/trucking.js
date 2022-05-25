@@ -60,7 +60,13 @@ export const trucking = async () => {
       let ownership = $('#form-trucking-performance .input-ownership').val();
       let nopol = $('#form-trucking-performance .input-nopol').val();
 
-      window.location.href = '/sales/truck/performance-generate/'+ownership+'/'+division+'/'+nopol;
+      let tree = $('#form-trucking-performance .input-tree').val();
+
+      if(tree == "nopol_to_customer"){
+        window.location.href = '/sales/truck/performance-generate/'+ownership+'/'+division+'/'+nopol;
+      }else{
+        window.location.href = '/sales/truck/performance-customer/'+ownership+'/'+division+'/'+nopol;
+      }
     })
   }
 

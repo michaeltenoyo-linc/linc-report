@@ -96,6 +96,8 @@ class CreateLoadPerformancesTable extends Migration
             $table->longText('creation_process');
             $table->longText('driver_name2');
             $table->longText('execution_plan_rank');
+            $table->longText('customer_reference');
+            $table->longText('customer_name');
             $table->timestamps();
             $table->softDeletes();
         });

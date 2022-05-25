@@ -94,5 +94,7 @@ class LoadPerformance extends Model
         'creation_process',
         'driver_name2',
         'execution_plan_rank',
+        'customer_reference',
+        'customer_name',
     ];
 }

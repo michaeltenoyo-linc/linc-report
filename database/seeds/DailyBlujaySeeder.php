@@ -14,9 +14,9 @@ class DailyBlujaySeeder extends Seeder
     {
         // $this->call(UsersTableSeeder::class);
         $this->call([
+            ShipmentBlujaySeeder::class, //Data individual SO blujay
             LoadPerformanceRefresh::class, //Data load id
             AddcostRateSeeder::class, //Data addcost blujay
-            ShipmentBlujaySeeder::class, //Data individual SO blujay
         ]);
     }
 }

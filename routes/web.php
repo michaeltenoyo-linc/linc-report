@@ -342,6 +342,7 @@ Route::middleware(['auth','priviledge:sales,master'])->group(function () {
             //View and Generate
             Route::get('/performance',[SalesViewController::class, 'gotoTruckingPerformance']);
             Route::get('/performance-generate/{ownership}/{division}/{nopol}',[SalesTruckController::class, 'generateTruckingPerformance']);
+            Route::get('/performance-customer/{ownership}/{division}/{nopol}',[SalesTruckController::class, 'generateCustomerPerformance']);
             Route::get('/utility',[SalesViewController::class, 'gotoTruckingUtility']);
             
             //Data

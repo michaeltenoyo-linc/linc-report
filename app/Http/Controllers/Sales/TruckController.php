@@ -224,6 +224,114 @@ class TruckController extends BaseController
         return view('sales.pages.pdf.pdf-trucking-performance', $data);
     }
 
+    public function generateCustomerPerformance(Request $req, $ownership, $division, $nopol){
+        $data['division'] = $division;
+        //Division Change
+        $divisionGroup = [];
+        switch ($division) {
+            case 'transport':
+                $division = 'Pack Trans';
+                $divisionGroup = $this->transportLoadGroups;
+                break;
+            case 'exim':
+                $division = 'Freight Forwarding BP';
+                $divisionGroup = $this->eximLoadGroups;
+                break;
+            case 'bulk':
+                $division = 'Bulk Trans';
+                $divisionGroup = $this->bulkLoadGroups;
+                break;
+            case 'surabaya':
+                $division = 'Surabaya';
+                $divisionGroup = $this->surabayaLoadGroups;
+            default:
+                break;
+        }
+
+        //Ownership Filter
+        $unitSurabaya = unit_surabaya::select('nopol')->get()->pluck('nopol');
+
+        if($ownership == "NOT_SBY_OWNED"){
+            $performanceList = LoadPerformance::selectRaw('tms_id')
+                                                    ->whereNotIn('vehicle_number',$unitSurabaya)
+                                                    ->where('carrier_name','=','BAHANA PRESTASI')
+                                                    ->whereIn('load_group',$divisionGroup)  
+                                                    ->whereMonth('created_date',Session::get('sales-month'))
+                                                    ->whereYear('created_date',Session::get('sales-year'))
+                                                    ->get()->pluck('tms_id');
+        }else if($ownership == "NOT_SBY_VENDOR"){
+            $performanceList = LoadPerformance::selectRaw('tms_id')
+                                                    ->whereNotIn('vehicle_number',$unitSurabaya)
+                                                    ->where('carrier_name','!=','BAHANA PRESTASI')
+                                                    ->whereIn('load_group',$divisionGroup)  
+                                                    ->whereMonth('created_date',Session::get('sales-month'))
+                                                    ->whereYear('created_date',Session::get('sales-year'))
+                                                    ->get()->pluck('tms_id');
+        }else if($ownership == "all"){
+            $performanceList = LoadPerformance::selectRaw('tms_id')
+                                                    ->whereIn('load_group',$divisionGroup)  
+                                                    ->whereMonth('created_date',Session::get('sales-month'))
+                                                    ->whereYear('created_date',Session::get('sales-year'))
+                                                    ->get()->pluck('tms_id');
+        }else{
+            $unitSurabaya = unit_surabaya::select('nopol')->where('own',$ownership)->get()->pluck('nopol');
+            $performanceList = LoadPerformance::selectRaw('tms_id')
+                                                ->whereIn('vehicle_number',$unitSurabaya)
+                                                ->whereIn('load_group',$divisionGroup)  
+                                                ->whereMonth('created_date',Session::get('sales-month'))
+                                                ->whereYear('created_date',Session::get('sales-year'))
+                                                ->get()->pluck('tms_id');
+        }
+
+        //Customer List
+        $data['customer'] = LoadPerformance::selectRaw('customer_reference, customer_name, SUM(billable_total_rate) as totalRevenue, SUM(payable_total_rate) as totalCost, COUNT(load_id) as totalLoads')
+                                            ->whereIn('load_id',$performanceList)
+                                            ->groupBy('customer_reference','customer_name')
+                                            ->get();
+
+        $data['overall_revenue'] = 0;
+        $data['overall_cost'] = 0;
+
+        //Customer Detail
+        foreach ($data['customer'] as $row) {
+            //margin percentage
+            $row->revenue_format = number_format($row->totalRevenue,0,',','.');
+            $row->cost_format = number_format($row->totalCost,0,',','.');
+            $row->net = $row->totalRevenue - $row->totalCost;
+            $row->net_format = number_format($row->net,0,',','.');
+            if($row->totalRevenue == 0)
+                $row->totalRevenue = 1;
+            
+
+            if($row->net > 0){
+                $row->margin_percentage = floatval($row->net)/floatval($row->totalRevenue) * 100;
+                $row->margin_percentage = round(floatval($row->margin_percentage), 2);
+                $row->mYay = $row->margin_percentage;
+                $row->mNay = 0;
+            }else if($row->net < 0){
+                $row->margin_percentage = floatval($row->net)/floatval($row->totalRevenue) * 100;
+                $row->margin_percentage = round(floatval($row->margin_percentage), 2);
+                $row->mYay = 0;
+                $row->mNay = $row->margin_percentage*-1;
+            }else{
+                $row->mYay = 0;
+                $row->mNay = 0;
+            }
+
+            $data['overall_revenue'] += $row->totalRevenue;
+            $data['overall_cost'] += $row->totalCost;
+        }
+
+        //Period Data
+        $data['period'] = Carbon::create()->month(Session::get('sales-month'))->format('F')." ".Session::get('sales-year');
+        $data['period_year'] = Session::get('sales-year'); 
+
+        //Sorting
+        $data['customer'] = collect($data['customer'])->sortBy('margin_percentage')->reverse();
+        return view('sales.pages.pdf.pdf-customer-trucking-performance', $data);
+        //return $data;
+    }
+
     public function getCustomerData(Request $req, $nopol, $division){
         $data['message'] = "Success";
         $data['division'] = $division;
