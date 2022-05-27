@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>PDF HTML Sales Report {{ $period }}</title>
+	<title>PDF HTML {{ $period }} Sales Report</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<style>
 		.header-top-bar {
@@ -169,7 +169,7 @@
 								<div class="row">
 									<div class="col">
 										<div class="row justify-content-center my-4">
-											<button type="button" class="btn btn-outline-info btn-sm btn-truck-customers" data-toggle="modal" data-target="#modal-truck-customers" value="{{ $p->vehicle_number }}${{ $p->unit_type }}">Customer<br>Detail</button>
+											<button type="button" class="btn btn-outline-info btn-sm btn-customer-trucks" data-toggle="modal" data-target="#modal-customer-trucks" value="{{ $p->customer_reference }}${{ $p->customer_name }}">Unit<br>Detail</button>
 										</div>
 									</div>
 								</div>
@@ -186,6 +186,8 @@
 	</section>
 </body>
 </html>
+@include('sales.modals.customer-trucks-modal');
+
 
 <!--Alert Instruction-->
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
