@@ -169,7 +169,10 @@
 								<div class="row">
 									<div class="col">
 										<div class="row justify-content-center my-4">
-											<button type="button" class="btn btn-outline-info btn-sm btn-customer-trucks" data-toggle="modal" data-target="#modal-customer-trucks" value="{{ $p->customer_reference }}${{ $p->customer_name }}">Unit<br>Detail</button>
+											<button type="button" class="btn btn-outline-info btn-sm btn-customer-sales" value="{{ $p->customer_reference }}">Customer Sales</button>
+										</div>
+										<div class="row justify-content-center my-4">
+											<button type="button" class="btn btn-outline-info btn-sm btn-customer-trucks" data-toggle="modal" data-target="#modal-customer-trucks" value="{{ $p->customer_reference }}${{ $p->customer_name }}">Unit Detail</button>
 										</div>
 									</div>
 								</div>
@@ -201,4 +204,153 @@
 		'Right Click -> Print -> Save as PDF',
 		'question'
 	);
+
+	function backToTopModal() {
+		document.getElementById("modal-customer-trucks").scrollTo({top: 0, behavior: 'smooth'});
+	}
+
+	$(document).on('click','.btn-customer-sales', async function(e){
+		e.preventDefault();
+		let reference = $(this).val();
+		console.log('Opening sales - '+reference);
+
+		
+		window.open('{{ url('/sales/export/generate-report/all/all') }}/'+reference+'/single', '_blank');
+	});
+
+	//ON CLICK NEW PAGE LOAD DETAIL
+	$(document).on('click', '.btn-show-truck-route-load-detail', async function(e){
+		e.preventDefault();
+		backToTopModal();
+		let id = $(this).val();
+		console.log("Opening Load : "+id);
+		window.open('{{ url('/sales/load-detail') }}/'+id, '_blank');
+	});
+
+	//ON CLICK ROUTE TO LOADS
+	$(document).on('click', '.btn-show-truck-route-loads', function(e){
+		e.preventDefault();
+		backToTopModal();
+		let index = $(this).val();
+		let route = $(this).html();
+		console.log("Showing Routes "+index);
+		const boxes = document.getElementsByClassName('truck-load-list');
+		$('.load-list').addClass('d-none');
+		$('.truck-load-list #'+index).removeClass('d-none');
+		$('#cont-route-name').html(route);
+	});
+
+	//ON CLICK UNIT TO ROUTES
+	$(document).on('click', '.btn-show-truck-routes', function(e){
+		e.preventDefault();
+		backToTopModal();
+		
+		let index = $(this).val().split("$");
+		console.log("Showing Routes "+index[1]);
+		const boxes = document.getElementsByClassName('truck-route-list');
+		$('.route-list').addClass('d-none');
+		$('.load-list').addClass('d-none');
+		$('.truck-route-list #'+index[1]).removeClass('d-none');
+		$('#customer-truck-name').html(index[1]);
+		$('#cont-route-name').html("--Choose a route--");
+	});
+
+	//ON CLICK TRUCK TO CUSTOMERS
+	$(document).on('click', '.btn-customer-trucks', async function(e){
+		e.preventDefault();
+        let btnData = $(this).val().split('$');
+		let customer_reference = btnData[0];
+		let customer_name = btnData[1];
+		let division = "{{ $division }}";
+		console.log("Open Modal :"+btnData);
+
+		//Data Init
+		$('#modal-name').html(customer_name);
+		$('#modal-reference').html(customer_reference);
+
+		$('#cont-route-name').html("--Choose a route--");
+		$('#customer-unit-name').html("--Choose an unit--");
+		$('#customer-unit-list').html("Please Wait...");
+		$('.truck-route-list').html("Please Wait...");
+		$('.truck-load-list').html("Please Wait...");
+
+		const unitData = await $.get('/sales/truck/get-monthly-units/'+customer_reference+'/'+division);
+		console.log(unitData);
+		const unitList = unitData['units'];
+
+		$('#customer-unit-list').empty();
+		$('.truck-route-list').empty();
+		$('.truck-load-list').empty();
+
+		unitList.forEach(row => {
+			console.log(row);
+
+			let revenueColor = "red";
+			if(row['net'] > 0){
+				revenueColor = "green";
+			}
+
+			let custBtn = '<div class="row">'
+				+'<div class="col"><button type="button" class="btn btn-warning btn-sm my-2 btn-show-truck-routes" value="'+row['carrier_name']+'$'+row['vehicle_number']+'">'+row['vehicle_number']+'</button></div>'
+				+'<div class="col py-2">'
+				+'<div class="row">'
+				+'<span style="font-size:8pt;color:green;">Billable</span>IDR. '+row['totalRevenueFormat']					
+				+'</div>'
+				+'<div class="row">'
+				+'<span style="font-size:8pt;color:darkred;">Payable</span>IDR. '+row['totalCostFormat']				
+				+'</div>'
+				+'<div class="row">'
+				+'<span style="font-size:8pt;color:blue;">Net P/L</span> <span style="color:'+revenueColor+'"><b>IDR. '+row['netFormat']+'</b></span>'
+				+'</div>'
+				+'</div>'
+				+'</div>';
+			$('#customer-unit-list').append(custBtn);
+			$('#customer-unit-list').append("<hr>");
+
+			let listRoutes = '<div class="d-none route-list" id="'+row['vehicle_number']+'"></div>';
+			$('.truck-route-list').append(listRoutes);
+
+			//Truck to Routes List
+			row['routes'].forEach(async routeRow => {
+				let routeNet = routeRow['totalRevenue'] - routeRow['totalCost'];
+				let routeMargin = 0;
+				if (routeNet != 0) {
+					routeMargin = ((routeNet/routeRow['totalRevenue']) * 100).toFixed(2);
+				}
+				let routeNetColor = "red";
+				if(routeNet > 0){
+					routeNetColor = "green";
+				}
+
+				let routeBtn = '<div class="row">'
+					+'<div class="col"><button type="button" style="background-color:'+routeNetColor+';" class="btn btn-primary btn-sm my-2 btn-show-truck-route-loads" value="'+routeRow['route_id']+'">'+routeRow['route']+' ( '+routeMargin+'% )'+'</button></div>'
+					+'</div>';
+
+				$('.truck-route-list #'+row['vehicle_number']).append(routeBtn);
+				
+				
+				//Routes to LoadID List
+				let listLoad = '<div class="d-none load-list" id="'+routeRow['route_id']+'"></div>';
+				await $('.truck-load-list').append(listLoad);
+
+				routeRow['loadList'].forEach(loadRow => {
+					let loadNetColor = "red";
+					if(loadRow['net'] > 0){
+						loadNetColor = "green";
+					}
+
+					let loadMargin = 0;
+					if(loadRow['net'] != 0){
+						loadMargin = (loadRow['net']/loadRow['billable_total_rate']*100).toFixed(2);
+					}
+
+					let loadBtn = '<div class="row">'
+					+'<div class="col"><button type="button" style="background-color:'+loadNetColor+';" class="btn btn-primary btn-sm my-2 btn-show-truck-route-load-detail" value="'+loadRow['tms_id']+'">'+loadRow['tms_id']+' ( '+loadMargin+'% )'+'</button></div>'
+					+'</div>';
+
+					$('.truck-load-list #'+routeRow['route_id']).append(loadBtn);
+				});
+			});
+		});
+	});
 </script>

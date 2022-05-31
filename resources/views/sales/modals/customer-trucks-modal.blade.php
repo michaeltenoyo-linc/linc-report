@@ -6,21 +6,21 @@
                 <div class="row">
                     <div class="col text-center">
                         <h6 class="modal-title">Customer's Performance {{ ucfirst($division) }}</h6>
-                        <h3><span id="modal-nopol">-Customer Name Here-</span></h3>
-                        <span id="modal-unit-type">-Customer Reference-</span>
+                        <h3><span id="modal-name">-Customer Name Here-</span></h3>
+                        <span id="modal-reference">-Customer Reference-</span>
                     </div>
                 </div>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-5">
-                        <span id="truck-customer-list">
+                        <span id="customer-unit-list">
                             -Unit List-
                         </span>
                     </div>
                     <div class="col">
                         <div class="row justify-content-center">
-                            <b><span id="truck-customer-name">--Choose an unit--</span></b>
+                            <b><span id="customer-unit-name">--Choose an unit--</span></b>
                         </div>
                         <div class="row justify-content-center">
                             <b><span id="cont-route-name">--Choose a route--</span></b>

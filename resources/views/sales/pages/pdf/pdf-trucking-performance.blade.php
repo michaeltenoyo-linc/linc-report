@@ -323,8 +323,15 @@
 	
 </script>
 <script>
+	function backToTopModal() {
+		document.getElementById("modal-truck-customers").scrollTo({top: 0, behavior: 'smooth'});
+	}
+
 	//ON CLICK CUSTOMER TO ROUTES
 	$(document).on('click', '.btn-show-customer-routes', function(e){
+		e.preventDefault();
+		backToTopModal();
+
 		let index = $(this).val().split("$");
 		console.log("Showing Routes "+index[0]);
 		const boxes = document.getElementsByClassName('truck-route-list');
@@ -337,6 +344,9 @@
 
 	//ON CLICK ROUTE TO LOADS
 	$(document).on('click', '.btn-show-customer-route-loads', function(e){
+		e.preventDefault();
+		backToTopModal();
+		
 		let index = $(this).val();
 		let route = $(this).html();
 		console.log("Showing Routes "+index);
@@ -349,6 +359,7 @@
 	//ON CLICK TRUCK TO CUSTOMERS
 	$(document).on('click', '.btn-truck-customers', async function(e){
 		e.preventDefault();
+
         let btnData = $(this).val().split('$');
 
 		let nopol = btnData[0];

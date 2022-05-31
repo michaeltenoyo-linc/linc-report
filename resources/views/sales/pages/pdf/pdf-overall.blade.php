@@ -311,7 +311,7 @@
 				<br>
 				<small>*All the calculation is based on realtime blujay's data (billable total rate)</small>
 				<br>
-				<small>*The values in the table are sorted by current month's actual rates</small>
+				<small>*The values in the table are sorted by current month's (closed date) actual rates</small>
 			</div>
 			<div class="row">
 				<table class="table" style="width: 100%; font-size: 9pt;">
