@@ -379,17 +379,17 @@ class TruckController extends BaseController
                                         ->whereYear('created_date',Session::get('sales-year'))
                                         ->get()->pluck('tms_id');
 
-        $data['customers'] = ShipmentBlujay::selectRaw('customer_reference, customer_name')
-                                        ->whereIn('load_id',$loadList)
+        $data['customers'] = LoadPerformance::selectRaw('customer_reference, customer_name')
+                                        ->whereIn('tms_id',$loadList)
                                         ->groupBy('customer_reference','customer_name')
                                         ->get();
                                         
         foreach ($data['customers'] as $row) {
-            $customerLoadList = ShipmentBlujay::select('load_id')
+            $customerLoadList = LoadPerformance::select('tms_id')
                                                 ->where('customer_reference',$row->customer_reference)
                                                 ->where('customer_name',$row->customer_name)
-                                                ->whereIn('load_id',$loadList)
-                                                ->get()->pluck('load_id');
+                                                ->whereIn('tms_id',$loadList)
+                                                ->get()->pluck('tms_id');
             
             $customerRates = LoadPerformance::select('tms_id','billable_total_rate','payable_total_rate')
                                         ->where('billable_total_rate','>',$this->billableThreshold)
@@ -429,6 +429,98 @@ class TruckController extends BaseController
             $row->totalRevenueFormat = number_format($totalBillable,0,',','.');
             $row->totalCostFormat = number_format($totalPayable,0,',','.');
             $row->rates = $customerRates;
+            $row->net = $totalBillable - $totalPayable;
+            $row->netFormat = number_format($row->net,0,',','.');
+        }
+
+        return response()->json($data, 200);
+    }
+
+    public function getUnitData(Request $req, $reference, $division){
+        $data['message'] = "Success";
+        $data['division'] = $division;
+        //Division Change
+        $divisionGroup = [];
+        switch ($division) {
+            case 'transport':
+                $division = 'Pack Trans';
+                $divisionGroup = $this->transportLoadGroups;
+                break;
+            case 'exim':
+                $division = 'Freight Forwarding BP';
+                $divisionGroup = $this->eximLoadGroups;
+                break;
+            case 'bulk':
+                $division = 'Bulk Trans';
+                $divisionGroup = $this->bulkLoadGroups;
+                break;
+            case 'surabaya':
+                $division = 'Surabaya';
+                $divisionGroup = $this->surabayaLoadGroups;
+            default:
+                break;
+        }
+
+        $loadList = LoadPerformance::select('tms_id')
+                                        ->where('customer_reference',$reference)
+                                        ->where('billable_total_rate','>',$this->billableThreshold)
+                                        ->whereIn('load_group',$divisionGroup)  
+                                        ->whereMonth('created_date',Session::get('sales-month'))
+                                        ->whereYear('created_date',Session::get('sales-year'))
+                                        ->get()->pluck('tms_id');
+
+        $data['units'] = LoadPerformance::selectRaw('vehicle_number, carrier_name')
+                                        ->whereIn('tms_id',$loadList)
+                                        ->groupBy('vehicle_number','carrier_name')
+                                        ->get();
+
+        foreach ($data['units'] as $row) {
+            $unitLoadList = LoadPerformance::select('tms_id')
+                                                ->where('vehicle_number',$row->vehicle_number)
+                                                ->whereIn('tms_id',$loadList)
+                                                ->get()->pluck('tms_id');
+            
+            $unitRates = LoadPerformance::select('tms_id','billable_total_rate','payable_total_rate')
+                                        ->where('billable_total_rate','>',$this->billableThreshold)
+                                        ->whereIn('tms_id',$unitLoadList)  
+                                        ->get();
+
+            $routeRates = LoadPerformance::selectRaw("first_pick_location_city, last_drop_location_city, CONCAT(REPLACE(first_pick_location_city,' ',''),'-',REPLACE(last_drop_location_city,' ','')) as route_id, CONCAT(first_pick_location_city,' - ',last_drop_location_city) as route, SUM(billable_total_rate) as totalRevenue, SUM(payable_total_rate) as totalCost")
+                                            ->whereIn('tms_id',$unitLoadList)  
+                                            ->where('billable_total_rate','>',$this->billableThreshold)
+                                            ->groupBy('route_id', 'route', 'first_pick_location_city', 'last_drop_location_city')
+                                            ->get();
+            
+            $totalBillable = 0;
+            $totalPayable = 0;
+
+            foreach ($unitRates as $rate) {
+                $totalBillable += $rate->billable_total_rate;
+                $totalPayable += $rate->payable_total_rate;
+            }
+
+            //Routes to Load
+            foreach ($routeRates as $rate) {
+                if($row->vehicle_number==" "){
+                    $row->vehicle_number="XXXXXX";
+                }
+                $rate->route_id = str_replace(array('(',')'),'',$row->vehicle_number."-".$rate->route_id);
+                $rate->loadList = LoadPerformance::selectRaw('tms_id, billable_total_rate, payable_total_rate, (billable_total_rate - payable_total_rate) as net')
+                                                        ->whereIn('tms_id',$unitLoadList)  
+                                                        ->where('billable_total_rate','>',$this->billableThreshold)
+                                                        ->where('first_pick_location_city', $rate->first_pick_location_city)
+                                                        ->where('last_drop_location_city', $rate->last_drop_location_city)
+                                                        ->get();
+            }
+
+            $row->routes = $routeRates;
+            $row->loads = $unitLoadList;
+            $row->count = count($unitLoadList);
+            $row->totalRevenue = $totalBillable;
+            $row->totalCost = $totalPayable;
+            $row->totalRevenueFormat = number_format($totalBillable,0,',','.');
+            $row->totalCostFormat = number_format($totalPayable,0,',','.');
+            $row->rates = $unitRates;
             $row->net = $totalBillable - $totalPayable;
             $row->netFormat = number_format($row->net,0,',','.');
         }

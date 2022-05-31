@@ -43,7 +43,7 @@ class ViewController extends BaseController
         $data['load_id'] = $load_id;
 
         $data['performance'] = LoadPerformance::where('tms_id', $load_id)->first();
-        $data['shipment'] = ShipmentBlujay::where('load_id', $load_id)->get();
+        $data['shipment'] = LoadPerformance::where('tms_id', $load_id)->get();
 
         $data['performance']->net = $data['performance']->billable_total_rate - $data['performance']->payable_total_rate;
 
@@ -73,7 +73,7 @@ class ViewController extends BaseController
         Session::put('sales-month',date('m'));
         Session::put('sales-year', date('Y'));
 
-        $data['last_update'] = ShipmentBlujay::orderBy('updated_at','desc')->first();
+        $data['last_update'] = LoadPerformance::orderBy('updated_at','desc')->first();
 
         return view('sales.pages.landing',$data);
     }
@@ -125,12 +125,12 @@ class ViewController extends BaseController
                     break;
             }
 
-            $mRevenue = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+            $mRevenue = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
                                             ->where('customer_reference',$c->customer_sap)
                                             ->whereIn('load_group',$division)
                                             ->where('load_status','Completed')
-                                            ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                            ->whereYear('load_closed_date',Session::get('sales-year'))
+                                            ->whereMonth('closed_date',Session::get('sales-month'))
+                                            ->whereYear('closed_date',Session::get('sales-year'))
                                             ->first();
             $data['revenue_1m'] += $mRevenue->totalActual;
         }
@@ -153,12 +153,12 @@ class ViewController extends BaseController
             }
 
             for ($i=1; $i <= intval(Session::get('sales-month')); $i++) {
-                $mRevenue = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+                $mRevenue = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
                                             ->where('customer_reference',$c->customer_sap)
                                             ->whereIn('load_group',$division)
                                             ->where('load_status','Completed')
-                                            ->whereMonth('load_closed_date',$i)
-                                            ->whereYear('load_closed_date',Session::get('sales-year'))
+                                            ->whereMonth('closed_date',$i)
+                                            ->whereYear('closed_date',Session::get('sales-year'))
                                             ->first();
                 $data['revenue_ytd'] += $mRevenue->totalActual;
             }
@@ -181,13 +181,13 @@ class ViewController extends BaseController
                     break;
             }
 
-            $mTransaction = ShipmentBlujay::select('load_id')
+            $mTransaction = LoadPerformance::select('tms_id')
                                             ->where('customer_reference',$c->customer_sap)
                                             ->whereIn('load_group',$division)
                                             ->where('load_status','Completed')
-                                            ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                            ->whereYear('load_closed_date',Session::get('sales-year'))
-                                            ->groupBy('load_id')
+                                            ->whereMonth('closed_date',Session::get('sales-month'))
+                                            ->whereYear('closed_date',Session::get('sales-year'))
+                                            ->groupBy('tms_id')
                                             ->get();
             $data['transaction_1m'] += count($mTransaction);
         }
@@ -210,13 +210,13 @@ class ViewController extends BaseController
             }
 
             for ($i=1; $i <= intval(Session::get('sales-month')); $i++) {
-                $mTransaction = ShipmentBlujay::select('load_id')
+                $mTransaction = LoadPerformance::select('tms_id')
                                             ->where('customer_reference',$c->customer_sap)
                                             ->whereIn('load_group',$division)
                                             ->where('load_status','Completed')
-                                            ->whereMonth('load_closed_date',$i)
-                                            ->whereYear('load_closed_date',Session::get('sales-year'))
-                                            ->groupBy('load_id')
+                                            ->whereMonth('closed_date',$i)
+                                            ->whereYear('closed_date',Session::get('sales-year'))
+                                            ->groupBy('tms_id')
                                             ->get();
                 $data['transaction_ytd'] += count($mTransaction);
             }
@@ -322,43 +322,43 @@ class ViewController extends BaseController
 
         //Customer List
         //Revenue
-        $data['revenue_1m'] = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+        $data['revenue_1m'] = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
                                             ->whereIn('load_group',$divisionGroup)
                                             ->where('load_status','Completed')
-                                            ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                            ->whereYear('load_closed_date',Session::get('sales-year'))
+                                            ->whereMonth('closed_date',Session::get('sales-month'))
+                                            ->whereYear('closed_date',Session::get('sales-year'))
                                             ->first();
         $data['revenue_1m'] = $data['revenue_1m']->totalActual;
 
         $data['revenue_ytd'] = 0;
         for ($i=1; $i <= intval(Session::get('sales-month')); $i++) {
-            $mRevenue = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+            $mRevenue = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
                                         ->whereIn('load_group',$divisionGroup)
                                         ->where('load_status','Completed')
-                                        ->whereMonth('load_closed_date',$i)
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereMonth('closed_date',$i)
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->first();
             $data['revenue_ytd'] += $mRevenue->totalActual;
         }
 
         //Transaction
-        $data['transaction_1m'] = ShipmentBlujay::select('load_id')
+        $data['transaction_1m'] = LoadPerformance::select('tms_id')
                                             ->whereIn('load_group',$divisionGroup)
                                             ->where('load_status','Completed')
-                                            ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                            ->whereYear('load_closed_date',Session::get('sales-year'))
-                                            ->groupBy('load_id')
+                                            ->whereMonth('closed_date',Session::get('sales-month'))
+                                            ->whereYear('closed_date',Session::get('sales-year'))
+                                            ->groupBy('tms_id')
                                             ->get();
         $data['transaction_1m'] = count($data['transaction_1m']);
 
         $data['transaction_ytd'] = 0;
         for ($i=1; $i <= intval(Session::get('sales-month')); $i++) {
-            $mRevenue = ShipmentBlujay::select('load_id')
+            $mRevenue = LoadPerformance::select('tms_id')
                                         ->whereIn('load_group',$divisionGroup)
-                                        ->whereMonth('load_closed_date',$i)
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereMonth('closed_date',$i)
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->where('load_status','Completed')
-                                        ->groupBy('load_id')
+                                        ->groupBy('tms_id')
                                         ->get();
             $data['transaction_ytd'] += count($mRevenue);
         }
@@ -401,10 +401,10 @@ class ViewController extends BaseController
 
         //GETTING DATA BY PROGRAM
         //transport
-        $fetchTransport = ShipmentBlujay::selectRaw('DATE(load_closed_date) as days, SUM(billable_total_rate) as totalActual')
+        $fetchTransport = LoadPerformance::selectRaw('DATE(closed_date) as days, SUM(billable_total_rate) as totalActual')
                                     ->whereIn('load_group',$this->transportLoadGroups)
-                                    ->whereMonth('load_closed_date',$month)
-                                    ->whereYear('load_closed_date',Session::get('sales-year'))
+                                    ->whereMonth('closed_date',$month)
+                                    ->whereYear('closed_date',Session::get('sales-year'))
                                     ->groupBy('days')
                                     ->get();
 
@@ -417,10 +417,10 @@ class ViewController extends BaseController
         }
 
         //exim
-        $fetchExim = ShipmentBlujay::selectRaw('DATE(load_closed_date) as days, SUM(billable_total_rate) as totalActual')
+        $fetchExim = LoadPerformance::selectRaw('DATE(closed_date) as days, SUM(billable_total_rate) as totalActual')
                                     ->whereIn('load_group',$this->eximLoadGroups)
-                                    ->whereMonth('load_closed_date',$month)
-                                    ->whereYear('load_closed_date',Session::get('sales-year'))
+                                    ->whereMonth('closed_date',$month)
+                                    ->whereYear('closed_date',Session::get('sales-year'))
                                     ->groupBy('days')
                                     ->get();
 
@@ -434,10 +434,10 @@ class ViewController extends BaseController
         }
 
         //bulk
-        $fetchBulk = ShipmentBlujay::selectRaw('DATE(load_closed_date) as days, SUM(billable_total_rate) as totalActual')
+        $fetchBulk = LoadPerformance::selectRaw('DATE(closed_date) as days, SUM(billable_total_rate) as totalActual')
                                     ->whereIn('load_group',$this->bulkLoadGroups)
-                                    ->whereMonth('load_closed_date',$month)
-                                    ->whereYear('load_closed_date',Session::get('sales-year'))
+                                    ->whereMonth('closed_date',$month)
+                                    ->whereYear('closed_date',Session::get('sales-year'))
                                     ->groupBy('days')
                                     ->get();
 
@@ -451,19 +451,19 @@ class ViewController extends BaseController
         }
 
         //Monthly Order
-        $completedLoads = count(ShipmentBlujay::select('load_id')
+        $completedLoads = count(LoadPerformance::select('tms_id')
                                     ->where('load_status','Completed')
-                                    ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                    ->whereYear('load_closed_date',Session::get('sales-year'))
+                                    ->whereMonth('closed_date',Session::get('sales-month'))
+                                    ->whereYear('closed_date',Session::get('sales-year'))
                                     ->whereIn('load_group',$this->surabayaLoadGroups)
-                                    ->groupBy('load_id')
+                                    ->groupBy('tms_id')
                                     ->get());
 
-        $incompleteLoads = count(ShipmentBlujay::select('load_id')
+        $incompleteLoads = count(LoadPerformance::select('tms_id')
                                     ->where('load_status','Accepted')
-                                    ->where('load_closed_date',null)
+                                    ->where('closed_date',null)
                                     ->whereIn('load_group',$this->surabayaLoadGroups)
-                                    ->groupBy('load_id')
+                                    ->groupBy('tms_id')
                                     ->get());
 
         $data['completedLoads'] = $completedLoads;
@@ -481,11 +481,11 @@ class ViewController extends BaseController
 
         for ($i=1; $i <= 12; $i++) {
             //Blujay Transport
-            $fetchTransport = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+            $fetchTransport = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
                                         ->whereIn('load_group',$this->transportLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereMonth('load_closed_date',$i)
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereMonth('closed_date',$i)
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->first();
 
             if(!is_null($fetchTransport->totalActual)){
@@ -496,11 +496,11 @@ class ViewController extends BaseController
 
 
             //Blujay Exim
-            $fetchExim = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+            $fetchExim = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
                                         ->whereIn('load_group',$this->eximLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereMonth('load_closed_date',$i)
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereMonth('closed_date',$i)
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->first();
 
             if(!is_null($fetchExim->totalActual)){
@@ -510,11 +510,11 @@ class ViewController extends BaseController
             }
 
             //Blujay Bulk
-            $fetchBulk = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+            $fetchBulk = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
                                         ->whereIn('load_group',$this->bulkLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereMonth('load_closed_date',$i)
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereMonth('closed_date',$i)
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->first();
 
             if(!is_null($fetchBulk->totalActual)){
@@ -543,12 +543,12 @@ class ViewController extends BaseController
         //Blujay
         if($tempBudget->division == "Pack Trans"){
             for ($i=1; $i <= 12 ; $i++) {
-                $monthlyRevenue = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                $monthlyRevenue = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
                                         ->where('customer_reference',$tempBudget->customer_sap)
                                         ->whereIn('load_group',$this->transportLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereMonth('load_closed_date',date($i))
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereMonth('closed_date',date($i))
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->groupBy('customer_reference')
                                         ->first();
 
@@ -560,12 +560,12 @@ class ViewController extends BaseController
             }
         }else if($tempBudget->division == "Freight Forwarding BP"){
             for ($i=1; $i <= 12 ; $i++) {
-                $monthlyRevenue = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                $monthlyRevenue = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
                                         ->where('customer_reference',$tempBudget->customer_sap)
                                         ->whereIn('load_group', $this->eximLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereMonth('load_closed_date',date($i))
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereMonth('closed_date',date($i))
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->groupBy('customer_reference')
                                         ->first();
 
@@ -577,12 +577,12 @@ class ViewController extends BaseController
             }
         }else if($tempBudget->division == "Bulk Trans"){
             for ($i=1; $i <= 12 ; $i++) {
-                $monthlyRevenue = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                $monthlyRevenue = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
                                         ->where('customer_reference',$tempBudget->customer_sap)
                                         ->whereIn('load_group', $this->bulkLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereMonth('load_closed_date',date($i))
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereMonth('closed_date',date($i))
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->groupBy('customer_reference')
                                         ->first();
 
@@ -613,12 +613,12 @@ class ViewController extends BaseController
 
                 if($row->division == "Pack Trans"){
                     //BLUJAY DIVISION TRANSPORT
-                    $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                    $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
                                         ->where('customer_reference',$row->customer_sap)
                                         ->whereIn('load_group', $this->transportLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereMonth('closed_date',Session::get('sales-month'))
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->groupBy('customer_reference')
                                         ->first();
 
@@ -626,12 +626,12 @@ class ViewController extends BaseController
                         $actual = $total->totalActual;
                     }
                 }else if($row->division == "Freight Forwarding BP"){
-                    $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                    $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
                                         ->where('customer_reference',$row->customer_sap)
                                         ->whereIn('load_group', $this->eximLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereMonth('closed_date',Session::get('sales-month'))
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->groupBy('customer_reference')
                                         ->first();
 
@@ -639,12 +639,12 @@ class ViewController extends BaseController
                         $actual = $total->totalActual;
                     }
                 }else if($row->division == "Bulk Trans"){
-                    $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                    $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
                                         ->where('customer_reference',$row->customer_sap)
                                         ->whereIn('load_group', $this->bulkLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereMonth('closed_date',Session::get('sales-month'))
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->groupBy('customer_reference')
                                         ->first();
 
@@ -702,12 +702,12 @@ class ViewController extends BaseController
                 if($row->division == "Pack Trans"){
                     //BLUJAY DIVISION TRANSPORT
 
-                    $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                    $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
                                         ->where('customer_reference',$row->customer_sap)
                                         ->whereIn('load_group', $this->transportLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereIn(DB::raw('month(load_closed_date)'),$ytd_month)
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereIn(DB::raw('month(closed_date)'),$ytd_month)
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->groupBy('customer_reference')
                                         ->first();
 
@@ -715,12 +715,12 @@ class ViewController extends BaseController
                         $actual = $total->totalActual;
                     }
                 }else if($row->division == "Freight Forwarding BP"){
-                    $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                    $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
                                         ->where('customer_reference',$row->customer_sap)
                                         ->whereIn('load_group', $this->eximLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereIn(DB::raw('month(load_closed_date)'),$ytd_month)
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereIn(DB::raw('month(closed_date)'),$ytd_month)
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->groupBy('customer_reference')
                                         ->first();
 
@@ -728,12 +728,12 @@ class ViewController extends BaseController
                         $actual = $total->totalActual;
                     }
                 }else if($row->division == "Bulk Trans"){
-                    $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                    $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
                                         ->where('customer_reference',$row->customer_sap)
                                         ->whereIn('load_group', $this->bulkLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereIn(DB::raw('month(load_closed_date)'),$ytd_month)
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereIn(DB::raw('month(closed_date)'),$ytd_month)
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->groupBy('customer_reference')
                                         ->first();
 
@@ -787,12 +787,12 @@ class ViewController extends BaseController
 
                 if($row->division == "Pack Trans"){
                     //BLUJAY DIVISION TRANSPORT
-                    $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                    $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
                                         ->where('customer_reference',$row->customer_sap)
                                         ->whereIn('load_group',$this->transportLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereMonth('closed_date',Session::get('sales-month'))
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->groupBy('customer_reference')
                                         ->first();
 
@@ -800,12 +800,12 @@ class ViewController extends BaseController
                         $actual = $total->totalActual;
                     }
                 }else if($row->division == "Freight Forwarding BP"){
-                    $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                    $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
                                         ->where('customer_reference',$row->customer_sap)
                                         ->whereIn('load_group',$this->eximLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereMonth('closed_date',Session::get('sales-month'))
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->groupBy('customer_reference')
                                         ->first();
 
@@ -814,12 +814,12 @@ class ViewController extends BaseController
                     }
                 }
                 else if($row->division == "Bulk Trans"){
-                    $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                    $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
                                         ->where('customer_reference',$row->customer_sap)
                                         ->whereIn('load_group',$this->bulkLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereMonth('closed_date',Session::get('sales-month'))
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->groupBy('customer_reference')
                                         ->first();
 
@@ -877,12 +877,12 @@ class ViewController extends BaseController
                 if($row->division == "Pack Trans"){
                     //BLUJAY DIVISION TRANSPORT
 
-                    $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                    $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
                                         ->where('customer_reference',$row->customer_sap)
                                         ->whereIn('load_group',$this->transportLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereIn(DB::raw('month(load_closed_date)'),$ytd_month)
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereIn(DB::raw('month(closed_date)'),$ytd_month)
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->groupBy('customer_reference')
                                         ->first();
 
@@ -890,12 +890,12 @@ class ViewController extends BaseController
                         $actual = $total->totalActual;
                     }
                 }else if($row->division == "Freight Forwarding BP"){
-                    $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                    $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
                                         ->where('customer_reference',$row->customer_sap)
                                         ->whereIn('load_group',$this->eximLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereIn(DB::raw('month(load_closed_date)'),$ytd_month)
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereIn(DB::raw('month(closed_date)'),$ytd_month)
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->groupBy('customer_reference')
                                         ->first();
 
@@ -903,12 +903,12 @@ class ViewController extends BaseController
                         $actual = $total->totalActual;
                     }
                 }else if($row->division == "Bulk Trans"){
-                    $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                    $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
                                         ->where('customer_reference',$row->customer_sap)
                                         ->whereIn('load_group',$this->bulkLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereIn(DB::raw('month(load_closed_date)'),$ytd_month)
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereIn(DB::raw('month(closed_date)'),$ytd_month)
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->groupBy('customer_reference')
                                         ->first();
 
@@ -962,12 +962,12 @@ class ViewController extends BaseController
 
                 if($row->division == "Pack Trans"){
                     //BLUJAY DIVISION TRANSPORT
-                    $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                    $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
                                         ->where('customer_reference',$row->customer_sap)
                                         ->whereIn('load_group', $this->transportLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereMonth('closed_date',Session::get('sales-month'))
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->groupBy('customer_reference')
                                         ->first();
 
@@ -975,12 +975,12 @@ class ViewController extends BaseController
                         $actual = $total->totalActual;
                     }
                 }else if($row->division == "Freight Forwarding BP"){
-                    $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                    $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
                                         ->where('customer_reference',$row->customer_sap)
                                         ->whereIn('load_group',$this->eximLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereMonth('closed_date',Session::get('sales-month'))
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->groupBy('customer_reference')
                                         ->first();
 
@@ -988,12 +988,12 @@ class ViewController extends BaseController
                         $actual = $total->totalActual;
                     }
                 }else if($row->division == "Bulk Trans"){
-                    $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                    $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
                                         ->where('customer_reference',$row->customer_sap)
                                         ->whereIn('load_group',$this->bulkLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereMonth('closed_date',Session::get('sales-month'))
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->groupBy('customer_reference')
                                         ->first();
 
@@ -1051,12 +1051,12 @@ class ViewController extends BaseController
                 if($row->division == "Pack Trans"){
                     //BLUJAY DIVISION TRANSPORT
 
-                    $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                    $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
                                         ->where('customer_reference',$row->customer_sap)
                                         ->whereIn('load_group',$this->transportLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereIn(DB::raw('month(load_closed_date)'),$ytd_month)
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereIn(DB::raw('month(closed_date)'),$ytd_month)
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->groupBy('customer_reference')
                                         ->first();
 
@@ -1064,12 +1064,12 @@ class ViewController extends BaseController
                         $actual = $total->totalActual;
                     }
                 }else if($row->division == "Freight Forwarding BP"){
-                    $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                    $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
                                         ->where('customer_reference',$row->customer_sap)
                                         ->whereIn('load_group',$this->eximLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereIn(DB::raw('month(load_closed_date)'),$ytd_month)
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereIn(DB::raw('month(closed_date)'),$ytd_month)
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->groupBy('customer_reference')
                                         ->first();
 
@@ -1077,12 +1077,12 @@ class ViewController extends BaseController
                         $actual = $total->totalActual;
                     }
                 }else if($row->division == "Bulk Trans"){
-                    $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                    $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
                                         ->where('customer_reference',$row->customer_sap)
                                         ->whereIn('load_group',$this->bulkLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereIn(DB::raw('month(load_closed_date)'),$ytd_month)
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereIn(DB::raw('month(closed_date)'),$ytd_month)
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->groupBy('customer_reference')
                                         ->first();
 
@@ -1142,12 +1142,12 @@ class ViewController extends BaseController
 
         foreach ($customerTransport as $c) {
             $budgetTransport += $c->budget;
-            $fetchTransport = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+            $fetchTransport = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
                                     ->where('customer_reference',$c->customer_sap)
                                     ->whereIn('load_group',$this->transportLoadGroups)
                                     ->where('load_status','Completed')
-                                    ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                    ->whereYear('load_closed_date',Session::get('sales-year'))
+                                    ->whereMonth('closed_date',Session::get('sales-month'))
+                                    ->whereYear('closed_date',Session::get('sales-year'))
                                     ->first();
 
             if(!is_null($fetchTransport)){
@@ -1169,12 +1169,12 @@ class ViewController extends BaseController
 
         foreach ($customerExim as $c) {
             $budgetExim += $c->budget;
-            $fetchExim = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+            $fetchExim = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
                                     ->where('customer_reference',$c->customer_sap)
                                     ->whereIn('load_group',$this->eximLoadGroups)
                                     ->where('load_status','Completed')
-                                    ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                    ->whereYear('load_closed_date',Session::get('sales-year'))
+                                    ->whereMonth('closed_date',Session::get('sales-month'))
+                                    ->whereYear('closed_date',Session::get('sales-year'))
                                     ->first();
 
             if(!is_null($fetchExim)){
@@ -1196,12 +1196,12 @@ class ViewController extends BaseController
 
         foreach ($customerBulk as $c) {
             $budgetBulk += $c->budget;
-            $fetchBulk = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+            $fetchBulk = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
                                     ->where('customer_reference',$c->customer_sap)
                                     ->whereIn('load_group',$this->bulkLoadGroups)
                                     ->where('load_status','Completed')
-                                    ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                    ->whereYear('load_closed_date',Session::get('sales-year'))
+                                    ->whereMonth('closed_date',Session::get('sales-month'))
+                                    ->whereYear('closed_date',Session::get('sales-year'))
                                     ->first();
 
             if(!is_null($fetchBulk)){
@@ -1260,12 +1260,12 @@ class ViewController extends BaseController
 
             foreach ($customerAdit as $c) {
                 $budgetAdit += $c->budget;
-                $fetchAdit = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+                $fetchAdit = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
                                         ->where('customer_reference',$c->customer_sap)
                                         ->whereIn('load_group',$divisionGroup)
                                         ->where('load_status','Completed')
-                                        ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereMonth('closed_date',Session::get('sales-month'))
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->first();
 
                 if(!is_null($fetchAdit)){
@@ -1288,12 +1288,12 @@ class ViewController extends BaseController
 
             foreach ($customerEdwin as $c) {
                 $budgetEdwin += $c->budget;
-                $fetchEdwin = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+                $fetchEdwin = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
                                         ->where('customer_reference',$c->customer_sap)
                                         ->whereIn('load_group',$divisionGroup)
                                         ->where('load_status','Completed')
-                                        ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereMonth('closed_date',Session::get('sales-month'))
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->first();
 
                 if(!is_null($fetchEdwin)){
@@ -1316,12 +1316,12 @@ class ViewController extends BaseController
 
             foreach ($customerWillem as $c) {
                 $budgetWillem += $c->budget;
-                $fetchWillem = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+                $fetchWillem = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
                                         ->where('customer_reference',$c->customer_sap)
                                         ->whereIn('load_group',$divisionGroup)
                                         ->where('load_status','Completed')
-                                        ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereMonth('closed_date',Session::get('sales-month'))
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->first();
 
                 if(!is_null($fetchWillem)){
@@ -1348,12 +1348,12 @@ class ViewController extends BaseController
             $revenueUnlocated = 0;
             $budgetUnlocated = 0;
 
-            $fetchUnlocated = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+            $fetchUnlocated = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
                                         ->whereNotIn('customer_reference',$listedCustomer)
                                         ->whereIn('load_group',$divisionGroup)
                                         ->where('load_status','Completed')
-                                        ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereMonth('closed_date',Session::get('sales-month'))
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->first();
 
             $revenueUnlocated = $fetchUnlocated->totalActual;
@@ -1361,12 +1361,12 @@ class ViewController extends BaseController
             $data['unlocated'] = [$revenueUnlocated,0];
 
             //Listing unlocated customer
-            $unlocated_reference = ShipmentBlujay::select('customer_reference')
+            $unlocated_reference = LoadPerformance::select('customer_reference')
                                                 ->whereNotIn('customer_reference',$listedCustomer)
                                                 ->whereIn('load_group',$divisionGroup)
                                                 ->where('load_status','Completed')
-                                                ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                                ->whereYear('load_closed_date',Session::get('sales-year'))
+                                                ->whereMonth('closed_date',Session::get('sales-month'))
+                                                ->whereYear('closed_date',Session::get('sales-year'))
                                                 ->groupBy('customer_reference')
                                                 ->get()->pluck('customer_reference');
             
@@ -1401,12 +1401,12 @@ class ViewController extends BaseController
 
         foreach ($customerTransport as $c) {
             $budgetTransport += $c->budget;
-            $fetchTransport = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+            $fetchTransport = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
                                     ->where('customer_reference',$c->customer_sap)
                                     ->whereIn('load_group',$this->transportLoadGroups)
                                     ->where('load_status','Completed')
-                                    ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                    ->whereYear('load_closed_date',Session::get('sales-year'))
+                                    ->whereMonth('closed_date',Session::get('sales-month'))
+                                    ->whereYear('closed_date',Session::get('sales-year'))
                                     ->first();
 
             if(!is_null($fetchTransport)){
@@ -1427,12 +1427,12 @@ class ViewController extends BaseController
 
         foreach ($customerExim as $c) {
             $budgetExim += $c->budget;
-            $fetchExim = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+            $fetchExim = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
                                     ->where('customer_reference',$c->customer_sap)
                                     ->whereIn('load_group',$this->eximLoadGroups)
                                     ->where('load_status','Completed')
-                                    ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                    ->whereYear('load_closed_date',Session::get('sales-year'))
+                                    ->whereMonth('closed_date',Session::get('sales-month'))
+                                    ->whereYear('closed_date',Session::get('sales-year'))
                                     ->first();
 
             if(!is_null($fetchExim)){
@@ -1453,12 +1453,12 @@ class ViewController extends BaseController
 
         foreach ($customerBulk as $c) {
             $budgetBulk += $c->budget;
-            $fetchBulk = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+            $fetchBulk = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
                                     ->where('customer_reference',$c->customer_sap)
                                     ->whereIn('load_group',$this->bulkLoadGroups)
                                     ->where('load_status','Completed')
-                                    ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                    ->whereYear('load_closed_date',Session::get('sales-year'))
+                                    ->whereMonth('closed_date',Session::get('sales-month'))
+                                    ->whereYear('closed_date',Session::get('sales-year'))
                                     ->first();
 
             if(!is_null($fetchBulk)){
@@ -1534,12 +1534,12 @@ class ViewController extends BaseController
 
             if($row->division == "Pack Trans"){
                 //BLUJAY DIVISION TRANSPORT
-                $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
                                     ->where('customer_reference',$row->customer_sap)
                                     ->whereIn('load_group', $this->transportLoadGroups)
                                     ->where('load_status','Completed')
-                                    ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                    ->whereYear('load_closed_date',Session::get('sales-year'))
+                                    ->whereMonth('closed_date',Session::get('sales-month'))
+                                    ->whereYear('closed_date',Session::get('sales-year'))
                                     ->groupBy('customer_reference')
                                     ->first();
 
@@ -1547,12 +1547,12 @@ class ViewController extends BaseController
                     $actual = $total->totalActual;
                 }
             }else if($row->division == "Freight Forwarding BP"){
-                $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
                                     ->where('customer_reference',$row->customer_sap)
                                     ->whereIn('load_group',$this->eximLoadGroups)
                                     ->where('load_status','Completed')
-                                    ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                    ->whereYear('load_closed_date',Session::get('sales-year'))
+                                    ->whereMonth('closed_date',Session::get('sales-month'))
+                                    ->whereYear('closed_date',Session::get('sales-year'))
                                     ->groupBy('customer_reference')
                                     ->first();
 
@@ -1560,12 +1560,12 @@ class ViewController extends BaseController
                     $actual = $total->totalActual;
                 }
             }else if($row->division == "Bulk Trans"){
-                $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
                                     ->where('customer_reference',$row->customer_sap)
                                     ->whereIn('load_group',$this->bulkLoadGroups)
                                     ->where('load_status','Completed')
-                                    ->whereMonth('load_closed_date',Session::get('sales-month'))
-                                    ->whereYear('load_closed_date',Session::get('sales-year'))
+                                    ->whereMonth('closed_date',Session::get('sales-month'))
+                                    ->whereYear('closed_date',Session::get('sales-year'))
                                     ->groupBy('customer_reference')
                                     ->first();
 
@@ -1611,12 +1611,12 @@ class ViewController extends BaseController
             if($row->division == "Pack Trans"){
                 //BLUJAY DIVISION TRANSPORT
 
-                $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
                                     ->where('customer_reference',$row->customer_sap)
                                     ->whereIn('load_group',$this->transportLoadGroups)
                                     ->where('load_status','Completed')
-                                    ->whereIn(DB::raw('month(load_closed_date)'),$ytd_month)
-                                    ->whereYear('load_closed_date',Session::get('sales-year'))
+                                    ->whereIn(DB::raw('month(closed_date)'),$ytd_month)
+                                    ->whereYear('closed_date',Session::get('sales-year'))
                                     ->groupBy('customer_reference')
                                     ->first();
 
@@ -1624,12 +1624,12 @@ class ViewController extends BaseController
                     $actual = $total->totalActual;
                 }
             }else if($row->division == "Freight Forwarding BP"){
-                $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
                                     ->where('customer_reference',$row->customer_sap)
                                     ->whereIn('load_group',$this->eximLoadGroups)
                                     ->where('load_status','Completed')
-                                    ->whereIn(DB::raw('month(load_closed_date)'),$ytd_month)
-                                    ->whereYear('load_closed_date',Session::get('sales-year'))
+                                    ->whereIn(DB::raw('month(closed_date)'),$ytd_month)
+                                    ->whereYear('closed_date',Session::get('sales-year'))
                                     ->groupBy('customer_reference')
                                     ->first();
 
@@ -1637,12 +1637,12 @@ class ViewController extends BaseController
                     $actual = $total->totalActual;
                 }
             }else if($row->division == "Bulk Trans"){
-                $total = ShipmentBlujay::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
                                     ->where('customer_reference',$row->customer_sap)
                                     ->whereIn('load_group',$this->bulkLoadGroups)
                                     ->where('load_status','Completed')
-                                    ->whereIn(DB::raw('month(load_closed_date)'),$ytd_month)
-                                    ->whereYear('load_closed_date',Session::get('sales-year'))
+                                    ->whereIn(DB::raw('month(closed_date)'),$ytd_month)
+                                    ->whereYear('closed_date',Session::get('sales-year'))
                                     ->groupBy('customer_reference')
                                     ->first();
 
@@ -1682,10 +1682,10 @@ class ViewController extends BaseController
 
         //Graph Data 1 Year
         //Transport
-        $actualTransport = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+        $actualTransport = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
                                         ->whereIn('load_group',$this->transportLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->first();
 
         $budgetTransport = SalesBudget::selectRaw('SUM(budget) as totalBudget')
@@ -1701,10 +1701,10 @@ class ViewController extends BaseController
 
         //Exim
         $actualExim = 0;
-        $actualExim = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+        $actualExim = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
                                         ->whereIn('load_group',$this->eximLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->first();
 
         $budgetExim = SalesBudget::selectRaw('SUM(budget) as totalBudget')
@@ -1720,10 +1720,10 @@ class ViewController extends BaseController
 
         //Bulk
         $actualBulk = 0;
-        $actualBulk = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+        $actualBulk = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
                                         ->whereIn('load_group',$this->bulkLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->first();
 
         $budgetBulk = SalesBudget::selectRaw('SUM(budget) as totalBudget')
@@ -1739,10 +1739,10 @@ class ViewController extends BaseController
 
         //Warehouse
         $actualWarehouse = 0;
-        $actualWarehouse = ShipmentBlujay::selectRaw('SUM(billable_total_rate) as totalActual')
+        $actualWarehouse = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
                                         ->whereIn('load_group',$this->warehouseLoadGroups)
                                         ->where('load_status','Completed')
-                                        ->whereYear('load_closed_date',Session::get('sales-year'))
+                                        ->whereYear('closed_date',Session::get('sales-year'))
                                         ->first();
 
         $budgetWarehouse = SalesBudget::selectRaw('SUM(budget) as totalBudget')
@@ -1770,8 +1770,14 @@ class ViewController extends BaseController
             })
             ->rawColumns(['achievement_1m','achievement_ytd','period_mon','graph'])
             ->make(true);
-        }else{
+        }else if($isDatatable == 'false'){
             return view('sales.pages.pdf.pdf-overall', $data);
+        }else if($isDatatable == 'single'){
+            $data['customer'] = LoadPerformance::select('customer_reference','customer_name')
+                                                ->where('customer_reference',$customer)
+                                                ->first();
+
+            return view('sales.pages.pdf.pdf-single-customer', $data);
         }
     }
 }
