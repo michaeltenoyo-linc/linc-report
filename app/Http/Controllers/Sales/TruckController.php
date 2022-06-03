@@ -13,17 +13,21 @@ use Illuminate\Support\Facades\Auth;
 
 //Model
 use App\Models\Item;
+use App\Models\lead_time;
 use App\Models\LoadPerformance;
 use App\Models\SalesBudget;
 use App\Models\ShipmentBlujay;
 use App\Models\Suratjalan_greenfields;
 use App\Models\Trucks;
 use App\Models\unit_surabaya;
+use Facade\FlareClient\Http\Response;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use PDF;
+use PDO;
+use SebastianBergmann\CodeCoverage\Report\Xml\Unit;
 
 use function PHPSTORM_META\map;
 use function PHPUnit\Framework\isNan;
@@ -589,5 +593,60 @@ class TruckController extends BaseController
         
 
         return response()->json($data, 200);
+    }
+
+    public function getLeadTime(Request $req){
+        $leadTime = lead_time::get();
+
+        return DataTables::of($leadTime)->make(true);
+    }
+
+    public function generateTruckingUtility(Request $req, $ownership){
+        $month = Session::get('sales-month');
+        $year = Session::get('sales-year');
+        $totalDays = cal_days_in_month(CAL_GREGORIAN,$month,$year);
+        $defaultActivity = array_fill(0,$totalDays,"idle");
+
+        //Truck List
+        $truck = [];
+        if($ownership == "all"){
+            $truck = unit_surabaya::get();
+        }else{
+            $truck = unit_surabaya::where('own',$ownership)->get();
+        }
+
+        //Fill Truck Activity
+        foreach ($truck as $row) {
+            $row->activity = $defaultActivity;
+
+            $loadList = LoadPerformance::select('created_date','first_pick_location_city','last_drop_location_city')
+                                        ->where('vehicle_number',$row->nopol)
+                                        ->whereMonth('created_date',$month)
+                                        ->whereYear('created_date',$year)
+                                        ->orderBy('created_date','asc')
+                                        ->get();
+            foreach ($loadList as $load) {
+                $leadTime = lead_time::select('ltpod')
+                                    ->where('rg_origin','LIKE','%'.$load->first_pick_location_city.'%')
+                                    ->where('rg_destination','LIKE','%'.$load->last_drop_location_city.'%')
+                                    ->orderBy('ltpod','asc')
+                                    ->first();
+                if($leadTime == null){
+                    $load->lead_time = 1;
+                }else{
+                    $load->lead_time = $leadTime->ltpod;
+                }
+                
+            }
+            $row->loads = $loadList;
+        }
+
+        //Data Finalization
+        $data['year'] = $year;
+        $data['month'] = $month;
+        $data['ownership'] = $ownership;
+        $data['unit'] = $truck;
+
+        return $data;
     }
 }

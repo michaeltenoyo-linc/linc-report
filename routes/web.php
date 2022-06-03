@@ -344,13 +344,15 @@ Route::middleware(['auth','priviledge:sales,master'])->group(function () {
             Route::get('/performance-generate/{ownership}/{division}/{nopol}',[SalesTruckController::class, 'generateTruckingPerformance']);
             Route::get('/performance-customer/{ownership}/{division}/{nopol}',[SalesTruckController::class, 'generateCustomerPerformance']);
             Route::get('/utility',[SalesViewController::class, 'gotoTruckingUtility']);
-            
+            Route::get('/utility-generate/{ownership}',[SalesTruckController::class, 'generateTruckingUtility']);
+
             //Data
             Route::get('/filter-nopol/{division}/{ownership}',[SalesTruckController::class, 'getFilteringTruck']);
             Route::get('/filter-customer/{division}/{ownership}/{nopol}',[SalesTruckController::class, 'getFilteringCustomer']);
             Route::get('get-monthly-customers/{nopol}/{division}',[SalesTruckController::class, 'getCustomerData']);
             Route::get('get-monthly-units/{nopol}/{division}',[SalesTruckController::class, 'getUnitData']);
             Route::get('/get-yearly-achievement/{id}/{division}',[SalesTruckController::class, 'getYearlyAchievement']);
+            Route::get('/get-lead-time',[SalesTruckController::class, 'getLeadTime']);
         });
 
         //LOAD ID DETAIL INVOICE

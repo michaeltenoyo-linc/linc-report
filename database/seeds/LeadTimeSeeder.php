@@ -22,8 +22,11 @@ class LeadTimeSeeder extends Seeder
             error_log("Seeding Lead Times : ".$counter);
             if (!$firstline){
                 try {
+                    $route = explode('-',$data['0']);
                     lead_time::create([
                         'rg' => $data['0'],
+                        'rg_origin' => $route[0],
+                        'rg_destination' => $route[1],
                         'cluster' => $data['1'],
                         'ltpod' => $data['2']==''?0:$data['2'],
                     ]);

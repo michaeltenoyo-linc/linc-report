@@ -19,7 +19,7 @@ Linc | Trucking Utility
             <div class="w-full mb-8">
                 <form id="form-trucking-utility" autocomplete="off">
                     <div class="relative mb-4">
-                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                        <label class="block uppercas    e text-blueGray-600 text-xs font-bold mb-2"
                                 htmlFor="date-filter"> Periode </label>
                         <input 
                             type="month" 
@@ -28,7 +28,7 @@ Linc | Trucking Utility
                             >
                     </div>
 
-                    <div class="relative grid grid-cols-2 gap-4 mb-3">
+                    <div class="relative grid grid-cols-1 gap-4 mb-3">
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                                 htmlFor="name">Ownership</label>
@@ -37,25 +37,6 @@ Linc | Trucking Utility
                                 <option value="OWN">OWNED Surabaya</option>
                                 <option value="OPL">OPL Surabaya</option>
                                 <option value="GRAHA">GRAHA Surabaya</option>
-                            </select>
-                        </div>
-                        
-                        <!--
-                        <div class="relative w-full mb-3">
-                            <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="name">Load Group</label>
-                            <select required name="group" class="input-group border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text">
-                                <option value="all">==Semua==</option>
-                                <option value="surabaya">Surabaya</option>
-                            </select>
-                        </div>
-                        -->
-
-                        <div class="relative w-full mb-3">
-                            <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="name">Nopol</label>
-                            <select required name="sales" class="input-nopol border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text">
-                                <option value="all">==Semua==</option>
                             </select>
                         </div>
                     </div>
@@ -83,6 +64,37 @@ Linc | Trucking Utility
                         </div>
                     </div>
                 </form>
+            </div>
+
+            <div class="w-full">
+                <hr>
+            </div>
+
+            <!--Lead Time List-->
+            <div class="w-full my-5">
+                <div class="w-full text-center text-xl font-bold">
+                    Lead Time
+                </div>
+                <div class="block w-full p-8 overflow-x-auto">
+                    <!-- Projects table -->
+                    <table id="yajra-datatable-lead-time" style="width: 100%;" class="items-center w-full bg-transparent border-collapse yajra-datatable-lead-time">
+                    <thead>
+                        <tr>
+                            <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                Route Guide
+                            </th>
+                            <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                Cluster
+                            </th>
+                            <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                Lead Time POD
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

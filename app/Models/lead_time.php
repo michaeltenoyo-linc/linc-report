@@ -11,6 +11,8 @@ class lead_time extends Model
     public $incrementing = false;
     protected $fillable = [
         'rg',
+        'rg_origin',
+        'rg_destination',
         'cluster',
         'ltpod'
     ];
