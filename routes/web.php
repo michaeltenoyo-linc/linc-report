@@ -350,6 +350,7 @@ Route::middleware(['auth','priviledge:sales,master'])->group(function () {
             Route::get('/filter-customer/{division}/{ownership}/{nopol}',[SalesTruckController::class, 'getFilteringCustomer']);
             Route::get('get-monthly-customers/{nopol}/{division}',[SalesTruckController::class, 'getCustomerData']);
             Route::get('get-monthly-units/{nopol}/{division}',[SalesTruckController::class, 'getUnitData']);
+            Route::get('/get-yearly-achievement/{id}/{division}',[SalesTruckController::class, 'getYearlyAchievement']);
         });
 
         //LOAD ID DETAIL INVOICE

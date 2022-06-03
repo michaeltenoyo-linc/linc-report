@@ -49,6 +49,7 @@ class ShipmentBlujaySeeder extends Seeder
             $counter++;
             if (!$firstline){
                 $exist = ShipmentBlujay::find($data['5']);
+                $loadExist = ShipmentBlujay::where('load_id',$data['2'])->first();
 
                 if(!is_null($exist)){
                     $exist->forceDelete();
@@ -63,7 +64,7 @@ class ShipmentBlujaySeeder extends Seeder
                     'billable_total_rate'=>round(floatval(str_replace(',','',$data['6'])),2),
                     'payable_total_rate'=>round(floatval(str_replace(',','',$data['9'])),2),
                     'load_closed_date' => ($this->checkDateString($data['7']))?Carbon::createFromFormat('d/m/Y H:i', $data['7']):null,
-                    'load_status' => $data['8'],       
+                    'load_status' => $data['8'],
                 ]);
             }
 

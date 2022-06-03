@@ -1,7 +1,7 @@
 @extends('sales.layouts.admin-layout')
 
 @section('title')
-Linc | Trucking Performance
+Linc | Trucking Utility
 @endsection
 
 @section('header')
@@ -14,10 +14,10 @@ Linc | Trucking Performance
     <div class="relative flex flex-col min-w-0 overflow-x-auto break-words w-full mb-6 shadow-lg rounded bg-white">
         <div class="block w-full p-8 overflow-x-auto">
             <div class="w-full text-center">
-                <span class="text-xl font-bold">Trucking Performance Generator</span>
+                <span class="text-xl font-bold">Trucking Utility Monitor</span>
             </div>
             <div class="w-full mb-8">
-                <form id="form-trucking-performance" autocomplete="off">
+                <form id="form-trucking-utility" autocomplete="off">
                     <div class="relative mb-4">
                         <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                                 htmlFor="date-filter"> Periode </label>
@@ -28,7 +28,7 @@ Linc | Trucking Performance
                             >
                     </div>
 
-                    <div class="relative grid grid-cols-4 gap-4 mb-3">
+                    <div class="relative grid grid-cols-2 gap-4 mb-3">
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                                 htmlFor="name">Ownership</label>
@@ -37,21 +37,6 @@ Linc | Trucking Performance
                                 <option value="OWN">OWNED Surabaya</option>
                                 <option value="OPL">OPL Surabaya</option>
                                 <option value="GRAHA">GRAHA Surabaya</option>
-                                <option value="NOT_SBY_OWNED">Outside Surabaya Owned</option>
-                                <option value="NOT_SBY_VENDOR">Outside Surabaya Vendor</option>
-                                
-                            </select>
-                        </div>
-
-                        <div class="relative w-full mb-3">
-                            <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="name">Division</label>
-                            <select required name="division" class="input-division border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text">
-                                <!-- <option value="all">==Semua==</option> -->
-                                <option value="surabaya">Surabaya All</option>
-                                <option value="transport">Surabaya Transport</option>
-                                <option value="exim">Surabaya ExIm</option>
-                                <option value="bulk">Surabaya Bulk</option>
                             </select>
                         </div>
                         
@@ -73,39 +58,19 @@ Linc | Trucking Performance
                                 <option value="all">==Semua==</option>
                             </select>
                         </div>
-
-                        <div class="relative w-full mb-3">
-                            <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="tree">Report Tree</label>
-                            <select required name="tree" class="input-tree border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text">
-                                <option value="nopol_to_customer">Vehicle Performance</option>
-                                <option value="customer_to_nopol">Customer Performance</option>
-                            </select>
-                        </div>
                     </div>
                     
                     <div class="w-full lg:w-12/12" >
                         <div class="grid grid-cols-4 gap-4">
-                            <!-- Preview Report Truck Performance -->
-                            <div class="preview-truck">
-                                <img src="{{ asset('assets/contoh-report/performance-report/truck-preview1.PNG') }}" alt="">
+                            <!-- Preview Utility Generator -->
+                            <div class="preview-utility">
+                                <img src="{{ asset('assets/contoh-report/performance-report/utility-preview1.PNG') }}" alt="Image not found.">
                             </div>
-                            <div class="preview-truck">
-                                <img src="{{ asset('assets/contoh-report/performance-report/truck-preview2.PNG') }}" alt="">
+                            <div class="preview-utility">
+                                <img src="{{ asset('assets/contoh-report/performance-report/utility-preview2.PNG') }}" alt="Image not found.">
                             </div>
-                            <div class="preview-truck">
-                                <img src="{{ asset('assets/contoh-report/performance-report/truck-preview3.PNG') }}" alt="">
-                            </div>
-
-                            <!-- Preview Report Customer Performance -->
-                            <div class="preview-customer hidden">
-                                <img src="{{ asset('assets/contoh-report/performance-report/customer-preview1.PNG') }}" alt="">
-                            </div>
-                            <div class="preview-customer hidden">
-                                <img src="{{ asset('assets/contoh-report/performance-report/customer-preview2.PNG') }}" alt="">
-                            </div>
-                            <div class="preview-customer hidden">
-                                <img src="{{ asset('assets/contoh-report/performance-report/customer-preview3.PNG') }}" alt="">
+                            <div class="preview-utility">
+                                <img src="{{ asset('assets/contoh-report/performance-report/utility-preview3.PNG') }}" alt="Image not found.">
                             </div>
 
                             <div>

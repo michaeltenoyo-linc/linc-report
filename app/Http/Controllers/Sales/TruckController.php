@@ -527,4 +527,67 @@ class TruckController extends BaseController
 
         return response()->json($data, 200);
     }
+
+    public function getYearlyAchievement(Request $req, $id, $division){
+        /* JIKA BUDGET TRUCK SUDAH ADA
+
+        $tempBudget = TruckBudget::find($id);
+
+        $data['message'] = "Sukses mengambil data budget.";
+        $data['yearly_budget'] = SalesBudget::where('customer_name',$tempBudget->customer_name)
+                                        ->where('division',$tempBudget->division)
+                                        ->whereYear('period',Session::get('sales-year'))
+                                        ->orderBy('period','asc')
+                                        ->get()
+                                        ->pluck('budget');
+
+        */
+        $data['yearly_budget'] = [0,0,0,0,0,0,0,0,0,0,0,0];
+        //Division
+        $divisionGroup = [];
+        switch ($division) {
+            case 'transport':
+                $division = 'Pack Trans';
+                $divisionGroup = $this->transportLoadGroups;
+                break;
+            case 'exim':
+                $division = 'Freight Forwarding BP';
+                $divisionGroup = $this->eximLoadGroups;
+                break;
+            case 'bulk':
+                $division = 'Bulk Trans';
+                $divisionGroup = $this->bulkLoadGroups;
+                break;
+            case 'surabaya':
+                $division = 'Surabaya';
+                $divisionGroup = $this->surabayaLoadGroups;
+            default:
+                break;
+        }
+
+        $data['yearly_revenue'] = [];
+
+        //Blujay
+        $dbYearlyRevenue = LoadPerformance::selectRaw("
+                                        SUM(billable_total_rate) as totalActual,
+                                        DATE_FORMAT(created_date,'%m') as monthKey
+                                    ")
+                                    ->where('vehicle_number',$id)
+                                    ->whereIn('load_group',$divisionGroup)
+                                    ->where('load_status','Completed')
+                                    ->whereYear('closed_date',Session::get('sales-year'))
+                                    ->groupBy('monthKey')
+                                    ->get();
+        
+        $yearlyRevenue = [0,0,0,0,0,0,0,0,0,0,0,0];
+
+        foreach($dbYearlyRevenue as $monthlyRevenue){
+            $yearlyRevenue[$monthlyRevenue->monthKey-1] = $monthlyRevenue->totalActual;
+        }
+        
+        $data['yearly_revenue'] = $yearlyRevenue;
+        
+
+        return response()->json($data, 200);
+    }
 }

@@ -13,6 +13,9 @@ Linc | Export PDF
     <input type="text" class="hidden" value="exportPDF" id="page-content">
     <div class="relative flex flex-col min-w-0 overflow-x-auto break-words w-full mb-6 shadow-lg rounded bg-white">
         <div class="block w-full p-8 overflow-x-auto">
+            <div class="w-full text-center">
+                <span class="text-xl font-bold">Sales Performance Generator</span>
+            </div>
             <div class="w-full mb-8">
                 <form id="form-export-sales" autocomplete="off">
                     <div class="relative mb-4">
@@ -58,10 +61,25 @@ Linc | Export PDF
                     </div>
                     
                     <div class="w-full lg:w-12/12" >
-                        <div class="flex flex-row-reverse w-full mb-3">
-                            <input type="submit"
-                                class="export-pdf-generate bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded text-right"
-                                value="Generate"/>
+                        <div class="grid grid-cols-4 gap-4">
+                            <!-- Preview Report Sales Performance -->
+                            <div class="preview-sales">
+                                <img src="{{ asset('assets/contoh-report/performance-report/sales-preview1.PNG') }}" alt="">
+                            </div>
+                            <div class="preview-sales">
+                                <img src="{{ asset('assets/contoh-report/performance-report/sales-preview2.PNG') }}" alt="">
+                            </div>
+                            <div class="preview-sales">
+                                <img src="{{ asset('assets/contoh-report/performance-report/sales-preview3.PNG') }}" alt="">
+                            </div>
+
+                            <div>
+                                <div class="flex flex-row-reverse w-full mb-3">
+                                    <input type="submit"
+                                        class="export-pdf-generate bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded text-right"
+                                        value="Generate"/>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>

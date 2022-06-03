@@ -13,7 +13,7 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-5">
+                    <div class="col-5 overflow-auto" style="height: 600px;">
                         <span id="customer-unit-list">
                             -Unit List-
                         </span>
@@ -27,13 +27,13 @@
                         </div>
                         <hr>
                         <div class="row">
-                            <div class="col-8 text-center border border-dark rounded mx-1">
+                            <div class="col-8 text-center border border-dark rounded mx-1 overflow-auto" style="height: 500px;">
                                 <b>--Routes List--</b><br>
                                 <span class="truck-route-list">
                                     -Route List-
                                 </span>
                             </div>
-                            <div class="col text-center border border-dark rounded mx-1">
+                            <div class="col text-center border border-dark rounded mx-1 overflow-auto" style="height: 500px;">
                                 <b>--Loads List--</b><br>
                                 <span class="truck-load-list">
                                     -Load ID List-

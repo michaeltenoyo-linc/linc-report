@@ -23,6 +23,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use PDF;
+use ReflectionClass;
 
 use function PHPUnit\Framework\isNan;
 use function PHPUnit\Framework\isNull;
@@ -67,6 +68,14 @@ class ViewController extends BaseController
         $data['last_update'] = LoadPerformance::orderBy('updated_at','desc')->first();
 
         return view('sales.pages.trucking.performance',$data);
+    }
+
+    public function gotoTruckingUtility(){
+        Session::put('sales-month',date('m'));
+        Session::put('sales-year', date('Y'));
+        $data['last_update'] = LoadPerformance::orderBy('updated_at','desc')->first();
+
+        return view('sales.pages.trucking.utility',$data);
     }
 
     public function gotoLandingPage(){
@@ -475,53 +484,53 @@ class ViewController extends BaseController
     public function getYearlyRevenue (Request $req){
         $year = Session::get('sales-year');
         $data['warehouse'] = [0,0,0,0,0,0,0,0,0,0,0,0];
-        $data['transport'] = [];
-        $data['exim'] = [];
-        $data['bulk'] = [];
+        $data['transport'] = [0,0,0,0,0,0,0,0,0,0,0,0];
+        $data['exim'] = [0,0,0,0,0,0,0,0,0,0,0,0];
+        $data['bulk'] = [0,0,0,0,0,0,0,0,0,0,0,0];
 
-        for ($i=1; $i <= 12; $i++) {
-            //Blujay Transport
-            $fetchTransport = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
-                                        ->whereIn('load_group',$this->transportLoadGroups)
-                                        ->where('load_status','Completed')
-                                        ->whereMonth('closed_date',$i)
-                                        ->whereYear('closed_date',Session::get('sales-year'))
-                                        ->first();
+        //Blujay Transport
+        $fetchTransport = LoadPerformance::selectRaw("
+                                        SUM(billable_total_rate) as totalActual,
+                                        DATE_FORMAT(closed_date,'%m') as monthKey
+                                    ")
+                                    ->whereIn('load_group',$this->transportLoadGroups)
+                                    ->where('load_status','Completed')
+                                    ->whereYear('closed_date',Session::get('sales-year'))
+                                    ->groupBy('monthKey')
+                                    ->get();
 
-            if(!is_null($fetchTransport->totalActual)){
-                array_push($data['transport'],$fetchTransport->totalActual/1000000);
-            }else{
-                array_push($data['transport'],0);
-            }
+        foreach($fetchTransport as $monthlyRevenue){
+            $data['transport'][$monthlyRevenue->monthKey-1] = $monthlyRevenue->totalActual;
+        }
 
+        //Blujay Exim
+        $fetchExim = LoadPerformance::selectRaw("
+                                        SUM(billable_total_rate) as totalActual,
+                                        DATE_FORMAT(closed_date,'%m') as monthKey
+                                    ")
+                                    ->whereIn('load_group',$this->eximLoadGroups)
+                                    ->where('load_status','Completed')
+                                    ->whereYear('closed_date',Session::get('sales-year'))
+                                    ->groupBy('monthKey')
+                                    ->get();
 
-            //Blujay Exim
-            $fetchExim = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
-                                        ->whereIn('load_group',$this->eximLoadGroups)
-                                        ->where('load_status','Completed')
-                                        ->whereMonth('closed_date',$i)
-                                        ->whereYear('closed_date',Session::get('sales-year'))
-                                        ->first();
+        foreach($fetchExim as $monthlyRevenue){
+            $data['exim'][$monthlyRevenue->monthKey-1] = $monthlyRevenue->totalActual;
+        }
 
-            if(!is_null($fetchExim->totalActual)){
-                array_push($data['exim'],$fetchExim->totalActual/1000000);
-            }else{
-                array_push($data['exim'],0);
-            }
+        //Blujay Bulk
+        $fetchBulk = LoadPerformance::selectRaw("
+                                        SUM(billable_total_rate) as totalActual,
+                                        DATE_FORMAT(closed_date,'%m') as monthKey
+                                    ")
+                                    ->whereIn('load_group',$this->bulkLoadGroups)
+                                    ->where('load_status','Completed')
+                                    ->whereYear('closed_date',Session::get('sales-year'))
+                                    ->groupBy('monthKey')
+                                    ->get();
 
-            //Blujay Bulk
-            $fetchBulk = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
-                                        ->whereIn('load_group',$this->bulkLoadGroups)
-                                        ->where('load_status','Completed')
-                                        ->whereMonth('closed_date',$i)
-                                        ->whereYear('closed_date',Session::get('sales-year'))
-                                        ->first();
-
-            if(!is_null($fetchBulk->totalActual)){
-                array_push($data['bulk'],$fetchBulk->totalActual/1000000);
-            }else{
-                array_push($data['bulk'],0);
-            }
+        foreach($fetchBulk as $monthlyRevenue){
+            $data['bulk'][$monthlyRevenue->monthKey-1] = $monthlyRevenue->totalActual;
         }
 
         return response()->json($data,200);
@@ -540,64 +549,43 @@ class ViewController extends BaseController
 
         $data['yearly_revenue'] = [];
 
-        //Blujay
-        if($tempBudget->division == "Pack Trans"){
-            for ($i=1; $i <= 12 ; $i++) {
-                $monthlyRevenue = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
-                                        ->where('customer_reference',$tempBudget->customer_sap)
-                                        ->whereIn('load_group',$this->transportLoadGroups)
-                                        ->where('load_status','Completed')
-                                        ->whereMonth('closed_date',date($i))
-                                        ->whereYear('closed_date',Session::get('sales-year'))
-                                        ->groupBy('customer_reference')
-                                        ->first();
-
-                if(!is_null($monthlyRevenue)){
-                    array_push($data['yearly_revenue'],$monthlyRevenue->totalActual);
-                }else{
-                    array_push($data['yearly_revenue'],0);
-                }
-            }
-        }else if($tempBudget->division == "Freight Forwarding BP"){
-            for ($i=1; $i <= 12 ; $i++) {
-                $monthlyRevenue = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
-                                        ->where('customer_reference',$tempBudget->customer_sap)
-                                        ->whereIn('load_group', $this->eximLoadGroups)
-                                        ->where('load_status','Completed')
-                                        ->whereMonth('closed_date',date($i))
-                                        ->whereYear('closed_date',Session::get('sales-year'))
-                                        ->groupBy('customer_reference')
-                                        ->first();
-
-                if(!is_null($monthlyRevenue)){
-                    array_push($data['yearly_revenue'],$monthlyRevenue->totalActual);
-                }else{
-                    array_push($data['yearly_revenue'],0);
-                }
-            }
-        }else if($tempBudget->division == "Bulk Trans"){
-            for ($i=1; $i <= 12 ; $i++) {
-                $monthlyRevenue = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
-                                        ->where('customer_reference',$tempBudget->customer_sap)
-                                        ->whereIn('load_group', $this->bulkLoadGroups)
-                                        ->where('load_status','Completed')
-                                        ->whereMonth('closed_date',date($i))
-                                        ->whereYear('closed_date',Session::get('sales-year'))
-                                        ->groupBy('customer_reference')
-                                        ->first();
-
-                if(!is_null($monthlyRevenue)){
-                    array_push($data['yearly_revenue'],$monthlyRevenue->totalActual);
-                }else{
-                    array_push($data['yearly_revenue'],0);
-                }
-            }
-        }else{
-            for ($i=1; $i <= 12 ; $i++) {
-                array_push($data['yearly_revenue'],0);
-            }
+        //division
+        $divisionGroup = [];
+        switch ($tempBudget->division) {
+            case 'Pack Trans':
+                $divisionGroup = $this->transportLoadGroups;
+                break;
+            case 'Freight Forwarding BP':
+                $divisionGroup = $this->eximLoadGroups;
+                break;
+            case 'Bulk Trans':
+                $divisionGroup = $this->bulkLoadGroups;
+                break;
+            case 'Surabaya':
+                $divisionGroup = $this->surabayaLoadGroups;
+            default:
+                break;
         }
 
+        //Blujay
+        $dbYearlyRevenue = LoadPerformance::selectRaw("
+                                            SUM(billable_total_rate) as totalActual,
+                                            DATE_FORMAT(closed_date,'%m') as monthKey
+                                        ")
+                                        ->where('customer_reference',$tempBudget->customer_sap)
+                                        ->whereIn('load_group',$divisionGroup)
+                                        ->where('load_status','Completed')
+                                        ->whereYear('closed_date',Session::get('sales-year'))
+                                        ->groupBy('monthKey')
+                                        ->get();
+
+        $yearlyRevenue = [0,0,0,0,0,0,0,0,0,0,0,0];
+
+        foreach($dbYearlyRevenue as $monthlyRevenue){
+            $yearlyRevenue[$monthlyRevenue->monthKey-1] = $monthlyRevenue->totalActual;
+        }
+        
+        $data['yearly_revenue'] = $yearlyRevenue;
         return response()->json($data, 200);
     }
 
@@ -1386,6 +1374,17 @@ class ViewController extends BaseController
         return response()->json(['message' => "success"], 200);
     }
 
+    function dismount($object) {
+        $reflectionClass = new ReflectionClass(get_class($object));
+        $array = array();
+        foreach ($reflectionClass->getProperties() as $property) {
+            $property->setAccessible(true);
+            $array[$property->getName()] = $property->getValue($object);
+            $property->setAccessible(false);
+        }
+        return $array;
+    }
+
     public function getAllDivisionPie(){
         $data['transport'] = [0,0];
         $data['exim'] = [0,0];
@@ -1398,20 +1397,21 @@ class ViewController extends BaseController
                                         ->whereMonth('period',Session::get('sales-month'))
                                         ->whereYear('period',Session::get('sales-year'))
                                         ->get();
-
+        $data['transportCust'] = $this->dismount($customerTransport);
         foreach ($customerTransport as $c) {
             $budgetTransport += $c->budget;
-            $fetchTransport = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
-                                    ->where('customer_reference',$c->customer_sap)
+        }
+
+        $fetchTransport = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
+                                    ->whereIn('customer_reference',array_column($data['transportCust']['items'], 'customer_sap'))
                                     ->whereIn('load_group',$this->transportLoadGroups)
                                     ->where('load_status','Completed')
                                     ->whereMonth('closed_date',Session::get('sales-month'))
                                     ->whereYear('closed_date',Session::get('sales-year'))
                                     ->first();
 
-            if(!is_null($fetchTransport)){
-                $revenueTransport += intval($fetchTransport->totalActual);
-            }
+        if(!is_null($fetchTransport)){
+            $revenueTransport += intval($fetchTransport->totalActual);
         }
 
         $budgetTransport -= $revenueTransport;
@@ -1424,20 +1424,22 @@ class ViewController extends BaseController
                                         ->whereMonth('period',Session::get('sales-month'))
                                         ->whereYear('period',Session::get('sales-year'))
                                         ->get();
+        $data['eximCust'] = $this->dismount($customerExim);
 
         foreach ($customerExim as $c) {
             $budgetExim += $c->budget;
-            $fetchExim = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
-                                    ->where('customer_reference',$c->customer_sap)
+        }
+
+        $fetchExim = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
+                                    ->whereIn('customer_reference',array_column($data['eximCust']['items'], 'customer_sap'))
                                     ->whereIn('load_group',$this->eximLoadGroups)
                                     ->where('load_status','Completed')
                                     ->whereMonth('closed_date',Session::get('sales-month'))
                                     ->whereYear('closed_date',Session::get('sales-year'))
                                     ->first();
 
-            if(!is_null($fetchExim)){
-                $revenueExim += intval($fetchExim->totalActual);
-            }
+        if(!is_null($fetchExim)){
+            $revenueExim += intval($fetchExim->totalActual);
         }
 
         $budgetExim -= $revenueExim;
@@ -1450,20 +1452,22 @@ class ViewController extends BaseController
                                         ->whereMonth('period',Session::get('sales-month'))
                                         ->whereYear('period',Session::get('sales-year'))
                                         ->get();
+        $data['bulkCust'] = $this->dismount($customerBulk);
 
         foreach ($customerBulk as $c) {
             $budgetBulk += $c->budget;
-            $fetchBulk = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
-                                    ->where('customer_reference',$c->customer_sap)
+        }
+
+        $fetchBulk = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
+                                    ->whereIn('customer_reference',array_column($data['bulkCust']['items'], 'customer_sap'))
                                     ->whereIn('load_group',$this->bulkLoadGroups)
                                     ->where('load_status','Completed')
                                     ->whereMonth('closed_date',Session::get('sales-month'))
                                     ->whereYear('closed_date',Session::get('sales-year'))
                                     ->first();
 
-            if(!is_null($fetchBulk)){
-                $revenueBulk += intval($fetchBulk->totalActual);
-            }
+        if(!is_null($fetchBulk)){
+            $revenueBulk += intval($fetchBulk->totalActual);
         }
 
         $budgetBulk -= $revenueBulk;
@@ -1675,7 +1679,7 @@ class ViewController extends BaseController
             }
         }
 
-        $data['budgets'] = collect($data['budgets'])->sortBy('division')->sortBy('achievement_1m_raw')->reverse();
+        $data['budgets'] = collect($data['budgets'])->sortBy('division')->sortBy('achievement_ytd_raw')->reverse();
 
         $data['period'] = Carbon::create()->month(Session::get('sales-month'))->format('F')." ".Session::get('sales-year');
         $data['period_year'] = Session::get('sales-year');

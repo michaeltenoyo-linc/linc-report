@@ -202,8 +202,13 @@
 							<td>
 								<div class="row">
 									<div class="col">
+										<canvas id='graph-{{ $p->vehicle_number }}' value={{ $p->vehicle_number }} class='table-container-graph' height='75px'><input type='hidden' name='budgetId' value={{ $p->vehicle_number }}></canvas>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col">
 										<div class="row justify-content-center my-4">
-											<button type="button" class="btn btn-outline-info btn-sm btn-truck-customers" data-toggle="modal" data-target="#modal-truck-customers" value="{{ $p->vehicle_number }}${{ $p->unit_type }}">Customer<br>Detail</button>
+											<button type="button" class="btn btn-outline-info btn-sm btn-truck-customers" data-toggle="modal" data-target="#modal-truck-customers" value="{{ $p->vehicle_number }}${{ $p->unit_type }}">Customer Detail</button>
 										</div>
 									</div>
 								</div>
@@ -238,7 +243,7 @@
 	);
 	
 	window.onload = async function(e){
-		/*
+		//Table Chart Trends
 		@php
 			$indexLoader = 0;
 		@endphp
@@ -247,15 +252,53 @@
 				$indexLoader++;
 			@endphp
 			var elementId = "{{ $p->vehicle_number }}";
-			var ctx = $('#'+elementId);
+			// Find the chart intended for this data
+			var ctx = $("#graph-"+elementId);
 			console.log(ctx);
-			
+			$('#loader-index').html('{{ $indexLoader }}')
 			try {
-				//Draw chart
-				const customerData = await $.get('/sales/truck/get-monthly-customers/'+elementId);
+				const checkChart = new Chart(ctx, {
+					type: 'bar',
+					data: {
+						labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+						datasets: [{
+							label: '# of Votes',
+							data: [12, 19, 3, 5, 2, 3],
+							backgroundColor: [
+								'rgba(255, 99, 132, 0.2)',
+								'rgba(54, 162, 235, 0.2)',
+								'rgba(255, 206, 86, 0.2)',
+								'rgba(75, 192, 192, 0.2)',
+								'rgba(153, 102, 255, 0.2)',
+								'rgba(255, 159, 64, 0.2)'
+							],
+							borderColor: [
+								'rgba(255, 99, 132, 1)',
+								'rgba(54, 162, 235, 1)',
+								'rgba(255, 206, 86, 1)',
+								'rgba(75, 192, 192, 1)',
+								'rgba(153, 102, 255, 1)',
+								'rgba(255, 159, 64, 1)'
+							],
+							borderWidth: 1
+						}]
+					},
+					options: {
+						scales: {
+							y: {
+								beginAtZero: true
+							}
+						}
+					}
+				});
 
-				const labels = customerData['customers'];
-				
+				checkChart.destroy();
+
+				//Draw chart
+				const labels = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+				const blujayData = await $.get('/sales/truck/get-yearly-achievement/'+elementId+'/{{ $division }}');
+
 				const data = {
 					labels: labels,
 					datasets: [
@@ -313,14 +356,8 @@
 			} catch (error) {
 				console.log(error);
 			}
-
-
-
-
 		@endforeach
-		*/
 	}
-	
 </script>
 <script>
 	function backToTopModal() {
