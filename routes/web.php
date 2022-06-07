@@ -81,7 +81,9 @@ Route::middleware(['auth','priviledge:smart,master'])->group(function () {
         Route::prefix('/data')->group(function () {
             //Item
             Route::get('/get-items',[SmartViewController::class, 'getItems']);
+            Route::get('/get-items-json',[SmartViewController::class, 'getItemsJson']);
             Route::post('/get-items-fromid',[SmartViewController::class, 'getItemsFromid']);
+            Route::get('/get-items-fromid/{code}',[SmartViewController::class, 'getItemsFromidGET']);
             Route::post('/get-items-fromname',[SmartViewController::class, 'getItemsFromName']);
             Route::get('/autocomplete-items',[SmartViewController::class,'search_getItems']);
             //Trucks

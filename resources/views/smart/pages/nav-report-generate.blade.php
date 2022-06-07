@@ -29,6 +29,7 @@ Linc | Generate Report
                         <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                             htmlFor="name"> Jenis Report </label>
                         <select class="input-report-type w-full border bg-white rounded px-3 py-2 outline-none" name="reportType">
+                            <option class="py-1" value="smart_3">Smart Performance 06/2022</option>
                             <option class="py-1" value="smart_1">Smart Customer 1</option>
                             <option class="py-1" value="smart_2">Smart Customer 2</option>
                         </select>

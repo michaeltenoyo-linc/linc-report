@@ -123,6 +123,17 @@ class ViewController extends BaseController
 
     }
 
+    public function getItemsJson(Request $req){
+        $data = Item::get();
+        return $data;
+    }
+
+    public function getSingleItems(Request $req, $code){
+        $data = Item::where('material_code',$code)->first();
+
+        return $data;
+    }
+
     public function getTrucks(){
         $data = Trucks::get();
 
@@ -147,6 +158,18 @@ class ViewController extends BaseController
         $filterResult = Item::select('description')->where('description','LIKE','%'.$query.'%')->pluck('description');
 
         return response()->json($filterResult);
+    }
+
+    public function getItemsFromidGET(Request $req, $code){
+        $data['item'] = Item::where('material_code','=',$code)->first();
+
+        if(!is_null($data['item'])){
+            $data['message'] = "data ditemukan.";
+            return response()->json($data,200);
+        }else{
+            $data['message'] = "data tidak ditemukan.";
+            return response()->json($data,404);
+        }
     }
 
     public function getItemsFromid(Request $req){

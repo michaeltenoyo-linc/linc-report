@@ -68,9 +68,50 @@ export const trucking = async () => {
         window.location.href = '/sales/truck/performance-customer/'+ownership+'/'+division+'/'+nopol;
       }
     })
+
+    $('#form-trucking-utility .export-pdf-generate').on('click', (e) => {
+      
+      e.preventDefault();
+      console.log("Generating...");
+      let ownership = $('#form-trucking-utility .input-ownership').val();
+
+      window.location.href = '/sales/truck/utility-generate/'+ownership;
+    })
+  }
+
+  const onChangePreview = () => {
+    $('#form-trucking-performance .input-tree').on('change', (e) => {
+      e.preventDefault();
+      const type = $('#form-trucking-performance .input-tree').val();
+      console.log(type);
+
+      if(type == "nopol_to_customer"){
+        $('.preview-truck').removeClass('hidden');
+        $('.preview-customer').addClass('hidden');
+      }else if(type == "customer_to_nopol"){
+        $('.preview-truck').addClass('hidden');
+        $('.preview-customer').removeClass('hidden');
+      }
+    });
+    
+  }
+
+  const getLeadTimeDatatable = async () => {
+    var table = $('#yajra-datatable-lead-time').DataTable({
+      processing: true,
+      serverSide: false,
+      ajax: "/sales/truck/get-lead-time",
+      columns: [
+        {data: 'rg', name: 'rd'},
+        {data: 'cluster', name: 'cluster'},
+        {data: 'ltpod', name: 'ltpod'},
+      ],
+    })
   }
 
   onChangeNopolFilter();
   generateReport();
   getNopolList();
+  onChangePreview();
+  getLeadTimeDatatable();
 }

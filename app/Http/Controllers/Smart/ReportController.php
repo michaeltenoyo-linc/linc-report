@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Smart;
 
 use App\Exports\Smart_Report1;
 use App\Exports\Smart_Report2;
+use App\Exports\Smart_Report3;
 use App\Models\Addcost;
 use App\Models\Company;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -436,6 +437,185 @@ class ReportController extends BaseController
             Session::put('reportType',$req->input('reportType'));
 
             return view('smart.pages.report-preview-smart-1');
+        }else if($req->input('reportType') == "smart_3"){
+
+            foreach ($listLoadId as $wantedLoad) {
+                $row = LoadPerformance::where('tms_id',$wantedLoad)->first();
+                if($row != ""){
+                    $listSJ = Suratjalan::where('load_id','=',$row->tms_id)->get();
+                    $loadExist = False;
+                    foreach ($reports as $r) {
+                        if($r['Load ID'] == $row->tms_id){
+                            $loadExist = True;
+                        }
+                    }
+
+                    //Addcost
+                    $totalBongkar = 0;
+                    $totalMultidrop = 0;
+                    $totalOvernight = 0;
+
+                    $listBongkar = Addcost::where('type','TMB_BONGKAR')->where('load_id',$row->tms_id)->get();
+                    $listMultidrop = Addcost::where('type','TMB_MULTIDROP')->where('load_id',$row->tms_id)->get();
+                    $listOvernight = Addcost::where('type','TMB_BIAYA INAP (OVERNIGHT CHARGE)')->where('load_id',$row->tms_id)->get();
+
+                    if(count($listBongkar) > 0){
+                        foreach ($listBongkar as $bongkar) {
+                            $totalBongkar += $bongkar->rate;
+                        }                    
+                    }
+
+                    if(count($listMultidrop) > 0){
+                        foreach ($listMultidrop as $multidrop) {
+                            $totalMultidrop += $multidrop->rate;
+                        }                    
+                    }
+
+                    if(count($listOvernight) > 0){
+                        foreach ($listOvernight as $overnight) {
+                            $totalOvernight += $overnight->rate;
+                        }                    
+                    }
+
+                    //LISTING SURAT JALAN
+                    if(count($listSJ) > 0 && !$loadExist){
+                        //Check multidrop
+                        $isMultidrop = false;
+                        $listPenerima = [];
+                        foreach ($listSJ as $sj) {
+                            array_push($listPenerima, $sj->penerima);
+                        }
+                        $uniqueCount = count(array_count_values($listPenerima));
+                        $uniqueCount>1?$isMultidrop=true:$isMultidrop=false;
+                        if(!$isMultidrop){
+                            $totalMultidrop = 0;
+                        }
+
+                        foreach ($listSJ as $sj) {
+                            $firstline = true;
+                            $isWanted = false;
+
+                            foreach ($listLoadId as $load) {
+                                if($sj->load_id == $load){
+                                    $isWanted = true;
+                                }
+                            }
+                            
+                            if($req->input('customerType') == "all"){
+                                $truck = Trucks::where('nopol','=',$sj->nopol)->first();
+                                //$totalHarga = intval($row->billable_total_rate) + $totalOvernight + $totalBongkar + $totalMultidrop;
+                                $splitID = explode('$',$sj->id_so);
+
+                                $dload = Dload::where('id_so','=',$sj->id_so)->get();
+
+                                foreach ($dload as $item) {
+                                    $itemDetail = Item::where('material_code','=',$item->material_code)->first();
+                                    $locationDetail = Company::where('reference',$row->last_drop_location_name)->first();
+
+                                    if($firstline){
+                                        $reports->push([
+                                            'No' => $ctr,
+                                            'Load ID' => $row->tms_id,
+                                            'TANGGAL MUAT' => Carbon::parse($sj->tgl_terima)->format('d-M-Y'),
+                                            'No DO' => $splitID[0],
+                                            'No SJ' => (isset($splitID[1])?$splitID[1]:"-"),
+                                            'CUSTOMER' => $sj->penerima,
+                                            'ID STOP LOCATION' => $row->last_drop_location_name,
+                                            'PROVINSI TUJUAN' => strtoupper(is_null($locationDetail)?"Undefined":$locationDetail->province),
+                                            'KOTA TUJUAN' => strtoupper(is_null($locationDetail)?"Undefined":$locationDetail->city),
+                                            'SKU' => $item->material_code,
+                                            'DESCRIPTION' => $itemDetail->description,
+                                            'QTY' => $item->qty,
+                                            'NOPOL' => $sj->nopol,
+                                            'TIPE KENDARAAN' => str_replace('_',' ',$row->equipment_description),
+                                            'BIAYA TRUKING' => intval($row->billable_total_rate) - $totalOvernight - $totalBongkar - $totalMultidrop,
+                                            'BIAYA BONGKAR' => $totalBongkar,
+                                            'BIAYA MULTIDROP' => $totalMultidrop,
+                                            'BIAYA STAPEL/INAP' => $totalOvernight,
+                                            'BIAYA LAIN-LAIN' => 0,
+                                            'TOTAL' => intval($row->billable_total_rate),
+                                        ]);
+
+                                        $firstline = false;
+                                    }else{
+                                        $reports->push([
+                                            'No' => "",
+                                            'Load ID' => "",
+                                            'TANGGAL MUAT' => "",
+                                            'No DO' => "",
+                                            'No SJ' => "",
+                                            'CUSTOMER' => "",
+                                            'ID STOP LOCATION' => "",
+                                            'PROVINSI TUJUAN' => "",
+                                            'KOTA TUJUAN' => "",
+                                            'SKU' => $item->material_code,
+                                            'DESCRIPTION' => $itemDetail->description,
+                                            'QTY' => $item->qty,
+                                            'NOPOL' => "",
+                                            'TIPE KENDARAAN' => "",
+                                            'BIAYA TRUKING' => "",
+                                            'BIAYA BONGKAR' => "",
+                                            'BIAYA MULTIDROP' => "",
+                                            'BIAYA STAPEL/INAP' => "",
+                                            'BIAYA LAIN-LAIN' => "",
+                                            'TOTAL' => "",
+                                        ]);
+                                    }
+                                }
+
+                                $ctr++;
+                            }
+                        }
+                        $reports->push([
+                            'No' => "",
+                            'Load ID' => "",
+                            'TANGGAL MUAT' => "",
+                            'No DO' => "",
+                            'No SJ' => "",
+                            'CUSTOMER' => "",
+                            'ID STOP LOCATION' => "",
+                            'PROVINSI TUJUAN' => "",
+                            'KOTA TUJUAN' => "",
+                            'SKU' => "",
+                            'DESCRIPTION' => "",
+                            'QTY' => "",
+                            'NOPOL' => "",
+                            'TIPE KENDARAAN' => "",
+                            'BIAYA TRUKING' => "",
+                            'BIAYA BONGKAR' => "",
+                            'BIAYA MULTIDROP' => "",
+                            'BIAYA STAPEL/INAP' => "",
+                            'BIAYA LAIN-LAIN' => "",
+                            'TOTAL' => "",
+                        ]);
+                    }else if(count($listSJ) == 0){
+                        $custId = substr($row->first_pick_location_name,0,3);
+
+                        if($custId == "SMR"){
+                            $warning->push([
+                                'Load ID' => $row->tms_id,
+                                'Customer Pick Location' => $row->first_pick_location_name,
+                                'Suggestion' => (isset($row->shipment_reference)?$row->shipment_reference:"None"),
+
+                            ]);
+                        }
+                    }
+                }else{
+                    $warning->push([
+                        'Load ID' => $wantedLoad,
+                        'Customer Pick Location' => "",
+                        'Suggestion' => "Load ID Not Found in database",
+                    ]);
+                }
+            }
+
+            Session::put('warningReport',$warning);
+            Session::put('resultReport',$reports);
+            Session::put('totalReport',$ctr-1);
+            Session::put('reportType',$req->input('reportType'));
+
+            return view('smart.pages.report-preview-smart-3');
+
         }
         /*
         else if($req->input('reportType') == "smart_2"){
@@ -682,6 +862,8 @@ class ReportController extends BaseController
             return Excel::download(new Smart_Report1, 'smart.xlsx');
         }else if(Session::get('reportType') == "smart_2"){
             return Excel::download(new Smart_Report2, 'smart.xlsx');
+        }else if(Session::get('reportType') == "smart_3"){
+            return Excel::download(new Smart_Report3, 'smart.xlsx');
         }
     }
 }

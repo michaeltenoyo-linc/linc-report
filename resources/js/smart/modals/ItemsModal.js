@@ -3,14 +3,88 @@ import { disableElement } from '../../utilities/helpers';
 import Snackbar from 'node-snackbar';
 
 export const ItemsModal = () => {
-    $('#form-so-new .open-item-modal').on('click', function(e){
+    //On Modal Open
+    $('#form-so-new .open-item-modal').on('click', async function(e){
         e.preventDefault();
 
         console.log("Open Modal");
 
+        //refresh datalist
+        const itemList = await $.get('/smart/data/get-items-json');
+        console.log(itemList);
+
+        $('#items').empty();
+        itemList.forEach(row => {
+            console.log(row);
+
+            $('#items').append('<option value="'+row['material_code']+'">'+row['description']+'</option>');
+        });
+
         $('#sj-items-modal .modal').removeClass('hidden');
     });
 
+    //Refresh Button
+    $('#sj-items-modal .refresh-item-database').on('click', async function(e){
+        e.preventDefault();
+        //refresh datalist
+        const itemList = await $.get('/smart/data/get-items-json');
+        console.log(itemList);
+
+        $('#items').empty();
+        itemList.forEach(row => {
+            console.log(row);
+
+            $('#items').append('<option value="'+row['material_code']+'">'+row['description']+'</option>');
+        });
+
+        //Empty Input
+        $('#sj-items-modal .input-item-code').val("");
+        $('#sj-items-modal .input-item-name').val("");
+        $('#sj-items-modal .input-item-gross').val(0);
+        $('#sj-items-modal .input-item-net').val(0);
+    });
+
+    //On Modal Check Material Code
+    $('#sj-items-modal .check-material-code').on('click', async function(e){
+        e.preventDefault();
+        let code = $('#sj-items-modal .input-item-code').val();
+        console.log('Check Material '+code);
+
+        //Check ID
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            processData: false,
+            contentType: false,
+            dataType: 'JSON',
+        });
+        $.ajax({
+            url: '/smart/data/get-items-fromid/'+code,
+            type: 'GET',
+            success: (data) => {
+                let currItem = data['item'];
+                
+                $('#sj-items-modal .input-item-name').val(currItem['description']);
+                $('#sj-items-modal .input-item-gross').val(currItem['gross_weight']);
+                $('#sj-items-modal .input-item-net').val(currItem['net_weight']);
+            },
+            error: function(request, status, error){
+                $('#sj-items-modal .input-item-name').val("Not Found");
+                $('#sj-items-modal .input-item-gross').val(0);
+                $('#sj-items-modal .input-item-net').val(0);
+
+                Snackbar.show({
+                    text: (JSON.parse(request.responseText)).message,
+                    actionText: 'Tutup',
+                    duration: 3000,
+                    pos: 'bottom-center',
+                });
+            }
+        });
+    })
+
+    //Add Item
     $('#form-so-add-item').on('submit', function(e){
         e.preventDefault();
 
@@ -27,7 +101,7 @@ export const ItemsModal = () => {
             dataType: 'JSON',
         });
         $.ajax({
-            url: '/smart/data/get-items-fromname',
+            url: '/smart/data/get-items-fromid',
             type: 'POST',
             data: new FormData($(this)[0]),
             success: (data) => {
