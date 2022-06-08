@@ -210,12 +210,12 @@ class TruckController extends BaseController
             
 
             if($row->net > 0){
-                $row->margin_percentage = floatval($row->net)/floatval($row->totalRevenue) * $this->billableThreshold;
+                $row->margin_percentage = floatval($row->net)/floatval($row->totalRevenue) * 100;
                 $row->margin_percentage = round(floatval($row->margin_percentage), 2);
                 $row->mYay = $row->margin_percentage;
                 $row->mNay = 0;
             }else if($row->net < 0){
-                $row->margin_percentage = floatval($row->net)/floatval($row->totalRevenue) * $this->billableThreshold;
+                $row->margin_percentage = floatval($row->net)/floatval($row->totalRevenue) * 100;
                 $row->margin_percentage = round(floatval($row->margin_percentage), 2);
                 $row->mYay = 0;
                 $row->mNay = $row->margin_percentage*-1;
@@ -321,12 +321,12 @@ class TruckController extends BaseController
             
 
             if($row->net > 0){
-                $row->margin_percentage = floatval($row->net)/floatval($row->totalRevenue) * $this->billableThreshold;
+                $row->margin_percentage = floatval($row->net)/floatval($row->totalRevenue) * 100;
                 $row->margin_percentage = round(floatval($row->margin_percentage), 2);
                 $row->mYay = $row->margin_percentage;
                 $row->mNay = 0;
             }else if($row->net < 0){
-                $row->margin_percentage = floatval($row->net)/floatval($row->totalRevenue) * $this->billableThreshold;
+                $row->margin_percentage = floatval($row->net)/floatval($row->totalRevenue) * 100;
                 $row->margin_percentage = round(floatval($row->margin_percentage), 2);
                 $row->mYay = 0;
                 $row->mNay = $row->margin_percentage*-1;
@@ -616,16 +616,22 @@ class TruckController extends BaseController
         }
 
         //Fill Truck Activity
-        foreach ($truck as $row) {
-            $row->activity = $defaultActivity;
+        $overallIdlePercentage = 0;
+        $overallOnCallPercentage = 0;
+        $overallIdle = 0;
+        $overallOnCall = 0;
 
-            $loadList = LoadPerformance::select('created_date','first_pick_location_city','last_drop_location_city')
+        foreach ($truck as $row) {
+            $activity = $defaultActivity;
+
+            $loadList = LoadPerformance::select('tms_id','created_date','first_pick_location_city','last_drop_location_city')
                                         ->where('vehicle_number',$row->nopol)
                                         ->whereMonth('created_date',$month)
                                         ->whereYear('created_date',$year)
                                         ->orderBy('created_date','asc')
                                         ->get();
             foreach ($loadList as $load) {
+                //Lead Time
                 $leadTime = lead_time::select('ltpod')
                                     ->where('rg_origin','LIKE','%'.$load->first_pick_location_city.'%')
                                     ->where('rg_destination','LIKE','%'.$load->last_drop_location_city.'%')
@@ -636,10 +642,48 @@ class TruckController extends BaseController
                 }else{
                     $load->lead_time = $leadTime->ltpod;
                 }
-                
+
+                //Add To Activity Array
+                $dateNumber = Carbon::parse($load->created_date)->format('d');
+                for ($i=$dateNumber-1; $i < $dateNumber+$load->lead_time-1; $i++) { 
+                    if($i < count($activity)){
+                        $activity[$i] = "On Call - ".$load->tms_id;
+                    }
+                }
             }
+
+            //Activity Overview
+            $countIdle = 0;
+            $countOnCall = 0;
+            foreach ($activity as $act) {
+                if($act == "idle"){
+                    $countIdle++;
+                }else{
+                    $countOnCall++;
+                }
+            }
+
+            $row->count_idle = $countIdle;
+            $row->count_on_call = $countOnCall;    
+            $row->idle_percentage = floatval($row->count_idle)/floatval($totalDays) * 100;
+            $row->idle_percentage = round(floatval($row->idle_percentage), 2);
+            $row->on_call_percentage = floatval($row->count_on_call)/floatval($totalDays) * 100;
+            $row->on_call_percentage = round(floatval($row->on_call_percentage), 2);   
+            $row->activity = $activity;
             $row->loads = $loadList;
+
+            //Overall Add
+            $overallIdle += $row->count_idle;
+            $overallIdlePercentage += $row->idle_percentage;
+            $overallOnCall += $row->count_on_call;
+            $overallOnCallPercentage += $row->on_call_percentage;
         }
+
+        //Overview Overall
+        $data['avg_idle'] = round($overallIdle/count($truck), 2);
+        $data['avg_idle_percentage'] = round($overallIdlePercentage/count($truck), 2);
+        $data['avg_on_call'] = round($overallOnCall/count($truck), 2);
+        $data['avg_on_call_percentage'] = round($overallOnCallPercentage/count($truck), 2);
 
         //Data Finalization
         $data['year'] = $year;
@@ -647,6 +691,13 @@ class TruckController extends BaseController
         $data['ownership'] = $ownership;
         $data['unit'] = $truck;
 
-        return $data;
+        //Period Data
+        $data['period'] = Carbon::create()->month(Session::get('sales-month'))->format('F')." ".Session::get('sales-year');
+        $data['period_year'] = Session::get('sales-year');
+        $data['today_date'] = Carbon::now()->format('d');
+        $data['today_full_date'] = Carbon::now()->format('d M Y');
+
+        return view('sales.pages.pdf.pdf-trucking-utility', $data);
+        //return $data;
     }
 }
