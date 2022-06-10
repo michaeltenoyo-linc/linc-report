@@ -355,6 +355,7 @@ Route::middleware(['auth','priviledge:sales,master'])->group(function () {
             Route::get('get-monthly-units/{nopol}/{division}',[SalesTruckController::class, 'getUnitData']);
             Route::get('/get-yearly-achievement/{id}/{division}',[SalesTruckController::class, 'getYearlyAchievement']);
             Route::get('/get-lead-time',[SalesTruckController::class, 'getLeadTime']);
+            Route::get('/get-trucking-calendar/{nopol}',[SalesTruckController::class, 'getTruckCalendar']);
         });
 
         //LOAD ID DETAIL INVOICE

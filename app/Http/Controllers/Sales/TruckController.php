@@ -700,4 +700,58 @@ class TruckController extends BaseController
         return view('sales.pages.pdf.pdf-trucking-utility', $data);
         //return $data;
     }
+
+    public function getTruckCalendar(Request $req, $nopol){
+        $month = Session::get('sales-month');
+        $year = Session::get('sales-year');
+        $totalDays = cal_days_in_month(CAL_GREGORIAN,$month,$year);
+        $defaultActivity = array_fill(0,$totalDays,"idle");
+
+        //Truck
+        $truck = unit_surabaya::find($nopol);
+
+        //Fill Truck Activity
+        $activity = $defaultActivity;
+        $loadList = LoadPerformance::select('tms_id','created_date','first_pick_location_city','last_drop_location_city')
+                                    ->where('vehicle_number',$truck->nopol)
+                                    ->whereMonth('created_date',$month)
+                                    ->whereYear('created_date',$year)
+                                    ->orderBy('created_date','asc')
+                                    ->get();
+
+        foreach ($loadList as $load) {
+            //Lead Time
+            $leadTime = lead_time::select('ltpod')
+                                ->where('rg_origin','LIKE','%'.$load->first_pick_location_city.'%')
+                                ->where('rg_destination','LIKE','%'.$load->last_drop_location_city.'%')
+                                ->orderBy('ltpod','asc')
+                                ->first();
+            if($leadTime == null){
+                $load->lead_time = 1;
+            }else{
+                $load->lead_time = $leadTime->ltpod;
+            }
+
+            //Add To Activity Array
+            $dateNumber = Carbon::parse($load->created_date)->format('d');
+            for ($i=$dateNumber-1; $i < $dateNumber+$load->lead_time-1; $i++) { 
+                if($i < count($activity)){
+                    $activity[$i] = $load->tms_id;
+                }
+            }
+        }
+        $truck->activity = $activity;
+        $truck->loads = $loadList;
+
+        //Data Finalization
+        $data['year'] = $year;
+        $data['month'] = $month;
+        $data['unit'] = $truck;
+
+        //Period Data
+        $data['period'] = Carbon::create()->month(Session::get('sales-month'))->format('F')." ".Session::get('sales-year');
+        $data['period_year'] = Session::get('sales-year');
+
+        return response()->json($data, 200);
+    }
 }

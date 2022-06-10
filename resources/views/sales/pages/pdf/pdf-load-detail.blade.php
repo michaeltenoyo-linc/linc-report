@@ -89,6 +89,8 @@
 					<br>
 					<b>Routes :</b> {{ $performance->first_pick_location_city }} - {{ $performance->last_drop_location_city }}
 					<br>
+					<b>LT POD :</b> Estimated {{ $performance->lead_time }} days
+					<br>
 					<b>Weight :</b> {{ $performance->weight_kg }}Kg. / {{ $performance->weight_lb }}Lb.
 				</div>
 				<div class="col">

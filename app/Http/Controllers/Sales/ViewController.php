@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 //Model
 use App\Models\Item;
+use App\Models\lead_time;
 use App\Models\LoadPerformance;
 use App\Models\SalesBudget;
 use App\Models\ShipmentBlujay;
@@ -44,7 +45,7 @@ class ViewController extends BaseController
         $data['load_id'] = $load_id;
 
         $data['performance'] = LoadPerformance::where('tms_id', $load_id)->first();
-        $data['shipment'] = LoadPerformance::where('tms_id', $load_id)->get();
+        $data['shipment'] = ShipmentBlujay::where('load_id', $load_id)->get();
 
         $data['performance']->net = $data['performance']->billable_total_rate - $data['performance']->payable_total_rate;
 
@@ -57,6 +58,18 @@ class ViewController extends BaseController
             $data['performance']->margin_percentage = round(floatval($data['performance']->margin_percentage), 2);
         }else{
             $data['performance']->margin_percentage = 0;
+        }
+
+        //Lead Time
+        $leadTime = lead_time::select('ltpod')
+                                    ->where('rg_origin','LIKE','%'.$data['performance']->first_pick_location_city.'%')
+                                    ->where('rg_destination','LIKE','%'.$data['performance']->last_drop_location_city.'%')
+                                    ->orderBy('ltpod','asc')
+                                    ->first();
+        if($leadTime == null){
+            $data['performance']->lead_time = 1;
+        }else{
+            $data['performance']->lead_time = $leadTime->ltpod;
         }
 
         return view('sales.pages.pdf.pdf-load-detail',$data);

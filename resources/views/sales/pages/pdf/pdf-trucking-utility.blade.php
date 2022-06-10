@@ -318,8 +318,54 @@
 		let unitType = btnData[1];
 		console.log("Open Modal :"+nopol);
 
-		//Data Init
+		//Data Init and Reset
 		$('#modal-nopol').html(nopol);
 		$('#modal-unit-type').html(unitType);
+		$('#modal-truck-activity .calendar-list').empty();
+		$('#modal-truck-activity .calendar-activity-message').html("<< Choose a date >>");
+		$('#modal-truck-activity .calendar-activity-dd').html("DD");
+		$('#modal-truck-activity .calendar-activity-mm').html("MM");
+		$('#modal-truck-activity .calendar-activity-yyyy').html("YYYY");
+		$('#modal-truck-activity .calendar-activity-day').html("DAYNAME");
+		$('#modal-truck-activity .calendar-activity-detail').html("DETAIL ACTIVITY");
+
+
+		//Calendar Listing
+		const fetchCalendar = await $.get('/sales/truck/get-trucking-calendar/'+nopol);
+		
+		let date = 1;
+		fetchCalendar['unit']['activity'].forEach(row => {
+			let color = "btn-success";
+			if(row == "idle"){
+				color = "btn-danger";
+			}
+
+			let divDateActivity = "<div class='col-1'>"
+				+"<div class='row'>"
+				+"<div class='col btn "+color+" m-1 show-date-detail' type='button' id='"+date+"-"+fetchCalendar['month']+"-"+fetchCalendar['year']+"-"+row+"'>"
+				+date		
+				+"</div>"					
+				+"</div>"
+				+"</div>";
+				
+			$('#modal-truck-activity .calendar-list').append(divDateActivity);
+			date++;
+		});
+	});
+
+	$(document).on('click', '.show-date-detail', async function(e){
+		let selected = $(this).attr('id').split('-');
+		
+		$('#modal-truck-activity .calendar-activity-dd').html(selected[0]);
+		$('#modal-truck-activity .calendar-activity-mm').html(selected[1]);
+		$('#modal-truck-activity .calendar-activity-yyyy').html(selected[2]);
+
+		//Activity Detailing
+		if(selected[3] == 'idle'){
+			$('#modal-truck-activity .calendar-activity-detail').html("Idle or Delay");
+		}else{
+			$('#modal-truck-activity .calendar-activity-detail').html("<a href='{{ url('/sales/load-detail') }}/"+selected[3]+"' target='_blank'><button type='button' class='btn btn-info'>"+selected[3]+"</button></a>");
+		}
+		
 	});
 </script>
