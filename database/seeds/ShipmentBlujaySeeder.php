@@ -49,7 +49,6 @@ class ShipmentBlujaySeeder extends Seeder
             $counter++;
             if (!$firstline){
                 $exist = ShipmentBlujay::find($data['5']);
-                $loadExist = ShipmentBlujay::where('load_id',$data['2'])->first();
 
                 if(!is_null($exist)){
                     $exist->forceDelete();

@@ -332,18 +332,23 @@
 
 		//Calendar Listing
 		const fetchCalendar = await $.get('/sales/truck/get-trucking-calendar/'+nopol);
-		
 		let date = 1;
 		fetchCalendar['unit']['activity'].forEach(row => {
+			let dayName = fetchCalendar['unit']['dayName'][date-1];
 			let color = "btn-success";
 			if(row == "idle"){
 				color = "btn-danger";
 			}
 
-			let divDateActivity = "<div class='col-1'>"
+			let divDateActivity = "<div class='col-2'>"
 				+"<div class='row'>"
-				+"<div class='col btn "+color+" m-1 show-date-detail' type='button' id='"+date+"-"+fetchCalendar['month']+"-"+fetchCalendar['year']+"-"+row+"'>"
-				+date		
+				+"<div class='col btn "+color+" m-1 show-date-detail' type='button' id='"+date+"-"+fetchCalendar['month']+"-"+fetchCalendar['year']+"-"+dayName+"-"+row+"'>"
+				+"<div class='row'><div class='col'>"
+				+date	
+				+"</div></div>"
+				+"<div class='row' style='font-size:10pt;'><div class='col'>"
+				+dayName	
+				+"</div></div>"
 				+"</div>"					
 				+"</div>"
 				+"</div>";
@@ -359,12 +364,13 @@
 		$('#modal-truck-activity .calendar-activity-dd').html(selected[0]);
 		$('#modal-truck-activity .calendar-activity-mm').html(selected[1]);
 		$('#modal-truck-activity .calendar-activity-yyyy').html(selected[2]);
+		$('#modal-truck-activity .calendar-activity-day').html(selected[3]);
 
 		//Activity Detailing
-		if(selected[3] == 'idle'){
+		if(selected[4] == 'idle'){
 			$('#modal-truck-activity .calendar-activity-detail').html("Idle or Delay");
 		}else{
-			$('#modal-truck-activity .calendar-activity-detail').html("<a href='{{ url('/sales/load-detail') }}/"+selected[3]+"' target='_blank'><button type='button' class='btn btn-info'>"+selected[3]+"</button></a>");
+			$('#modal-truck-activity .calendar-activity-detail').html("<a href='{{ url('/sales/load-detail') }}/"+selected[4]+"' target='_blank'><button type='button' class='btn btn-info'>"+selected[4]+"</button></a>");
 		}
 		
 	});

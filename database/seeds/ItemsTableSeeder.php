@@ -16,7 +16,7 @@ class ItemsTableSeeder extends Seeder
     {
         //Item::truncate();
 
-        $csvFile = fopen(base_path("reference/ItemSmart_202206.csv"),"r");
+        $csvFile = fopen(base_path("reference/smart/ItemSmart_20220613.csv"),"r");
         
         $firstline = true;
 
@@ -31,7 +31,7 @@ class ItemsTableSeeder extends Seeder
                         'description' => $data['1'],
                         'gross_weight' => 1,
                         'nett_weight' => 1,
-                        'category' => 'SMART',
+                        'category' => 'BRANDED CONSUMER',
                     ]);
                 }else{
                     error_log($data['0']." Already Exist.");

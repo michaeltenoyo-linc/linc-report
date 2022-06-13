@@ -679,6 +679,8 @@ class TruckController extends BaseController
             $overallOnCallPercentage += $row->on_call_percentage;
         }
 
+        $truck = collect($truck)->sortBy('on_call_percentage')->reverse();
+
         //Overview Overall
         $data['avg_idle'] = round($overallIdle/count($truck), 2);
         $data['avg_idle_percentage'] = round($overallIdlePercentage/count($truck), 2);
@@ -706,6 +708,12 @@ class TruckController extends BaseController
         $year = Session::get('sales-year');
         $totalDays = cal_days_in_month(CAL_GREGORIAN,$month,$year);
         $defaultActivity = array_fill(0,$totalDays,"idle");
+        $defaultDayName = [];
+
+        for ($i=1; $i <= $totalDays; $i++) { 
+            $today = Carbon::createFromFormat('d/m/Y',  $i.'/'.$month.'/'.$year)->format('l');
+            array_push($defaultDayName, $today);
+        }
 
         //Truck
         $truck = unit_surabaya::find($nopol);
@@ -742,6 +750,7 @@ class TruckController extends BaseController
         }
         $truck->activity = $activity;
         $truck->loads = $loadList;
+        $truck->dayName = $defaultDayName;
 
         //Data Finalization
         $data['year'] = $year;
