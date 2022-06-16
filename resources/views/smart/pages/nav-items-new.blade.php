@@ -56,7 +56,7 @@ Linc | New Item
                     <div class="w-full lg:w-12/12 px-4">
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="grid-password"> Gross Weight </label>
+                                htmlFor="grid-password"> Gross Weight (Kg. ) </label>
                             <input type="number"
                                 name="gross_weight"
                                 class="input-item-grossw border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
@@ -69,7 +69,7 @@ Linc | New Item
                     <div class="w-full lg:w-12/12 px-4">
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="grid-password"> Nett Weight </label>
+                                htmlFor="grid-password"> Nett Weight (Kg. )</label>
                             <input type="number"
                                 min="0"
                                 name="nett_weight"

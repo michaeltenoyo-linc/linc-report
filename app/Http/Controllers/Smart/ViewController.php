@@ -12,6 +12,8 @@ use Yajra\DataTables\Facades\DataTables;
 //Model
 use App\Models\Item;
 use App\Models\Addcost;
+use App\Models\Dload;
+use App\Models\LoadPerformance;
 use App\Models\Trucks;
 use App\Models\Suratjalan;
 
@@ -43,6 +45,16 @@ class ViewController extends BaseController
 
     public function gotoSoList(){
         return view('smart.pages.nav-so-list');
+    }
+
+    public function gotoSoDetail(Request $req, $id_so){
+        $data['suratjalan'] = Suratjalan::where('id_so',$id_so)->first();
+        $data['dload'] = Dload::where('id_so', $id_so)->get();
+        $data['items'] = Item::get();
+        $data['load'] = LoadPerformance::where('tms_id',$data['suratjalan']->load_id)->first();
+        $data['truck'] = Trucks::where('nopol',$data['suratjalan']->nopol)->first();
+
+        return view('smart.pages.nav-so-detail', $data);
     }
 
     public function gotoSoNew(){
@@ -115,7 +127,7 @@ class ViewController extends BaseController
 
         return DataTables::of($data)
             ->addColumn('action', function($row){
-                $btn = '<a href="/smart/items/'.$row->material_code.'" class="btn_yellow">Edit</a>';
+                $btn = '<button class="btn_yellow" id="btn-edit-item" value="'.$row->material_code.'">Edit</button>';
                 $btn = '<form id="btn-items-delete" class="inline-flex"><input name="materialCode" type="hidden" value="'.$row->material_code.'">'.$btn.'<button type="submit" class="btn_red">Delete</button></form>';
                 return $btn;
             })

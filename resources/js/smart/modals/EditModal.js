@@ -4,6 +4,15 @@ import Snackbar from 'node-snackbar';
 import Swal from 'sweetalert2';
 
 export const EditModal = () => {
+    //Edit SJ
+    $('#sj-edit-modal .detail-sj').on('click', function(e){
+        e.preventDefault();
+        let id_so = $('#sj-edit-modal .container-id-so').html();
+        console.log("On Click Detail SJ : "+id_so);
+
+        window.location.href = '/smart/nav-so-detail/'+id_so;
+    });
+
     $(document).on('click', '#btn-sj-edit', function(e){
         e.preventDefault();
         let id_so = $(this).val();
@@ -89,4 +98,72 @@ export const EditModal = () => {
             }
         });
     });
+
+    //Edit Items
+    $(document).on('click', '#btn-edit-item', async function(e){
+        e.preventDefault();
+        let code = $(this).val();        
+
+        let fetchItem = await $.get('/smart/data/get-items-fromid/'+code);
+        console.log(fetchItem);
+        
+        //Assign Data
+        $('#item-edit-modal .container-code').html(fetchItem['item']['material_code']);
+        $('#item-edit-modal .material_code').val(fetchItem['item']['material_code']);
+        $('#item-edit-modal .input-description').val(fetchItem['item']['description']);
+        $('#item-edit-modal .input-gross').val(fetchItem['item']['gross_weight']);
+        $('#item-edit-modal .input-net').val(fetchItem['item']['nett_weight']);
+        $('#item-edit-modal .input-category').val(fetchItem['item']['category']);
+
+        $('#item-edit-modal .modal').removeClass('hidden');
+    });
+
+    $('#form-item-edit').on('submit', function(e){
+        e.preventDefault();
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Data akan diubah secara permanen!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Iya, simpan!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    processData: false,
+                    contentType: false,
+                    dataType: 'JSON',
+                });
+                $.ajax({
+                    url: '/smart/items/update',
+                    type: 'POST',
+                    data: new FormData($(this)[0]),
+                    success: (data) => {
+                        Swal.fire({
+                            title: 'Tersimpan!',
+                            text: 'Data item sudah diubah.',
+                            icon: 'success'
+                        }).then(function(){
+                            console.log("Done Edit");
+                            $('#item-edit-modal .modal').addClass('hidden');
+                            var table = $('#yajra-datatable-items-list').DataTable();
+                            table.ajax.reload(null, false);
+                        });
+                    },
+                    error : function(request, status, error){
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: (JSON.parse(request.responseText)).message,
+                        })
+                    },
+                });
+            }
+        });
+    })
 }

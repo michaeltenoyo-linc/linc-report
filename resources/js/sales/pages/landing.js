@@ -392,6 +392,7 @@ export const loadDynamicChart = async () => {
   $('#landing-incompleted-loads').html(monthlyAchivementDataFetch['incompleteLoads']);
 
   //Chart Landing Monthly Transport
+  /*
   const transportSalesMonthlyAchievement = await $.get('/sales/data/get-division-pie/transport');
 
   const labels4 = [
@@ -489,6 +490,7 @@ export const loadDynamicChart = async () => {
 
   const chartMonthlyExim = new Chart(contMonthlyExim, configMonthlyExim);
 
+
   //Chart Landing Monthly Bulk
   const bulkSalesMonthlyAchievement = await $.get('/sales/data/get-division-pie/bulk');
 
@@ -537,6 +539,7 @@ export const loadDynamicChart = async () => {
   };
 
   const chartMonthlyBulk = new Chart(contMonthlyBulk, configMonthlyBulk);
+  */
 }
 
 export const Landing = async () => {

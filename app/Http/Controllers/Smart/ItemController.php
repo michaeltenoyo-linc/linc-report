@@ -59,4 +59,25 @@ class ItemController extends BaseController
         return response()->json(['message' => 'berhasil menghapus data.'], 200);
     }
 
+    public function update(Request $req){
+        $req->validate([
+            'material_code' => 'required',
+            'description' => 'required',
+            'gross' => 'required',
+            'net' => 'required',
+            'category' => 'required',
+        ]);
+
+        $selectedItem = Item::where('material_code','=',$req->input('material_code'))->first();
+        $selectedItem->update([
+            'material_code' => $req->input('material_code'),
+            'description' => $req->input('description'),
+            'gross_weight' => $req->input('gross'),
+            'nett_weight' => $req->input('net'),
+            'category' => $req->input('category'),
+        ]);
+
+        return response()->json(['message' => "success"], 200);
+    }
+
 }

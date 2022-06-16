@@ -233,7 +233,7 @@ class TruckController extends BaseController
         $data['period_year'] = Session::get('sales-year'); 
 
         //Sorting
-        $data['performance'] = collect($data['performance'])->sortBy('margin_percentage')->reverse();
+        $data['performance'] = collect($data['performance'])->sortBy('totalRevenue')->reverse();
         return view('sales.pages.pdf.pdf-trucking-performance', $data);
     }
 
@@ -344,7 +344,7 @@ class TruckController extends BaseController
         $data['period_year'] = Session::get('sales-year'); 
 
         //Sorting
-        $data['customer'] = collect($data['customer'])->sortBy('margin_percentage')->reverse();
+        $data['customer'] = collect($data['customer'])->sortBy('totalRevenue')->reverse();
         return view('sales.pages.pdf.pdf-customer-trucking-performance', $data);
         //return $data;
         

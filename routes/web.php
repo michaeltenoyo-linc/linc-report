@@ -75,6 +75,7 @@ Route::middleware(['auth','priviledge:smart,master'])->group(function () {
         Route::get('/nav-trucks-list',[SmartViewController::class, 'gotoTrucksList']);
         Route::get('/nav-so-new',[SmartViewController::class, 'gotoSoNew']);
         Route::get('/nav-so-list',[SmartViewController::class, 'gotoSoList']);
+        Route::get('/nav-so-detail/{id_so}',[SmartViewController::class, 'gotoSoDetail']);
         Route::get('/nav-report-generate',[SmartViewController::class, 'gotoReportGenerate']);
 
         //View Function
@@ -112,6 +113,7 @@ Route::middleware(['auth','priviledge:smart,master'])->group(function () {
             Route::post('/addItem', [SmartItemController::class, 'addItem']);
             Route::post('/delete',[SmartItemController::class, 'delete']);
             Route::get('/check-existing/{material_code}',[SmartItemController::class, 'checkItemExist']);
+            Route::post('/update',[SmartItemController::class, 'update']);
         });
 
         Route::prefix('/load')->group(function () {

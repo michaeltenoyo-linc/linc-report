@@ -164,6 +164,30 @@
 				<small>*All the calculation is based on realtime blujay's loads data</small>
 				<br>
 				<small>*The values in the table are sorted by current month's activity rate</small>
+				<br><br>
+				<div class="text-dark row">
+					<div class="col-2" style="display: inline;">
+						<small >
+							<div class="row">
+								<div class="bg-success mr-1" style="width: 10px; height: 10px;"></div>On Call
+							</div>
+						</small>
+					</div>
+					<div class="col-2">
+						<small >
+							<div class="row">
+								<div class="bg-danger mr-1" style="width: 10px; height: 10px;"></div>Breakdown
+							</div>
+						</small>
+					</div>
+					<div class="col-2">
+						<small >
+							<div class="row">
+								<div class="bg-warning mr-1" style="width: 10px; height: 10px;"></div>Idle/Delay
+							</div>
+						</small>
+					</div>
+				</div>
 			</div>
 			<div class="row">
 				<table class="table" style="width: 100%; font-size: 9pt;">

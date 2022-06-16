@@ -99,7 +99,9 @@
                 </div>
 
                 <div class="w-full lg:w-12/12 px-4">
-                    <div class="relative w-full mb-3">
+                    <div class="relative w-full mb-3 grid grid-cols-3 gap-4">
+                        <div></div>
+                        <button type="button" class="detail-sj btn_yellow">Detail SJ</button>
                         <button type="submit" class="input-item-add btn_blue">Save</button>
                     </div>
                 </div>

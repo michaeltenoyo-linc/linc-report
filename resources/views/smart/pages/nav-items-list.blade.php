@@ -58,5 +58,6 @@
 </script>
 
 @endsection
+@include('smart.modals.item-edit-modal');
 
 
