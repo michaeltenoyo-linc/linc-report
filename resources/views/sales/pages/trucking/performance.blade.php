@@ -16,16 +16,36 @@ Linc | Trucking Performance
             <div class="w-full text-center">
                 <span class="text-xl font-bold">Trucking Performance Generator</span>
             </div>
-            <div class="w-full mb-8">
+            <div class="w-full mb-8 mt-8">
                 <form id="form-trucking-performance" autocomplete="off">
-                    <div class="relative mb-4">
-                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="date-filter"> Periode </label>
-                        <input 
-                            type="month" 
-                            class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                            id="date-filter"
-                            >
+                    <div class="relative grid grid-cols-3 gap-4 mb-3">
+                        <div class="mb-4">
+                            <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                    htmlFor="date-filter-between"> From </label>
+                            <input 
+                                type="date" 
+                                class="date-filter-between border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                id="from"
+                                >
+                        </div>
+                        <div class="mb-4">
+                            <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                    htmlFor="date-filter-between"> To </label>
+                            <input 
+                                type="date" 
+                                class="date-filter-between border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                id="to"
+                                >
+                        </div>
+                        <div class="relative w-full mb-3">
+                            <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                htmlFor="constraint">Date Constraint</label>
+                            <select required name="constraint" class="input-constraint border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text">
+                                <option value="created_date">Create Date</option>
+                                <option value="closed_date">Closed POD</option>
+                                <option value="websettle_date">Websettle</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="relative grid grid-cols-4 gap-4 mb-3">

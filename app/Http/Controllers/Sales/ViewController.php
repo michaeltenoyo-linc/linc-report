@@ -76,8 +76,9 @@ class ViewController extends BaseController
     }
 
     public function gotoTruckingPerformance(){
-        Session::put('sales-month',date('m'));
-        Session::put('sales-year', date('Y'));
+        $today = Carbon::now();
+        Session::put('sales-from',$today);
+        Session::put('sales-to',$today);
         $data['last_update'] = LoadPerformance::orderBy('updated_at','desc')->first();
 
         return view('sales.pages.trucking.performance',$data);
@@ -1383,6 +1384,16 @@ class ViewController extends BaseController
     public function filterSalesDate($month, $year){
         Session::put('sales-month', $month);
         Session::put('sales-year', $year);
+
+        return response()->json(['message' => "success"], 200);
+    }
+
+    public function filterSalesDateBetween($fromDate, $fromMonth, $fromYear, $toDate, $toMonth, $toYear){
+        $fromDate = Carbon::createFromFormat('d/m/Y', $fromDate.'/'.($fromMonth+1).'/'.$fromYear);
+        $toDate = Carbon::createFromFormat('d/m/Y', $toDate.'/'.($toMonth+1).'/'.$toYear);
+
+        Session::put('sales-from', $fromDate);
+        Session::put('sales-to', $toDate);
 
         return response()->json(['message' => "success"], 200);
     }

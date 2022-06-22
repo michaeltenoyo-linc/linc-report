@@ -62,6 +62,8 @@ Route::prefix('/user')->group(function (){
     Route::post('/logout', [MasterUsersController::class, 'onLogout']);
     Route::get('/notAuthorized', [MasterViewController::class, 'notAuthorized']);
     Route::get('/notPriviledges', [MasterViewController::class, 'notPriviledges']);
+    Route::get('/underMaintenance', [MasterViewController::class, 'underMaintenance']);
+    Route::get('/back', [MasterViewController::class, 'back']);
 });
 
 //SMART ROUTES
@@ -316,12 +318,15 @@ Route::middleware(['auth','priviledge:sales,master'])->group(function () {
         //View Navigation
         Route::get('/',[SalesViewController::class, 'gotoLandingPage']);
         Route::get('/monitoring-master',[SalesViewController::class, 'gotoMonitoringMaster']);
-        Route::get('/by-sales/{name}',[SalesViewController::class, 'gotoBySales']);
-        Route::get('/by-division/{division}',[SalesViewController::class, 'gotoByDivision']);
+        //Route::get('/by-sales/{name}',[SalesViewController::class, 'gotoBySales']); MAINTENANCE
+        Route::get('/by-sales/{name}',[MasterViewController::class, 'underMaintenance']);
+        //Route::get('/by-division/{division}',[SalesViewController::class, 'gotoByDivision']); MAINTENANCE
+        Route::get('/by-division/{division}',[MasterViewController::class, 'underMaintenance']);
         Route::get('/export/pdf',[SalesViewController::class, 'gotoExportPdf']);
         
         //Utility
         Route::get('/filter-date/{month}/{year}', [SalesViewController::class, 'filterSalesDate']);
+        Route::get('/filter-date-between/{fromDate}/{fromMonth}/{fromYear}/{toDate}/{toMonth}/{toYear}', [SalesViewController::class, 'filterSalesDateBetween']);
 
         //Export
         Route::get('/export/filter-customer/{division}/{sales}',[SalesViewController::class, 'getFilteringCustomer']);

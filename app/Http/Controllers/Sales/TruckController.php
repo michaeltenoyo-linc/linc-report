@@ -151,27 +151,27 @@ class TruckController extends BaseController
                                                     ->where('carrier_name','=','BAHANA PRESTASI')
                                                     ->whereIn('load_group',$divisionGroup)  
                                                     ->where('billable_total_rate','>',$this->billableThreshold)
+                                                    ->where('load_status','!=','Voided')
                                                     ->groupBy('vehicle_number', 'carrier_name')
-                                                    ->whereMonth('created_date',Session::get('sales-month'))
-                                                    ->whereYear('created_date',Session::get('sales-year'))
+                                                    ->whereBetween('created_date',[Session::get('sales-from'),Session::get('sales-to')])
                                                     ->get();
         }else if($ownership == "NOT_SBY_VENDOR"){
             $data['performance'] = LoadPerformance::selectRaw('vehicle_number, carrier_name, SUM(billable_total_rate) as totalRevenue, SUM(payable_total_rate) as totalCost, COUNT(tms_id) as totalLoads')
                                                     ->whereNotIn('vehicle_number',$unitSurabaya)
                                                     ->where('carrier_name','!=','BAHANA PRESTASI')
                                                     ->where('billable_total_rate','>',$this->billableThreshold)
+                                                    ->where('load_status','!=','Voided')
                                                     ->whereIn('load_group',$divisionGroup)  
                                                     ->groupBy('vehicle_number','carrier_name')
-                                                    ->whereMonth('created_date',Session::get('sales-month'))
-                                                    ->whereYear('created_date',Session::get('sales-year'))
+                                                    ->whereBetween('created_date',[Session::get('sales-from'),Session::get('sales-to')])
                                                     ->get();
         }else if($ownership == "all"){
             $data['performance'] = LoadPerformance::selectRaw('vehicle_number, carrier_name, SUM(billable_total_rate) as totalRevenue, SUM(payable_total_rate) as totalCost, COUNT(tms_id) as totalLoads')
                                                     ->whereIn('load_group',$divisionGroup)  
                                                     ->where('billable_total_rate','>',$this->billableThreshold)
                                                     ->groupBy('vehicle_number','carrier_name')
-                                                    ->whereMonth('created_date',Session::get('sales-month'))
-                                                    ->whereYear('created_date',Session::get('sales-year'))
+                                                    ->where('load_status','!=','Voided')
+                                                    ->whereBetween('created_date',[Session::get('sales-from'),Session::get('sales-to')])
                                                     ->get();
         }else{
             $unitSurabaya = unit_surabaya::select('nopol')->where('own',$ownership)->get()->pluck('nopol');
@@ -180,8 +180,8 @@ class TruckController extends BaseController
                                                 ->where('billable_total_rate','>',$this->billableThreshold)
                                                 ->whereIn('load_group',$divisionGroup)  
                                                 ->groupBy('vehicle_number', 'carrier_name')
-                                                ->whereMonth('created_date',Session::get('sales-month'))
-                                                ->whereYear('created_date',Session::get('sales-year'))
+                                                ->where('load_status','!=','Voided')
+                                                ->whereBetween('created_date',[Session::get('sales-from'),Session::get('sales-to')])
                                                 ->get();
         }
 
@@ -229,8 +229,8 @@ class TruckController extends BaseController
         }
 
         //Period Data
-        $data['period'] = Carbon::create()->month(Session::get('sales-month'))->format('F')." ".Session::get('sales-year');
-        $data['period_year'] = Session::get('sales-year'); 
+        $data['period_from'] = Session::get('sales-from')->format('d M Y');
+        $data['period_to'] = Session::get('sales-to')->format('d M Y');
 
         //Sorting
         $data['performance'] = collect($data['performance'])->sortBy('totalRevenue')->reverse();
@@ -379,12 +379,13 @@ class TruckController extends BaseController
                                         ->where('vehicle_number',$nopol)
                                         ->where('billable_total_rate','>',$this->billableThreshold)
                                         ->whereIn('load_group',$divisionGroup)  
-                                        ->whereMonth('created_date',Session::get('sales-month'))
-                                        ->whereYear('created_date',Session::get('sales-year'))
+                                        ->where('load_status','!=','Voided')
+                                        ->whereBetween('created_date',[Session::get('sales-from'),Session::get('sales-to')])
                                         ->get()->pluck('tms_id');
 
         $data['customers'] = LoadPerformance::selectRaw('customer_reference, customer_name')
                                         ->whereIn('tms_id',$loadList)
+                                        ->where('load_status','!=','Voided')
                                         ->groupBy('customer_reference','customer_name')
                                         ->get();
                                         
@@ -393,15 +394,18 @@ class TruckController extends BaseController
                                                 ->where('customer_reference',$row->customer_reference)
                                                 ->where('customer_name',$row->customer_name)
                                                 ->whereIn('tms_id',$loadList)
+                                                ->where('load_status','!=','Voided')
                                                 ->get()->pluck('tms_id');
             
             $customerRates = LoadPerformance::select('tms_id','billable_total_rate','payable_total_rate')
                                         ->where('billable_total_rate','>',$this->billableThreshold)
-                                        ->whereIn('tms_id',$customerLoadList)  
+                                        ->whereIn('tms_id',$customerLoadList) 
+                                        ->where('load_status','!=','Voided') 
                                         ->get();
 
             $routeRates = LoadPerformance::selectRaw("first_pick_location_city, last_drop_location_city, CONCAT(REPLACE(first_pick_location_city,' ',''),'-',REPLACE(last_drop_location_city,' ','')) as route_id, CONCAT(first_pick_location_city,' - ',last_drop_location_city) as route, SUM(billable_total_rate) as totalRevenue, SUM(payable_total_rate) as totalCost")
                                             ->whereIn('tms_id',$customerLoadList)  
+                                            ->where('load_status','!=','Voided')
                                             ->where('billable_total_rate','>',$this->billableThreshold)
                                             ->groupBy('route_id', 'route', 'first_pick_location_city', 'last_drop_location_city')
                                             ->get();
@@ -421,6 +425,7 @@ class TruckController extends BaseController
                                                         ->whereIn('tms_id',$customerLoadList)  
                                                         ->where('billable_total_rate','>',$this->billableThreshold)
                                                         ->where('first_pick_location_city', $rate->first_pick_location_city)
+                                                        ->where('load_status','!=','Voided')
                                                         ->where('last_drop_location_city', $rate->last_drop_location_city)
                                                         ->get();
             }
@@ -443,6 +448,7 @@ class TruckController extends BaseController
     public function getUnitData(Request $req, $reference, $division){
         $data['message'] = "Success";
         $data['division'] = $division;
+        
         //Division Change
         $divisionGroup = [];
         switch ($division) {

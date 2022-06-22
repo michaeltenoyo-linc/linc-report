@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>PDF HTML {{ $period }} Trucking Performance</title>
+	<title>PDF HTML {{ $period_from }} - {{ $period_to }} Trucking Performance</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<style>
 		.header-top-bar {
@@ -86,7 +86,7 @@
 				<div class="col-12 mt-2">
 					<center>
 						<h1>Trucking Performance Report</h1>
-						<h5 class="font-weight-normal">{{ $period }}</h5>
+						<h5 class="font-weight-normal">{{ $period_from }} - {{ $period_to }}</h5>
 					</center>
 				</div>
 			</div>
@@ -434,6 +434,9 @@
 			let custBtn = '<div class="row">'
 				+'<div class="col"><button type="button" class="btn btn-warning btn-sm my-2 btn-show-customer-routes" value="'+row['customer_reference']+'$'+row['customer_name']+'">'+row['customer_name']+'</button></div>'
 				+'<div class="col py-2">'
+				+'<div class="row">'
+				+'<span style="font-size:8pt;color:brown;">Loads</span>IDR. '+row['count']				
+				+'</div>'
 				+'<div class="row">'
 				+'<span style="font-size:8pt;color:green;">Billable</span>IDR. '+row['totalRevenueFormat']					
 				+'</div>'
