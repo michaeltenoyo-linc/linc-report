@@ -76,6 +76,7 @@ class Smart_Report3 implements FromCollection, WithHeadings, ShouldAutoSize, Wit
             'BIAYA STAPEL/INAP',
             'BIAYA LAIN-LAIN',
             'TOTAL',
+            'CUST TYPE'
         ];
     }
 

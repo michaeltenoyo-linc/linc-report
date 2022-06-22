@@ -37,5 +37,6 @@ class LoadPerformance extends Model
         'first_pick_location_city',
         'customer_reference',
         'customer_name',
+        'websettle_date',
     ];
 }

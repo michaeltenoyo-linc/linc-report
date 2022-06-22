@@ -78,6 +78,7 @@ class LoadPerformanceRefresh extends Seeder
                         'first_pick_location_city' => $data['61'],
                         'customer_name' => $customer==null?'':$customer->customer_name,
                         'customer_reference' => $customer==null?'':$customer->customer_reference,
+                        'websettle_date' => ($this->checkDateString($data['22']))?Carbon::createFromFormat('d/m/Y H:i', $data['22']):null,
                     ]);
 
                     

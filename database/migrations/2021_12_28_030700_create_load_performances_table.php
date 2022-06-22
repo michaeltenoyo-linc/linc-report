@@ -39,6 +39,7 @@ class CreateLoadPerformancesTable extends Migration
             $table->string('first_pick_location_city');
             $table->string('customer_reference');
             $table->longText('customer_name');
+            $table->datetime('websettle_date')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

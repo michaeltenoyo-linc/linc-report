@@ -13,6 +13,7 @@ export const load = () => {
         //Date Default
         $('#date-filter').val(moment().format('YYYY-MM'));
         $('#date-filter-landing').val(moment().format('YYYY-MM'));
+        $('.date-filter-between').val(moment().format('YYYY-MM-DD'));
     }  
 
     /*
@@ -67,6 +68,23 @@ export const load = () => {
         $('#canvas-bulk-monthly').html(chartBulkMonthly);
 
         loadDynamicChart();
+    });
+
+    //Filtering date between
+    $(document).on('change', '.date-filter-between', async function(e){
+        var inputDateFrom = new Date($('#from').val());
+        var yearFrom = inputDateFrom.getFullYear();
+        var monthFrom = inputDateFrom.getMonth();
+        var dateFrom = inputDateFrom.getDate();
+
+        var inputDateTo = new Date($('#to').val());
+        var yearTo = inputDateTo.getFullYear();
+        var monthTo = inputDateTo.getMonth();
+        var dateTo = inputDateTo.getDate();
+
+        //Change Date Session
+        const fetchChangeDate = await $.get('/sales/filter-date-between/'+dateFrom+'/'+monthFrom+'/'+yearFrom+'/'+dateTo+'/'+monthTo+'/'+yearTo);
+        console.log(fetchChangeDate);
     });
 
     //Filtering date

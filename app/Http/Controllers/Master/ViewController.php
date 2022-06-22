@@ -13,6 +13,7 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Models\Item;
 use App\Models\Trucks;
 use App\Models\Suratjalan;
+use Illuminate\Support\Facades\Redirect;
 
 class ViewController extends BaseController
 {
@@ -29,5 +30,13 @@ class ViewController extends BaseController
 
     public function notPriviledges(){
         return view('master.pages.not-priviledges');
+    }
+
+    public function underMaintenance(){
+        return view('master.pages.under-maintenance');
+    }
+
+    public function back(){
+        return Redirect::back();
     }
 }

@@ -42,106 +42,28 @@ class BillableBlujaySeeder extends Seeder
             error_log($counter,0);
             $counter++;
             if (!$firstline){
-                //Error Notes
-                $passFrom = "ERR";
-                $passDest = "ERR";
-                $passBillable = "ERR";
-                $passCust = "ERR";
-
-
-                try {
-                    //Location Markup
-                    $fromCompanies =  $data['9']=="ANYWHERE"?"":Company::where('reference',$data['9'])->first();
-                    $passFrom = $data['9']=="ANYWHERE"?"ANYWHERE":$fromCompanies->reference;
-                    $destCompanies =  $data['10']=="ANYWHERE"?"":Company::where('reference',$data['10'])->first();
-                    $passDest = $data['10']=="ANYWHERE"?"ANYWHERE":$destCompanies->reference;
-                    
-
-                    //Billable Method to Customer
-                    $billable_method = BillableMethod::where('billable_method',$data['0'])->first();
-                    $passBillable = $billable_method->billable_method;
-                    $customer = Customer::where('billable_methods','LIKE','%'.$billable_method->cross_reference.'%')->first();
-                    $passCust = $customer->reference;
-
-
-                    BillableBlujay::create([
-                        'billable_tariff'=> $data['0'],
-                        'billable_subtariff'=> $data['1'],
-                        'customer_reference'=> $customer->reference,
-                        'division'=> $data['2'],
-                        'order_group'=> $data['3'],
-                        'equipment'=> $data['4'],
-                        'allocation_method'=> $data['5'],
-                        'tier'=> $data['6'],
-                        'all_inclusive'=> $data['7'],
-                        'precedence'=> $data['8'],
-                        'origin_location'=> $data['9'],
-                        'destination_location'=> $data['10'],
-                        'origin_city' => $data['9']=="ANYWHERE"?"ANYWHERE":$fromCompanies->city,
-                        'destination_city' => $data['10']=="ANYWHERE"?"ANYWHERE":$destCompanies->city,
-                        'origin_province' => $data['9']=="ANYWHERE"?"ANYWHERE":$fromCompanies->province,
-                        'destination_province' => $data['10']=="ANYWHERE"?"ANYWHERE":$destCompanies->province,
-                        'origin_district' =>$data['9']=="ANYWHERE"?"ANYWHERE":$fromCompanies->district,
-                        'destination_district' =>$data['10']=="ANYWHERE"?"ANYWHERE":$destCompanies->district,
-                        'origin_urban' =>$data['9']=="ANYWHERE"?"ANYWHERE":$fromCompanies->urban,
-                        'destination_urban' =>$data['10']=="ANYWHERE"?"ANYWHERE":$destCompanies->urban,
-                        'no_intermediate_stop'=> $data['11'],
-                        'basis'=> $data['12'],
-                        'sku'=> $data['13'],
-                        'rate'=> round(floatval(str_replace(',','',$data['14'])),2),
-                        'currency'=> $data['15'],
-                        'effective_date'=> Carbon::createFromFormat('d/m/Y', $data['16']),
-                        'expiration_date'=> Carbon::createFromFormat('d/m/Y', $data['17']),
-                        'modifier' => $data['18']
-                    ]);
-                } catch (\Throwable $th) {
-                    //Location Markup
-                    $fromCompanies =  $data['9']=="ANYWHERE"?"":Company::where('reference',$data['9'])->first();
-                    $passFrom  = is_null($fromCompanies)?"ERR":($data['9']=="ANYWHERE"?"ANYWHERE":$fromCompanies->reference);
-                    $destCompanies =  $data['10']=="ANYWHERE"?"":Company::where('reference',$data['10'])->first();
-                    $passDest = is_null($destCompanies)?"ERR":($data['10']=="ANYWHERE"?"ANYWHERE":$destCompanies->reference);
-                    
-                    //Billable Method to Customer
-                    $billable_method = BillableMethod::where('billable_method',$data['0'])->first();
-                    $passBillable = is_null($billable_method)?"ERR":$billable_method->billable_method;
-                    $customer = is_null($billable_method)?"ERR":Customer::where('billable_methods','LIKE','%'.$billable_method->cross_reference.'%')->first();
-                    $passCust = is_null($customer) || $customer=="ERR"?"ERR":$customer->reference;
-
-                    BillableBlujay::create([
-                        'billable_tariff'=> $data['0'],
-                        'billable_subtariff'=> $data['1'],
-                        'customer_reference'=> $passCust=="ERR"?"UNDEFINED":$customer->reference,
-                        'division'=> $data['2'],
-                        'order_group'=> $data['3'],
-                        'equipment'=> $data['4'],
-                        'allocation_method'=> $data['5'],
-                        'tier'=> $data['6'],
-                        'all_inclusive'=> $data['7'],
-                        'precedence'=> $data['8'],
-                        'origin_location'=> $data['9'],
-                        'destination_location'=> $data['10'],
-                        'origin_city' => $passFrom=="ERR"?"UNDEFINED":($data['9']=="ANYWHERE"?"ANYWHERE":$fromCompanies->city),
-                        'destination_city' => $passDest=="ERR"?"UNDEFINED":($data['10']=="ANYWHERE"?"ANYWHERE":$destCompanies->city),
-                        'origin_province' => $passFrom=="ERR"?"UNDEFINED":($data['9']=="ANYWHERE"?"ANYWHERE":$fromCompanies->province),
-                        'destination_province' => $passDest=="ERR"?"UNDEFINED":($data['10']=="ANYWHERE"?"ANYWHERE":$destCompanies->province),
-                        'origin_district' =>$passFrom=="ERR"?"UNDEFINED":($data['9']=="ANYWHERE"?"ANYWHERE":$fromCompanies->district),
-                        'destination_district' =>$passDest=="ERR"?"UNDEFINED":($data['10']=="ANYWHERE"?"ANYWHERE":$destCompanies->district),
-                        'origin_urban' =>$passFrom=="ERR"?"UNDEFINED":($data['9']=="ANYWHERE"?"ANYWHERE":$fromCompanies->urban),
-                        'destination_urban' =>$passDest=="ERR"?"UNDEFINED":($data['10']=="ANYWHERE"?"ANYWHERE":$destCompanies->urban),
-                        'no_intermediate_stop'=> $data['11'],
-                        'basis'=> $data['12'],
-                        'sku'=> $data['13'],
-                        'rate'=> round(floatval(str_replace(',','',$data['14'])),2),
-                        'currency'=> $data['15'],
-                        'effective_date'=> Carbon::createFromFormat('d/m/Y', $data['16']),
-                        'expiration_date'=> Carbon::createFromFormat('d/m/Y', $data['17']),
-                        'modifier' => $data['18']
-                    ]);
-
-                    //array_push($errorLog,[$counter, $data['0'], $data['1'], $data['2'], $data['9'], $data['10'], $passFrom, $passDest, $passBillable, $passCust]);
-                    print("ERROR BILLABLE");
-                }
-
+                BillableBlujay::create([
+                    'billable_tariff'=> $data['0'],
+                    'billable_subtariff'=> $data['1'],
+                    'customer_reference'=> $customer->reference,
+                    'division'=> $data['2'],
+                    'order_group'=> $data['3'],
+                    'equipment'=> $data['4'],
+                    'allocation_method'=> $data['5'],
+                    'tier'=> $data['6'],
+                    'all_inclusive'=> $data['7'],
+                    'precedence'=> $data['8'],
+                    'origin_location'=> $data['9'],
+                    'destination_location'=> $data['10'],
+                    'no_intermediate_stop'=> $data['11'],
+                    'basis'=> $data['12'],
+                    'sku'=> $data['13'],
+                    'rate'=> round(floatval(str_replace(',','',$data['14'])),2),
+                    'currency'=> $data['15'],
+                    'effective_date'=> Carbon::createFromFormat('d/m/Y', $data['16']),
+                    'expiration_date'=> Carbon::createFromFormat('d/m/Y', $data['17']),
+                    'modifier' => $data['18']
+                ]);
             }
 
             $firstline = false;

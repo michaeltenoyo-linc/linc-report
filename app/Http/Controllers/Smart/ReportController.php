@@ -534,6 +534,7 @@ class ReportController extends BaseController
                                             'BIAYA STAPEL/INAP' => $totalOvernight,
                                             'BIAYA LAIN-LAIN' => 0,
                                             'TOTAL' => intval($row->billable_total_rate),
+                                            'CUST TYPE' => strtoupper($sj->customer_type)
                                         ]);
 
                                         $firstline = false;
@@ -559,6 +560,7 @@ class ReportController extends BaseController
                                             'BIAYA STAPEL/INAP' => "",
                                             'BIAYA LAIN-LAIN' => "",
                                             'TOTAL' => "",
+                                            'CUST TYPE' => "",
                                         ]);
                                     }
                                 }
@@ -587,6 +589,7 @@ class ReportController extends BaseController
                             'BIAYA STAPEL/INAP' => "",
                             'BIAYA LAIN-LAIN' => "",
                             'TOTAL' => "",
+                            'CUST TYPE' => "",
                         ]);
                     }else if(count($listSJ) == 0){
                         $custId = substr($row->first_pick_location_name,0,3);
