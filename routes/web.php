@@ -29,10 +29,14 @@ use App\Http\Controllers\Greenfields\SuratjalanController as GreenfieldsSuratjal
 use App\Http\Controllers\Greenfields\LoadController as GreenfieldsLoadController;
 use App\Http\Controllers\Greenfields\ReportController as GreenfieldsReportController;
 
-//LOA CONTROLLEr
+//LOA CONTROLLER LAMA OLD
+use App\Http\Controllers\LoaOld\ViewController as LoaOldViewController;
+use App\Http\Controllers\LoaOld\WarehouseController as LoaOldWarehouseController;
+use App\Http\Controllers\LoaOld\TransportController as LoaOldTransportController;
+
+//LOA
 use App\Http\Controllers\Loa\ViewController as LoaViewController;
-use App\Http\Controllers\Loa\WarehouseController as LoaWarehouseController;
-use App\Http\Controllers\Loa\TransportController as LoaTransportController;
+use App\Http\Controllers\Loa\DataController as LoaDataController;
 
 //SALES CONTROLLER
 use App\Http\Controllers\Sales\ViewController as SalesViewController;
@@ -206,10 +210,29 @@ Route::middleware(['auth','priviledge:gfs,master'])->group(function () {
     });
 });
 
-//LOA
+//LOA NEW REVISION
+Route::middleware(['auth','priviledge:loa,master'])->group(function () {
+    Route::prefix('/loa')->group(function (){
+        //View Navigation
+        Route::get('/',[LoaViewController::class, 'gotoLandingPage']);
+        Route::get('/nav-loa-new',[LoaViewController::class, 'gotoInputType']);
+        Route::get('/nav-loa-new/{type}',[LoaViewController::class, 'gotoInputForm']);
+        Route::get('/nav-loa-list',[LoaViewController::class, 'gotoListType']);
+        Route::get('/nav-loa-list/{type}',[LoaViewController::class, 'gotoListMaster']);
+    
+        //Data CRUD
+        Route::prefix('/data')->group(function (){
+            Route::post('/insert', [LoaDataController::class, 'insert']);
+            Route::get('/read/{type}', [LoaDataController::class, 'read']);
+            Route::get('/read/byCustomer/{type}/{reference}', [LoaDataController::class, 'readByCustomer']);
+        });
+    });
+});
+
+//LOA OLD VERSION
 Route::middleware(['auth','priviledge:loa,master'])->group(function () {
     //LOA
-    Route::prefix('/loa')->group(function (){
+    Route::prefix('/loa-old')->group(function (){
         //View Navigation
         Route::get('/',[LoaViewController::class, 'gotoLandingPage']);
         Route::get('/nav-loa-new',[LoaViewController::class, 'gotoInputLoa']);
@@ -350,8 +373,8 @@ Route::middleware(['auth','priviledge:sales,master'])->group(function () {
         Route::prefix('/truck')->group(function () {
             //View and Generate
             Route::get('/performance',[SalesViewController::class, 'gotoTruckingPerformance']);
-            Route::get('/performance-generate/{ownership}/{division}/{nopol}',[SalesTruckController::class, 'generateTruckingPerformance']);
-            Route::get('/performance-customer/{ownership}/{division}/{nopol}',[SalesTruckController::class, 'generateCustomerPerformance']);
+            Route::get('/performance-generate/{ownership}/{division}/{nopol}/{constraint}',[SalesTruckController::class, 'generateTruckingPerformance']);
+            Route::get('/performance-customer/{ownership}/{division}/{nopol}/{constraint}',[SalesTruckController::class, 'generateCustomerPerformance']);
             Route::get('/utility',[SalesViewController::class, 'gotoTruckingUtility']);
             Route::get('/utility-generate/{ownership}',[SalesTruckController::class, 'generateTruckingUtility']);
 
