@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Loa;
+namespace App\Http\Controllers\LoaOld;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Loa;
+namespace App\Http\Controllers\LoaOld;
 
 use App\Models\BillableBlujay;
 use App\Models\Company;
