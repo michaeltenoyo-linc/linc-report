@@ -154,7 +154,7 @@
 						<span>Data Services</span>
 						<h4 class="mb-3">LOA Data</h4>
 						<p class="mb-4">Database for letter of agreement, with report, and easier monitoring for LOA.</p>
-						<a href="{{ url('/loa') }}" class="btn btn-main btn-round-full">GO TO LETTER OF AGREEMENT</a>
+						<a href="{{ url('/user/underMaintenance') }}" class="btn btn-main btn-round-full">UNDER BIG REVISION!</a>
 					</div>
 
 					<div class="feature-item mb-5 mb-lg-0">

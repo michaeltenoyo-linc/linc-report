@@ -86,7 +86,7 @@
             <hr class="my-4 md:min-w-full" />
             <!-- Heading -->
             <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                Master Data
+                Local Letter of Agreement
             </h6>
             <!-- Navigation Loads-->
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
@@ -113,32 +113,14 @@
                     @if (Request::path() == 'loa/nav-loa-list')
                     <a href="{{url('/loa/nav-loa-list')}}"
                         class="page_nav_active">
-                        <i class="fas fa-file-contract"></i>
-                        Master LOA
+                        <i class="fas fa-shipping-fast"></i>
+                        List LOA
                     </a>
                     @else
                     <a href="{{url('/loa/nav-loa-list')}}"
                         class="page_nav">
-                        <i class="fas fa-file-contract"></i>
-                        Master LOA
-                    </a>
-                    @endif
-                </li>
-            </ul>
-            <ul class="md:flex-col md:min-w-full flex flex-col list-none">
-                {{-- Active --}}
-                <li class="items-center">
-                    @if (Request::path() == 'loa/nav-blujay-data')
-                    <a href="{{url('/loa/nav-blujay-data')}}"
-                        class="page_nav_active">
-                        <i class="fas fa-atlas"></i>
-                        Blujay Data
-                    </a>
-                    @else
-                    <a href="{{url('/loa/nav-blujay-data')}}"
-                        class="page_nav">
-                        <i class="fas fa-atlas"></i>
-                        Blujay Data
+                        <i class="fas fa-shipping-fast"></i>
+                        List LOA
                     </a>
                     @endif
                 </li>
@@ -148,7 +130,7 @@
             <hr class="my-4 md:min-w-full" />
             <!-- Heading -->
             <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                Search Engine
+                Blujay Data
             </h6>
             <!-- Navigation Product -->
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
@@ -156,14 +138,14 @@
                     @if (Request::path() == 'loa/nav-search-transport')
                         <a href="{{url('/loa/nav-search-transport')}}"
                             class="page_nav_active">
-                            <i class="fas fa-balance-scale-left"></i>
-                            Load Contract
+                            <i class="far fa-clipboard"></i>
+                            Blujay Routes SE
                         </a>
                     @else
                         <a href="{{url('/loa/nav-search-transport')}}"
                             class="page_nav">
-                            <i class="fas fa-balance-scale-left"></i>
-                            Load Contract
+                            <i class="far fa-clipboard"></i>
+                            Blujay Routes SE
                         </a>
                     @endif
                 </li>
@@ -171,14 +153,14 @@
                     @if (Request::path() == 'loa/nav-blujay-compare')
                         <a href="{{url('/loa/nav-blujay-compare')}}"
                             class="page_nav_active">
-                            <i class="fas fa-route"></i>
-                            Routes Contract
+                            <i class="far fa-clipboard"></i>
+                            Cross Compare LOA
                         </a>
                     @else
                         <a href="{{url('/loa/nav-blujay-compare')}}"
                             class="page_nav">
-                            <i class="fas fa-route"></i>
-                            Routes Contract
+                            <i class="far fa-clipboard"></i>
+                            Cross Compare LOA
                         </a>
                     @endif
                 </li>

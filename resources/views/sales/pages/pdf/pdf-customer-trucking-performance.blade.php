@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>PDF HTML {{ $period }} Sales Report</title>
+	<title>PDF HTML {{ $period_from }} - {{ $period_to }} Sales Report</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<style>
 		.header-top-bar {
@@ -54,7 +54,8 @@
 				<div class="col-12 mt-2">
 					<center>
 						<h1>Trucking Performance Report</h1>
-						<h5 class="font-weight-normal">{{ $period }}</h5>
+						<h5 class="font-weight-normal">{{ $period_from }} - {{ $period_to }}</h5>
+						<h5 class="font-weight-normal">By {{ $period_constraint }}</h5>
 					</center>
 				</div>
 			</div>

@@ -20,7 +20,7 @@ Linc | Register Surat Jalan
                 </div>
             </div>
         </div>
-        <div class="flex flex-nowrap p-8 ">
+        <div class="flex flex-nowrap p-8">
             <form id="form-so-new" autocomplete="off">
                 <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase"> SO Information </h6>
                 <div class="flex flex-wrap">
