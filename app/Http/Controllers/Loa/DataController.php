@@ -56,8 +56,10 @@ class DataController extends BaseController
                 'name' => $req->input('name'),
                 'effective' => $req->input('effective'),
                 'expired' => $req->input('expired'),
+                'is_archived' => 0,
                 'id_customer' => $req->input('customer'),
-                'type' => $req->input('type')
+                'type' => $req->input('type'),
+                'group' => $req->input('group')
             ]);
 
             $newFile = LoaFile::create([
@@ -118,5 +120,42 @@ class DataController extends BaseController
         }
 
         return view('loa.pages.list-loa-detail', $data);
+    }
+
+    public function getGroupByCustomer($type, $reference){
+        $customer = Customer::find($reference);
+        $data['groups'] = LoaMaster::select('group')
+                                    ->where('type',$type)
+                                    ->where('id_customer',$reference)
+                                    ->groupBy('group')
+                                    ->get()->pluck('group');
+
+        return $data;
+    }
+
+    public function getTimelineByGroup($type, $reference, $group){
+        $customer = Customer::find($reference);
+
+        $data['timeline'] = LoaMaster::where('type',$type)
+                                    ->where('id_customer',$reference)
+                                    ->where('group', $group)
+                                    ->orderBy('effective','desc')
+                                    ->get();
+                                    
+        return $data;
+    }
+
+    public function getFileByGroup($group){
+        $files = LoaFile::where('id_loa',$group)->get();
+        
+        return $files;
+    }
+
+    public function getFileById($id){
+        $file = LoaFile::find($id);
+
+        $file->content_path = LoaMaster::find($file->id_loa);
+
+        return $file;
     }
 }

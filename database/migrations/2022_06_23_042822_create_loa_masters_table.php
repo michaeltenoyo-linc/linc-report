@@ -19,7 +19,9 @@ class CreateLoaMastersTable extends Migration
             $table->date('effective');
             $table->date('expired');
             $table->string('id_customer');
+            $table->tinyInteger('is_archived');
             $table->string('type');
+            $table->string('group');
             $table->timestamps();
         });
     }

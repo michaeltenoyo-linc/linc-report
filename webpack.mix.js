@@ -32,6 +32,11 @@ mix
       require('autoprefixer'),
     ]
   })
+  .webpackConfig({
+    stats: {
+        children: true,
+    },
+  });
 
 if (mix.inProduction()) {
   mix

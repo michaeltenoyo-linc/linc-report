@@ -13,6 +13,13 @@ class LoaMaster extends Model
         'effective',
         'expired',
         'id_customer',
-        'type'
+        'is_archived',
+        'type',
+        'group',
+    ];
+
+    protected $casts = [
+        'effective'  => 'date:Y/m/d',
+        'expired'  => 'date:Y/m/d',
     ];
 }

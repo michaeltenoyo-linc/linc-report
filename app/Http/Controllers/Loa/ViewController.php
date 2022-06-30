@@ -17,6 +17,7 @@ use App\Models\Customer;
 use App\Models\dloa_transport;
 use App\Models\Loa_transport;
 use App\Models\Loa_warehouse;
+use App\Models\LoaMaster;
 use App\Models\Province;
 use App\Models\Regency;
 use App\Models\Trucks;
@@ -39,6 +40,11 @@ class ViewController extends BaseController
     public function gotoInputForm($type){
         $data['type'] = $type;
         $data['customer'] = Customer::get();
+        $data['group_list'] = LoaMaster::join('customers','customers.reference','=','loa_masters.id_customer')
+                                        ->select('customers.name','loa_masters.group')
+                                        ->groupBy('customers.name','loa_masters.group')
+                                        ->get();
+        //return $data;
         return view('loa.pages.input-loa-form', $data);
     }
 
