@@ -10,6 +10,7 @@ Linc | LOA Homepage
 
 @section('content')
 <div class="w-full mb-12 px-4">
+    <input type="hidden" name="page-content" id="page-content" value="list-loa-type">
     <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
         <div class="w-full p-10 text-center">
             <h1 class="font-bold text-2xl">List Letter of Agreement</h1>

@@ -10,6 +10,7 @@ Linc | LOA Homepage
 
 @section('content')
 <div class="w-full mb-12 px-4">
+    <input type="hidden" name="page-content" id="page-content" value="input-loa-form">
     <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
         <div class="flex flex-nowrap">
             <div class="w-full p-10">
@@ -25,6 +26,22 @@ Linc | LOA Homepage
                                     class="input-name border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                     value=""
                                     required/>
+                            </div>
+
+                            <div class="relative w-full mb-3">
+                                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                    htmlFor="name">Sub-Folder LOA <span class="text-red-500">*Subgrup digunakan untuk memisahkan arsip kustomer melalui grup</span> </label>
+                                <input type="text"
+                                    name="group"
+                                    class="input-group border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                    value="Utama"
+                                    list="list-group" required/>
+                                
+                                <datalist id="list-group">
+                                    @foreach ($group_list as $g)
+                                        <option value="{{ $g->group }}">{{ $g->name }} - {{ $g->group }}</option>
+                                    @endforeach
+                                </datalist>
                             </div>
 
                             <div class="relative w-full mb-3">

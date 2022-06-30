@@ -10,6 +10,7 @@ Linc | LOA Homepage
 
 @section('content')
 <div class="w-full mb-12 px-4">
+    <input type="hidden" name="page-content" id="page-content" value="list-loa-master">
     <div class="relative break-words w-full mb-6 shadow-lg rounded bg-white p-10">
         <div class="w-full mb-10 text-center font-bold text-2xl">
             <h1>{{ $type }}</h1>

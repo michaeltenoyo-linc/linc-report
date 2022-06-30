@@ -13,3 +13,11 @@
 .page_nav i {
     @apply text-blueGray-300 mr-2 text-sm
 }
+
+.tab-active {
+    @apply inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg
+}
+
+.tab-inactive {
+    @apply inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 cursor-pointer
+}

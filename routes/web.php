@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 //MASTER
 use App\Http\Controllers\Master\ViewController as MasterViewController;
@@ -42,6 +44,7 @@ use App\Http\Controllers\Loa\DataController as LoaDataController;
 use App\Http\Controllers\Sales\ViewController as SalesViewController;
 use App\Http\Controllers\Sales\TruckController as SalesTruckController;
 use App\Http\Controllers\SharedController;
+use App\Models\LoaFile;
 
 /*
 |--------------------------------------------------------------------------
@@ -225,6 +228,10 @@ Route::middleware(['auth','priviledge:loa,master'])->group(function () {
             Route::post('/insert', [LoaDataController::class, 'insert']);
             Route::get('/read/{type}', [LoaDataController::class, 'read']);
             Route::get('/read/byCustomer/{type}/{reference}', [LoaDataController::class, 'readByCustomer']);
+            Route::get('/getGroupByCustomer/{type}/{reference}', [LoaDataController::class, 'getGroupByCustomer']);
+            Route::get('/getTimelineByGroup/{type}/{reference}/{group}', [LoaDataController::class, 'getTimelineByGroup']);
+            Route::get('/getFileByGroup/{groupId}', [LoaDataController::class, 'getFileByGroup']);
+            Route::get('/getFileById/{id}',[LoaDataController::class, 'getFileById']);
         });
     });
 });
@@ -398,11 +405,11 @@ Route::middleware(['auth','priviledge:sales,master'])->group(function () {
 Route::middleware(['auth','priviledge:loa,master'])->group(function () {
     //GET LOA FILES
     Route::get('/show-pdf/{filename}/{content_path}', function($filename, $content_path){
-        return response()->file(storage_path("app/".$content_path."/".$filename));
+        return response()->file(storage_path("app/loa_files/".$content_path."/".$filename));
     })->name('show-pdf');
 
     Route::get('/show-png/{filename}/{content_path}', function($filename, $content_path){
-        $path = storage_path("app/".$content_path."/".$filename);
+        $path = storage_path("app/loa_files/".$content_path."/".$filename);
 
         if(!File::exists($path)){
             return response()->json(["message" => "image not found!"], 404);
@@ -417,21 +424,37 @@ Route::middleware(['auth','priviledge:loa,master'])->group(function () {
         return $response;
     })->name('show-png');
 
-    Route::get('/show-xlxs/{filename}/{content_path}', function($filename, $content_path){
-        $path = storage_path("app/".$content_path."/".$filename);
+    Route::get('/show-excel-pages/{filename}/{content_path}', function($filename, $content_path){
+        $path = storage_path("app/loa_files/".$content_path."/".$filename);
 
-        if(!File::exists($path)){
-            return response()->json(["message" => "file not found!"], 404);
-        }
+        //Read File
+        $reader = IOFactory::createReader('Xlsx');
+        $spreadsheet = $reader->load($path);
 
-        $file = File::get($path);
-        $type = File::mimeType($path);
+        $data['sheetCount'] = $spreadsheet->getSheetCount();
+        $data['name'] = $spreadsheet->getSheetNames();
 
-        $response = Response::make($file, 200);
-        $response->header("Content-Type", $type);
+        return response($data, 200);
+    })->name('show-excel-pages');
 
-        return $response;
-    })->name('show-xlxs');
+    Route::get('/show-excel/{filename}/{content_path}/{page}', function($filename, $content_path, $page){
+        $path = storage_path("app/loa_files/".$content_path."/".$filename);
+
+        //Read File
+        $reader = IOFactory::createReader('Xlsx');
+        $spreadsheet = $reader->load($path);
+
+        $sheetCount = $spreadsheet->getSheetCount(); 
+
+        $sheet = $spreadsheet->getSheet($page);
+        $name = $spreadsheet->getSheetNames()[$page];
+
+        $activeSpreadsheet = new Spreadsheet();
+        $activeSpreadsheet->addExternalSheet($sheet, 0);
+
+        $writer = IOFactory::createWriter($activeSpreadsheet, 'Html');
+        $message = $writer->save('php://output');
+    })->name('show-excel');
 });
 
 //DEPENDENT INDONESIA DROPDOWN
