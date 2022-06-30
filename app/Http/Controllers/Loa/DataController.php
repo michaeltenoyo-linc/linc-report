@@ -24,6 +24,8 @@ use App\Models\Regency;
 use App\Models\Trucks;
 use App\Models\Village;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 class DataController extends BaseController
 {
@@ -46,7 +48,7 @@ class DataController extends BaseController
 
         //File Check
         if($req->hasFile('file') && $checkCustomer != null){
-            $filename = $req->input('customer').'-'.$req->input('filename').$req->input('extension');
+            $filename = $req->input('customer').'$'.$req->input('name').'$'.$req->input('filename').$req->input('extension');
             $req->file('file')->storeAs(
                 'loa_files/'.$req->input('type'), $filename
             );
@@ -64,6 +66,37 @@ class DataController extends BaseController
 
             $newFile = LoaFile::create([
                 'id_loa' => $newLoa->id,
+                'filename' => $filename,
+                'extension' => $req->input('extension'),
+            ]);
+
+            return response()->json(['message' => "Berhasil menyimpan LOA baru."], 200);
+        }
+
+        return response()->json(['message' => "Terjadi kesalahan pada saat input."], 400);
+    }
+
+    //Navigation
+    public function insertFile(Request $req){
+        $req->validate([
+            'id_loa' => 'required',
+            'filename' => 'required',
+            'file' => 'required',
+            'extension' => 'required'
+        ]);
+
+        $loa = LoaMaster::find($req->input('id_loa'));
+        $checkCustomer = Customer::find($loa->id_customer);
+
+        //File Check
+        if($req->hasFile('file') && $checkCustomer != null){
+            $filename = $checkCustomer->reference.'$'.$loa->name.'$'.$req->input('filename').$req->input('extension');
+            $req->file('file')->storeAs(
+                'loa_files/'.$loa->type, $filename
+            );
+
+            $newFile = LoaFile::create([
+                'id_loa' => $loa->id,
                 'filename' => $filename,
                 'extension' => $req->input('extension'),
             ]);
@@ -157,5 +190,20 @@ class DataController extends BaseController
         $file->content_path = LoaMaster::find($file->id_loa);
 
         return $file;
+    }
+
+    public function deleteById($id){
+        $loa = LoaMaster::find($id);
+        $type = $loa->type;
+        $loa->forceDelete();
+
+        $loa_files = LoaFile::where('id_loa',$id)->get();
+
+        foreach ($loa_files as $file) {
+            Storage::delete('loa_files/'.$type.'/'.$file->filename);
+            $file->forceDelete();
+        }
+
+        return response(['message' => 'Berhasil menghapus data'], 200);
     }
 }

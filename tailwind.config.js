@@ -13,7 +13,8 @@ module.exports = {
       'text-yellow-300',
       'text-orange-400',
       'text-orange-600',
-      'text-red-600'
+      'text-red-600',
+      'text-right'
     ]
   },
   theme: {

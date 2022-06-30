@@ -31,7 +31,7 @@ Linc | LOA Homepage
             </div>
             <div class="w-10/12 text-center">
                 <div class="text-lg" id="customer_reference">{{ $customer->reference }}</div>
-                <div class="font-bold text-3xl" ><u>{{ $customer->name }}</u></div>
+                <div class="font-bold text-3xl" ><u id="customer_name">{{ $customer->name }}</u></div>
                 <div class="uppercase" id="loa_type">{{ $customer->type_full }}</div>
                 <input type="hidden" name="type" id="loa_type_short" value="{{ $customer->type }}">
             </div>
