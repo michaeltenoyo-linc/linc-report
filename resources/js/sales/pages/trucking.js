@@ -58,15 +58,16 @@ export const trucking = async () => {
 
       let division = $('#form-trucking-performance .input-division').val();
       let ownership = $('#form-trucking-performance .input-ownership').val();
-      let nopol = $('#form-trucking-performance .input-nopol').val();
+      let nopol = "all";
       let constraint = $('#form-trucking-performance .input-constraint').val();
+      let status = $('#form-trucking-performance .input-status').val();
 
       let tree = $('#form-trucking-performance .input-tree').val();
 
       if(tree == "nopol_to_customer"){
-        window.open('/sales/truck/performance-generate/'+ownership+'/'+division+'/'+nopol+'/'+constraint, '_blank');
+        window.open('/sales/truck/performance-generate/'+ownership+'/'+division+'/'+nopol+'/'+constraint+'/'+status, '_blank');
       }else{
-        window.open('/sales/truck/performance-customer/'+ownership+'/'+division+'/'+nopol+'/'+constraint, '_blank');
+        window.open('/sales/truck/performance-customer/'+ownership+'/'+division+'/'+nopol+'/'+constraint+'/'+status, '_blank');
       }
     })
 

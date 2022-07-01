@@ -18,7 +18,7 @@ Linc | Trucking Performance
             </div>
             <div class="w-full mb-8 mt-8">
                 <form id="form-trucking-performance" autocomplete="off">
-                    <div class="relative grid grid-cols-3 gap-4 mb-3">
+                    <div class="relative grid grid-cols-4 gap-4 mb-3">
                         <div class="mb-4">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                                     htmlFor="date-filter-between"> From </label>
@@ -46,9 +46,19 @@ Linc | Trucking Performance
                                 <option value="websettle_date">Websettle</option>
                             </select>
                         </div>
+                        <div class="relative w-full mb-3">
+                            <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                htmlFor="status">Status</label>
+                            <select required name="status" class="input-status border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text">
+                                <option value="all">==Semua==</option>
+                                <option value="ongoing">Ongoing</option>
+                                <option value="pod">Complete POD</option>
+                                <option value="websettle">Websettle</option>
+                            </select>
+                        </div>
                     </div>
 
-                    <div class="relative grid grid-cols-4 gap-4 mb-3">
+                    <div class="relative grid grid-cols-3 gap-4 mb-3">
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                                 htmlFor="name">Ownership</label>
@@ -85,14 +95,6 @@ Linc | Trucking Performance
                             </select>
                         </div>
                         -->
-
-                        <div class="relative w-full mb-3">
-                            <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="name">Nopol</label>
-                            <select required name="sales" class="input-nopol border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text">
-                                <option value="all">==Semua==</option>
-                            </select>
-                        </div>
 
                         <div class="relative w-full mb-3">
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"

@@ -383,8 +383,8 @@ Route::middleware(['auth','priviledge:sales,master'])->group(function () {
         Route::prefix('/truck')->group(function () {
             //View and Generate
             Route::get('/performance',[SalesViewController::class, 'gotoTruckingPerformance']);
-            Route::get('/performance-generate/{ownership}/{division}/{nopol}/{constraint}',[SalesTruckController::class, 'generateTruckingPerformance']);
-            Route::get('/performance-customer/{ownership}/{division}/{nopol}/{constraint}',[SalesTruckController::class, 'generateCustomerPerformance']);
+            Route::get('/performance-generate/{ownership}/{division}/{nopol}/{constraint}/{status}',[SalesTruckController::class, 'generateTruckingPerformance']);
+            Route::get('/performance-customer/{ownership}/{division}/{nopol}/{constraint}/{status}',[SalesTruckController::class, 'generateCustomerPerformance']);
             Route::get('/utility',[SalesViewController::class, 'gotoTruckingUtility']);
             Route::get('/utility-generate/{ownership}',[SalesTruckController::class, 'generateTruckingUtility']);
 

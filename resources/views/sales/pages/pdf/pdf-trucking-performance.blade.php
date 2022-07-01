@@ -88,6 +88,7 @@
 						<h1>Trucking Performance Report</h1>
 						<h5 class="font-weight-normal">{{ $period_from }} - {{ $period_to }}</h5>
 						<h5 class="font-weight-normal">By {{ $period_constraint }}</h5>
+						<h5 class="font-weight-normal">Status {{ $status_constraint }}</h5>
 					</center>
 				</div>
 			</div>
