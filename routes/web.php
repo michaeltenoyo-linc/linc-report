@@ -229,6 +229,7 @@ Route::middleware(['auth','priviledge:loa,master'])->group(function () {
             Route::post('/insertFile', [LoaDataController::class, 'insertFile']);
             Route::get('/read/{type}', [LoaDataController::class, 'read']);
             Route::get('/deleteById/{id}', [LoaDataController::class, 'deleteById']);
+            Route::get('/deleteFileById/{id}', [LoaDataController::class, 'deleteFileById']);
             Route::get('/read/byCustomer/{type}/{reference}', [LoaDataController::class, 'readByCustomer']);
             Route::get('/getGroupByCustomer/{type}/{reference}', [LoaDataController::class, 'getGroupByCustomer']);
             Route::get('/getTimelineByGroup/{type}/{reference}/{group}', [LoaDataController::class, 'getTimelineByGroup']);

@@ -88,10 +88,11 @@ export const refreshFileList = async () => {
         let filename = row['filename'].split('$');
 
         let rowDiv = '<li id="'+row['id']+'" class="file-items flex cursor-pointer hover:bg-gray-200 px-6 py-2 border-b border-gray-200 w-full rounded-t-lg flex">'
-                    +'<div class="w-full">'+filename[2]+'<span class="text-xs '+typeColor+' text-white rounded p-1 ml-3">'+row['extension'].toUpperCase()+'</span></div>'
+                    +'<div class="w-full">'+'<button id="'+row['id']+'" type="button" class="p-1 btn-delete-file bg-red-400 text-white hover:bg-red-500 rounded-full"><i class="far fa-trash-alt" style="font-size:15px"></i></button> '+filename[2]+'<span class="text-xs '+typeColor+' text-white rounded p-1 ml-3">'+row['extension'].toUpperCase()+'</span></div>'
                     +'</li>'
         
-                    
+             
+        $('.btn-delete-all-file').removeClass('hidden');
         $('.btn-add-file').removeClass('hidden');
         $('#file-container').append(rowDiv);
     });
@@ -108,6 +109,7 @@ export const LoaDetail = () => {
         $('#tab-container').empty();
         $('#file-container').empty();
         $('.btn-add-file').addClass('hidden');
+        $('.btn-delete-all-file').addClass('hidden');
         const CustomerGroups = await $.get('/loa/data/getGroupByCustomer/'+type+'/'+customer);
         
         let firstGroup = true;
@@ -236,9 +238,59 @@ export const LoaDetail = () => {
         })
     }
 
+    const onDeleteFile = async () => {
+        $(document).on('click','.btn-delete-file', async function(e){
+            let id = $(this).attr('id');
+            
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "File akan dihapus permanen!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Iya, hapus!'
+              }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        processData: false,
+                        contentType: false,
+                        dataType: 'JSON',
+                    });
+                    $.ajax({
+                        url: '/loa/data/deleteFileById/'+id,
+                        type: 'GET',
+                        enctype: 'multipart/form-data',
+                        success: (data) => {
+                            Swal.fire({
+                                title: 'Terhapus!',
+                                text: 'File berhasil dihapus.',
+                                icon: 'success'
+                            }).then(function(){
+                                $('.viewer-container').addClass('hidden');
+                                refreshFileList();
+                            });
+                        },
+                        error : function(request, status, error){
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: (JSON.parse(request.responseText)).message,
+                            })
+                        },
+                    });
+                }
+            });
+        });
+    }
+
     init();
     onChangeGroup();
     onClickContext();
     onClickFile();
     onClickDeleteLoa();
+    onDeleteFile();
 };

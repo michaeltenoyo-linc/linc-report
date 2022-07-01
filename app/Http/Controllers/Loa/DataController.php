@@ -206,4 +206,14 @@ class DataController extends BaseController
 
         return response(['message' => 'Berhasil menghapus data'], 200);
     }
+
+    public function deleteFileById($id){
+        $file = LoaFile::find($id);
+        $loa = LoaMaster::find($file->id_loa);
+        
+        Storage::delete('loa_files/'.$loa->type.'/'.$file->filename);
+        $file->forceDelete();
+
+        return response(['message' => 'Berhasil menghapus file'], 200);
+    }
 }

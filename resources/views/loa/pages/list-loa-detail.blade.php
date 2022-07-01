@@ -118,6 +118,10 @@ Linc | LOA Homepage
                 </div>
                 <div class="w-full">
                     <div class="w-12/12 my-5 flex justify-end">
+                        <div></div>
+                        <button id="" type="button" class="btn-delete-all-file text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                            <span class="mr-2">Delete All</span> <i class='fas fa-folder-plus'></i>
+                        </button>
                         <button id="" type="button" class="btn-add-file text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             <span class="mr-2">Add File</span> <i class='fas fa-folder-plus'></i>
                         </button>
