@@ -46,6 +46,10 @@ use App\Http\Controllers\Sales\TruckController as SalesTruckController;
 use App\Http\Controllers\SharedController;
 use App\Models\LoaFile;
 
+//MESSAGE
+use Hfig\MAPI;
+use Hfig\MAPI\OLE\Pear;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -458,6 +462,72 @@ Route::middleware(['auth','priviledge:loa,master'])->group(function () {
         $writer = IOFactory::createWriter($activeSpreadsheet, 'Html');
         $message = $writer->save('php://output');
     })->name('show-excel');
+
+    Route::get('/show-msg/{filename}/{content_path}', function($filename, $content_path){
+        $path = storage_path("app/loa_files/".$content_path."/".$filename);
+
+        $decodelocation = '/var/html/tmp/';
+        $baseurl = 'http://example.com/tmp/';
+        $uniquefolder = uniqid();
+        // message parsing and file IO are kept separate
+        $messageFactory = new MAPI\MapiMessageFactory();
+        $documentFactory = new Pear\DocumentFactory();
+
+        $ole = $documentFactory->createFromFile($path);
+        $message = $messageFactory->parseMessage($ole);
+
+        /*
+        $html = preg_replace_callback($this->regex, "utf8replacer", $message->getBodyHTML());
+
+        if (count($message->getAttachments()) > 0) {
+            foreach ($message->getAttachments() as $attach) {
+                $filename = $attach->getFilename();
+                $temploc = $decodelocation . '/' . $uniquefolder . '/' . $filename;
+                $fileurl = $baseurl . '/' . $uniquefolder . '/' . $filename;
+                $replace_string = get_string_between($html, 'cid:' . $filename, '"');
+                if ($replace_string) {
+                    file_put_contents($temploc, $attach->getData());
+                    $html = str_replace('cid:' . $filename . $replace_string, base_url($temploc), $html);
+                } else {
+                    $geturl = array(
+                        'filename' => $filename,
+                        'path' => cencode($temploc),
+                    );
+                    $attachments[] = '<a target="_blank" href="' . $fileurl . '">' . $filename . '</a>';
+                }
+            }
+        }
+        */
+        foreach ($message->getRecipients() as $recipient) {
+            $email = $recipient->getEmail();
+            $name = $recipient->getName();
+            if ($recipient->getType() == 'From') {
+                $From[] = ($name) ? '<a href="mailto:' . $email . '">' . $name . '</a>' : '<a href="mailto:' . $email . '">' . $email . '</a>';
+            } elseif ($recipient->getType() == 'To') {
+                $To[] = ($name) ? '<a href="mailto:' . $email . '">' . $name . '</a>' : '<a href="mailto:' . $email . '">' . $email . '</a>';
+            } elseif ($recipient->getType() == 'Cc') {
+                $Cc[] = ($name) ? '<a href="mailto:' . $email . '">' . $name . '</a>' : '<a href="mailto:' . $email . '">' . $email . '</a>';
+            } elseif ($recipient->getType() == 'Bcc') {
+                $Bcc[] = ($name) ? '<a href="mailto:' . $email . '">' . $name . '</a>' : '<a href="mailto:' . $email . '">' . $email . '</a>';
+            }
+        }
+
+        $data = array(
+            'From' => '<a href="mailto:' . $message->properties['sender_email_address'] . '">' . $message->properties['sender_name'] . '</a>',
+            'To' => (isset($To)) ? implode('; ', $To) : '',
+            'Cc' => (isset($Cc)) ? implode('; ', $Cc) : '',
+            'Bcc' => (isset($Bcc)) ? implode('; ', $Bcc) : '',
+            'Subject' => $message->properties['subject'],
+            'Sender' => $message->getSender(),
+            'Body' => str_replace('\r\n','HAHA',$message->getBody()),
+            'hasAttachment' => $message->properties['hasattach'],
+            //'attachments' => ($attachments) ? implode('; ', $attachments) : false,
+            //'html' => $html,
+        );
+
+        dd($data);
+        //return ($data['Body']);
+    })->name('show-msg');
 });
 
 //DEPENDENT INDONESIA DROPDOWN
