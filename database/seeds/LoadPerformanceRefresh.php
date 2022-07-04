@@ -51,76 +51,85 @@ class LoadPerformanceRefresh extends Seeder
             if (!$firstline){
                 $customer = ShipmentBlujay::where('load_id',$data['0'])->first();
                 
-                try {
-                    LoadPerformance::create([
-                        'tms_id' => $data['0'],
-                        'created_date' => Carbon::createFromFormat('d/m/Y H:i', $data['1']),
-                        'carrier_reference' => $data['2'],
-                        'carrier_name' => $data['3'],
-                        'equipment_description' => $data['4'],
-                        'vehicle_number' => $data['5'],
-                        'load_status' => $data['8'],
-                        'first_pick_location_name' => $data['9'],
-                        'last_drop_location_name' => $data['10'],
-                        'routing_guide_name' => $data['15'],
-                        'payable_total_rate' => round(floatval(str_replace(',','',$data['18'])),2),
-                        'billable_total_rate' => round(floatval(str_replace(',','',$data['19'])),2),
-                        'closed_date' =>  ($this->checkDateString($data['20']))?Carbon::createFromFormat('d/m/Y H:i', $data['20']):null,
-                        'weight_lb' => round(floatval(str_replace(',','',$data['24'])),2),
-                        'weight_kg' => round(floatval(str_replace(',','',$data['25'])),2),
-                        'total_distance_km' => round(floatval(str_replace(',','',$data['29'])),2),
-                        'routing_guide' => $data['32'],
-                        'load_group' => $data['47'],
-                        'last_drop_location_reference_number' => $data['52'],
-                        'load_contact' => $data['48'],
-                        'last_drop_location_city' => $data['53'],
-                        'first_pick_location_reference_number' => $data['60'],
-                        'first_pick_location_city' => $data['61'],
-                        'customer_name' => $customer==null?'':$customer->customer_name,
-                        'customer_reference' => $customer==null?'':$customer->customer_reference,
-                        'websettle_date' => ($this->checkDateString($data['22']))?Carbon::createFromFormat('d/m/Y H:i', $data['22']):null,
-                    ]);
-
-                    
-                    error_log("Load Performance : ".$counter." (New)",0);
-                } catch (\Throwable $th) {
-                    $exist = LoadPerformance::find($data['0']);
-
-                    if(!is_null($exist)){
-                        $exist->forceDelete();
+                if($data['8'] == 'Voided'){
+                    $deleteVoid = LoadPerformance::find($data['0']);
+                    if($deleteVoid != null){
+                        $deleteVoid->forceDelete();
                     }
-
-                    LoadPerformance::create([
-                        'tms_id' => $data['0'],
-                        'created_date' => Carbon::createFromFormat('d/m/Y H:i', $data['1']),
-                        'carrier_reference' => $data['2'],
-                        'carrier_name' => $data['3'],
-                        'equipment_description' => $data['4'],
-                        'vehicle_number' => $data['5'],
-                        'load_status' => $data['8'],
-                        'first_pick_location_name' => $data['9'],
-                        'last_drop_location_name' => $data['10'],
-                        'routing_guide_name' => $data['15'],
-                        'payable_total_rate' => round(floatval(str_replace(',','',$data['18'])),2),
-                        'billable_total_rate' => round(floatval(str_replace(',','',$data['19'])),2),
-                        'closed_date' =>  ($this->checkDateString($data['20']))?Carbon::createFromFormat('d/m/Y H:i', $data['20']):null,
-                        'weight_lb' => round(floatval(str_replace(',','',$data['24'])),2),
-                        'weight_kg' => round(floatval(str_replace(',','',$data['25'])),2),
-                        'total_distance_km' => round(floatval(str_replace(',','',$data['29'])),2),
-                        'routing_guide' => $data['32'],
-                        'load_group' => $data['47'],
-                        'last_drop_location_reference_number' => $data['52'],
-                        'load_contact' => $data['48'],
-                        'last_drop_location_city' => $data['53'],
-                        'first_pick_location_reference_number' => $data['60'],
-                        'first_pick_location_city' => $data['61'],
-                        'customer_name' => $customer==null?'':$customer->customer_name,
-                        'customer_reference' => $customer==null?'':$customer->customer_reference,
-                        'websettle_date' => ($this->checkDateString($data['22']))?Carbon::createFromFormat('d/m/Y H:i', $data['22']):null,
-                    ]);
-
-                    error_log("Load Performance : ".$counter." (Exist Updating)",0);
+                    error_log("Load Performance : ".$counter." (VOID)",0);
+                }else{
+                    try {
+                        LoadPerformance::create([
+                            'tms_id' => $data['0'],
+                            'created_date' => Carbon::createFromFormat('d/m/Y H:i', $data['1']),
+                            'carrier_reference' => $data['2'],
+                            'carrier_name' => $data['3'],
+                            'equipment_description' => $data['4'],
+                            'vehicle_number' => $data['5'],
+                            'load_status' => $data['8'],
+                            'first_pick_location_name' => $data['9'],
+                            'last_drop_location_name' => $data['10'],
+                            'routing_guide_name' => $data['15'],
+                            'payable_total_rate' => round(floatval(str_replace(',','',$data['18'])),2),
+                            'billable_total_rate' => round(floatval(str_replace(',','',$data['19'])),2),
+                            'closed_date' =>  ($this->checkDateString($data['20']))?Carbon::createFromFormat('d/m/Y H:i', $data['20']):null,
+                            'weight_lb' => round(floatval(str_replace(',','',$data['24'])),2),
+                            'weight_kg' => round(floatval(str_replace(',','',$data['25'])),2),
+                            'total_distance_km' => round(floatval(str_replace(',','',$data['29'])),2),
+                            'routing_guide' => $data['32'],
+                            'load_group' => $data['47'],
+                            'last_drop_location_reference_number' => $data['52'],
+                            'load_contact' => $data['48'],
+                            'last_drop_location_city' => $data['53'],
+                            'first_pick_location_reference_number' => $data['60'],
+                            'first_pick_location_city' => $data['61'],
+                            'customer_name' => $customer==null?'':$customer->customer_name,
+                            'customer_reference' => $customer==null?'':$customer->customer_reference,
+                            'websettle_date' => ($this->checkDateString($data['22']))?Carbon::createFromFormat('d/m/Y H:i', $data['22']):null,
+                        ]);
+    
+                        
+                        error_log("Load Performance : ".$counter." (New)",0);
+                    } catch (\Throwable $th) {
+                        $exist = LoadPerformance::find($data['0']);
+    
+                        if(!is_null($exist)){
+                            $exist->forceDelete();
+                        }
+    
+                        LoadPerformance::create([
+                            'tms_id' => $data['0'],
+                            'created_date' => Carbon::createFromFormat('d/m/Y H:i', $data['1']),
+                            'carrier_reference' => $data['2'],
+                            'carrier_name' => $data['3'],
+                            'equipment_description' => $data['4'],
+                            'vehicle_number' => $data['5'],
+                            'load_status' => $data['8'],
+                            'first_pick_location_name' => $data['9'],
+                            'last_drop_location_name' => $data['10'],
+                            'routing_guide_name' => $data['15'],
+                            'payable_total_rate' => round(floatval(str_replace(',','',$data['18'])),2),
+                            'billable_total_rate' => round(floatval(str_replace(',','',$data['19'])),2),
+                            'closed_date' =>  ($this->checkDateString($data['20']))?Carbon::createFromFormat('d/m/Y H:i', $data['20']):null,
+                            'weight_lb' => round(floatval(str_replace(',','',$data['24'])),2),
+                            'weight_kg' => round(floatval(str_replace(',','',$data['25'])),2),
+                            'total_distance_km' => round(floatval(str_replace(',','',$data['29'])),2),
+                            'routing_guide' => $data['32'],
+                            'load_group' => $data['47'],
+                            'last_drop_location_reference_number' => $data['52'],
+                            'load_contact' => $data['48'],
+                            'last_drop_location_city' => $data['53'],
+                            'first_pick_location_reference_number' => $data['60'],
+                            'first_pick_location_city' => $data['61'],
+                            'customer_name' => $customer==null?'':$customer->customer_name,
+                            'customer_reference' => $customer==null?'':$customer->customer_reference,
+                            'websettle_date' => ($this->checkDateString($data['22']))?Carbon::createFromFormat('d/m/Y H:i', $data['22']):null,
+                        ]);
+    
+                        error_log("Load Performance : ".$counter." (Exist Updating)",0);
+                    }
                 }
+                
                 $counter++;
             }
 

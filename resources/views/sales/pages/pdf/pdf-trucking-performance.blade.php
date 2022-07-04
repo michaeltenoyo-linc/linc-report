@@ -120,6 +120,11 @@
 						<b><span style="font-size: 48pt;">{{ number_format(((($overall_revenue - $overall_cost)/$overall_revenue)*100),0,',','.') }}%</span></b>
 					</div>
 				</div>
+				<div class="row mt-5">
+					<div class="col">
+						<b>Total Loads</b><br><b><span style="font-size: 48pt;">{{ $countAll }}</span></b>
+					</div>
+				</div>
 			</div>
 		</div>
 	</section>

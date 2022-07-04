@@ -221,9 +221,9 @@ class TruckController extends BaseController
 
         $data['overall_revenue'] = 0;
         $data['overall_cost'] = 0;
+        $data['countAll'] = 0;
         foreach ($data['performance'] as $row) {
             $unitDetail = unit_surabaya::where('nopol',$row->vehicle_number)->first();
-
             //unit detail
             if($unitDetail != null){
                 $row->carrier_name = $unitDetail->own;
@@ -260,8 +260,10 @@ class TruckController extends BaseController
 
             $data['overall_revenue'] += $row->totalRevenue;
             $data['overall_cost'] += $row->totalCost;
-        }
 
+            
+            $data['countAll'] += $row->totalLoads;
+        }
         //Period Data
         $data['period_from'] = Session::get('sales-from')->format('d M Y');
         $data['period_to'] = Session::get('sales-to')->format('d M Y');

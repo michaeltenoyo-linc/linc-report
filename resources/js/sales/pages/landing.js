@@ -6,68 +6,48 @@ import Chart from 'chart.js/auto';
 
 export const loadStaticChart = async () => {
 
-  //Chart Landing Yearly Revenue
+  //Chart Landing Yearly Revenue All
 
-    //Dummy Data
-    const labels = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December'
+  //Dummy Data
+  const labels = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
   ];
-  const revenueDataFetch = await $.get('/sales/data/get-yearly-revenue');
-  //console.log(revenueDataFetch);
+  const revenueDataFetch = await $.get('/sales/data/get-yearly-revenue/all');
+  var contYearlyRevenue =  document.getElementById('chartRevenueYearly').getContext('2d'), gradient = contYearlyRevenue.createLinearGradient(0, 0, 0, 450);
+
+  gradient.addColorStop(0, 'rgba(8, 73, 252, 1)');
+  gradient.addColorStop(0.5, 'rgba(8, 73, 252, 0.25)');
+  gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+
+
   const data = {
       labels: labels,
       datasets: [
           {
-              label: 'Warehouse',
-              data: revenueDataFetch['warehouse'],
-              borderColor: 'rgb(10, 23, 79)',
-              backgroundColor: 'rgb(10, 23, 79, 0.5)',
-              fill: false,
-              cubicInterpolationMode: 'monotone',
-              tension: 0.4
-          },
-          {
-              label: 'Transport',
-              data: revenueDataFetch['transport'],
-              borderColor: 'rgb(227, 9, 9)',
-              backgroundColor: 'rgb(227, 9, 9, 0.5)',
-              fill: false,
-              cubicInterpolationMode: 'monotone',
-              tension: 0.4
-          },
-          {
-              label: 'EXIM',
-              data: revenueDataFetch['exim'],
-              borderColor: 'rgb(25, 166, 60)',
-              backgroundColor: 'rgb(25, 166, 60, 0.5)',
-              fill: false,
-              cubicInterpolationMode: 'monotone',
-              tension: 0.4
-          },
-          {
-              label: 'Bulk',
-              data: revenueDataFetch['bulk'],
-              borderColor: 'rgb(25, 23, 150)',
-              backgroundColor: 'rgb(25, 23, 150, 0.5)',
-              fill: false,
+              label: 'Surabaya',
+              data: revenueDataFetch,
+              borderColor: '#032ea3',
+              backgroundColor: gradient,
+              pointBackgroundColor: 'white',
+              fill: true,
               cubicInterpolationMode: 'monotone',
               tension: 0.4
           },
       ]
   };
 
-  const contYearlyRevenue = $('#chartRevenueYearly');
   const configYearlyRevenue = {
       type: 'line',
       data: data,
@@ -76,7 +56,7 @@ export const loadStaticChart = async () => {
           plugins: {
               title: {
                   display: true,
-                  text: 'Yearly Revenue 2022'
+                  text: 'Yearly Revenue Surabaya 2022'
               },
           },
           interaction: {
@@ -93,16 +73,270 @@ export const loadStaticChart = async () => {
               display: true,
               title: {
                 display: true,
-                text: 'Revenue (Mill.)'
+                text: 'Revenue (Bill.)'
               },
               suggestedMin: 0,
-              suggestedMax: 15
+              suggestedMax: 3
           }
           }
       },
   };
 
   const chartRevenueYearly = new Chart(contYearlyRevenue, configYearlyRevenue);
+
+
+  //Each Division Detail
+  const transportYearlyDetail = await $.get('/sales/data/get-yearly-detail/transport');
+  $('#transport-yearly-revenue').html('IDR. '+transportYearlyDetail['revenue']);
+  $('#transport-yearly-ongoing').html(transportYearlyDetail['ongoing']);
+  $('#transport-yearly-pod').html(transportYearlyDetail['pod']);
+  $('#transport-yearly-websettle').html(transportYearlyDetail['websettle']);
+
+  const eximYearlyDetail = await $.get('/sales/data/get-yearly-detail/exim');
+  $('#exim-yearly-revenue').html('IDR. '+eximYearlyDetail['revenue']);
+  $('#exim-yearly-ongoing').html(eximYearlyDetail['ongoing']);
+  $('#exim-yearly-pod').html(eximYearlyDetail['pod']);
+  $('#exim-yearly-websettle').html(eximYearlyDetail['websettle']);
+
+  const bulkYearlyDetail = await $.get('/sales/data/get-yearly-detail/bulk');
+  $('#bulk-yearly-revenue').html('IDR. '+bulkYearlyDetail['revenue']);
+  $('#bulk-yearly-ongoing').html(bulkYearlyDetail['ongoing']);
+  $('#bulk-yearly-pod').html(bulkYearlyDetail['pod']);
+  $('#bulk-yearly-websettle').html(bulkYearlyDetail['websettle']);
+
+  const warehouseYearlyDetail = await $.get('/sales/data/get-yearly-detail/warehouse');
+  $('#warehouse-yearly-revenue').html('IDR. '+warehouseYearlyDetail['revenue']);
+  $('#warehouse-yearly-ongoing').html(warehouseYearlyDetail['ongoing']);
+  $('#warehouse-yearly-pod').html(warehouseYearlyDetail['pod']);
+  $('#warehouse-yearly-websettle').html(warehouseYearlyDetail['websettle']);
+
+  //Yearly Revenue Transport
+  //Dummy Data
+  const labelsTransport = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ];
+  const revenueDataFetchTransport = await $.get('/sales/data/get-yearly-revenue/transport');
+  var contYearlyRevenueTransport =  document.getElementById('chartRevenueYearlyTransport').getContext('2d'), gradientTransport = contYearlyRevenueTransport.createLinearGradient(0, 0, 0, 200);
+
+  gradientTransport.addColorStop(0, 'rgba(214, 2, 2, 1)');
+  gradientTransport.addColorStop(0.5, 'rgba(214, 2, 2, 0.5)');
+  gradientTransport.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+
+
+  const dataTransport = {
+      labels: labelsTransport,
+      datasets: [
+          {
+              label: 'Transport',
+              data: revenueDataFetchTransport,
+              borderColor: '#8a0000',
+              backgroundColor: gradientTransport,
+              pointBackgroundColor: 'white',
+              fill: true,
+              cubicInterpolationMode: 'monotone',
+              tension: 0.4
+          },
+      ]
+  };
+
+  const configYearlyRevenueTransport = {
+      type: 'line',
+      data: dataTransport,
+      options: {
+          responsive: true,
+          plugins: {
+              title: {
+                  display: false,
+                  text: 'Yearly Revenue Surabaya Transport 2022'
+              },
+          },
+          interaction: {
+              intersect: false,
+          },
+          scales: {
+          x: {
+              display: true,
+              title: {
+                display: true
+              },
+          },
+          y: {
+              display: true,
+              title: {
+                display: true,
+                text: 'Revenue (Bill.)'
+              },
+              suggestedMin: 0,
+          }
+          }
+      },
+  };
+
+  const chartRevenueYearlyTransport = new Chart(contYearlyRevenueTransport, configYearlyRevenueTransport);
+
+  //Yearly Revenue Exim
+  //Dummy Data
+  const labelsExim = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ];
+  const revenueDataFetchExim = await $.get('/sales/data/get-yearly-revenue/exim');
+  var contYearlyRevenueExim =  document.getElementById('chartRevenueYearlyExim').getContext('2d'), gradientExim = contYearlyRevenueExim.createLinearGradient(0, 0, 0, 200);
+
+  gradientExim.addColorStop(0, 'rgba(2, 173, 30, 1)');
+  gradientExim.addColorStop(0.5, 'rgba(2, 173, 30, 0.5)');
+  gradientExim.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+
+
+  const dataExim = {
+      labels: labelsExim,
+      datasets: [
+          {
+              label: 'Exim',
+              data: revenueDataFetchExim,
+              borderColor: '#004a0c',
+              backgroundColor: gradientExim,
+              pointBackgroundColor: 'white',
+              fill: true,
+              cubicInterpolationMode: 'monotone',
+              tension: 0.4
+          },
+      ]
+  };
+
+  const configYearlyRevenueExim = {
+      type: 'line',
+      data: dataExim,
+      options: {
+          responsive: true,
+          plugins: {
+              title: {
+                  display: false,
+                  text: 'Yearly Revenue Surabaya Exim 2022'
+              },
+          },
+          interaction: {
+              intersect: false,
+          },
+          scales: {
+          x: {
+              display: true,
+              title: {
+                display: true
+              },
+          },
+          y: {
+              display: true,
+              title: {
+                display: true,
+                text: 'Revenue (Bill.)'
+              },
+              suggestedMin: 0,
+          }
+          }
+      },
+  };
+
+  const chartRevenueYearlyExim = new Chart(contYearlyRevenueExim, configYearlyRevenueExim);
+
+  //Yearly Revenue Bulk
+  //Dummy Data
+  const labelsBulk = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ];
+  const revenueDataFetchBulk = await $.get('/sales/data/get-yearly-revenue/bulk');
+  var contYearlyRevenueBulk =  document.getElementById('chartRevenueYearlyBulk').getContext('2d'), gradientBulk = contYearlyRevenueBulk.createLinearGradient(0, 0, 0, 200);
+
+  gradientBulk.addColorStop(0, 'rgba(65, 218, 232, 1)');
+  gradientBulk.addColorStop(0.5, 'rgba(65, 218, 232, 0.5)');
+  gradientBulk.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+
+
+  const dataBulk = {
+      labels: labelsBulk,
+      datasets: [
+          {
+              label: 'Bulk',
+              data: revenueDataFetchBulk,
+              borderColor: '#2e99a3',
+              backgroundColor: gradientBulk,
+              pointBackgroundColor: 'white',
+              fill: true,
+              cubicInterpolationMode: 'monotone',
+              tension: 0.4
+          },
+      ]
+  };
+
+  const configYearlyRevenueBulk = {
+      type: 'line',
+      data: dataBulk,
+      options: {
+          responsive: true,
+          plugins: {
+              title: {
+                  display: false,
+                  text: 'Yearly Revenue Surabaya Bulk 2022'
+              },
+          },
+          interaction: {
+              intersect: false,
+          },
+          scales: {
+          x: {
+              display: true,
+              title: {
+                display: true
+              },
+          },
+          y: {
+              display: true,
+              title: {
+                display: true,
+                text: 'Revenue (Bill.)'
+              },
+              suggestedMin: 0,
+          }
+          }
+      },
+  };
+
+  const chartRevenueYearlyBulk = new Chart(contYearlyRevenueBulk, configYearlyRevenueBulk);
 }
 
 export const loadDynamicChart = async () => {

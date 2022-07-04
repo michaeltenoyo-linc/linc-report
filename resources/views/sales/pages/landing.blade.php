@@ -29,11 +29,96 @@ Linc | Sales Report Homepage
         </div>
     </div>
 
-    <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
-        <div class="rounded-t mb-0 px-4 py-3 border-0">
-            <div class="flex flex-wrap items-center">
-                <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-                    <canvas id="chartRevenueYearly" width="100%" height="30%"></canvas>
+    <div class="relative flex w-full mb-6 shadow-lg rounded bg-white">
+        <div class="w-full">
+            <div class="rounded-t mb-0 px-4 py-3 border-0">
+                <div class="flex flex-wrap items-center">
+                    <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+                        <canvas id="chartRevenueYearly" width="100%" height="30%"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="w-full">
+        <div class="w-12/12">
+            <div class="mb-6 px-4 py-3 grid grid-cols-4 gap-2">
+                <div class="w-full rounded p-4 bg-red-700 text-white">
+                    <h1 class="text-center text-2xl">TRANSPORT</h1>
+                    <hr class="my-2">
+                    <h1 class="text-center font-bold mb-4 text-lg" id="transport-yearly-revenue">IDR. XXX.XXX</h1>
+                    <p>
+                        <i class='fas fa-shipping-fast'></i> IDR. <span id="transport-yearly-ongoing">XX.XXX</span><br>
+                        <i class='fas fa-clipboard-check'></i> IDR. <span id="transport-yearly-pod">XX.XXX</span><br>
+                        <i class='fas fa-donate'></i> IDR. <span id="transport-yearly-websettle">XX.XXX</span><br>
+                    </p>
+                </div>
+                <div class="w-full rounded p-4 bg-green-700 text-white">
+                    <h1 class="text-center text-2xl">EXIM</h1>
+                    <hr class="my-2">
+                    <h1 class="text-center font-bold mb-4 text-lg" id="exim-yearly-revenue">IDR. XXX.XXX M</h1>
+                    <p>
+                        <i class='fas fa-shipping-fast'></i> IDR. <span id="exim-yearly-ongoing">XX.XXX</span><br>
+                        <i class='fas fa-clipboard-check'></i> IDR. <span id="exim-yearly-pod">XX.XXX</span><br>
+                        <i class='fas fa-donate'></i> IDR. <span id="exim-yearly-websettle">XX.XXX</span><br>
+                    </p>
+                </div>
+                <div class="w-full rounded p-4 bg-sky-700 text-white">
+                    <h1 class="text-center text-2xl">BULK</h1>
+                    <hr class="my-2">
+                    <h1 class="text-center font-bold mb-4 text-lg" id="bulk-yearly-revenue">IDR. XXX.XXX</h1>
+                    <p>
+                        <i class='fas fa-shipping-fast'></i> IDR. <span id="bulk-yearly-ongoing">XX.XXX</span><br>
+                        <i class='fas fa-clipboard-check'></i> IDR. <span id="bulk-yearly-pod">XX.XXX</span><br>
+                        <i class='fas fa-donate'></i> IDR. <span id="bulk-yearly-websettle">XX.XXX</span><br>
+                    </p>
+                </div>
+                <div class="w-full rounded p-4 bg-gray-700 text-white">
+                    <h1 class="text-center text-2xl">WAREHOUSE</h1>
+                    <hr class="my-2">
+                    <h1 class="text-center font-bold mb-4 text-lg" id="warehouse-yearly-revenue">IDR. XXX.XXX</h1>
+                    <p>
+                        <i class='fas fa-shipping-fast'></i> IDR. <span id="warehouse-yearly-ongoing">XX.XXX</span><br>
+                        <i class='fas fa-clipboard-check'></i> IDR. <span id="warehouse-yearly-pod">XX.XXX</span><br>
+                        <i class='fas fa-donate'></i> IDR. <span id="warehouse-yearly-websettle">XX.XXX</span><br>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="relative w-full mb-6 shadow-lg rounded bg-white">
+        <div class="w-full p-5">
+            <h1 class="text-center font-bold text-2xl">2022 Division Performance</h1>
+        </div>
+        <div class="w-full">
+            <div class="rounded-t mb-0 px-4 py-3 border-0">
+                <div class="flex flex-wrap items-center">
+                    <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+                        <canvas id="chartRevenueYearlyTransport" width="100%" height="20%"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="w-full grid grid-cols-2 gap-4">
+            <div class="w-full">
+                <div class="rounded-t mb-0 px-4 py-3 border-0">
+                    <div class="flex flex-wrap items-center">
+                        <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+                            <canvas id="chartRevenueYearlyExim" width="100%" height="40%"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full">
+                <div class="rounded-t mb-0 px-4 py-3 border-0">
+                    <div class="flex flex-wrap items-center">
+                        <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+                            <canvas id="chartRevenueYearlyBulk" width="100%" height="40%"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

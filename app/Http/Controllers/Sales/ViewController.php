@@ -39,6 +39,7 @@ class ViewController extends BaseController
     private $warehouseLoadGroups = [];
     private $emptyLoadGroups = ['SURABAYA MOB KOSONGAN'];
     private $surabayaLoadGroups = ['SURABAYA LOG PACK', 'SURABAYA RENTAL', 'SURABAYA RENTAL TRIP', 'SURABAYA TIV LOKAL','SURABAYA EXIM TRUCKING', 'SURABAYA TIV IMPORT','SURABAYA LOG BULK','SURABAYA MOB KOSONGAN'];
+    private $rateThreshold = 100;
 
     //Navigation
     public function showLoadDetail(Request $req, $load_id){
@@ -495,56 +496,113 @@ class ViewController extends BaseController
         return response()->json($data, 200);
     }
 
-    public function getYearlyRevenue (Request $req){
+    public function getYearlyDetail(Request $req, $division){
         $year = Session::get('sales-year');
-        $data['warehouse'] = [0,0,0,0,0,0,0,0,0,0,0,0];
-        $data['transport'] = [0,0,0,0,0,0,0,0,0,0,0,0];
-        $data['exim'] = [0,0,0,0,0,0,0,0,0,0,0,0];
-        $data['bulk'] = [0,0,0,0,0,0,0,0,0,0,0,0];
+        
+        $group = $this->surabayaLoadGroups;
+        switch ($division) {
+            case 'transport':
+                $group = $this->transportLoadGroups;
+                break;
+            case 'exim':
+                $group = $this->eximLoadGroups;
+                break;
+            case 'bulk':
+                $group = $this->bulkLoadGroups;
+                break;
+            case 'warehouse':
+                $group = $this->warehouseLoadGroups;
+                break;
+        }
+
+        $data['revenue'] = LoadPerformance::selectRaw("
+                                SUM(billable_total_rate) as totalActual
+                            ")
+                            ->whereIn('load_group',$group)
+                            ->where('billable_total_rate','>',$this->rateThreshold)
+                            ->whereYear('created_date',Session::get('sales-year'))
+                            ->where('load_status','!=','Voided')
+                            ->first();
+        $data['revenue'] = number_format(round($data['revenue']->totalActual), 0, ',', '.');
+        
+
+        $data['ongoing'] = LoadPerformance::selectRaw("
+                                SUM(billable_total_rate) as totalActual
+                            ")
+                            ->whereIn('load_group',$group)
+                            ->where('billable_total_rate','>',$this->rateThreshold)
+                            ->whereYear('created_date',Session::get('sales-year'))
+                            ->where('load_status','!=','Voided')
+                            ->where([
+                                ['load_status','=','Accepted']
+                            ])
+                            ->first();
+        $data['ongoing'] = number_format(round($data['ongoing']->totalActual), 0, ',', '.');
+
+        $data['pod'] =  LoadPerformance::selectRaw("
+                            SUM(billable_total_rate) as totalActual
+                        ")  
+                        ->whereIn('load_group',$group)
+                        ->where('billable_total_rate','>',$this->rateThreshold)
+                        ->whereYear('created_date',Session::get('sales-year'))
+                        ->where('load_status','!=','Voided')
+                        ->where([
+                            ['load_status','=','Completed'],
+                            ['websettle_date','=',null]
+                        ])
+                        ->first();
+        $data['pod'] = number_format(round($data['pod']->totalActual), 0, ',', '.');
+        
+        $data['websettle'] =  LoadPerformance::selectRaw("
+                        SUM(billable_total_rate) as totalActual
+                    ")  
+                    ->whereIn('load_group',$group)
+                    ->where('billable_total_rate','>',$this->rateThreshold)
+                    ->whereYear('created_date',Session::get('sales-year'))
+                    ->where('load_status','!=','Voided')
+                    ->where([
+                        ['websettle_date','!=',null]
+                    ])
+                    ->first(); 
+        $data['websettle'] = number_format(round($data['websettle']->totalActual), 0, ',', '.');    
+        
+        return response($data, 200);
+    }
+
+    public function getYearlyRevenue (Request $req, $division){
+        $year = Session::get('sales-year');
+        $data = [0,0,0,0,0,0,0,0,0,0,0,0];
+
+        $group = $this->surabayaLoadGroups;
+        switch ($division) {
+            case 'transport':
+                $group = $this->transportLoadGroups;
+                break;
+            case 'exim':
+                $group = $this->eximLoadGroups;
+                break;
+            case 'bulk':
+                $group = $this->bulkLoadGroups;
+                break;
+            case 'warehouse':
+                $group = $this->warehouseLoadGroups;
+                break;
+        }
 
         //Blujay Transport
         $fetchTransport = LoadPerformance::selectRaw("
                                         SUM(billable_total_rate) as totalActual,
-                                        DATE_FORMAT(closed_date,'%m') as monthKey
+                                        DATE_FORMAT(created_date,'%m') as monthKey
                                     ")
-                                    ->whereIn('load_group',$this->transportLoadGroups)
-                                    ->where('load_status','Completed')
-                                    ->whereYear('closed_date',Session::get('sales-year'))
+                                    ->whereIn('load_group',$group)
+                                    ->where('billable_total_rate','>',$this->rateThreshold)
+                                    ->whereYear('created_date',Session::get('sales-year'))
+                                    ->where('load_status','!=','Voided')
                                     ->groupBy('monthKey')
                                     ->get();
 
         foreach($fetchTransport as $monthlyRevenue){
-            $data['transport'][$monthlyRevenue->monthKey-1] = $monthlyRevenue->totalActual;
-        }
-
-        //Blujay Exim
-        $fetchExim = LoadPerformance::selectRaw("
-                                        SUM(billable_total_rate) as totalActual,
-                                        DATE_FORMAT(closed_date,'%m') as monthKey
-                                    ")
-                                    ->whereIn('load_group',$this->eximLoadGroups)
-                                    ->where('load_status','Completed')
-                                    ->whereYear('closed_date',Session::get('sales-year'))
-                                    ->groupBy('monthKey')
-                                    ->get();
-
-        foreach($fetchExim as $monthlyRevenue){
-            $data['exim'][$monthlyRevenue->monthKey-1] = $monthlyRevenue->totalActual;
-        }
-
-        //Blujay Bulk
-        $fetchBulk = LoadPerformance::selectRaw("
-                                        SUM(billable_total_rate) as totalActual,
-                                        DATE_FORMAT(closed_date,'%m') as monthKey
-                                    ")
-                                    ->whereIn('load_group',$this->bulkLoadGroups)
-                                    ->where('load_status','Completed')
-                                    ->whereYear('closed_date',Session::get('sales-year'))
-                                    ->groupBy('monthKey')
-                                    ->get();
-
-        foreach($fetchBulk as $monthlyRevenue){
-            $data['bulk'][$monthlyRevenue->monthKey-1] = $monthlyRevenue->totalActual;
+            $data[$monthlyRevenue->monthKey-1] = $monthlyRevenue->totalActual;
         }
 
         return response()->json($data,200);

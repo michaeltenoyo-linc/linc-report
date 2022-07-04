@@ -78,6 +78,7 @@ export const load = () => {
         var dateFrom = inputDateFrom.getDate();
 
         var inputDateTo = new Date($('#to').val());
+        inputDateTo.setDate(inputDateTo.getDate() + 1);
         var yearTo = inputDateTo.getFullYear();
         var monthTo = inputDateTo.getMonth();
         var dateTo = inputDateTo.getDate();

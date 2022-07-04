@@ -377,11 +377,13 @@ Route::middleware(['auth','priviledge:sales,master'])->group(function () {
             Route::get('/get-division-performance/{division}',[SalesViewController::class, 'getDivisionPerformance']);
             Route::get('/get-division-overview/{division}', [SalesViewController::class, 'getDivisionOverview']);
             Route::get('/get-yearly-achievement/{id}',[SalesViewController::class, 'getYearlyAchievement']);
-            Route::get('/get-yearly-revenue',[SalesViewController::class, 'getYearlyRevenue']);
+            Route::get('/get-yearly-revenue/{division}',[SalesViewController::class, 'getYearlyRevenue']);
+            Route::get('/get-yearly-detail/{division}',[SalesViewController::class, 'getYearlyDetail']);
             Route::get('/get-monthly-achievement',[SalesViewController::class, 'getMonthlyAchievement']);
             Route::get('/get-sales-pie/{sales}',[SalesViewController::class, 'getSalesPie']);
             Route::get('/get-division-pie/{division}',[SalesViewController::class, 'getDivisionPie']);
             Route::get('/get-division-pie',[SalesViewController::class, 'getAllDivisionPie']);
+            
         });
         
         Route::prefix('/truck')->group(function () {
