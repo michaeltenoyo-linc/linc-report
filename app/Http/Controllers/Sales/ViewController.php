@@ -1866,4 +1866,57 @@ class ViewController extends BaseController
             return view('sales.pages.pdf.pdf-single-customer', $data);
         }
     }
+
+    public function getDailyUpdate(Request $req){
+        $latestInput = LoadPerformance::select('created_date')
+                                    ->groupBy('created_date')
+                                    ->orderBy('created_date','desc')
+                                    ->get();
+        if(Carbon::parse($latestInput[0]->created_date)->format('Y-m-d') == Carbon::now()->format('Y-m-d')){
+            $latestInput = $latestInput[1];
+        }else{
+            $latestInput = $latestInput[0];
+        }
+
+        $latestDate = Carbon::parse($latestInput->created_date)->format('Y-m-d');
+        $data['dayName'] = Carbon::parse($latestInput->created_date)->dayName;
+        
+        $latestDateBefore = Carbon::parse($latestInput->created_date)->subDay()->format('Y-m-d');
+        if(Carbon::parse($latestInput->created_date)->dayName == "Monday"){
+            $latestDateBefore = Carbon::parse($latestInput->created_date)->subDays(3)->format('Y-m-d');
+        }
+        
+        $data['yesterday'] = LoadPerformance::selectRaw('SUM(billable_total_rate) as revenue, count(tms_id) as totalLoads, count(DISTINCT vehicle_number) as totalVehicle, customer_reference, customer_name')
+                                        ->whereDate('created_date','=', $latestDate)
+                                        ->groupBy('customer_reference','customer_name')
+                                        ->whereIn('load_group',$this->surabayaLoadGroups)
+                                        ->where('billable_total_rate','>',$this->rateThreshold)
+                                        ->get();
+
+        $beforeYesterday = LoadPerformance::selectRaw('SUM(billable_total_rate) as revenue, count(tms_id) as totalLoads, customer_reference, customer_name')
+                                        ->whereDate('created_date','=', $latestDateBefore)
+                                        ->groupBy('customer_reference','customer_name')
+                                        ->where('billable_total_rate','>',$this->rateThreshold)
+                                        ->whereIn('load_group',$this->surabayaLoadGroups)
+                                        ->get();
+
+        foreach ($data['yesterday'] as $y) {
+            if($y->customer_reference==""){
+                $y->customer_name = "UNDEFINED";
+            }
+            $y->revenue_format = number_format($y->revenue, 2, ',', '.');
+            $y->margin = "None";
+            $y->margin_percentage = "None";
+            foreach ($beforeYesterday as $b) {
+                if($y->customer_reference == $b->customer_reference){
+                    $y->margin = $y->revenue - $b->revenue;
+                    $y->margin_percentage = round(($y->margin/$b->revenue)*100,2);
+                    if($y->margin_percentage > 100)$y->margin_percentage="100+";
+                    if($y->margin_percentage < -100)$y->margin_percentage="100-";
+                }
+            }
+        }
+        
+        return response($data, 200);
+    }
 }

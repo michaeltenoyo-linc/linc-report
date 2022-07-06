@@ -776,8 +776,58 @@ export const loadDynamicChart = async () => {
   */
 }
 
+const loadLandingNews = async () => {
+  $('#container-news-update').empty();
+  const DailyData = await $.get('sales/data/get-daily-update');
+  
+  //SETUP DAY NAME UPDATE
+  $('#news-update-dayname').html(DailyData['dayName']);
+  
+  DailyData['yesterday'].forEach(row => {
+    console.log(row);
+
+    let statusRow = "";
+
+    if(row['margin_percentage'] > 0 || row['margin_percentage'] == "100+"){
+      statusRow += '<div class="text-3xl text-green-500">';
+      statusRow += '<i class="fas fa-chevron-circle-up"></i> '+row['margin_percentage']+'%';
+      statusRow += '</div>';
+    }else if(row['margin_percentage'] == 0){
+      statusRow += '<div class="text-3xl text-yellow-500">';
+      statusRow += '<i class="fas fa-minus-circle"></i> '+row['margin_percentage']+'%';
+      statusRow += '</div>';
+    }else if(row['margin_percentage'] < 0 || row['margin_percentage'] == "100-"){
+      statusRow += '<div class="text-3xl text-red-500">';
+      statusRow += '<i class="fas fa-chevron-circle-down"></i> '+row['margin_percentage']+'%';
+      statusRow += '</div>';
+    }else{
+      statusRow += '<div class="text-3xl text-gray-500">';
+      statusRow += '<i class="fas fa-question-circle"></i> -';
+      statusRow += '</div>';
+    }
+
+    let divRow = '';
+    divRow += '<div class="text-white font-mono text-2xl inline-block mr-20">';
+    divRow += row['customer_name']+' <br>';
+    divRow += '<span class="text-sm grid grid-cols-2 gap-4">';
+    divRow += '<div>';
+    divRow += '<i class="fas fa-shipping-fast text-sm mr-3 w-3"></i><span class="text-sm"></span>'+row['revenue_format']+' ( '+row['totalLoads']+' <i class="text-md fas fa-boxes"></i> )<br>';
+    divRow += '<i class="fas fa-truck-moving text-sm mr-3 w-3"></i> <span class="text-sm">'+row['totalVehicle']+' Depart</span> <br>';
+    divRow += '</div>';
+    divRow += '<div class="text-left">';
+    divRow += statusRow;
+    divRow += '</div>';
+    divRow += '</span>';
+    divRow += '</div>';
+
+    $('#container-news-update').append(divRow);
+  });
+}
+
 export const Landing = async () => {
     console.log("loading LandingJs");
+
+    await loadLandingNews();
 
     await loadStaticChart();
     await loadDynamicChart();

@@ -6,6 +6,19 @@ Linc | Sales Report Homepage
 
 @section('header')
 @include('sales.components.header_no_login')
+<!-- Styles -->	
+<style>
+    marquee {
+        margin: 0 auto;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    @keyframes marquee {
+        0%   { left: 100%; }
+        100% { left: -100%; }
+    }
+</style>
 @endsection
 
 @section('content')
@@ -29,7 +42,82 @@ Linc | Sales Report Homepage
         </div>
     </div>
 
-    <div class="relative flex w-full mb-6 shadow-lg rounded bg-white">
+    <div class="w-full text-sm font-bold py-1 text-center">
+        Latest Transaction Status Time Period : <span id="news-update-dayname"></span>
+    </div>
+
+    <div class="news-update w-full mb-5 bg-gray-800 rounded py-3">
+        <marquee onmouseover="this.stop()"  onmouseout="this.start()" id="container-news-update" class="" Scrollamount=7>
+            <!-- TEMPLATE NAIK -->
+            <div class="text-white font-mono text-2xl inline-block mr-20">
+                SINAR MAS AGRO AND <br>
+                <span class="text-sm grid grid-cols-2 gap-4">
+                    <div>
+                        <i class='fas fa-shipping-fast text-sm mr-3 w-3'></i><span class="text-sm"></span>231.322.340 ( 28 <i class="text-md fas fa-boxes"></i> )<br>
+                        <i class="fas fa-truck-moving text-sm mr-3 w-3"></i> <span class="text-sm">4 Depart</span> <br>
+                    </div>
+                    <div class="text-left">
+                        <div class="text-3xl text-green-500">
+                            <i class='fas fa-chevron-circle-up'></i> 0.68%
+                        </div>
+                    </div>
+                </span>
+            </div>
+
+            <!-- TEMPLATE TURUN -->
+            <div class="text-white font-mono text-2xl inline-block mr-20">
+                PT. NIRWANA LESTARI <br>
+                <span class="text-sm grid grid-cols-2 gap-4">
+                    <div>
+                        <i class='fas fa-shipping-fast text-sm mr-3 w-3'></i><span class="text-sm"></span>231.322.340 ( 28 <i class="text-md fas fa-boxes"></i> )<br>
+                        <i class="fas fa-truck-moving text-sm mr-3 w-3"></i> <span class="text-sm">4 Depart</span> <br>
+                    </div>
+                    <div class="text-left">
+                        <div class="text-3xl text-red-500">
+                            <i class='fas fa-chevron-circle-down'></i> 0.68%
+                        </div>
+                    </div>
+                </span>
+            </div>
+
+            <!-- TEMPLATE SAMA -->
+            <div class="text-white font-mono text-2xl inline-block mr-20">
+                PT. NIRWANA LESTARI <br>
+                <span class="text-sm grid grid-cols-2 gap-4">
+                    <div>
+                        <i class='fas fa-shipping-fast text-sm mr-3 w-3'></i><span class="text-sm"></span>231.322.340 ( 28 <i class="text-md fas fa-boxes"></i> )<br>
+                        <i class="fas fa-truck-moving text-sm mr-3 w-3"></i> <span class="text-sm">4 Depart</span> <br>
+                    </div>
+                    <div class="text-left">
+                        <div class="text-3xl text-yellow-500">
+                            <i class='fas fa-minus-circle'></i> 0.00%
+                        </div>
+                    </div>
+                </span>
+            </div>
+
+            <!-- TEMPLATE TIDAK ADA ORDER -->
+            <div class="text-white font-mono text-2xl inline-block mr-20">
+                PT. NIRWANA LESTARI <br>
+                <span class="text-sm grid grid-cols-2 gap-4">
+                    <div>
+                        <i class='fas fa-shipping-fast text-sm mr-3 w-3'></i><span class="text-sm"></span>231.322.340 ( 28 <i class="text-md fas fa-boxes"></i> )<br>
+                        <i class="fas fa-truck-moving text-sm mr-3 w-3"></i> <span class="text-sm">4 Depart</span> <br>
+                    </div>
+                    <div class="text-left">
+                        <div class="text-3xl text-gray-500">
+                            <i class='fas fa-question-circle'></i> -
+                        </div>
+                    </div>
+                </span>
+            </div>
+        </marquee>
+    </div>
+
+    <div class="relative w-full mb-6 shadow-lg rounded bg-white">
+        <div class="w-full pt-4">
+            <h1 class="font-bold text-2xl text-center">Surabaya 2022</h1>
+        </div>
         <div class="w-full">
             <div class="rounded-t mb-0 px-4 py-3 border-0">
                 <div class="flex flex-wrap items-center">

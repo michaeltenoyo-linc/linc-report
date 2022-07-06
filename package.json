@@ -41,5 +41,9 @@
         "vue-template-compiler": "^2.6.11",
         "webpack-cli": "^4.8.0"
     },
-    "dependencies": []
+    "dependencies": {
+        "@grapecity/spread-excelio": "^15.1.2",
+        "@grapecity/spread-sheets": "^15.1.2",
+        "jquery": "^3.6.0"
+    }
 }

@@ -11,12 +11,15 @@
         "php": "^7.2.5|^8.0",
         "azishapidin/indoregion": "^3.0",
         "barryvdh/laravel-dompdf": "^1.0",
+        "beyondcode/laravel-mailbox": "^2.2",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.3.1|^7.0.1",
+        "hfig/mapi": "^1.2",
         "laravel/framework": "^7.30.4",
         "laravel/tinker": "^2.5",
         "maatwebsite/excel": "^3.1",
+        "swiftmailer/swiftmailer": "^6.3",
         "yajra/laravel-datatables-oracle": "^9.18"
     },
     "require-dev": {

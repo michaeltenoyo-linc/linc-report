@@ -435,96 +435,83 @@
 	)
 	
 	window.onload = async function(e){
-		//document.getElementById("loader").style.display = "block";
+		//Chart Landing Yearly Revenue All
 
-		//Script Overview Chart
-		//Chart Landing Yearly Revenue
-		const labels = [
-			'January',
-			'February',
-			'March',
-			'April',
-			'May',
-			'June',
-			'July',
-			'August',
-			'September',
-			'October',
-			'November',
-			'December'
-		];
-		const revenueDataFetch = await $.get('/sales/data/get-yearly-revenue');
-		console.log(revenueDataFetch);
-		const data = {
-			labels: labels,
-			datasets: [
-				{
-					label: 'Warehouse',
-					data: revenueDataFetch['warehouse'],
-					borderColor: 'rgb(10, 23, 79)',
-					backgroundColor: 'rgb(10, 23, 79, 0.5)',
-					fill: false,
-				},
-				{
-					label: 'Transport',
-					data: revenueDataFetch['transport'],
-					borderColor: 'rgb(227, 9, 9)',
-					backgroundColor: 'rgb(227, 9, 9, 0.5)',
-					fill: false,
-				},
-				{
-					label: 'EXIM',
-					data: revenueDataFetch['exim'],
-					borderColor: 'rgb(25, 166, 60)',
-					backgroundColor: 'rgb(25, 166, 60, 0.5)',
-					fill: false,
-				},
-				{
-					label: 'Bulk',
-					data: revenueDataFetch['bulk'],
-					borderColor: 'rgb(25, 23, 150)',
-					backgroundColor: 'rgb(25, 23, 150, 0.5)',
-					fill: false,
-				},
-			]
-		};
+	//Dummy Data
+	const labels = [
+		'January',
+		'February',
+		'March',
+		'April',
+		'May',
+		'June',
+		'July',
+		'August',
+		'September',
+		'October',
+		'November',
+		'December'
+	];
+	const revenueDataFetch = await $.get('/sales/data/get-yearly-revenue/all');
+	var contYearlyRevenue =  document.getElementById('chartRevenueYearly').getContext('2d'), gradient = contYearlyRevenue.createLinearGradient(0, 0, 0, 450);
 
-		const contYearlyRevenue = $('#chartRevenueYearly');
-		const configYearlyRevenue = {
-			type: 'line',
-			data: data,
-			options: {
-				responsive: true,
-				plugins: {
-					title: {
-						display: true,
-						text: 'YTD Revenue 2022'
-					},
-				},
-				interaction: {
-					intersect: false,
-				},
-				scales: {
-					x: {
-						display: true,
-						title: {
-							display: true
-						},
-					},
-					y: {
-						display: true,
-						title: {
-							display: true,
-							text: 'Revenue (Mill.)'
-						},
-						suggestedMin: 0,
-						suggestedMax: 15
-					}
-				}
+	gradient.addColorStop(0, 'rgba(8, 73, 252, 1)');
+	gradient.addColorStop(0.5, 'rgba(8, 73, 252, 0.25)');
+	gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+
+
+	const data = {
+		labels: labels,
+		datasets: [
+			{
+				label: 'Surabaya',
+				data: revenueDataFetch,
+				borderColor: '#032ea3',
+				backgroundColor: gradient,
+				pointBackgroundColor: 'white',
+				fill: true,
+				cubicInterpolationMode: 'monotone',
+				tension: 0.4
 			},
-		};
+		]
+	};
 
-		const chartRevenueYearly = new Chart(contYearlyRevenue, configYearlyRevenue);
+	const configYearlyRevenue = {
+		type: 'line',
+		data: data,
+		options: {
+			responsive: true,
+			plugins: {
+				title: {
+					display: true,
+					text: 'Yearly Revenue Surabaya 2022'
+				},
+			},
+			interaction: {
+				intersect: false,
+			},
+			scales: {
+			x: {
+				display: true,
+				title: {
+					display: true
+				},
+			},
+			y: {
+				display: true,
+				title: {
+					display: true,
+					text: 'Revenue (Bill.)'
+				},
+				suggestedMin: 0,
+				suggestedMax: 3
+			}
+			}
+		},
+	};
+
+	const chartRevenueYearly = new Chart(contYearlyRevenue, configYearlyRevenue);
 		
 		//Chart By Division
 		//Transport
