@@ -46,6 +46,9 @@ use App\Http\Controllers\Sales\TruckController as SalesTruckController;
 use App\Http\Controllers\SharedController;
 use App\Models\LoaFile;
 
+//THIRD PARTY CONTROLLER
+use App\Http\Controllers\ThirdParty\ViewController as ThirdPartyViewController;
+
 //MESSAGE
 use Hfig\MAPI;
 use Hfig\MAPI\OLE\Pear;
@@ -214,6 +217,15 @@ Route::middleware(['auth','priviledge:gfs,master'])->group(function () {
             Route::get('/get-warning',[GreenfieldsReportController::class, 'getPreviewWarning']);
             Route::get('/downloadReport',[GreenfieldsReportController::class, 'downloadExcel']);
         });
+    });
+});
+
+//THIRD PARTY ACCESS
+Route::middleware(['auth','priviledge:master'])->group(function () {
+    Route::prefix('/third-party')->group(function (){
+        //View Navigation
+        Route::get('/',[ThirdPartyViewController::class, 'gotoLandingPage']);
+        Route::get('/blujay',[ThirdPartyViewController::class, 'gotoBlujayMaster']);
     });
 });
 
@@ -531,6 +543,8 @@ Route::middleware(['auth','priviledge:loa,master'])->group(function () {
         //return ($data['Body']);
     })->name('show-msg');
 });
+
+
 
 //DEPENDENT INDONESIA DROPDOWN
 Route::get('/provinces/{id}', 'IndonesiaDropdownController@provinces')->name('provinces');

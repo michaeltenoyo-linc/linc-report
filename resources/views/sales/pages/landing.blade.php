@@ -42,8 +42,13 @@ Linc | Sales Report Homepage
         </div>
     </div>
 
-    <div class="w-full text-sm font-bold py-1 text-center">
-        Latest Transaction Status Time Period : <span id="news-update-dayname"></span>
+    <div class="w-full flex">
+        <div class="w-1/2 text-sm font-bold text-center mb-0 text-5xl font-bold font-serif">
+            DAILY HEADLINE
+        </div>
+        <div class="w-1/2 text-sm font-bold text-left">
+            Latest Transaction Status Time Period : <span id="news-update-dayname"></span>
+        </div>
     </div>
 
     <div class="news-update w-full mb-5 bg-gray-800 rounded py-3">
@@ -114,9 +119,169 @@ Linc | Sales Report Homepage
         </marquee>
     </div>
 
+    
+    <!--Legend-->
+    <div class="w-full px-2 pb-3 mt-3 grid grid-cols-3 gap-4">
+        <div>
+            <i class="fas fa-clipboard-check w-3 mx-2"></i>  POD
+            <i class="fas fa-coins w-3 mx-2"></i> Websettle
+        </div>
+        <div>
+            <i class="fas fa-shipping-fast w-3 mx-2"></i> Last Departure
+            <i class="fas fa-dolly w-3 mx-2"></i> Last Load
+        </div>
+        <div>
+
+        </div>
+    </div>
+
+    <div class="w-full grid grid-cols-3 gap-4">
+        <!-- POD Websettle performance -->
+        <div class="relative w-full mb-6 shadow-lg rounded bg-white">
+            <div class="w-full p-5">
+                <h1 class="text-left text-xl hover:text-blue-500 cursor-pointer">Load Progress <i class="fas fa-angle-right ml-3"></i></h1>
+            </div>
+            <div class="w-full flex px-5 mb-5">
+                <div class="landing-headline-active">
+                    H-1
+                </div>
+                <div class="landing-headline-inactive">
+                    1W
+                </div>
+                <div class="landing-headline-inactive">
+                    MTD
+                </div>
+                <div class="landing-headline-inactive">
+                    YTD
+                </div>
+            </div>
+            <!-- Itemlist Card -->
+            <div class="w-full flex p-2">
+                <div class="w-2/12 h-auto p-2">
+                    <img class="h-full w-full object-contain" src="{{ asset('assets/icons/customers/3000005193.png') }}" alt="">
+                </div>
+                <div class="w-4/12 truncate ...">
+                    <p class="p-2">
+                        <span class="font-bold text-lg">3000005193</span>
+                        <br>
+                        <span class="w-full text-gray-500 text-xs truncate">SINAR MAS AGRO RESOURCES AND INAR MAS AGRO RESOURCES AND INAR MAS AGRO RESOURCES AND</span>
+                    </p>
+                </div>
+                <div class="w-3/12 px-4 inline-block align-middle">
+                    <p class="py-2">
+                        <i class="fas fa-clipboard-check w-3 mr-2"></i>42/78
+                        <br>
+                        <i class="fas fa-coins w-3 mr-2"></i>12/50
+                    </p>
+                </div>
+                <div class="w-3/12 px-4 inline-block align-middle">
+                    <p class="py-2">
+                        <span class="text-green-500">73%</span>
+                        <br>
+                        <span class="text-red-500">23%</span>
+                    </p>
+                </div>
+            </div>
+            <div class="w-full px-6"><hr></div>
+            <!--Footer-->
+            <div class="w-full text-left hover:bg-gray-100 text-blue-500 cursor-pointer p-5">
+                More customers <i class="fas fa-angle-right ml-1"></i>
+            </div>
+        </div>
+        <div class="relative w-full mb-6 shadow-lg rounded bg-white">
+            <div class="w-full p-5">
+                <h1 class="text-left text-xl hover:text-blue-500 cursor-pointer">Utility <i class="fas fa-angle-right ml-3"></i></h1>
+            </div>
+            <div class="w-full flex px-5 mb-5">
+                <div class="landing-headline-active">
+                    H-1
+                </div>
+                <div class="landing-headline-inactive">
+                    1W
+                </div>
+                <div class="landing-headline-inactive">
+                    MTD
+                </div>
+                <div class="landing-headline-inactive">
+                    YTD
+                </div>
+            </div>
+            <!-- Itemlist Card -->
+            <div class="w-full flex p-2">
+                <div class="w-4/12 truncate ...">
+                    <p class="p-2">
+                        <span class="font-bold text-lg">L323WASD</span>
+                        <br>
+                        <span class="w-full text-gray-500 text-xs truncate">MAS BAYA</span>
+                    </p>
+                </div>
+                <div class="w-6/12 px-4 inline-block align-middle">
+                    <p class="p-2">
+                        <i class="fas fa-shipping-fast w-5 mr-2"></i>2022/05/25
+                        <br>
+                        ( 7 days ago )
+                    </p>
+                </div>
+                <div class="w-2/12 flex justify-center p-4">
+                    <button class="bg-blue-300 rounded w-full hover:bg-blue-400"><i class="fas fa-dolly"></i></button>
+                </div>
+            </div>
+            <div class="w-full px-6"><hr></div>
+            <!--Footer-->
+            <div class="w-full text-left hover:bg-gray-100 text-blue-500 cursor-pointer p-5">
+                More trucks <i class="fas fa-angle-right ml-1"></i>
+            </div>
+        </div>
+        <div class="relative w-full mb-6 shadow-lg rounded bg-white">
+            <div class="w-full p-5">
+                <h1 class="text-left text-xl hover:text-blue-500 cursor-pointer">Top Gainer <i class="fas fa-angle-right ml-3"></i></h1>
+            </div>
+            <div class="w-full flex px-5 mb-5">
+                <div class="landing-headline-active">
+                    H-1
+                </div>
+                <div class="landing-headline-inactive">
+                    1W
+                </div>
+                <div class="landing-headline-inactive">
+                    MTD
+                </div>
+                <div class="landing-headline-inactive">
+                    YTD
+                </div>
+            </div>
+            
+            <!-- Itemlist Card -->
+            <div class="w-full flex p-2">
+                <div class="w-2/12 h-auto p-2">
+                    <img class="h-full w-full object-contain" src="{{ asset('assets/icons/customers/3000005193.png') }}" alt="">
+                </div>
+                <div class="w-4/12 truncate ...">
+                    <p class="p-2">
+                        <span class="font-bold text-lg">3000005193</span>
+                        <br>
+                        <span class="w-full text-gray-500 text-xs truncate">SINAR MAS AGRO RESOURCES AND INAR MAS AGRO RESOURCES AND INAR MAS AGRO RESOURCES AND</span>
+                    </p>
+                </div>
+                <div class="w-6/12 px-4 inline-block align-middle">
+                    <p class="py-2 text-green-500">
+                        <span class="text-sm">+XXX.XXX.XXX</span>
+                        <br>
+                        <span class="">+35%</span>
+                    </p>
+                </div>
+            </div>
+            <div class="w-full px-6"><hr></div>
+            <!--Footer-->
+            <div class="w-full text-left hover:bg-gray-100 text-blue-500 cursor-pointer p-5">
+                More customers <i class="fas fa-angle-right ml-1"></i>
+            </div>
+        </div>
+    </div>
+
     <div class="relative w-full mb-6 shadow-lg rounded bg-white">
         <div class="w-full pt-4">
-            <h1 class="font-bold text-2xl text-center">Surabaya 2022</h1>
+            <h1 class="font-bold text-2xl text-center">Surabaya in 2022</h1>
         </div>
         <div class="w-full">
             <div class="rounded-t mb-0 px-4 py-3 border-0">
@@ -175,7 +340,6 @@ Linc | Sales Report Homepage
             </div>
         </div>
     </div>
-    
 
     <div class="relative w-full mb-6 shadow-lg rounded bg-white">
         <div class="w-full p-5">

@@ -169,12 +169,12 @@
 
 					<div class="feature-item mb-5 mb-lg-0">
 						<div class="feature-icon mb-4">
-							<i class="icofont-surgeon-alt"></i>
+							<img height="50rem" src="{{ asset('assets/novena/images/service/logo/blujay.png') }}" alt="">
 						</div>
 						<span>Data Services</span>
-						<h4 class="mb-3">TBD</h4>
-						<p class="mb-4">TBD</p>
-						<a href="" class="btn btn-main btn-round-full">UNDER CONSTRUCTION</a>
+						<h4 class="mb-3">Third Party System</h4>
+						<p class="mb-4">This module will give you an insight of all available data in third party system used.</p>
+						<a href="{{ url('/third-party') }}" class="btn btn-main btn-round-full">UNDER CONSTRUCTION</a>
 					</div>
 				</div>
 			</div>

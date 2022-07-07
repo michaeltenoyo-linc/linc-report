@@ -19,6 +19,7 @@ mix
   .js('resources/js/auth/auth.js', 'public/js')
   .js('resources/js/smart/smart.js', 'public/js')
   .js('resources/js/ltl/ltl.js', 'public/js')
+  .js('resources/js/third-party/third-party.js', 'public/js')
   .js('resources/js/loa/loa.js', 'public/js')
   .js('resources/js/greenfields/greenfields.js', 'public/js')
   .js('resources/js/sales/sales.js', 'public/js')
