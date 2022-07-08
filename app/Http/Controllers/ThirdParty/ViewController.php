@@ -25,4 +25,10 @@ class ViewController extends BaseController
         $data['latest'] = LoadPerformance::orderBy('created_at','desc')->first();
         return view('third-party.pages.blujay.blujay-master', $data);
     }
+
+    public function gotoBlujayRefresh(){
+        $data['latest'] = LoadPerformance::orderBy('created_at','desc')->first();
+        //return view('third-party.pages.blujay.gmail-experiment  ', $data);
+        return view('third-party.pages.blujay.blujay-refresh', $data);
+    }
 }

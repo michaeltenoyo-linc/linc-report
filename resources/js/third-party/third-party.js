@@ -1,6 +1,9 @@
-export const load = () => {
-    //Loading Spinner
+import { blujay } from "./pages/blujay";
 
+export const load = () => {
+    const context = $('#page-context').val();
+
+    //Loading Spinner
     $(document).on({
         ajaxStart: function(){
             $('#loader').removeClass('hidden');
@@ -20,6 +23,12 @@ export const load = () => {
     $('form').on('blur', 'input[type=number]', function(e){
         $(this).off('wheel.disableScroll');
     });
+
+    switch (context) {
+        case 'blujay':
+            blujay();
+            break;
+    }
 };
 
 load();

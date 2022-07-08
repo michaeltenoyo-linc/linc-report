@@ -225,7 +225,11 @@ Route::middleware(['auth','priviledge:master'])->group(function () {
     Route::prefix('/third-party')->group(function (){
         //View Navigation
         Route::get('/',[ThirdPartyViewController::class, 'gotoLandingPage']);
-        Route::get('/blujay',[ThirdPartyViewController::class, 'gotoBlujayMaster']);
+
+        Route::prefix('/blujay')->group(function (){
+            Route::get('/',[ThirdPartyViewController::class, 'gotoBlujayMaster']);
+            Route::get('/refresh',[ThirdPartyViewController::class, 'gotoBlujayRefresh']);
+        });
     });
 });
 
