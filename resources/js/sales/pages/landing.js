@@ -1,8 +1,19 @@
-import { toInteger } from 'lodash';
+import { toArray, toInteger } from 'lodash';
 import { disableElement } from '../../utilities/helpers';
 import Snackbar from 'node-snackbar';
 import Swal from 'sweetalert2';
 import Chart from 'chart.js/auto';
+
+Array.prototype.sortBy = function(p, order) {
+  return this.slice(0).sort(function(a,b) {
+    if(order == 'asc'){
+      return (a[p] > b[p]) ? 1 : (a[p] < b[p]) ? -1 : 0;
+    }else{
+      return (a[p] < b[p]) ? 1 : (a[p] > b[p]) ? -1 : 0;
+    }
+    
+  });
+}
 
 export const loadStaticChart = async () => {
 
@@ -779,13 +790,14 @@ export const loadDynamicChart = async () => {
 const loadLandingNews = async () => {
   $('#container-news-update').empty();
   const DailyData = await $.get('sales/data/get-daily-update');
-  
+  console.log(DailyData);
+
   //SETUP DAY NAME UPDATE
   $('#news-update-dayname').html(DailyData['dayName']);
+  $('#news-update-dayname-before').html(DailyData['dayNameBefore']);
   
+  //Daily Headline
   DailyData['yesterday'].forEach(row => {
-    console.log(row);
-
     let statusRow = "";
 
     if(row['margin_percentage'] > 0 || row['margin_percentage'] == "100+"){
@@ -822,6 +834,169 @@ const loadLandingNews = async () => {
 
     $('#container-news-update').append(divRow);
   });
+
+  //Daily Load Progress
+  $('#container-headline-pod').empty();
+  let ctr = 1;
+  toArray(DailyData['pod']).sortBy('totalPod','desc').forEach(row => {
+    let divRow = "";
+    let percentageColor = "text-red-500";
+    if(row['margin_percentage'] > 75){
+      percentageColor = "text-green-500";
+    }else if(row['margin_percentage'] > 50){
+      percentageColor = "text-yellow-500";
+    }else if(row['margin_percentage'] > 25){
+      percentageColor = "text-orange-500";
+    }
+
+    divRow += '<div class="w-full flex p-2">';
+    divRow += '<div class="w-2/12 h-auto p-2">';
+    divRow += '<img class="h-12 w-full object-contain" src="/assets/icons/customers/'+row['customer_reference']+'.png" alt="">';
+    divRow += '</div>';
+    divRow += '<div class="w-4/12 truncate ...">';
+    divRow += '<p class="p-2">';
+    divRow += '<span class="font-bold text-lg">'+row['customer_reference']+'</span>';
+    divRow += '<br>';
+    divRow += '<span class="w-full text-gray-500 text-xs truncate">'+row['customer_name']+'</span>';
+    divRow += '</p>';
+    divRow += '</div>';
+    divRow += '<div class="w-6/12 px-4 flex inline-block align-middle justify-center">';
+    divRow += '<p class="py-2 text-center">';
+    divRow += '<span class="'+percentageColor+' font-bold text-xl">'+row['margin_percentage']+'%</span>';
+    divRow += '<br>';
+    divRow += '<i class="fas fa-clipboard-check w-3 mr-2"></i>'+row['totalPod']+'/'+row['totalAccepted'];
+    divRow += '</p>';
+    divRow += '</div>';
+    divRow += '</div>';
+
+    $('#container-headline-pod').append(divRow);
+    
+    ctr++;
+  });
+
+  //Daily Websettle Progress
+  $('#container-headline-websettle').empty();
+  ctr = 1;
+  toArray(DailyData['websettle']).sortBy('totalWebsettle','desc').forEach(row => {
+    let divRow = "";
+    let percentageColor = "text-red-500";
+    if(row['margin_percentage'] > 75){
+      percentageColor = "text-green-500";
+    }else if(row['margin_percentage'] > 50){
+      percentageColor = "text-yellow-500";
+    }else if(row['margin_percentage'] > 25){
+      percentageColor = "text-orange-500";
+    }
+
+    divRow += '<div class="w-full flex p-2">';
+    divRow += '<div class="w-2/12 h-auto p-2">';
+    divRow += '<img class="h-12 w-full object-contain" src="/assets/icons/customers/'+row['customer_reference']+'.png" alt="">';
+    divRow += '</div>';
+    divRow += '<div class="w-4/12 truncate ...">';
+    divRow += '<p class="p-2">';
+    divRow += '<span class="font-bold text-lg">'+row['customer_reference']+'</span>';
+    divRow += '<br>';
+    divRow += '<span class="w-full text-gray-500 text-xs truncate">'+row['customer_name']+'</span>';
+    divRow += '</p>';
+    divRow += '</div>';
+    divRow += '<div class="w-6/12 px-4 flex inline-block align-middle justify-center">';
+    divRow += '<p class="py-2 text-center">';
+    divRow += '<span class="'+percentageColor+' font-bold text-xl">'+row['margin_percentage']+'%</span>';
+    divRow += '<br>';
+    divRow += '<i class="fas fa-coins w-3 mr-2"></i>'+row['totalWebsettle']+'/'+row['totalPod'];
+    divRow += '</p>';
+    divRow += '</div>';
+    divRow += '</div>';
+
+    $('#container-headline-websettle').append(divRow);
+    
+    ctr++;
+  });
+
+  //Daily Top Gainer
+  $('#container-headline-gainer').empty();
+  ctr = 1;
+  toArray(DailyData['gainer']).sortBy('profit','desc').forEach(row => {
+    let divRow = "";
+    let percentageColor = "text-red-500";
+    if(row['margin_percentage'] > 75){
+      percentageColor = "text-green-500";
+    }else if(row['margin_percentage'] > 50){
+      percentageColor = "text-yellow-500";
+    }else if(row['margin_percentage'] > 25){
+      percentageColor = "text-orange-500";
+    }
+
+    divRow += '<div class="w-full flex p-2">';
+    divRow += '<div class="w-2/12 h-auto p-2">';
+    divRow += '<img class="h-12 w-full object-contain" src="/assets/icons/customers/'+row['customer_reference']+'.png" alt="">';
+    divRow += '</div>';
+    divRow += '<div class="w-4/12 truncate ...">';
+    divRow += '<p class="p-2">';
+    divRow += '<span class="font-bold text-lg">'+row['customer_reference']+'</span>';
+    divRow += '<br>';
+    divRow += '<span class="w-full text-gray-500 text-xs truncate">'+row['customer_name']+'</span>';
+    divRow += '</p>';
+    divRow += '</div>';
+    divRow += '<div class="w-6/12 px-4 flex inline-block align-middle justify-center">';
+    divRow += '<p class="py-2 text-center">';
+    divRow += '<span class="'+percentageColor+' font-bold text-xl">'+row['margin_percentage']+'%</span>';
+    divRow += '<br>';
+    divRow += '<i class="fas fa-balance-scale-right w-3 mr-2"></i> '+row['profit_format'];
+    divRow += '</p>';
+    divRow += '</div>';
+    divRow += '</div>';
+
+    $('#container-headline-gainer').append(divRow);
+    
+    ctr++;
+  });
+
+
+  //Daily Utility Status
+  $('#container-headline-utility').empty();
+  toArray(DailyData['utility']).sortBy('latest','asc').forEach(row => {
+    let divRow = "";
+    let status = '<span class="font-bold text-yellow-500 text-xl">UNKNOWN</span>';
+
+    if(row['load']['load_status'] == "Completed"){
+      status = '<span class="font-bold text-red-500 text-xl">IDLE</span>';
+    }else if(row['load']['load_status'] == "Accepted"){
+      status = '<span class="font-bold text-blue-500 text-xl">ONGOING</span>';
+    }
+
+    divRow += '<div class="w-full flex p-2">';
+    divRow += '<div class="w-3/12 truncate ...">';
+    divRow += '<p class="p-2">';
+    divRow += '<span class="font-bold text-lg">'+row['vehicle_number']+'</span>';
+    divRow += '<br>';
+    divRow += '<span class="underline">( '+row['vehicle']['own']+' ) '+row['vehicle']['type']+'</span>';
+    divRow += '<br>';
+    divRow += '<span class="w-full text-gray-500 text-xs truncate">'+row['vehicle']['driver']+'</span>';
+    divRow += '</p>';
+    divRow += '</div>';
+    divRow += '<div class="w-4/12 px-4 inline-block align-middle text-center">';
+    divRow += '<p class="p-2">';
+    divRow += '<span class="font-bold">'+row['latest_id']+'</span>';
+    divRow += '<br>';
+    divRow += '<i class="fas fa-shipping-fast w-5 mr-2"></i>'+row['latest'];
+    divRow += '<br>';
+    divRow += '<span class="text-sm">( '+row['range']+'d ago )</span>';
+    divRow += '</p>';
+    divRow += '</div>';
+    divRow += '<div class="w-4/12 px-4 inline-block align-middle text-center">';
+    divRow += '<p class="p-2">';
+    divRow += status;
+    divRow += '</p>';
+    divRow += '</div>';
+    divRow += '<div class="w-1/12 flex justify-center p-4">';
+    divRow += '<a class="flex align-middle justify-center text-center bg-blue-300 rounded w-full hover:bg-blue-400" href="/sales/load-detail/'+row['latest_id']+'" target="_blank"><button id="'+row['latest_id']+'""><i class="fas fa-dolly"></i></button></a>';
+    divRow += '</div>';
+    divRow += '</div>';
+
+    $('#container-headline-utility').append(divRow);
+  });
+
 }
 
 export const Landing = async () => {

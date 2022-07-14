@@ -46,7 +46,7 @@ class ReportController extends BaseController
         $ctr = 1;
 
         //Untuk Report 2
-        $SjReport2 = Suratjalan::orderBy('created_at','asc')->get();
+        $SjReport2 = Suratjalan::orderBy('created_at','asc')->whereMonth('created_at',7)->get();
 
         if($req->input('reportType') == "smart_1"){
 

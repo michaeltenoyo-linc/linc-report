@@ -14,7 +14,10 @@ module.exports = {
       'text-orange-400',
       'text-orange-600',
       'text-red-600',
-      'text-right'
+      'text-right',
+      'align-middle',
+      'justify-center',
+      'text-center',
     ]
   },
   theme: {

@@ -48,7 +48,8 @@ use App\Models\LoaFile;
 
 //THIRD PARTY CONTROLLER
 use App\Http\Controllers\ThirdParty\ViewController as ThirdPartyViewController;
-
+use App\Http\Controllers\ThirdParty\BlujayController as ThirdPartyBlujayController;
+use Google\Service\DisplayVideo\ThirdPartyUrl;
 //MESSAGE
 use Hfig\MAPI;
 use Hfig\MAPI\OLE\Pear;
@@ -229,6 +230,7 @@ Route::middleware(['auth','priviledge:master'])->group(function () {
         Route::prefix('/blujay')->group(function (){
             Route::get('/',[ThirdPartyViewController::class, 'gotoBlujayMaster']);
             Route::get('/refresh',[ThirdPartyViewController::class, 'gotoBlujayRefresh']);
+            Route::post('/injectSql',[ThirdPartyBlujayController::class, 'injectSql']);
         });
     });
 });

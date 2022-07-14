@@ -783,6 +783,7 @@ class TruckController extends BaseController
                                         ->whereYear('created_date',$year)
                                         ->orderBy('created_date','asc')
                                         ->get();
+                                        
             foreach ($loadList as $load) {
                 //Lead Time
                 $leadTime = lead_time::select('ltpod')
@@ -824,6 +825,7 @@ class TruckController extends BaseController
             $row->on_call_percentage = round(floatval($row->on_call_percentage), 2);   
             $row->activity = $activity;
             $row->loads = $loadList;
+            $row->countLoad = count($loadList);
 
             //Overall Add
             $overallIdle += $row->count_idle;
