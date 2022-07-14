@@ -22,16 +22,16 @@ Linc | Third Party Homepage
 
             <div class="w-full grid grid-cols-4 gap-4 my-5">
                 <button onclick="location.href='{{ url('/third-party/blujay') }}'" class="bg-teal-200 hover:bg-teal-300 rounded text-center justify-center p-5 font-bold">
-                    <img src="{{ asset('assets/logos/blujay.png') }}" alt="">
+                    <img class="h-full w-full object-contain" src="{{ asset('assets/logos/blujay.png') }}" alt="">
                 </button>
                 <button class="bg-teal-200 hover:bg-teal-300 rounded text-center justify-center p-5 font-bold">
-                    GSoft
+                    <img class="h-full w-full object-contain" src="{{ asset('assets/logos/gsoft.png') }}" alt="">
                 </button>
                 <button class="bg-teal-200 hover:bg-teal-300 rounded text-center justify-center p-5 font-bold">
-                    Flask
+                    <img class="h-full w-full object-contain" src="{{ asset('assets/logos/flux.png') }}" alt="">
                 </button>
                 <button class="bg-teal-200 hover:bg-teal-300 rounded text-center justify-center p-5 font-bold">
-                    <img src="{{ asset('assets/logos/SAP.png') }}" alt="">
+                    <img class="h-full w-full object-contain" src="{{ asset('assets/logos/SAP.png') }}" alt="">
                 </button>
             </div>
         </div>

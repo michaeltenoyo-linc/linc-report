@@ -21,11 +21,7 @@ Linc | Third Party Homepage
             </div>
 
             <div class="w-full my-5 flex justify-center">
-                <button id="btn-blujay-refresh" class="text-white font-bold text-3xl w-64 h-64 bg-red-700 hover:bg-red-600 rounded-full shadow-md">
-                    REFRESH<br>DATA
-                </button>
-
-                <div class="w-8/12 px-12">
+                <div class="w-12/12 px-12">
                     <p>
                         This process will take some time, please kindly wait : <br>
                         <span class="text-red-500">*Please make sure you have already received the most updated email from blujay</span><br><br>
@@ -80,24 +76,29 @@ Linc | Third Party Homepage
                         <br>
                         <!-- Blujay Mail Confirmation-->
                         <div id="progress-blujay-confirmation" class="text-center my-5 hidden">
-                            <p>
-                                Recent data mail from Blujay : <br>
-                                <span class="text-red-500">*Please confirm these are the latest mail from blujay to be injected!</span>
-                                <br><br>
-                                <ul id="progress-blujay-mail">
-                                    <li>DD/MM/YYYY : Shipment</li>
-                                    <li>DD/MM/YYYY : Load Performance</li>
-                                    <li>DD/MM/YYYY : Addcost</li>
-                                </ul>
-                            </p>
+                            <form autocomplete="off" id="form-refresh-blujay">
+                              <p>
+                                  Recent data mail from Blujay : <br>
+                                  <span class="text-red-500">*Please confirm these are the latest mail from blujay to be injected!</span>
+                                  <br><br>
+                                  <ul id="progress-blujay-mail">
+                                    <li class="mb-5"><span id="confirm-shipment"></span><br><br><input id="input-file-shipment" name="shipment" type="hidden" style="pointer-events: none;" class="rounded"> <a target="_blank" id="check-file-shipment" href="" class="p-2 rounded bg-blue-300 hover:bg-blue-400 hidden">Check</a></li>
+                                    <li class="mb-5"><span id="confirm-performance"></span><br><br><input id="input-file-performance" name="performance" type="hidden" style="pointer-events: none;" class="rounded"> <a target="_blank" id="check-file-performance" href="" class="p-2 rounded bg-blue-300 hover:bg-blue-400 hidden">Check</a></li>
+                                    <li class="mb-5"><span id="confirm-addcost"></span><br><br><input id="input-file-addcost" name="addcost" type="hidden" style="pointer-events: none;" class="rounded"> <a target="_blank" id="check-file-addcost" href="" class="p-2 rounded bg-blue-300 hover:bg-blue-400 hidden">Check</a></li>
+                                  </ul>
+                              </p>
 
-                            <button id="inject-sql-button" class="rounded p-3 bg-teal-200 hover:bg-teal-300 my-5">
-                                Continue
-                            </button>
+                              <button id="inject-sql-button" class="hidden rounded p-3 bg-teal-200 hover:bg-teal-300 my-5">
+                                  Continue
+                              </button>
+                            </form>
                         </div>
+
                         <!-- SQL Injection -->
-                        <div id="progress-blujay-injecting" class="text-center my-5">
-                            
+                        <div id="progress-blujay-injecting" class="text-center my-5 hidden">
+                            <button id="btn-blujay-seeder" class="shadow-xl shadow-red-500 hover:shadow-none h-32 w-32 bg-red-600 hover:bg-red-700 text-white font-bold rounded-full">
+                              <i class="fas fa-exclamation-triangle"></i><br>LAUNCH<br>SEEDER
+                            </button>
                         </div>
                         
                         <script type="text/javascript">
@@ -228,36 +229,106 @@ Linc | Third Party Homepage
                                       'userId': 'me',
                                       'labelIds': 'INBOX',
                                       'maxResults': 10,
-                                      'q':"after:2022/07/08"
+                                      'q':"after:{{ $today }}"
                                   });
                       
                                   //CRAWL LAST 3 DB
                                   let foundShipment = false;
                                   let foundPerformance = false;
                                   let foundAddcost = false;
+                                  var titleShipment = "";
+                                  var titlePerformance = "";
+                                  var titleAddcost = "";
                                   
                                   //MESSAGE BREAKDOWN STEP 1
-                                  request.result.messages.forEach( async(row) => {
+                                  await request.result.messages.forEach( async(row) => {
                                       let message = await gapi.client.gmail.users.messages.get({
                                           'userId': 'me',
                                           'id': row.id
                                       });
-                                      console.log(getHeader(message.result.payload.headers, 'Subject'));
-                                      if(getHeader(message.result.payload.headers, 'Subject') == "Ad Hoc Report - DB SHIPMENT SBY GROUP" && !foundShipment){
-                                          console.log(getHeader(message.result.payload.headers, 'Date')+" : "+getHeader(message.result.payload.headers, 'Subject'));
-                                          foundShipment = true;
-                                      }else if(getHeader(message.result.payload.headers, 'Subject') == "Ad Hoc Report - DB SBY GROUP" && !foundPerformance){
-                                          console.log(getHeader(message.result.payload.headers, 'Date')+" : "+getHeader(message.result.payload.headers, 'Subject'));
-                                          foundPerformance = true;
-                                      }else if(getHeader(message.result.payload.headers, 'Subject') == "Ad Hoc Report - DB ADDCOST SBY" && !foundAddcost){
-                                          console.log(getHeader(message.result.payload.headers, 'Date')+" : "+getHeader(message.result.payload.headers, 'Subject'));
-                                          foundAddcost = true;
+
+                                      let date = new Date(getHeader(message.result.payload.headers, 'Date'));
+                                      let file = null;
+                                      
+                                      //FILE MAKING
+                                      try {
+                                        let parts = message.result.payload.parts;
+
+                                        await parts.forEach(async(row) => {
+                                          if(row['filename'] != ""){
+                                            att_id = row['body']['attachmentId']
+                                            att = await gapi.client.gmail.users.messages.attachments.get({
+                                              'userId':'me', 
+                                              'messageId':row.id,
+                                              'id':att_id,
+                                            });
+
+                                            let data = att['result']['data'].replace(/-/g, '+').replace(/_/g, '/');
+                                            let contentType = row['mimeType'] || '';
+                                            let sliceSize = att['result']['size'] || 512;
+                                            let byteCharacters = atob(data);
+                                            var byteArrays = []
+
+                                            for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+                                              var slice = byteCharacters.slice(offset, offset + sliceSize)
+
+                                              var byteNumbers = new Array(slice.length)
+                                              for (var i = 0; i < slice.length; i++) {
+                                                byteNumbers[i] = slice.charCodeAt(i)
+                                              }
+
+                                              var byteArray = new Uint8Array(byteNumbers)
+
+                                              byteArrays.push(byteArray)
+                                            }
+                                            
+                                            var blob = new Blob(byteArrays, {type: contentType});
+                                            let urlBlob = URL.createObjectURL(blob);
+                                            file = data;
+
+                                            //FILE CHECK
+                                            if(getHeader(message.result.payload.headers, 'Subject') == "Ad Hoc Report - DB SHIPMENT SBY GROUP" && !foundShipment){
+                                                console.log(file);
+                                                titleShipment = date+"\n"+getHeader(message.result.payload.headers, 'Subject');
+                                                foundShipment = true;
+                                                document.getElementById('confirm-shipment').innerText = titleShipment;
+                                                document.getElementById('input-file-shipment').value = file;
+                                                document.getElementById('check-file-shipment').setAttribute('href',file);
+                                                document.getElementById('check-file-shipment').classList.remove('hidden');
+                                            }else if(getHeader(message.result.payload.headers, 'Subject') == "Ad Hoc Report - DB SBY GROUP" && !foundPerformance){
+                                                console.log(file);
+                                                titlePerformance =  date+"\n"+getHeader(message.result.payload.headers, 'Subject');
+                                                foundPerformance = true;
+                                                document.getElementById('confirm-performance').innerText = titlePerformance;
+                                                document.getElementById('input-file-performance').value = file;
+                                                document.getElementById('check-file-performance').setAttribute('href',file);
+                                                document.getElementById('check-file-performance').classList.remove('hidden');
+                                            }else if(getHeader(message.result.payload.headers, 'Subject') == "Ad Hoc Report - DB ADDCOST SBY" && !foundAddcost){
+                                                console.log(file);
+                                                titleAddcost =  date+"\n"+getHeader(message.result.payload.headers, 'Subject');
+                                                foundAddcost = true;
+                                                document.getElementById('confirm-addcost').innerText = titleAddcost;
+                                                document.getElementById('input-file-addcost').value = file;
+                                                document.getElementById('check-file-addcost').setAttribute('href',file);
+                                                document.getElementById('check-file-addcost').classList.remove('hidden');
+                                            }
+
+                                            if(foundAddcost && foundPerformance && foundShipment){
+                                              document.getElementById('inject-sql-button').classList.remove('hidden');
+                                            }
+                                          }
+                                        });
+
+                                      } catch (error) {
+                                        console.log(error);
                                       }
                                   });
 
-                                document.getElementById('progress-percentage').innerText = "20";
-                                document.getElementById('progress-description').innerText = "Waiting for mail data confirmation...";
-                                //END
+                                  document.getElementById('progress-percentage').innerText = "20";
+                                  document.getElementById('progress-description').innerText = "Waiting for mail data confirmation...";
+                                  document.getElementById('progress-blujay-confirmation').classList.remove('hidden');
+
+                                  //END
 
                                   //STEP 2 - MAIL UPDATE CONFIRMATION
 

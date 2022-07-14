@@ -250,7 +250,7 @@
 										</div>
 										<div class="row text-center font-weight-bold" style="font-size: 8pt;">
 											<div class="col">
-												On Call
+												{{ $p->countLoad }} Active Loads
 											</div>
 										</div>
 									</div>

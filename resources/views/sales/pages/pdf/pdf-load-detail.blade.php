@@ -49,7 +49,7 @@
 				<div class="col-12 mt-2">
 					<center>
 						<h1>Load's Detail</h1>
-						<h4 class="font-weight-normal">{{ $shipment[0]->customer_name }}</h4>
+						<h4 class="font-weight-normal">{{ $performance->customer_name }}</h4>
 						<h5 class="font-weight-normal">{{ $load_id }}</h5>
 					</center>
 				</div>
