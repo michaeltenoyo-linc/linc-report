@@ -232,7 +232,6 @@ export const AdminSjalan = () => {
                     $.ajax({
                         url: '/smart/suratjalan/addSj',
                         type: 'POST',
-                        contentType: 'multipart/form-data',
                         data: new FormData($(this)[0]),
                         success: (data) => {
                             Swal.fire({

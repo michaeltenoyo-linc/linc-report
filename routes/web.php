@@ -231,6 +231,7 @@ Route::middleware(['auth','priviledge:master'])->group(function () {
             Route::get('/',[ThirdPartyViewController::class, 'gotoBlujayMaster']);
             Route::get('/refresh',[ThirdPartyViewController::class, 'gotoBlujayRefresh']);
             Route::post('/injectSql',[ThirdPartyBlujayController::class, 'injectSql']);
+            Route::get('/streamSqlProgress',[ThirdPartyBlujayController::class, 'streamSqlProgress']);
         });
     });
 });
@@ -250,13 +251,17 @@ Route::middleware(['auth','priviledge:loa,master'])->group(function () {
             Route::post('/insert', [LoaDataController::class, 'insert']);
             Route::post('/insertFile', [LoaDataController::class, 'insertFile']);
             Route::get('/read/{type}', [LoaDataController::class, 'read']);
+            Route::get('/activationById/{id}', [LoaDataController::class, 'activationById']);
+            Route::get('/pinById/{id}', [LoaDataController::class, 'pinById']);
             Route::get('/deleteById/{id}', [LoaDataController::class, 'deleteById']);
             Route::get('/deleteFileById/{id}', [LoaDataController::class, 'deleteFileById']);
             Route::get('/read/byCustomer/{type}/{reference}', [LoaDataController::class, 'readByCustomer']);
+            Route::get('/read/byId/{id}', [LoaDataController::class, 'readById']);
             Route::get('/getGroupByCustomer/{type}/{reference}', [LoaDataController::class, 'getGroupByCustomer']);
             Route::get('/getTimelineByGroup/{type}/{reference}/{group}', [LoaDataController::class, 'getTimelineByGroup']);
             Route::get('/getFileByGroup/{groupId}', [LoaDataController::class, 'getFileByGroup']);
             Route::get('/getFileById/{id}',[LoaDataController::class, 'getFileById']);
+            Route::get('/getPinnedGroup/{type}/{customer}',[LoaDataController::class, 'getPinnedLoa']);
         });
     });
 });
@@ -549,8 +554,6 @@ Route::middleware(['auth','priviledge:loa,master'])->group(function () {
         //return ($data['Body']);
     })->name('show-msg');
 });
-
-
 
 //DEPENDENT INDONESIA DROPDOWN
 Route::get('/provinces/{id}', 'IndonesiaDropdownController@provinces')->name('provinces');

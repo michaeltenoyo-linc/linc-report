@@ -59,6 +59,7 @@ class DataController extends BaseController
                 'effective' => $req->input('effective'),
                 'expired' => $req->input('expired'),
                 'is_archived' => 0,
+                'is_pinned' => 1,
                 'id_customer' => $req->input('customer'),
                 'type' => $req->input('type'),
                 'group' => $req->input('group')
@@ -114,10 +115,10 @@ class DataController extends BaseController
         foreach ($customerData as $c) {
             $loa_list = LoaMaster::where('type',$type)
                                 ->where('id_customer',$c->reference)
-                                ->orderBy('expired','desc')
+                                ->orderBy('effective','desc')
                                 ->get();
             
-            $c->last_period = $loa_list[0]->expired;      
+            $c->last_period = Carbon::parse($loa_list[0]->effective)->format('Y/m/d');      
             $c->count = count($loa_list);
             $c->type = $type;
         }
@@ -129,6 +130,32 @@ class DataController extends BaseController
                             return $btn;
                         })
                         ->make(true);
+    }
+
+    public function activationById($id){
+        $loa = LoaMaster::find($id);
+
+        if($loa->is_archived == 1){
+            $loa->is_archived = 0;
+        }else if($loa->is_archived == 0){
+            $loa->is_archived = 1;
+        }
+
+        $loa->save();
+        return response()->json(['message' => "Berhasil melakukan aktif-nonaktif file"], 200);
+    }
+
+    public function pinById($id){
+        $loa = LoaMaster::find($id);
+
+        if($loa->is_pinned == 1){
+            $loa->is_pinned = 0;
+        }else if($loa->is_pinned == 0){
+            $loa->is_pinned = 1;
+        }
+
+        $loa->save();
+        return response()->json(['message' => "Berhasil melakukan pin-unpin file"], 200);
     }
 
     public function readByCustomer($type, $reference){
@@ -161,7 +188,14 @@ class DataController extends BaseController
                                     ->where('type',$type)
                                     ->where('id_customer',$reference)
                                     ->groupBy('group')
-                                    ->get()->pluck('group');
+                                    ->get()->pluck('group')->toArray();
+
+        $pinnedExist = LoaMaster::where('is_pinned',1)->where('id_customer',$reference)->where('type',$type)->get();
+
+
+        if(count($pinnedExist) > 0){
+            array_unshift($data['groups'], "Favorite");
+        }
 
         return $data;
     }
@@ -192,6 +226,12 @@ class DataController extends BaseController
         return $file;
     }
 
+    public function readById($id){
+        $data['loa'] = LoaMaster::find($id);
+
+        return response()->json($data, 200);
+    }
+
     public function deleteById($id){
         $loa = LoaMaster::find($id);
         $type = $loa->type;
@@ -215,5 +255,17 @@ class DataController extends BaseController
         $file->forceDelete();
 
         return response(['message' => 'Berhasil menghapus file'], 200);
+    }
+
+    public function getPinnedLoa($type, $reference){
+        $customer = Customer::find($reference);
+
+        $data['timeline'] = LoaMaster::where('type',$type)
+                                    ->where('id_customer',$reference)
+                                    ->where('is_pinned', 1)
+                                    ->orderBy('effective','desc')
+                                    ->get();
+                                    
+        return $data;
     }
 }

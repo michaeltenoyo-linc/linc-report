@@ -14,6 +14,7 @@ class LoaMaster extends Model
         'expired',
         'id_customer',
         'is_archived',
+        'is_pinned',
         'type',
         'group',
     ];

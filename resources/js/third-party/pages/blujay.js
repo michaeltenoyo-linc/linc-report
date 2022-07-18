@@ -67,11 +67,32 @@ export const blujay = async () => {
         })
     }
 
+    
+
     const onSeedingSql = async () => {
         $('#btn-blujay-seeder').on('click', async function(e){
             e.preventDefault();
             console.log("Seeding data to MYSQL");
-        })
+            $('#monitor-blujay-sql').removeClass('hidden');
+
+            //Streaming SQL Injecting Progress
+            const eventSource = new EventSource('/third-party/blujay/streamSqlProgress');
+
+            eventSource.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                
+                document.getElementById('monitor-blujay-sql-progress').innerHTML = data.percentage;
+                document.getElementById('monitor-blujay-sql-section').innerHTML = data.section;
+
+                if(data.section == "done"){
+                    console.log("Done injecting...");
+                    document.getElementById('monitor-blujay-sql-progress').innerHTML = "100% (DONE)";
+                    document.getElementById('monitor-blujay-sql-section').innerHTML = "All table completed!";
+
+                    eventSource.close();
+                }
+            }
+        });
     }
 
     onInjectSql();
