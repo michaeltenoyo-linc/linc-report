@@ -58,13 +58,15 @@ Linc | Blujay Refresh
                         <b class="text-lg">Load</b>
                     </div>
                 </button>
-                <button class="bg-teal-200 hover:bg-teal-300 rounded text-center justify-center p-5">
-                    <div class="w-full">
-                        <i class="fas fa-passport text-8xl mb-5"></i>
-                        <br>
-                        <b class="text-lg">TMS Webpage</b>
-                    </div>
-                </button>
+                <a href="https://appoc.tms.blujaysolutions.net/security/login.do" target="_blank">
+                    <button class="bg-teal-200 hover:bg-teal-300 rounded text-center justify-center p-5 w-full">
+                        <div class="w-full">
+                            <i class="fas fa-passport text-8xl mb-5"></i>
+                            <br>
+                            <b class="text-lg">TMS Webpage</b>
+                        </div>
+                    </button>
+                </a>
             </div>
         </div>
     </div>

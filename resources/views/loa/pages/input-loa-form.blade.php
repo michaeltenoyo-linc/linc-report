@@ -127,6 +127,7 @@ Linc | LOA Homepage
                                         <option value=".docx">Office Word (.docm, .docx, .dot, .dotx)</option>
                                         <option value=".xlsx">Spreadsheet (.xlxs, .xlsm, .xlsb, .xltx, .xls)</option>
                                         <option value=".jpg">Image (.jpeg, .jpg, .png)</option>
+                                        <option value=".msg">Message (.msg)</option>
                                     </select>
                                 </div>
                             </div>

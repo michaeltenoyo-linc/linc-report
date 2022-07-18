@@ -160,6 +160,10 @@ Linc | LOA Homepage
         <div id="docx" class="viewer-container flex flex-nowrap py-8 px-4 text-center hidden">
 
         </div>
+        <!-- MSG -->
+        <div id="msg" class="w-full viewer-container flex flex-nowrap py-8 px-4 text-center justify-center hidden">
+            
+        </div>
     </div>
 </div>
 @endsection

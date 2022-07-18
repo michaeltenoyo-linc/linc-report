@@ -18,6 +18,12 @@ module.exports = {
       'align-middle',
       'justify-center',
       'text-center',
+      'bg-orange-500',
+      'bg-orange-600',
+      'bg-orange-700',
+      'hover:bg-orange-500',
+      'hover:bg-orange-600',
+      'hover:bg-orange-700'
     ]
   },
   theme: {

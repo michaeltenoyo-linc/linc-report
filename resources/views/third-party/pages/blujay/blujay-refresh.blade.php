@@ -96,9 +96,21 @@ Linc | Third Party Homepage
 
                         <!-- SQL Injection -->
                         <div id="progress-blujay-injecting" class="text-center my-5 hidden">
+                            <span class="text-red-500">*This process will freeze the server for a while</span>
+                            <br><br>
                             <button id="btn-blujay-seeder" class="shadow-xl shadow-red-500 hover:shadow-none h-32 w-32 bg-red-600 hover:bg-red-700 text-white font-bold rounded-full">
                               <i class="fas fa-exclamation-triangle"></i><br>LAUNCH<br>SEEDER
                             </button>
+                        </div>
+
+                        <!-- Injection Progress -->
+                        <div id="monitor-blujay-sql" class="p-5 text-center my-5 border border-teal-500 rounded-full hidden">
+                          <span class="text-red-500"><i class="fas fa-exclamation-triangle"></i> Please wait a moment, don't leave this window</span>
+                          <br>
+                          <span id="monitor-blujay-sql-progress" class="font-bold text-3xl">0% (0/0)</span>
+                          <br>
+                          <span id="monitor-blujay-sql-section">(1/3) Shipment</span>
+                          <br>
                         </div>
                         
                         <script type="text/javascript">
