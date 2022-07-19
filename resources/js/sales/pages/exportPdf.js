@@ -50,11 +50,13 @@ export const ExportToPDF = async () => {
       e.preventDefault();
       console.log("Generating...");
 
+      let constraint = $('#form-export-sales .input-constraint').val();
+      let status = $('#form-export-sales .input-status').val();
       let division = $('#form-export-sales .input-division').val();
       let sales = $('#form-export-sales .input-sales').val();
       let customer = $('#form-export-sales .input-customer').val();
 
-      window.location.href = '/sales/export/generate-report/'+division+'/'+sales+'/'+customer+'/false';
+      window.open('/sales/export/generate-report/'+constraint+'/'+status+'/'+division+'/'+sales+'/'+customer+'/false','_blank');
     })
   }
 

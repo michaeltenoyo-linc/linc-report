@@ -699,6 +699,35 @@ class TruckController extends BaseController
 
         */
         $data['yearly_budget'] = [0,0,0,0,0,0,0,0,0,0,0,0];
+
+        //Date Constraint
+        $dateConstraint = Session::get('sales-constraint');
+
+        //Status Constraint
+        $status = Session::get('sales-status');
+        $statusCondition = [
+            ['created_date','!=',null]
+        ];
+        Session::put('sales-status', $status);
+        switch ($status) {
+            case 'ongoing':
+                $statusCondition = [
+                    ['load_status','=','Accepted']
+                ];
+                break;
+            case 'pod':
+                $statusCondition = [
+                    ['load_status','=','Completed'],
+                    ['websettle_date','=',null]
+                ];
+                break;
+            case 'websettle':
+                $statusCondition = [
+                    ['websettle_date','!=',null]
+                ];
+                break;
+        }
+
         //Division
         $divisionGroup = [];
         switch ($division) {
@@ -726,13 +755,14 @@ class TruckController extends BaseController
         //Blujay
         $dbYearlyRevenue = LoadPerformance::selectRaw("
                                         SUM(billable_total_rate) as totalActual,
-                                        DATE_FORMAT(created_date,'%m') as monthKey
+                                        DATE_FORMAT(".$dateConstraint.",'%m') as monthKey
                                     ")
                                     ->where('vehicle_number',$id)
                                     ->whereIn('load_group',$divisionGroup)
                                     ->where('billable_total_rate','>',$this->billableThreshold)
                                     ->where('load_status','!=','Voided')
-                                    ->whereYear('closed_date',Session::get('sales-year'))
+                                    ->where($statusCondition)
+                                    ->whereYear($dateConstraint,Session::get('sales-year'))
                                     ->groupBy('monthKey')
                                     ->get();
         

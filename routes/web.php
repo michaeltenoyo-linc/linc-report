@@ -390,7 +390,7 @@ Route::middleware(['auth','priviledge:sales,master'])->group(function () {
 
         //Export
         Route::get('/export/filter-customer/{division}/{sales}',[SalesViewController::class, 'getFilteringCustomer']);
-        Route::get('/export/generate-report/{division}/{sales}/{customer}/{isDatatable}',[SalesViewController::class, 'generateSalesReport']);
+        Route::get('/export/generate-report/{constraint}/{status}/{division}/{sales}/{customer}/{isDatatable}',[SalesViewController::class, 'generateSalesReport']);
 
         Route::prefix('/data')->group(function () {
             //DATA VIEW

@@ -315,13 +315,42 @@ class ViewController extends BaseController
     }
 
     public function gotoExportPdf(){
-        Session::put('sales-month',date('m'));
-        Session::put('sales-year', date('Y'));
+        $today = Carbon::now();
+        Session::put('sales-from',$today);
+        Session::put('sales-to',$today);
 
         return view('sales.pages.export-pdf');
     }
 
     public function getDivisionOverview($division){
+        //Date Constraint
+        $dateConstraint = Session::get('sales-constraint');
+
+        //Status Constraint
+        $status = Session::get('sales-status');
+        $statusCondition = [
+            ['created_date','!=',null]
+        ];
+        Session::put('sales-status', $status);
+        switch ($status) {
+            case 'ongoing':
+                $statusCondition = [
+                    ['load_status','=','Accepted']
+                ];
+                break;
+            case 'pod':
+                $statusCondition = [
+                    ['load_status','=','Completed'],
+                    ['websettle_date','=',null]
+                ];
+                break;
+            case 'websettle':
+                $statusCondition = [
+                    ['websettle_date','!=',null]
+                ];
+                break;
+        }
+
         $divisionGroup = [];
 
         switch ($division) {
@@ -349,9 +378,10 @@ class ViewController extends BaseController
         //Revenue
         $data['revenue_1m'] = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
                                             ->whereIn('load_group',$divisionGroup)
-                                            ->where('load_status','Completed')
-                                            ->whereMonth('closed_date',Session::get('sales-month'))
-                                            ->whereYear('closed_date',Session::get('sales-year'))
+                                            ->where('load_status','!=','Voided')
+                                            ->where($statusCondition)
+                                            ->whereMonth($dateConstraint,Session::get('sales-month'))
+                                            ->whereYear($dateConstraint,Session::get('sales-year'))
                                             ->first();
         $data['revenue_1m'] = $data['revenue_1m']->totalActual;
 
@@ -359,9 +389,10 @@ class ViewController extends BaseController
         for ($i=1; $i <= intval(Session::get('sales-month')); $i++) {
             $mRevenue = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
                                         ->whereIn('load_group',$divisionGroup)
-                                        ->where('load_status','Completed')
-                                        ->whereMonth('closed_date',$i)
-                                        ->whereYear('closed_date',Session::get('sales-year'))
+                                        ->where('load_status','!=','Voided')
+                                        ->where($statusCondition)
+                                        ->whereMonth($dateConstraint,$i)
+                                        ->whereYear($dateConstraint,Session::get('sales-year'))
                                         ->first();
             $data['revenue_ytd'] += $mRevenue->totalActual;
         }
@@ -369,9 +400,10 @@ class ViewController extends BaseController
         //Transaction
         $data['transaction_1m'] = LoadPerformance::select('tms_id')
                                             ->whereIn('load_group',$divisionGroup)
-                                            ->where('load_status','Completed')
-                                            ->whereMonth('closed_date',Session::get('sales-month'))
-                                            ->whereYear('closed_date',Session::get('sales-year'))
+                                            ->where('load_status','!=','Voided')
+                                            ->where($statusCondition)
+                                            ->whereMonth($dateConstraint,Session::get('sales-month'))
+                                            ->whereYear($dateConstraint,Session::get('sales-year'))
                                             ->groupBy('tms_id')
                                             ->get();
         $data['transaction_1m'] = count($data['transaction_1m']);
@@ -380,9 +412,10 @@ class ViewController extends BaseController
         for ($i=1; $i <= intval(Session::get('sales-month')); $i++) {
             $mRevenue = LoadPerformance::select('tms_id')
                                         ->whereIn('load_group',$divisionGroup)
-                                        ->whereMonth('closed_date',$i)
-                                        ->whereYear('closed_date',Session::get('sales-year'))
-                                        ->where('load_status','Completed')
+                                        ->whereMonth($dateConstraint,$i)
+                                        ->whereYear($dateConstraint,Session::get('sales-year'))
+                                        ->where('load_status','!=','Voided')
+                                        ->where($statusCondition)
                                         ->groupBy('tms_id')
                                         ->get();
             $data['transaction_ytd'] += count($mRevenue);
@@ -612,6 +645,35 @@ class ViewController extends BaseController
     public function getYearlyAchievement(Request $req, $id){
         $tempBudget = SalesBudget::find($id);
 
+        //Date Constraint
+        $dateConstraint = Session::get('sales-constraint');
+
+        //Status Constraint
+        $status = Session::get('sales-status');
+        $statusCondition = [
+            ['created_date','!=',null]
+        ];
+        Session::put('sales-status', $status);
+        switch ($status) {
+            case 'ongoing':
+                $statusCondition = [
+                    ['load_status','=','Accepted']
+                ];
+                break;
+            case 'pod':
+                $statusCondition = [
+                    ['load_status','=','Completed'],
+                    ['websettle_date','=',null]
+                ];
+                break;
+            case 'websettle':
+                $statusCondition = [
+                    ['websettle_date','!=',null]
+                ];
+                break;
+        }
+
+
         $data['message'] = "Sukses mengambil data budget.";
         $data['yearly_budget'] = SalesBudget::where('customer_name',$tempBudget->customer_name)
                                         ->where('division',$tempBudget->division)
@@ -643,12 +705,13 @@ class ViewController extends BaseController
         //Blujay
         $dbYearlyRevenue = LoadPerformance::selectRaw("
                                             SUM(billable_total_rate) as totalActual,
-                                            DATE_FORMAT(closed_date,'%m') as monthKey
+                                            DATE_FORMAT(".$dateConstraint.",'%m') as monthKey
                                         ")
                                         ->where('customer_reference',$tempBudget->customer_sap)
                                         ->whereIn('load_group',$divisionGroup)
-                                        ->where('load_status','Completed')
-                                        ->whereYear('closed_date',Session::get('sales-year'))
+                                        ->where('load_status','!=','Voided')
+                                        ->where($statusCondition)
+                                        ->whereYear($dateConstraint,Session::get('sales-year'))
                                         ->groupBy('monthKey')
                                         ->get();
 
@@ -1587,8 +1650,33 @@ class ViewController extends BaseController
         return response()->json($data, 200);
     }
 
-    public function generateSalesReport(Request $req, $division, $sales, $customer, $isDatatable){
-        
+    public function generateSalesReport(Request $req, $dateConstraint, $status, $division, $sales, $customer, $isDatatable){
+        Session::put('sales-constraint',$dateConstraint);
+        //status constraint
+        $statusCondition = [
+            ['created_date','!=',null]
+        ];
+        Session::put('sales-status', $status);
+        $data['status_constraint'] = $status;
+        switch ($status) {
+            case 'ongoing':
+                $statusCondition = [
+                    ['load_status','=','Accepted']
+                ];
+                break;
+            case 'pod':
+                $statusCondition = [
+                    ['load_status','=','Completed'],
+                    ['websettle_date','=',null]
+                ];
+                break;
+            case 'websettle':
+                $statusCondition = [
+                    ['websettle_date','!=',null]
+                ];
+                break;
+        }
+
         switch ($division) {
             case 'transport':
                 $division = 'Pack Trans';
@@ -1618,47 +1706,32 @@ class ViewController extends BaseController
             $actual = 0;
             $percentage = 0;
 
+            $loadGroup = "";
+            switch ($row->division) {
+                case 'Pack Trans':
+                    $loadGroup = $this->transportLoadGroups;
+                    break;
+                case 'Freight Forwarding BP':
+                    $loadGroup = $this->eximLoadGroups;
+                    break;
+                case 'Bulk Trans':
+                    $loadGroup = $this->bulkLoadGroups;
+                    break;
+            }
 
-            if($row->division == "Pack Trans"){
-                //BLUJAY DIVISION TRANSPORT
-                $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+
+            $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
                                     ->where('customer_reference',$row->customer_sap)
-                                    ->whereIn('load_group', $this->transportLoadGroups)
-                                    ->where('load_status','Completed')
-                                    ->whereMonth('closed_date',Session::get('sales-month'))
-                                    ->whereYear('closed_date',Session::get('sales-year'))
+                                    ->whereIn('load_group',$loadGroup)
+                                    ->where('load_status','!=','Voided')
+                                    ->where($statusCondition)
+                                    ->whereNotNull($dateConstraint)
+                                    ->whereBetween($dateConstraint,[Session::get('sales-from'),Session::get('sales-to')])
                                     ->groupBy('customer_reference')
                                     ->first();
 
-                if(!is_null($total)){
-                    $actual = $total->totalActual;
-                }
-            }else if($row->division == "Freight Forwarding BP"){
-                $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
-                                    ->where('customer_reference',$row->customer_sap)
-                                    ->whereIn('load_group',$this->eximLoadGroups)
-                                    ->where('load_status','Completed')
-                                    ->whereMonth('closed_date',Session::get('sales-month'))
-                                    ->whereYear('closed_date',Session::get('sales-year'))
-                                    ->groupBy('customer_reference')
-                                    ->first();
-
-                if(!is_null($total)){
-                    $actual = $total->totalActual;
-                }
-            }else if($row->division == "Bulk Trans"){
-                $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
-                                    ->where('customer_reference',$row->customer_sap)
-                                    ->whereIn('load_group',$this->bulkLoadGroups)
-                                    ->where('load_status','Completed')
-                                    ->whereMonth('closed_date',Session::get('sales-month'))
-                                    ->whereYear('closed_date',Session::get('sales-year'))
-                                    ->groupBy('customer_reference')
-                                    ->first();
-
-                if(!is_null($total)){
-                    $actual = $total->totalActual;
-                }
+            if(!is_null($total)){
+                $actual = $total->totalActual;
             }
 
             if($row->budget > 0){
@@ -1693,49 +1766,18 @@ class ViewController extends BaseController
                                     ->groupBy('customer_name')
                                     ->first();
 
+            $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
+                                ->where('customer_reference',$row->customer_sap)
+                                ->whereIn('load_group',$loadGroup)
+                                ->where('load_status','!=','Voided')
+                                ->where($statusCondition)
+                                ->whereIn(DB::raw('month('.$dateConstraint.')'),$ytd_month)
+                                ->whereYear($dateConstraint,Session::get('sales-year'))
+                                ->groupBy('customer_reference')
+                                ->first();
 
-
-            if($row->division == "Pack Trans"){
-                //BLUJAY DIVISION TRANSPORT
-
-                $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
-                                    ->where('customer_reference',$row->customer_sap)
-                                    ->whereIn('load_group',$this->transportLoadGroups)
-                                    ->where('load_status','Completed')
-                                    ->whereIn(DB::raw('month(closed_date)'),$ytd_month)
-                                    ->whereYear('closed_date',Session::get('sales-year'))
-                                    ->groupBy('customer_reference')
-                                    ->first();
-
-                if(!is_null($total)){
-                    $actual = $total->totalActual;
-                }
-            }else if($row->division == "Freight Forwarding BP"){
-                $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
-                                    ->where('customer_reference',$row->customer_sap)
-                                    ->whereIn('load_group',$this->eximLoadGroups)
-                                    ->where('load_status','Completed')
-                                    ->whereIn(DB::raw('month(closed_date)'),$ytd_month)
-                                    ->whereYear('closed_date',Session::get('sales-year'))
-                                    ->groupBy('customer_reference')
-                                    ->first();
-
-                if(!is_null($total)){
-                    $actual = $total->totalActual;
-                }
-            }else if($row->division == "Bulk Trans"){
-                $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
-                                    ->where('customer_reference',$row->customer_sap)
-                                    ->whereIn('load_group',$this->bulkLoadGroups)
-                                    ->where('load_status','Completed')
-                                    ->whereIn(DB::raw('month(closed_date)'),$ytd_month)
-                                    ->whereYear('closed_date',Session::get('sales-year'))
-                                    ->groupBy('customer_reference')
-                                    ->first();
-
-                if(!is_null($total)){
-                    $actual = $total->totalActual;
-                }
+            if(!is_null($total)){
+                $actual = $total->totalActual;
             }
 
             if($row->budget > 0){
@@ -1771,8 +1813,9 @@ class ViewController extends BaseController
         //Transport
         $actualTransport = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
                                         ->whereIn('load_group',$this->transportLoadGroups)
-                                        ->where('load_status','Completed')
-                                        ->whereYear('closed_date',Session::get('sales-year'))
+                                        ->where('load_status','!=','Voided')
+                                        ->where($statusCondition)
+                                        ->whereYear($dateConstraint,Session::get('sales-year'))
                                         ->first();
 
         $budgetTransport = SalesBudget::selectRaw('SUM(budget) as totalBudget')
@@ -1790,8 +1833,9 @@ class ViewController extends BaseController
         $actualExim = 0;
         $actualExim = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
                                         ->whereIn('load_group',$this->eximLoadGroups)
-                                        ->where('load_status','Completed')
-                                        ->whereYear('closed_date',Session::get('sales-year'))
+                                        ->where('load_status','!=','Voided')
+                                        ->where($statusCondition)
+                                        ->whereYear($dateConstraint,Session::get('sales-year'))
                                         ->first();
 
         $budgetExim = SalesBudget::selectRaw('SUM(budget) as totalBudget')
@@ -1809,8 +1853,9 @@ class ViewController extends BaseController
         $actualBulk = 0;
         $actualBulk = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
                                         ->whereIn('load_group',$this->bulkLoadGroups)
-                                        ->where('load_status','Completed')
-                                        ->whereYear('closed_date',Session::get('sales-year'))
+                                        ->where('load_status','!=','Voided')
+                                        ->where($statusCondition)
+                                        ->whereYear($dateConstraint,Session::get('sales-year'))
                                         ->first();
 
         $budgetBulk = SalesBudget::selectRaw('SUM(budget) as totalBudget')
@@ -1828,8 +1873,9 @@ class ViewController extends BaseController
         $actualWarehouse = 0;
         $actualWarehouse = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
                                         ->whereIn('load_group',$this->warehouseLoadGroups)
-                                        ->where('load_status','Completed')
-                                        ->whereYear('closed_date',Session::get('sales-year'))
+                                        ->where('load_status','!=','Voided')
+                                        ->where($statusCondition)
+                                        ->whereYear($dateConstraint,Session::get('sales-year'))
                                         ->first();
 
         $budgetWarehouse = SalesBudget::selectRaw('SUM(budget) as totalBudget')
@@ -1844,7 +1890,6 @@ class ViewController extends BaseController
         }
 
         //1 Month Graph Data
-
 
         //Return Output
         if($isDatatable == 'true'){
