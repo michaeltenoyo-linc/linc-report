@@ -155,13 +155,13 @@
                         <a href="{{url('/sales/export/pdf')}}"
                             class="page_nav_active">
                             <i class="fas fa-clipboard"></i>
-                            Generate Single Page
+                            Sales Performance
                         </a>
                     @else
                         <a href="{{url('/sales/export/pdf')}}"
                             class="page_nav">
                             <i class="fas fa-clipboard"></i>
-                            Generate Single Page
+                            Sales Performance
                         </a>
                     @endif
                 </li>
@@ -171,7 +171,7 @@
             <hr class="my-4 md:min-w-full" />
             <!-- Heading -->
             <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                Performance
+                Truck
             </h6>
 
             <!-- Navigation Product -->
@@ -181,13 +181,13 @@
                         <a href="{{url('/sales/truck/performance')}}"
                             class="page_nav_active">
                             <i class="fas fa-clipboard"></i>
-                            Performance Statistic
+                            Performance
                         </a>
                     @else
                         <a href="{{url('/sales/truck/performance')}}"
                             class="page_nav">
                             <i class="fas fa-clipboard"></i>
-                            Performance Statistic
+                            Performance
                         </a>
                     @endif
                 </li>

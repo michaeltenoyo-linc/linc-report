@@ -144,16 +144,22 @@ Linc | Sales Report Homepage
                 <h1 class="text-left text-xl hover:text-blue-500 cursor-pointer">POD Progress <i class="fas fa-angle-right ml-3"></i></h1>
             </div>
             <div class="w-full flex px-5 mb-5">
-                <div class="landing-headline-active">
+                <div id="pod-1" class="landing-headline-active headline-pod">
                     H-1
                 </div>
-                <div class="landing-headline-inactive">
+                <div id="pod-7" class="landing-headline-inactive headline-pod">
                     1W
                 </div>
-                <div class="landing-headline-inactive">
+                <div id="pod-30" class="landing-headline-inactive headline-pod">
+                    1M
+                </div>
+                <div id="pod-90" class="landing-headline-inactive headline-pod">
+                    3M
+                </div>
+                <div id="pod-mtd" class="landing-headline-inactive headline-pod">
                     MTD
                 </div>
-                <div class="landing-headline-inactive">
+                <div id="pod-ytd" class="landing-headline-inactive headline-pod">
                     YTD
                 </div>
             </div>
@@ -187,16 +193,22 @@ Linc | Sales Report Homepage
                 <h1 class="text-left text-xl hover:text-blue-500 cursor-pointer">Websettle Progress <i class="fas fa-angle-right ml-3"></i></h1>
             </div>
             <div class="w-full flex px-5 mb-5">
-                <div class="landing-headline-active">
+                <div id="websettle-1" class="landing-headline-active headline-websettle">
                     H-1
                 </div>
-                <div class="landing-headline-inactive">
+                <div id="websettle-7" class="landing-headline-inactive headline-websettle">
                     1W
                 </div>
-                <div class="landing-headline-inactive">
+                <div id="websettle-30" class="landing-headline-inactive headline-websettle">
+                    1M
+                </div>
+                <div id="websettle-90" class="landing-headline-inactive headline-websettle">
+                    3M
+                </div>
+                <div id="websettle-mtd" class="landing-headline-inactive headline-websettle">
                     MTD
                 </div>
-                <div class="landing-headline-inactive">
+                <div id="websettle-ytd" class="landing-headline-inactive headline-websettle">
                     YTD
                 </div>
             </div>
@@ -230,16 +242,22 @@ Linc | Sales Report Homepage
                 <h1 class="text-left text-xl hover:text-blue-500 cursor-pointer">Top Profit <i class="fas fa-angle-right ml-3"></i></h1>
             </div>
             <div class="w-full flex px-5 mb-5">
-                <div class="landing-headline-active">
+                <div id="profit-1" class="landing-headline-active headline-profit">
                     H-1
                 </div>
-                <div class="landing-headline-inactive">
+                <div id="profit-7" class="landing-headline-inactive headline-profit">
                     1W
                 </div>
-                <div class="landing-headline-inactive">
+                <div id="profit-30" class="landing-headline-inactive headline-profit">
+                    1M
+                </div>
+                <div id="profit-90" class="landing-headline-inactive headline-profit">
+                    3M
+                </div>
+                <div id="profit-mtd" class="landing-headline-inactive headline-profit">
                     MTD
                 </div>
-                <div class="landing-headline-inactive">
+                <div id="profit-ytd" class="landing-headline-inactive headline-profit">
                     YTD
                 </div>
             </div>

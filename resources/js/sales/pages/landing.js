@@ -787,15 +787,17 @@ export const loadDynamicChart = async () => {
   */
 }
 
-const loadLandingNews = async () => {
+async function refreshDailyHeadline() {
   $('#container-news-update').empty();
-  const DailyData = await $.get('sales/data/get-daily-update');
+
+  //Fetch Data
+  const DailyData = await $.get('sales/data/get-daily-update/marquee/1');
   console.log(DailyData);
 
   //SETUP DAY NAME UPDATE
   $('#news-update-dayname').html(DailyData['dayName']);
   $('#news-update-dayname-before').html(DailyData['dayNameBefore']);
-  
+
   //Daily Headline
   DailyData['yesterday'].forEach(row => {
     let statusRow = "";
@@ -834,9 +836,16 @@ const loadLandingNews = async () => {
 
     $('#container-news-update').append(divRow);
   });
+}
 
-  //Daily Load Progress
+async function refreshDailyPod(step){
+  //Daily POD Progress
   $('#container-headline-pod').empty();
+
+  //Fetch Data
+  const DailyData = await $.get('sales/data/get-daily-update/pod/'+step);
+  console.log(DailyData);
+
   let ctr = 1;
   toArray(DailyData['pod']).sortBy('totalPod','desc').forEach(row => {
     let divRow = "";
@@ -874,9 +883,46 @@ const loadLandingNews = async () => {
     ctr++;
   });
 
+  //ZERO POD
+  toArray(DailyData['accepted']).sortBy('totalAccepted','desc').forEach(row => {
+    if(row['hasPod'] == 0){
+      let divRow = "";
+      let percentageColor = "text-red-500";
+
+      divRow += '<div class="w-full flex p-2">';
+      divRow += '<div class="w-2/12 h-auto p-2">';
+      divRow += '<img class="h-12 w-full object-contain" src="/assets/icons/customers/'+row['customer_reference']+'.png" alt="">';
+      divRow += '</div>';
+      divRow += '<div class="w-4/12 truncate ...">';
+      divRow += '<p class="p-2">';
+      divRow += '<span class="font-bold text-lg">'+row['customer_reference']+'</span>';
+      divRow += '<br>';
+      divRow += '<span class="w-full text-gray-500 text-xs truncate">'+row['customer_name']+'</span>';
+      divRow += '</p>';
+      divRow += '</div>';
+      divRow += '<div class="w-6/12 px-4 flex inline-block align-middle justify-center">';
+      divRow += '<p class="py-2 text-center">';
+      divRow += '<span class="'+percentageColor+' font-bold text-xl">0%</span>';
+      divRow += '<br>';
+      divRow += '<i class="fas fa-clipboard-check w-3 mr-2"></i>0/'+row['totalAccepted'];
+      divRow += '</p>';
+      divRow += '</div>';
+      divRow += '</div>';
+
+      $('#container-headline-pod').append(divRow);
+    }
+  });
+}
+
+async function refreshDailyWebsettle(step){
   //Daily Websettle Progress
   $('#container-headline-websettle').empty();
-  ctr = 1;
+
+  //Fetch Data
+  const DailyData = await $.get('sales/data/get-daily-update/websettle/'+step);
+  console.log(DailyData);
+
+  let ctr = 1;
   toArray(DailyData['websettle']).sortBy('totalWebsettle','desc').forEach(row => {
     let divRow = "";
     let percentageColor = "text-red-500";
@@ -909,13 +955,48 @@ const loadLandingNews = async () => {
     divRow += '</div>';
 
     $('#container-headline-websettle').append(divRow);
-    
-    ctr++;
   });
 
+  //ZERO WEBSETTLE
+  toArray(DailyData['pod']).sortBy('totalPod','desc').forEach(row => {
+    if(row['hasWebsettle'] == 0){
+      let divRow = "";
+      let percentageColor = "text-red-500";
+
+      divRow += '<div class="w-full flex p-2">';
+      divRow += '<div class="w-2/12 h-auto p-2">';
+      divRow += '<img class="h-12 w-full object-contain" src="/assets/icons/customers/'+row['customer_reference']+'.png" alt="">';
+      divRow += '</div>';
+      divRow += '<div class="w-4/12 truncate ...">';
+      divRow += '<p class="p-2">';
+      divRow += '<span class="font-bold text-lg">'+row['customer_reference']+'</span>';
+      divRow += '<br>';
+      divRow += '<span class="w-full text-gray-500 text-xs truncate">'+row['customer_name']+'</span>';
+      divRow += '</p>';
+      divRow += '</div>';
+      divRow += '<div class="w-6/12 px-4 flex inline-block align-middle justify-center">';
+      divRow += '<p class="py-2 text-center">';
+      divRow += '<span class="'+percentageColor+' font-bold text-xl">0%</span>';
+      divRow += '<br>';
+      divRow += '<i class="fas fa-coins w-3 mr-2"></i>0/'+row['totalPod'];
+      divRow += '</p>';
+      divRow += '</div>';
+      divRow += '</div>';
+
+      $('#container-headline-websettle').append(divRow);
+    }
+  });
+}
+
+async function refreshDailyProfit(step){
   //Daily Top Gainer
   $('#container-headline-gainer').empty();
-  ctr = 1;
+
+  //Fetch Data
+  const DailyData = await $.get('sales/data/get-daily-update/profit/'+step);
+  console.log(DailyData);
+
+  let ctr = 1;
   toArray(DailyData['gainer']).sortBy('profit','desc').forEach(row => {
     let divRow = "";
     let percentageColor = "text-red-500";
@@ -951,10 +1032,17 @@ const loadLandingNews = async () => {
     
     ctr++;
   });
+  
+}
 
-
+async function refreshDailyUtility(step) {
   //Daily Utility Status
   $('#container-headline-utility').empty();
+
+  //Fetch Data
+  const DailyData = await $.get('sales/data/get-daily-update/utility/1');
+  console.log(DailyData);
+
   toArray(DailyData['utility']).sortBy('latest','asc').forEach(row => {
     let divRow = "";
     let status = '<span class="font-bold text-yellow-500 text-xl">UNKNOWN</span>';
@@ -996,14 +1084,53 @@ const loadLandingNews = async () => {
 
     $('#container-headline-utility').append(divRow);
   });
+}
 
+const loadLandingNews = async () => {
+  refreshDailyHeadline();
+  refreshDailyPod(1);
+  refreshDailyWebsettle(1);
+  refreshDailyProfit(1);
+  refreshDailyUtility();
+}
+
+const filterDailyHeadline = async () => {
+  $(document).on('click','.landing-headline-inactive', async function(e){
+    e.preventDefault();
+
+    let id = $(this).attr('id').split('-');
+    let section = id[0];
+    let step = id[1];
+
+    let filterClass = '';
+
+    switch (section) {
+      case 'pod':
+        refreshDailyPod(step);
+        break;
+      case 'websettle':
+        refreshDailyWebsettle(step);
+        break;
+      case 'profit':
+        refreshDailyProfit(step);
+        break;
+    }
+
+    //ACTIVATED FILTER HEADLINE
+    $('.headline-'+section).removeClass('landing-headline-active');
+    $('.headline-'+section).removeClass('landing-headline-inactive');
+    $('.headline-'+section).addClass('landing-headline-inactive');
+    $(this).addClass('landing-headline-active');
+
+  });
 }
 
 export const Landing = async () => {
     console.log("loading LandingJs");
 
     await loadLandingNews();
-
+    filterDailyHeadline();
+    
     await loadStaticChart();
     await loadDynamicChart();
 }

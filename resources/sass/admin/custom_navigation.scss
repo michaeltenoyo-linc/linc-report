@@ -23,9 +23,9 @@
 }
 
 .landing-headline-active {
-    @apply p-2 mr-3 bg-blue-100 rounded cursor-pointer 
+    @apply text-sm p-1 mr-2 bg-blue-100 rounded cursor-pointer 
 }
 
 .landing-headline-inactive {
-    @apply p-2 mr-3 hover:bg-blue-100 rounded cursor-pointer 
+    @apply text-sm p-1 mr-2 hover:bg-blue-100 rounded cursor-pointer 
 }

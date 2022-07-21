@@ -1717,6 +1717,9 @@ class ViewController extends BaseController
                 case 'Bulk Trans':
                     $loadGroup = $this->bulkLoadGroups;
                     break;
+                case 'Package Whs':
+                    $loadGroup = $this->warehouseLoadGroups;
+                    break;
             }
 
 
@@ -1913,7 +1916,8 @@ class ViewController extends BaseController
         }
     }
 
-    public function getDailyUpdate(Request $req){
+    public function getDailyUpdate(Request $req, $section, $step)
+    {
         //DATE CRAWL
         $latestInput = LoadPerformance::selectRaw("DATE_FORMAT(created_date, '%Y-%b-%d') as created_date_format")
                                     ->whereIn('load_group',$this->surabayaLoadGroups)
@@ -1948,153 +1952,183 @@ class ViewController extends BaseController
         }else{
             $subDayBefore = 1;
         }
+
+        //special step
+        if($step != 1){
+            $subDayBefore = $step;
+        }
+
+        if($step == "mtd" || $step =="ytd"){
+            $subDayBefore = 0;
+        }
+
         $latestDateBefore = Carbon::parse($latestInput->created_date_format)->subDays($subDay+$subDayBefore);
 
         $data['dayNameBefore'] = $latestDateBefore->dayName." ( ".$latestDateBefore->format('Y-m-d')." ) ";
-        $latestDateBefore = $latestDateBefore->format('Y-m-d');
+        
+        if($step == "mtd"){
+            $latestDateBefore = $latestDateBefore->format('Y-m')."-01";
+        }else if($step == "ytd"){
+            $latestDateBefore = $latestDateBefore->format('Y')."-01-01";
+        }else{
+            $latestDateBefore = $latestDateBefore->format('Y-m-d');
+        }
+        
         
         $data['dayName'] = $latestDate->dayName." ( ".$latestDate->format('Y-m-d')." ) ";
         $latestDate = $latestDate->format('Y-m-d');
-        
-        //Section : Daily Data Crawling
-        $data['yesterday'] = LoadPerformance::selectRaw('SUM(billable_total_rate) as revenue, count(tms_id) as totalLoads, count(DISTINCT vehicle_number) as totalVehicle, customer_reference, customer_name')
-                                        ->whereDate('created_date','=', $latestDate)
-                                        ->groupBy('customer_reference','customer_name')
-                                        ->whereIn('load_group',$this->surabayaLoadGroups)
-                                        ->where('billable_total_rate','>',$this->rateThreshold)
-                                        ->get();
 
-        $beforeYesterday = LoadPerformance::selectRaw('SUM(billable_total_rate) as revenue, count(tms_id) as totalLoads, customer_reference, customer_name')
-                                        ->whereDate('created_date','=', $latestDateBefore)
-                                        ->groupBy('customer_reference','customer_name')
-                                        ->where('billable_total_rate','>',$this->rateThreshold)
-                                        ->whereIn('load_group',$this->surabayaLoadGroups)
-                                        ->get();
+        //HEADLINE SECTIONS
+        if($section == "marquee"){
+            //Section : Daily Data Crawling
+            $data['yesterday'] = LoadPerformance::selectRaw('SUM(billable_total_rate) as revenue, count(tms_id) as totalLoads, count(DISTINCT vehicle_number) as totalVehicle, customer_reference, customer_name')
+                                            ->whereDate('created_date','=', $latestDate)
+                                            ->groupBy('customer_reference','customer_name')
+                                            ->whereIn('load_group',$this->surabayaLoadGroups)
+                                            ->where('billable_total_rate','>',$this->rateThreshold)
+                                            ->get();
 
-        foreach ($data['yesterday'] as $y) {
-            if($y->customer_reference==""){
-                $y->customer_name = "UNDEFINED";
-            }
-            $y->revenue_format = number_format($y->revenue, 2, ',', '.');
-            $y->margin = "None";
-            $y->margin_percentage = "None";
-            foreach ($beforeYesterday as $b) {
-                if($y->customer_reference == $b->customer_reference){
-                    $y->margin = $y->revenue - $b->revenue;
-                    $y->margin_percentage = round(($y->margin/$b->revenue)*100,2);
-                    if($y->margin_percentage > 100)$y->margin_percentage="100+";
-                    if($y->margin_percentage < -100)$y->margin_percentage="100-";
+            $beforeYesterday = LoadPerformance::selectRaw('SUM(billable_total_rate) as revenue, count(tms_id) as totalLoads, customer_reference, customer_name')
+                                            ->whereDate('created_date','=', $latestDateBefore)
+                                            ->groupBy('customer_reference','customer_name')
+                                            ->where('billable_total_rate','>',$this->rateThreshold)
+                                            ->whereIn('load_group',$this->surabayaLoadGroups)
+                                            ->get();
+
+            foreach ($data['yesterday'] as $y) {
+                if($y->customer_reference==""){
+                    $y->customer_name = "UNDEFINED";
+                }
+                $y->revenue_format = number_format($y->revenue, 2, ',', '.');
+                $y->margin = "None";
+                $y->margin_percentage = "None";
+                foreach ($beforeYesterday as $b) {
+                    if($y->customer_reference == $b->customer_reference){
+                        $y->margin = $y->revenue - $b->revenue;
+                        $y->margin_percentage = round(($y->margin/$b->revenue)*100,2);
+                        if($y->margin_percentage > 100)$y->margin_percentage="100+";
+                        if($y->margin_percentage < -100)$y->margin_percentage="100-";
+                    }
                 }
             }
-        }
-
-        //Section : Daily Load Progress
-        $data['pod'] = LoadPerformance::selectRaw('customer_reference, customer_name, count(*) as totalPod')
-                            ->whereDate('closed_date','=',$latestDate)
-                            ->whereIn('load_group',$this->surabayaLoadGroups)
-                            ->where('billable_total_rate','>',$this->rateThreshold)
-                            ->groupBy('customer_reference','customer_name')
-                            ->get();
-
-        $totalAccepted = LoadPerformance::selectRaw('customer_reference, customer_name, count(*) as totalAccepted')
-                            ->whereDate('created_date','<=',$latestDate)
-                            ->where('load_status',"Accepted")
-                            ->whereIn('load_group',$this->surabayaLoadGroups)
-                            ->where('billable_total_rate','>',$this->rateThreshold)
-                            ->groupBy('customer_reference','customer_name')
-                            ->get();
-        
-        $data['websettle'] = LoadPerformance::selectRaw('customer_reference, customer_name, count(*) as totalWebsettle')
-                            ->whereDate('websettle_date','=',$latestDate)
-                            ->whereIn('load_group',$this->surabayaLoadGroups)
-                            ->where('billable_total_rate','>',$this->rateThreshold)
-                            ->groupBy('customer_reference','customer_name')
-                            ->get();
-
-        $totalPod = LoadPerformance::selectRaw('customer_reference, customer_name, count(*) as totalPod')
+        }else if($section == "pod"){
+            //Section: POD Progress
+            $data['pod'] = LoadPerformance::selectRaw('customer_reference, customer_name, count(*) as totalPod')
                             ->whereDate('closed_date','<=',$latestDate)
-                            ->where('websettle_date',null)
+                            ->whereDate('closed_date','>=',$step==1?$latestDate:$latestDateBefore)
                             ->whereIn('load_group',$this->surabayaLoadGroups)
                             ->where('billable_total_rate','>',$this->rateThreshold)
                             ->groupBy('customer_reference','customer_name')
                             ->get();
-        
-        //POD COMPARISON
-        foreach ($data['pod'] as $pod) {
-            $pod->totalAccepted = $pod->totalPod;
-            foreach ($totalAccepted as $accepted) {
-                if($accepted->customer_reference == $pod->customer_reference){
-                    $pod->totalAccepted = $pod->totalPod + $accepted->totalAccepted;
+
+            $totalAccepted = LoadPerformance::selectRaw('customer_reference, customer_name, count(*) as totalAccepted, 0 as hasPod')
+                                ->whereDate('created_date','<=',$latestDate)
+                                ->where('load_status',"Accepted")
+                                ->whereIn('load_group',$this->surabayaLoadGroups)
+                                ->where('billable_total_rate','>',$this->rateThreshold)
+                                ->groupBy('customer_reference','customer_name')
+                                ->get();
+                            
+            //POD COMPARISON
+            foreach ($data['pod'] as $pod) {
+                $pod->totalAccepted = $pod->totalPod;
+                foreach ($totalAccepted as $accepted) {
+                    if($accepted->customer_reference == $pod->customer_reference){
+                        $accepted->hasPod = 1;
+                        $pod->totalAccepted = $pod->totalPod + $accepted->totalAccepted;
+                    }
                 }
+                $pod->margin_percentage = round(($pod->totalPod / $pod->totalAccepted)*100, 2);
             }
-
-            $pod->margin_percentage = round(($pod->totalPod / $pod->totalAccepted)*100, 2);
-        }
-
-        //WEBSETTLE COMPARISON
-        foreach ($data['websettle'] as $websettle) {
-            $websettle->totalPod = $websettle->totalWebsettle;
-            foreach ($totalPod as $pod) {
-                if($pod->customer_reference == $websettle->customer_reference){
-                    $websettle->totalPod = $websettle->totalWebsettle + $pod->totalPod;
-                }
-            }
-
-            $websettle->margin_percentage = round(($websettle->totalWebsettle / $websettle->totalPod)*100 ,2);
-        }
-
-        //Section : Daily Revenue
-        $data['gainer'] = LoadPerformance::selectRaw('customer_reference, customer_name, SUM(billable_total_rate) as totalBillable, SUM(payable_total_rate) as totalPayable')
-                                        ->whereIn('load_group',$this->surabayaLoadGroups)
-                                        ->where('billable_total_rate','>',$this->rateThreshold)
-                                        ->whereDate('created_date','=',$latestDate)
-                                        ->groupBy('customer_reference','customer_name')
-                                        ->get();
-        foreach ($data['gainer'] as $gain) {
-            $gain->profit = $gain->totalBillable - $gain->totalPayable;
-            $gain->profit_format = number_format($gain->profit, 2, ',', '.');
-            $gain->margin_percentage = round(($gain->profit / $gain->totalBillable)*100,2);
-        }
-
-        
-        //Sorting
-        $data['pod'] = collect($data['pod'])->sortBy('totalPod')->reverse();
-        $data['websettle'] = collect($data['websettle'])->sortBy('totalWebsettle')->reverse();
-        $data['gainer'] = collect($data['gainer'])->sortBy('profit')->reverse();
-
-        //Section : Daily Utility
-
-        $nopolList = unit_surabaya::get();
-        
-        $data['utility'] = LoadPerformance::selectRaw('vehicle_number, MAX(created_date) as latest, MAX(tms_id) as latest_id')
-                                        ->whereDate('created_date','<=',$latestDate)
-                                        ->whereIn('vehicle_number',$nopolList->pluck('nopol'))
-                                        ->groupBy('vehicle_number')
-                                        ->orderBy('latest')
-                                        ->get();
-        
-        $latestLoads = LoadPerformance::whereIn('tms_id',$data['utility']->pluck('latest_id'))->get();
-
-        foreach ($data['utility'] as $utility) {
-            $utility->load = "NONE";
-
             
+            $data['accepted'] = $totalAccepted;
+            //Sorting
+            $data['pod'] = collect($data['pod'])->sortBy('totalPod')->reverse();
+        }else if($section == "websettle"){
+            //Section : Daily Websettle Progress
+            $data['websettle'] = LoadPerformance::selectRaw('customer_reference, customer_name, count(*) as totalWebsettle')
+                                ->whereDate('websettle_date','<=',$latestDate)
+                                ->whereDate('websettle_date','>=',$step==1?$latestDate:$latestDateBefore)
+                                ->whereIn('load_group',$this->surabayaLoadGroups)
+                                ->where('billable_total_rate','>',$this->rateThreshold)
+                                ->groupBy('customer_reference','customer_name')
+                                ->get();
 
-            foreach ($latestLoads as $load) {
-                if($utility->latest_id == $load->tms_id){
-                    $utility->load = $load;
-                    //Date Range Between Last Load
-                    $utility->range = Carbon::parse($load->created_date)->diffInDays(Carbon::now());
+            $totalPod = LoadPerformance::selectRaw('customer_reference, customer_name, count(*) as totalPod, 0 as hasWebsettle')
+                                ->whereDate('closed_date','<=',$latestDate)
+                                ->where('websettle_date',null)
+                                ->whereIn('load_group',$this->surabayaLoadGroups)
+                                ->where('billable_total_rate','>',$this->rateThreshold)
+                                ->groupBy('customer_reference','customer_name')
+                                ->get();
+
+            //WEBSETTLE COMPARISON
+            foreach ($data['websettle'] as $websettle) {
+                $websettle->totalPod = $websettle->totalWebsettle;
+                foreach ($totalPod as $pod) {
+                    if($pod->customer_reference == $websettle->customer_reference){
+                        $pod->hasWebsettle = 1;
+                        $websettle->totalPod = $websettle->totalWebsettle + $pod->totalPod;
+                    }
                 }
+
+                $websettle->margin_percentage = round(($websettle->totalWebsettle / $websettle->totalPod)*100 ,2);
             }
 
-            foreach ($nopolList as $nopol) {
-                if($utility->vehicle_number == $nopol->nopol){
-                    $utility->vehicle = $nopol;
+            //Sorting
+            $data['pod'] = $totalPod;
+            $data['websettle'] = collect($data['websettle'])->sortBy('totalWebsettle')->reverse();
+        }else if($section == "profit"){
+            //Section : Daily Revenue
+            $data['gainer'] = LoadPerformance::selectRaw('customer_reference, customer_name, SUM(billable_total_rate) as totalBillable, SUM(payable_total_rate) as totalPayable')
+                                            ->whereIn('load_group',$this->surabayaLoadGroups)
+                                            ->where('billable_total_rate','>',$this->rateThreshold)
+                                            ->whereDate('created_date','<=',$latestDate)
+                                            ->whereDate('created_date','>=',$step==1?$latestDate:$latestDateBefore)
+                                            ->groupBy('customer_reference','customer_name')
+                                            ->get();
+            foreach ($data['gainer'] as $gain) {
+                $gain->profit = $gain->totalBillable - $gain->totalPayable;
+                $gain->profit_format = number_format($gain->profit, 2, ',', '.');
+                $gain->margin_percentage = round(($gain->profit / $gain->totalBillable)*100,2);
+            }
+
+            //Sorting
+            $data['gainer'] = collect($data['gainer'])->sortBy('profit')->reverse();
+        }else if($section == "utility"){
+            //Section : Daily Utility
+            $nopolList = unit_surabaya::get();
+            
+            $data['utility'] = LoadPerformance::selectRaw('vehicle_number, MAX(created_date) as latest, MAX(tms_id) as latest_id')
+                                            ->whereDate('created_date','<=',$latestDate)
+                                            ->whereIn('vehicle_number',$nopolList->pluck('nopol'))
+                                            ->groupBy('vehicle_number')
+                                            ->orderBy('latest')
+                                            ->get();
+            
+            $latestLoads = LoadPerformance::whereIn('tms_id',$data['utility']->pluck('latest_id'))->get();
+
+            foreach ($data['utility'] as $utility) {
+                $utility->load = "NONE";
+
+                
+
+                foreach ($latestLoads as $load) {
+                    if($utility->latest_id == $load->tms_id){
+                        $utility->load = $load;
+                        //Date Range Between Last Load
+                        $utility->range = Carbon::parse($load->created_date)->diffInDays(Carbon::now());
+                    }
+                }
+
+                foreach ($nopolList as $nopol) {
+                    if($utility->vehicle_number == $nopol->nopol){
+                        $utility->vehicle = $nopol;
+                    }
                 }
             }
         }
-
+        
         return response($data, 200);
     }
 }
