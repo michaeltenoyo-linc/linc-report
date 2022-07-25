@@ -60,8 +60,12 @@ Linc | LOA Homepage
         <!--Tab Content-->
         <div class="w-full flex">
             <div class="w-8/12 p-5 border-2 border-gray-500 rounded-lg mr-3">
+                <div class="w-full mx-auto flex items-center justify-center mb-4">
+                    <input id="loa-archive-checkbox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                    <label for="loa-archive-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Show Archive</label>
+                </div>
                 <!--Archive Section-->
-                <div class="bg-gray-200 mx-auto w-full h-full">
+                <div class="bg-gray-200 mx-auto w-full">
                     <div class="relative wrap overflow-y-auto p-5 h-96">
                         <div class="border-2-2 absolute border-opacity-20 border-gray-700 h-full border" style="left: 30%"></div>
                         

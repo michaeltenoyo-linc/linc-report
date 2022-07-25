@@ -605,7 +605,10 @@ class ViewController extends BaseController
 
     public function getYearlyRevenue (Request $req, $division){
         $year = Session::get('sales-year');
-        $data = [0,0,0,0,0,0,0,0,0,0,0,0];
+        $data['overall'] = [0,0,0,0,0,0,0,0,0,0,0,0];
+        $data['ongoing'] = [0,0,0,0,0,0,0,0,0,0,0,0];
+        $data['pod'] = [0,0,0,0,0,0,0,0,0,0,0,0];
+        $data['websettle'] = [0,0,0,0,0,0,0,0,0,0,0,0];
 
         $group = $this->surabayaLoadGroups;
         switch ($division) {
@@ -624,7 +627,7 @@ class ViewController extends BaseController
         }
 
         //Blujay Transport
-        $fetchTransport = LoadPerformance::selectRaw("
+        $fetchOverall = LoadPerformance::selectRaw("
                                         SUM(billable_total_rate) as totalActual,
                                         DATE_FORMAT(created_date,'%m') as monthKey
                                     ")
@@ -635,9 +638,85 @@ class ViewController extends BaseController
                                     ->groupBy('monthKey')
                                     ->get();
 
-        foreach($fetchTransport as $monthlyRevenue){
-            $data[$monthlyRevenue->monthKey-1] = $monthlyRevenue->totalActual;
+        foreach($fetchOverall as $monthlyRevenue){
+            $data['overall'][$monthlyRevenue->monthKey-1] = $monthlyRevenue->totalActual;
         }
+        
+        //Available Labels
+        $data['labels'] = [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December'
+        ];
+        //KALO MAU CUT LABEL $data['labels'] = array_slice($data['labels'],0,count($fetchTransport));
+        
+        //Detail Bar Ongoing
+        $fetchOngoing = LoadPerformance::selectRaw("
+                                SUM(billable_total_rate) as totalActual,
+                                DATE_FORMAT(created_date,'%m') as monthKey
+                            ")
+                            ->whereIn('load_group',$group)
+                            ->where('billable_total_rate','>',$this->rateThreshold)
+                            ->whereYear('created_date',Session::get('sales-year'))
+                            ->where('load_status','!=','Voided')
+                            ->where([
+                                ['load_status','=','Accepted']
+                            ])
+                            ->groupBy('monthKey')
+                            ->get();
+
+        foreach($fetchOngoing as $monthlyOngoing){
+            $data['ongoing'][$monthlyOngoing->monthKey-1] = $monthlyOngoing->totalActual;
+        }
+
+        //Detail Bar POD
+        $fetchPod =  LoadPerformance::selectRaw("
+                            SUM(billable_total_rate) as totalActual,
+                            DATE_FORMAT(created_date,'%m') as monthKey
+                        ")  
+                        ->whereIn('load_group',$group)
+                        ->where('billable_total_rate','>',$this->rateThreshold)
+                        ->whereYear('created_date',Session::get('sales-year'))
+                        ->where('load_status','!=','Voided')
+                        ->where([
+                            ['load_status','=','Completed'],
+                            ['websettle_date','=',null]
+                        ])
+                        ->groupBy('monthKey')
+                        ->get();
+        
+        foreach($fetchPod as $monthlyPod){
+            $data['pod'][$monthlyPod->monthKey-1] = $monthlyPod->totalActual;
+        }
+        
+        //Detail Bar Websettle
+        $fetchWebsettle =  LoadPerformance::selectRaw("
+                        SUM(billable_total_rate) as totalActual,
+                        DATE_FORMAT(created_date,'%m') as monthKey
+                    ")  
+                    ->whereIn('load_group',$group)
+                    ->where('billable_total_rate','>',$this->rateThreshold)
+                    ->whereYear('created_date',Session::get('sales-year'))
+                    ->where('load_status','!=','Voided')
+                    ->where([
+                        ['websettle_date','!=',null]
+                    ])
+                    ->groupBy('monthKey')
+                    ->get();
+
+        foreach($fetchWebsettle as $monthlyWebsettle){
+            $data['websettle'][$monthlyWebsettle->monthKey-1] = $monthlyWebsettle->totalActual;
+        }
+
 
         return response()->json($data,200);
     }
@@ -1693,12 +1772,45 @@ class ViewController extends BaseController
 
         //Data Filtering
         $data['budgets'] = SalesBudget::where('budget','>',0)
-                            ->where('division','LIKE',$division=='all'?'%%':'%'.$division.'%')
-                            ->where('sales','LIKE',$sales=='all'?'%%':'%'.$sales.'%')
-                            ->where('customer_sap','LIKE',$customer=='all'?'%%':'%'.$customer.'%')
-                            ->whereMonth('period',Session::get('sales-month'))
-                            ->whereYear('period',Session::get('sales-year'))
-                            ->get();
+                                    ->where('division','LIKE',$division=='all'?'%%':'%'.$division.'%')
+                                    ->where('sales','LIKE',$sales=='all'?'%%':'%'.$sales.'%')
+                                    ->where('customer_sap','LIKE',$customer=='all'?'%%':'%'.$customer.'%')
+                                    ->whereMonth('period',Session::get('sales-month'))
+                                    ->whereYear('period',Session::get('sales-year'))
+                                    ->get();
+
+        //Actual Period Data
+        $loadList = LoadPerformance::selectRaw('customer_reference, load_group, SUM(billable_total_rate) as totalActual')
+                                        ->where('load_status','!=','Voided')
+                                        ->where($statusCondition)
+                                        ->whereNotNull($dateConstraint)
+                                        ->whereBetween($dateConstraint, [Session::get('sales-from'),Session::get('sales-to')])
+                                        ->groupBy('customer_reference','load_group')
+                                        ->get();
+
+        //YTD Month Filter
+        $currentMonth = intval(Session::get('sales-month'));
+        $ytd_month = [];
+
+        for ($i=1; $i <= $currentMonth; $i++) {
+            array_push($ytd_month,$i);
+        }
+
+        //YTD Budget
+        $ytd_budget = SalesBudget::selectRaw('customer_sap, division, SUM(budget) as budget')
+                                ->whereIn(DB::raw('month(period)'), $ytd_month)
+                                ->whereYear('period',Session::get('sales-year'))
+                                ->groupBy('customer_sap', 'division')
+                                ->get();
+
+        //YTD Actual
+        $ytd_actual = LoadPerformance::selectRaw('customer_reference, load_group, SUM(billable_total_rate) as totalActual')
+                                        ->where('load_status','!=','Voided')
+                                        ->where($statusCondition)
+                                        ->whereIn(DB::raw('month('.$dateConstraint.')'),$ytd_month)
+                                        ->whereYear($dateConstraint,Session::get('sales-year'))
+                                        ->groupBy('customer_reference','load_group')
+                                        ->get();
 
         foreach ($data['budgets'] as $row) {
             //1MONTH ACHIEVEMENT
@@ -1722,20 +1834,15 @@ class ViewController extends BaseController
                     break;
             }
 
-
-            $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
-                                    ->where('customer_reference',$row->customer_sap)
-                                    ->whereIn('load_group',$loadGroup)
-                                    ->where('load_status','!=','Voided')
-                                    ->where($statusCondition)
-                                    ->whereNotNull($dateConstraint)
-                                    ->whereBetween($dateConstraint,[Session::get('sales-from'),Session::get('sales-to')])
-                                    ->groupBy('customer_reference')
-                                    ->first();
-
-            if(!is_null($total)){
-                $actual = $total->totalActual;
+            //REVISI ALGORITHM BARU
+            $actual = 0;
+            foreach ($loadList as $performance) {
+                if($performance->customer_reference == $row->customer_sap && in_array($performance->load_group, $loadGroup)){
+                    $actual += $performance->totalActual;
+                }
             }
+
+            
 
             if($row->budget > 0){
                 $percentage = floatval($actual)/floatval($row->budget) * 100;
@@ -1753,13 +1860,7 @@ class ViewController extends BaseController
             $actual = 0;
             $percentage = 0;
 
-            $currentMonth = intval(Session::get('sales-month'));
-            $ytd_month = [];
-
-            for ($i=1; $i <= $currentMonth; $i++) {
-                array_push($ytd_month,$i);
-                //error_log($i);
-            }
+            /* ALGORITHM LAMA
 
             $ytd_budget = SalesBudget::selectRaw('customer_name, SUM(budget) as budget')
                                     ->where('customer_name','=',$row->customer_name)
@@ -1783,14 +1884,35 @@ class ViewController extends BaseController
                 $actual = $total->totalActual;
             }
 
+            */
+
+            //ALGORITHM BARU
+
+            //YTD Budget Row
+            $total_ytd_budget = 0;
+            foreach ($ytd_budget as $row_ytd_budget) {
+                if($row_ytd_budget->division == $row->division && $row_ytd_budget->customer_sap == $row->customer_sap){
+                    $total_ytd_budget += $row_ytd_budget->budget;
+                }
+            }
+
+            //YTD Actual Row
+            $total_ytd_actual = 0;
+            foreach ($ytd_actual as $row_ytd_actual) {
+                if($row_ytd_actual->customer_reference == $row->customer_sap && in_array($row_ytd_actual->load_group, $loadGroup)){
+                    $total_ytd_actual += $row_ytd_actual->totalActual;
+                }
+            }
+
+
             if($row->budget > 0){
-                $percentage = floatval($actual)/floatval($ytd_budget->budget) * 100;
+                $percentage = floatval($total_ytd_actual)/floatval($total_ytd_budget) * 100;
                 $percentage = round(floatval($percentage), 2);
             }
 
-            $row->achievement_ytd_raw = $actual;
-            $row->achievement_ytd_actual = number_format($actual,0,',','.');
-            $row->achievement_ytd_budget = number_format($ytd_budget->budget,0,',','.');
+            $row->achievement_ytd_raw = $total_ytd_actual;
+            $row->achievement_ytd_actual = number_format($total_ytd_actual,0,',','.');
+            $row->achievement_ytd_budget = number_format($total_ytd_budget,0,',','.');
             $row->achievement_ytd_percentage = $percentage;
             if($percentage > 90){
                 $row->achievement_ytd_color = 'text-green-700';

@@ -11,6 +11,8 @@ export const refreshTimeline = async () => {
     const group = $('#selected-timeline').val();
     const customer = $('#customer_reference').html();
     const type = $('#loa_type_short').val();
+    const showArchive = $('#loa-archive-checkbox').prop('checked');
+
     let timelines;
 
     if(group == 'Favorite'){
@@ -58,8 +60,16 @@ export const refreshTimeline = async () => {
         rowDiv += '</div>';
         rowDiv += '</div>';
 
-        $('#timeline-list').append(rowDiv);
-        ctr++;
+        if(showArchive){
+            $('#timeline-list').append(rowDiv);
+            ctr++;
+        }else{
+            if(row['is_archived'] == 0){
+                $('#timeline-list').append(rowDiv);
+                ctr++;
+            }
+        }
+        
     });
 
     //Reset Tab Class
@@ -511,6 +521,12 @@ export const LoaDetail = () => {
             }
         });
     }
+    
+    const onClickShowArchive = async () => {
+        $(document).on('click','#loa-archive-checkbox', async function(e){
+            refreshTimeline();
+        })
+    }
 
     init();
     onChangeGroup();
@@ -520,4 +536,5 @@ export const LoaDetail = () => {
     onDeleteFile();
     onClickLoaActivation();
     onClickPin();
+    onClickShowArchive();
 };

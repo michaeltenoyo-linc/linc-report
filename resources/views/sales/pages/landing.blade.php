@@ -293,21 +293,7 @@ Linc | Sales Report Homepage
             <div class="w-full p-5">
                 <h1 class="text-left text-xl hover:text-blue-500 cursor-pointer">Truck Availability <i class="fas fa-angle-right ml-3"></i></h1>
             </div>
-            <div class="w-full flex px-5 mb-5">
-                <div class="landing-headline-active">
-                    H-1
-                </div>
-                <div class="landing-headline-inactive">
-                    1W
-                </div>
-                <div class="landing-headline-inactive">
-                    MTD
-                </div>
-                <div class="landing-headline-inactive">
-                    YTD
-                </div>
-            </div>
-            <div id="container-headline-utility" class="overflow-y-auto h-72">
+            <div id="container-headline-utility" class="overflow-y-auto h-80">
                 <!-- Itemlist Card -->
                 <div class="w-full flex p-2">
                     <div class="w-3/12 truncate ...">

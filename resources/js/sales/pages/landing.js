@@ -20,21 +20,9 @@ export const loadStaticChart = async () => {
   //Chart Landing Yearly Revenue All
 
   //Dummy Data
-  const labels = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
-  ];
+  
   const revenueDataFetch = await $.get('/sales/data/get-yearly-revenue/all');
+  const labels = revenueDataFetch['labels'];
   var contYearlyRevenue =  document.getElementById('chartRevenueYearly').getContext('2d'), gradient = contYearlyRevenue.createLinearGradient(0, 0, 0, 450);
 
   gradient.addColorStop(0, 'rgba(8, 73, 252, 1)');
@@ -48,14 +36,46 @@ export const loadStaticChart = async () => {
       datasets: [
           {
               label: 'Surabaya',
-              data: revenueDataFetch,
+              data: revenueDataFetch['overall'],
               borderColor: '#032ea3',
               backgroundColor: gradient,
               pointBackgroundColor: 'white',
               fill: true,
               cubicInterpolationMode: 'monotone',
-              tension: 0.4
+              tension: 0.4,
+              order: 0
           },
+          {
+            label: 'Websettle',
+            data: revenueDataFetch['websettle'],
+            borderColor: 'rgb(21, 255, 0)',
+            borderWidth: 1,
+            backgroundColor: 'rgba(21, 255, 0, 0.2)',
+            order: 1,
+            type: 'bar',
+            stack: 'stack progress',
+          },
+          {
+            label: 'POD',
+            data: revenueDataFetch['pod'],
+            borderColor: 'rgb(255, 159, 64)',
+            borderWidth: 1,
+            backgroundColor: 'rgba(255, 159, 64, 0.2)',
+            order: 2,
+            type: 'bar',
+            stack: 'stack progress',
+          },
+          {
+            label: 'Ongoing',
+            data: revenueDataFetch['ongoing'],
+            borderColor: 'rgb(255, 99, 132)',
+            borderWidth: 1,
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            order: 3,
+            type: 'bar',
+            stack: 'stack progress',
+          },
+          
       ]
   };
 
@@ -151,13 +171,44 @@ export const loadStaticChart = async () => {
       datasets: [
           {
               label: 'Transport',
-              data: revenueDataFetchTransport,
+              data: revenueDataFetchTransport['overall'],
               borderColor: '#8a0000',
               backgroundColor: gradientTransport,
               pointBackgroundColor: 'white',
               fill: true,
               cubicInterpolationMode: 'monotone',
-              tension: 0.4
+              tension: 0.4,
+              order: 0,
+          },
+          {
+            label: 'Websettle',
+            data: revenueDataFetchTransport['websettle'],
+            borderColor: 'rgb(21, 255, 0)',
+            borderWidth: 1,
+            backgroundColor: 'rgba(21, 255, 0, 0.2)',
+            order: 1,
+            type: 'bar',
+            stack: 'stack progress',
+          },
+          {
+            label: 'POD',
+            data: revenueDataFetchTransport['pod'],
+            borderColor: 'rgb(255, 159, 64)',
+            borderWidth: 1,
+            backgroundColor: 'rgba(255, 159, 64, 0.2)',
+            order: 2,
+            type: 'bar',
+            stack: 'stack progress',
+          },
+          {
+            label: 'Ongoing',
+            data: revenueDataFetchTransport['ongoing'],
+            borderColor: 'rgb(255, 99, 132)',
+            borderWidth: 1,
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            order: 3,
+            type: 'bar',
+            stack: 'stack progress',
           },
       ]
   };
@@ -227,13 +278,44 @@ export const loadStaticChart = async () => {
       datasets: [
           {
               label: 'Exim',
-              data: revenueDataFetchExim,
+              data: revenueDataFetchExim['overall'],
               borderColor: '#004a0c',
               backgroundColor: gradientExim,
               pointBackgroundColor: 'white',
               fill: true,
               cubicInterpolationMode: 'monotone',
-              tension: 0.4
+              tension: 0.4,
+              order: 0,
+          },
+          {
+            label: 'Websettle',
+            data: revenueDataFetchExim['websettle'],
+            borderColor: 'rgb(21, 255, 0)',
+            borderWidth: 1,
+            backgroundColor: 'rgba(21, 255, 0, 0.2)',
+            order: 1,
+            type: 'bar',
+            stack: 'stack progress',
+          },
+          {
+            label: 'POD',
+            data: revenueDataFetchExim['pod'],
+            borderColor: 'rgb(255, 159, 64)',
+            borderWidth: 1,
+            backgroundColor: 'rgba(255, 159, 64, 0.2)',
+            order: 2,
+            type: 'bar',
+            stack: 'stack progress',
+          },
+          {
+            label: 'Ongoing',
+            data: revenueDataFetchExim['ongoing'],
+            borderColor: 'rgb(255, 99, 132)',
+            borderWidth: 1,
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            order: 3,
+            type: 'bar',
+            stack: 'stack progress',
           },
       ]
   };
@@ -303,13 +385,44 @@ export const loadStaticChart = async () => {
       datasets: [
           {
               label: 'Bulk',
-              data: revenueDataFetchBulk,
+              data: revenueDataFetchBulk['overall'],
               borderColor: '#2e99a3',
               backgroundColor: gradientBulk,
               pointBackgroundColor: 'white',
               fill: true,
               cubicInterpolationMode: 'monotone',
-              tension: 0.4
+              tension: 0.4,
+              order: 0,
+          },
+          {
+            label: 'Websettle',
+            data: revenueDataFetchBulk['websettle'],
+            borderColor: 'rgb(21, 255, 0)',
+            borderWidth: 1,
+            backgroundColor: 'rgba(21, 255, 0, 0.2)',
+            order: 1,
+            type: 'bar',
+            stack: 'stack progress',
+          },
+          {
+            label: 'POD',
+            data: revenueDataFetchBulk['pod'],
+            borderColor: 'rgb(255, 159, 64)',
+            borderWidth: 1,
+            backgroundColor: 'rgba(255, 159, 64, 0.2)',
+            order: 2,
+            type: 'bar',
+            stack: 'stack progress',
+          },
+          {
+            label: 'Ongoing',
+            data: revenueDataFetchBulk['ongoing'],
+            borderColor: 'rgb(255, 99, 132)',
+            borderWidth: 1,
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            order: 3,
+            type: 'bar',
+            stack: 'stack progress',
           },
       ]
   };

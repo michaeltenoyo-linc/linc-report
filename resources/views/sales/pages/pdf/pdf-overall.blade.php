@@ -317,7 +317,6 @@
 				<table class="table" style="width: 100%; font-size: 9pt;">
 					<thead>
 						<tr>
-							<th scope="col">#</th>
 							<th scope="col">Customer Detail</th>
 							<th scope="col">Achievement</th>
 							<th scope="col">Trend</th>
@@ -329,12 +328,18 @@
 						@endphp
 						@foreach($budgets as $b)
 						<tr>
-							<th scope="row">{{ $index }}</th>
-							<td style="width: 30%;">
+							<td style="width: 35%;">
 								<div style="background-color: lightcoral; padding-left: 3%; margin-bottom: 1%;border-radius: 5px; ">
 									<span class="font-weight-bold" style="color:white; background-color:darkred; padding: 1% 5%; border-radius: 5px;">{{ $b->customer_sap }}</span><br>
-									<div class="font-weight-bold pt-2 px-2 h5">{{ $b->customer_name }}</div>
-									<div class="font-weight-bold py-2 px-2">{{ $b->division }} Division</div>
+									<div class="row font-weight-bold pt-4 px-2 h5">
+										<div class="col-3">
+											<img style="max-height: 100px;" class="img-fluid img-thumbnail" src="{{ asset('assets/icons/customers/'.$b->customer_sap.'.png') }}" alt="">
+										</div>
+										<div class="col">{{ $b->customer_name }}</div>
+									</div>
+									<div class="row font-weight-bold py-2 px-2">
+										<div class="col">Division : {{ $b->division }}</div>
+									</div>
 								</div>
 								<div class="py-2 pl-2">Assigned to : {{ $b->sales }}</div>
 							</td>
@@ -466,7 +471,7 @@
 		datasets: [
 			{
 				label: 'Surabaya',
-				data: revenueDataFetch,
+				data: revenueDataFetch['overall'],
 				borderColor: '#032ea3',
 				backgroundColor: gradient,
 				pointBackgroundColor: 'white',

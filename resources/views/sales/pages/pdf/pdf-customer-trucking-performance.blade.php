@@ -63,7 +63,7 @@
 		</div>
 
 		<div>
-			<br><br>
+			
 		</div>
 	</header>
 	
@@ -104,7 +104,6 @@
 				<table class="table" style="width: 100%; font-size: 9pt;">
 					<thead>
 						<tr>
-							<th scope="col">#</th>
 							<th scope="col">Customer Detail</th>
 							<th scope="col">Rate Performance</th>
 							<th scope="col">Load Detail</th>
@@ -116,11 +115,15 @@
 						@endphp
 						@foreach($customer as $p)
 						<tr>
-							<th scope="row">{{ $index }}</th>
-							<td style="width: 30%;">
+							<td style="width: 35%;">
 								<div style="background-color: lightcoral; padding-left: 3%; margin-bottom: 1%;border-radius: 5px; ">
 									<span class="font-weight-bold" style="color:white; background-color:darkred; padding: 1% 5%; border-radius: 5px;">{{ $p->customer_reference }}</span><br>
-									<div class="font-weight-bold pt-2 px-2 py-4 h5">{{ $p->customer_name }}</div>
+									<div class="row font-weight-bold pt-2 px-2 py-4 h5">
+										<div class="col-3">
+											<img style="max-height: 50px;" class="img-fluid img-thumbnail" src="{{ asset('assets/icons/customers/'.$p->customer_reference.'.png') }}" alt="">
+										</div>
+										<div class="col">{{ $p->customer_name }}</div>
+									</div>
 								</div>
 							</td>
 							<td style="width: 50%;">
