@@ -407,6 +407,7 @@ Route::middleware(['auth','priviledge:sales,master'])->group(function () {
             Route::get('/get-division-pie/{division}',[SalesViewController::class, 'getDivisionPie']);
             Route::get('/get-division-pie',[SalesViewController::class, 'getAllDivisionPie']);
             Route::get('/get-daily-update/{section}/{step}', [SalesViewController::class, 'getDailyUpdate']);
+            Route::get('/get-undefined-customer-transaction', [SalesViewController::class, 'getUndefinedCustomerTransaction']);
         });
         
         Route::prefix('/truck')->group(function () {

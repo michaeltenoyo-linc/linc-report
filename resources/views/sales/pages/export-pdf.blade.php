@@ -17,7 +17,7 @@ Linc | Export PDF
                 <span class="text-xl font-bold">Sales Performance Generator</span>
             </div>
             <div class="relative mb-4 mt-4">
-                <label class="block uppercas    e text-blueGray-600 text-xs font-bold mb-2"
+                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                         htmlFor="date-filter">BUDGET PERIOD</label>
                 <input 
                     type="month" 

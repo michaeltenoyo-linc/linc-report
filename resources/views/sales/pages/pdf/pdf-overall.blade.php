@@ -3,6 +3,9 @@
 <head>
 	<title>PDF HTML Sales Report {{ $period }}</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<style>
 		.header-top-bar {
 			background: #9c0a16;
@@ -35,6 +38,8 @@
 
 		@media print {
 			body {-webkit-print-color-adjust: exact;}
+
+			#no-print {visibility: hidden;}
 		}
 	</style>
 </head>
@@ -304,15 +309,187 @@
 			</div>
 		</div>
 	</section>
+
+	@if ($sales != "all")
+	<section class="sales-overview">
+		<div class="row mt-5 justify-content-end" style="height: 723px;">
+			<div class="col-4 p-5">
+				<div class="row justify-content-center">
+					<canvas id="chartSalesTransport" width="100%"></canvas>
+				</div>
+				<div class="row justify-content-center">
+					<canvas id="chartSalesExim" width="100%"></canvas>
+				</div>
+				<div class="row justify-content-center">
+					<canvas id="chartSalesBulk" width="100%"></canvas>
+				</div>
+			</div>
+			<div class="col-8 text-white p-5" style="background-color: #9c0a16;">
+				<div class="row">
+					<div class="col mb-5">
+						<center>
+							<h3>Sales This Month [ {{ ucfirst($sales) }} ]</h3>
+							<h6>({{ $period }})</h6>
+						</center>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col p-3">
+						<!-- Revenue Data -->
+						<div class="row">
+							<div class="col">
+								<center>
+									<p>
+										<b>Revenue (CM)</b>
+										<br>
+										IDR. <span id="sales-overview-revenue-cm">XXX.XXX.XXX.XXX</span>
+									</p>
+								</center>
+								<br>
+								<center>
+									<p>
+										<b>Loads (CM)</b>
+										<br>
+										<span id="sales-overview-loads-cm">X.XXX</span> Load ID
+									</p>
+								</center>
+								<br><br>
+								<center>
+									<p>
+										<b>Achievement (CM)</b> <br>
+										<span id="sales-overview-achievement-cm-percentage" style="font-size: 48pt;">43%</span>
+										<div class="px-5">
+											<div class="progress">
+												<div id="progress-bar-achievement-cm" class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+											</div>
+										</div>
+										<br>
+										IDR. <span id="sales-overview-achievement-cm">XXX.XXX.XXX.XXX / XXX.XXX.XXX.XXX</span>
+									</p>
+								</center>
+							</div>
+						</div>
+					</div>
+					<div class="col p-3">
+						<!-- Loads Data -->
+						<div class="row">
+							<div class="col">
+								<center>
+									<p>
+										<b>Revenue (Ytd.)</b>
+										<br>
+										IDR. <span id="sales-overview-revenue-ytd">XXX.XXX.XXX.XXX</span>
+									</p>
+								</center>
+								<br>
+								<center>
+									<p>
+										<b>Loads (Ytd.)</b>
+										<br>
+										<span id="sales-overview-loads-ytd">X.XXX</span> Load ID
+									</p>
+								</center>
+								<br><br>
+								<center>
+									<p>
+										<b>Achievement (Ytd.)</b> <br>
+										<span id="sales-overview-achievement-ytd-percentage" style="font-size: 48pt;">84%</span>
+										<div class="px-5">
+											<div class="progress">
+												<div id="progress-bar-achievement-ytd" class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+											</div>
+										</div>
+										<br>
+										IDR. <span id="sales-overview-achievement-ytd">XXX.XXX.XXX.XXX / XXX.XXX.XXX.XXX</span>
+									</p>
+								</center>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	@endif
 	
 	<section class="table-data">
 		<div class="container">
 			<div class="mb-4 mt-5 text-danger text-xs">
-				<br>
-				<small>*All the calculation is based on realtime blujay's data (billable total rate)</small>
-				<br>
-				<small>*The values in the table are sorted by current month's (closed date) actual rates</small>
+				<div class="row">
+					<div class="col">
+						<small>*All the calculation is based on realtime blujay's data (billable total rate)</small>
+						<br>
+						<small>*The values in the table are sorted by current month's (closed date) actual rates</small>
+					</div>
+					<div class="col" id="no-print">
+						<button class="btn btn-primary" 
+								type="button" 
+								style="font-size: 8pt;"
+								data-toggle="collapse" 
+								data-target="#undefined-customer-budgets">
+							Show undefined customer's budget with transaction
+						</button>
+					</div>
+				</div>
 			</div>
+
+			<!-- Undefined Budget with Transaction -->
+			<div class="collapse" id="undefined-customer-budgets">
+				<div class="row d-flex justify-content-center">
+					<div class="col-3 border rounded p-3 m-2">
+						<div class="row">
+							<div class="col text-center h5">
+								Transport
+							</div>
+						</div>
+						<hr>
+						<div class="row">
+							<div class="col">
+								<ul style="font-size: 8pt;" class="list-undefined-customer" id="container-undefined-transport">
+									<li>1</li>
+									<li>2</li>
+									<li>3</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="col-3 border rounded p-3 m-2">
+						<div class="row">
+							<div class="col text-center h5">
+								Exim
+							</div>
+						</div>
+						<hr>
+						<div class="row">
+							<div class="col">
+								<ul style="font-size: 8pt;" class="list-undefined-customer" id="container-undefined-exim">
+									<li>1</li>
+									<li>2</li>
+									<li>3</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="col-3 border rounded p-3 m-2">
+						<div class="row">
+							<div class="col text-center h5">
+								Bulk
+							</div>
+						</div>
+						<hr>
+						<div class="row">
+							<div class="col">
+								<ul style="font-size: 8pt;" class="list-undefined-customer" id="container-undefined-bulk">
+									<li>1</li>
+									<li>2</li>
+									<li>3</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<div class="row">
 				<table class="table" style="width: 100%; font-size: 9pt;">
 					<thead>
@@ -431,7 +608,7 @@
 <!--Alert Instruction-->
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
 <script>
 	Swal.fire(
 		'How to save as PDF?',
@@ -440,7 +617,7 @@
 	)
 	
 	window.onload = async function(e){
-		//Chart Landing Yearly Revenue All
+	//Chart Landing Yearly Revenue All
 
 	//Dummy Data
 	const labels = [
@@ -680,6 +857,19 @@
 		$('#bulk-achivementbar-1m').css("width",bulkOverviewFetch['achivement_1m']+"%");
 		$('#bulk-achivementbar-ytd').css("width",bulkOverviewFetch['achivement_ytd']+"%");
 
+		//SALES OVERVIEW IF EXIST
+		@if ($sales != "all")
+			const salesOverview = await $.get('/sales/data/get-sales-overview/{{ $sales }}');
+			console.log(salesOverview);
+		@endif
+
+		//undefined customer
+		const fetchCustomer = await $.get('/sales/data/get-undefined-customer-transaction');
+		$('.list-undefined-customer').empty();
+		fetchCustomer['customers'].forEach(row => {
+			$('#container-undefined-'+row[2]).append('<li>'+row[0]+'<br>'+row[1]+'</li><br>');
+		});
+
 		//Table Chart Trends
 		@php
 			$indexLoader = 0;
@@ -691,7 +881,6 @@
 			var elementId = "{{ $b->id }}";
 			// Find the chart intended for this data
 			var ctx = $("#"+elementId);
-			console.log(ctx);
 			$('#loader-index').html('{{ $indexLoader }}')
 			try {
 				const checkChart = new Chart(ctx, {
@@ -796,5 +985,6 @@
 		@endforeach
 		document.getElementById("loader").style.display = "none";
 	}
-	
+
+		
 </script>
