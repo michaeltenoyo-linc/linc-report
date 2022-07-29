@@ -313,15 +313,36 @@
 	@if ($sales != "all")
 	<section class="sales-overview">
 		<div class="row mt-5 justify-content-end" style="height: 723px;">
-			<div class="col-4 p-5">
+			<div class="col-4 px-5" style="max-height: 723px;">
 				<div class="row justify-content-center">
-					<canvas id="chartSalesTransport" width="100%"></canvas>
+					<p class="text-center">
+						<b>Transport</b>
+						<br>
+						<span id="loadsSalesTransport"></span> Loads
+					</p>
+				</div>
+				<div class="row justify-content-center mb-3">
+					<canvas id="chartSalesTransport" style="max-height: 150px; max-width: 150px;"></canvas>
 				</div>
 				<div class="row justify-content-center">
-					<canvas id="chartSalesExim" width="100%"></canvas>
+					<p class="text-center">
+						<b>Exim</b>
+						<br>
+						<span id="loadsSalesExim"></span> Loads
+					</p>
+				</div>
+				<div class="row justify-content-center mb-3">
+					<canvas id="chartSalesExim" style="max-height: 150px; max-width: 150px;"></canvas>
 				</div>
 				<div class="row justify-content-center">
-					<canvas id="chartSalesBulk" width="100%"></canvas>
+					<p class="text-center">
+						<b>Bulk</b>
+						<br>
+						<span id="loadsSalesBulk"></span> Loads
+					</p>
+				</div>
+				<div class="row justify-content-center">
+					<canvas id="chartSalesBulk" style="max-height: 150px; max-width: 150px;"></canvas>
 				</div>
 			</div>
 			<div class="col-8 text-white p-5" style="background-color: #9c0a16;">
@@ -357,7 +378,7 @@
 								<center>
 									<p>
 										<b>Achievement (CM)</b> <br>
-										<span id="sales-overview-achievement-cm-percentage" style="font-size: 48pt;">43%</span>
+										<span id="sales-overview-achievement-cm-percentage" style="font-size: 48pt;">XX%</span>
 										<div class="px-5">
 											<div class="progress">
 												<div id="progress-bar-achievement-cm" class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
@@ -859,8 +880,120 @@
 
 		//SALES OVERVIEW IF EXIST
 		@if ($sales != "all")
+			//Overview Chart
+			const salesOverviewPie = await $.get('/sales/data/get-sales-pie/{{ $sales }}');
+			console.log(salesOverviewPie);
+
+			//Transport Chart
+			$('#loadsSalesTransport').html(salesOverviewPie['transport'][2]);
+			const dataSalesPieTransport = {
+				labels: ['Yay', 'Nay'],
+				datasets: [
+					{
+						label: 'Transport',
+						data: [ salesOverviewPie['transport'][0], salesOverviewPie['transport'][1] ],
+						backgroundColor: ['rgb(255, 169, 77)', 'rgb(255, 132, 0)'],
+					},
+				]
+			};
+			const contSalesPieTransport = $('#chartSalesTransport');
+			const configSalesPieTransport = {
+				type: 'pie',
+				data: dataSalesPieTransport,
+				options: {
+					responsive: true,
+					plugins: {
+						legend: {
+							display: false,
+						},
+						title: {
+							display: false,
+							text: 'Transport',
+							color: '#000000',
+						}
+					}
+				},
+			};
+			const chartSalesPieTransport = new Chart(contSalesPieTransport, configSalesPieTransport);
+
+			//Exim Chart
+			$('#loadsSalesExim').html(salesOverviewPie['exim'][2]);
+			const dataSalesPieExim = {
+				labels: ['Yay', 'Nay'],
+				datasets: [
+					{
+						label: 'Exim',
+						data: [ salesOverviewPie['exim'][0], salesOverviewPie['exim'][1] ],
+						backgroundColor: ['rgb(33, 242, 5)', 'rgb(22, 163, 3)'],
+					},
+				]
+			};
+			const contSalesPieExim = $('#chartSalesExim');
+			const configSalesPieExim = {
+				type: 'pie',
+				data: dataSalesPieExim,
+				options: {
+					responsive: true,
+					plugins: {
+						legend: {
+							display: false,
+						},
+						title: {
+							display: false,
+							text: 'Exim',
+							color: '#000000',
+						}
+					}
+				},
+			};
+			const chartSalesPieExim = new Chart(contSalesPieExim, configSalesPieExim);
+
+			//Bulk Chart
+			$('#loadsSalesBulk').html(salesOverviewPie['bulk'][2]);
+			const dataSalesPieBulk = {
+				labels: ['Yay', 'Nay'],
+				datasets: [
+					{
+						label: 'Bulk',
+						data: [ salesOverviewPie['bulk'][0], salesOverviewPie['bulk'][1] ],
+						backgroundColor: ['rgb(0, 119, 255)', 'rgb(0, 30, 255)'],
+					},
+				]
+			};
+			const contSalesPieBulk = $('#chartSalesBulk');
+			const configSalesPieBulk = {
+				type: 'pie',
+				data: dataSalesPieBulk,
+				options: {
+					responsive: true,
+					plugins: {
+						legend: {
+							display: false,
+						},
+						title: {
+							display: false,
+							text: 'Bulk',
+							color: '#000000',
+						}
+					}
+				},
+			};
+			const chartSalesPieBulk = new Chart(contSalesPieBulk, configSalesPieBulk);
+
+
+			//Overview Text
 			const salesOverview = await $.get('/sales/data/get-sales-overview/{{ $sales }}');
-			console.log(salesOverview);
+			
+			//assigning the value to div
+			$('#sales-overview-revenue-cm').html(salesOverview['revenue_1m']);
+			$('#sales-overview-loads-cm').html(salesOverview['transaction_1m']);
+			$('#sales-overview-achievement-cm-percentage').html(parseFloat(salesOverview['achivement_1m']).toFixed(2)+'%');
+			$('#sales-overview-achievement-cm').html(salesOverview['achievement_1m_text']);
+
+			$('#sales-overview-revenue-ytd').html(salesOverview['revenue_ytd']);
+			$('#sales-overview-loads-ytd').html(salesOverview['transaction_ytd']);
+			$('#sales-overview-achievement-ytd-percentage').html(parseFloat(salesOverview['achivement_ytd']).toFixed(2)+'%');
+			$('#sales-overview-achievement-ytd').html(salesOverview['achievement_ytd_text']);
 		@endif
 
 		//undefined customer
