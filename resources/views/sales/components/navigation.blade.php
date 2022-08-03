@@ -109,45 +109,6 @@
                 </li>
             </ul>
 
-            <!-- Navigation Loads-->
-            <ul class="md:flex-col md:min-w-full flex flex-col list-none">
-                {{-- Active --}}
-                <li class="items-center">
-                    @if (Request::path() == '/sales/by-sales/adit' || Request::path() == '/sales/by-sales/edwin' || Request::path() == '/sales/by-sales/willem')
-                    <a href="{{url('/sales/by-sales/adit')}}"
-                        class="page_nav_active">
-                        <i class="fas fa-address-card"></i>
-                        By Sales Report
-                    </a>
-                    @else
-                    <a href="{{url('/sales/by-sales/adit')}}"
-                        class="page_nav">
-                        <i class="fas fa-address-card"></i>
-                        By Sales Report
-                    </a>
-                    @endif
-                </li>
-            </ul>
-
-            <!-- Navigation Product -->
-            <ul class="md:flex-col md:min-w-full flex flex-col list-none">
-                <li class="items-center">
-                    @if (Request::path() == '/sales/by-division/transport' || Request::path() == '/sales/by-division/exim' || Request::path() == '/sales/by-division/bulk')
-                        <a href="{{url('/sales/by-division/transport')}}"
-                            class="page_nav_active">
-                            <i class="fas fa-chart-pie"></i>
-                            By Division Report
-                        </a>
-                    @else
-                        <a href="{{url('/sales/by-division/transport')}}"
-                            class="page_nav">
-                            <i class="fas fa-chart-pie"></i>
-                            By Division Report
-                        </a>
-                    @endif
-                </li>
-            </ul>
-
             <!-- Navigation Product -->
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
                 <li class="items-center">

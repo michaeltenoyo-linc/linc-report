@@ -7,6 +7,20 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   @include('master.layouts.master-frontend')
   <title>Linc Group | Homepage</title>
+  <style>
+	.card-name{
+		position: absolute;
+		left: 0px;
+		right: 0px;
+		bottom: 0px;
+		color: white;
+		background-color: rgba(0, 0, 0, 0.8);
+	}
+
+	.profile-card-priviledges{
+		background-color: darkred;
+	}
+  </style>
 </head>
 
 <body id="top">
@@ -88,15 +102,45 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-6 col-md-12 col-xl-7">
-				<div class="block">
-					<div class="divider mb-3"></div>
-					<span class="text-uppercase text-sm letter-spacing ">LINC DATA SOLUTION</span>
-					<h1 class="mb-3 mt-3">Manage and Process Data Easiser Now!</h1>
+				<div class="block mt-3">
+					<!--
+						<div class="divider mb-3"></div>
+						<span class="text-uppercase text-sm letter-spacing ">LINC DATA SOLUTION</span>
+						<h1 class="mb-3 mt-3">Manage and Process Data Easiser Now!</h1>
 
-					<p class="mb-4 pr-5">Website ini dibangun untuk mempermudah manajemen data surat jalan, pembuatan report, dan proforma.</p>
-					<div class="btn-container ">
-						<a href="" target="_blank" class="btn btn-main-2 btn-icon btn-round-full">Baca lebih lanjut... <i class="icofont-simple-right ml-2  "></i></a>
+						<p class="mb-4 pr-5">Website ini dibangun untuk mempermudah manajemen data surat jalan, pembuatan report, dan proforma.</p>
+						<div class="btn-container ">
+							<a href="" target="_blank" class="btn btn-main-2 btn-icon btn-round-full">Baca lebih lanjut... <i class="icofont-simple-right ml-2  "></i></a>
+						</div>
+					-->
+
+					@if (Auth::user())
+					<div class="card ml-5 mt-5" style="width: 70%;">
+						<img class="card-img-top" src="{{ asset('assets/novena/images/landing-card-background.png') }}" alt="Card image cap">
+						<div class="card-name rounded px-4 pt-2">
+							<p>
+								<span><b>{{ strtoupper(Auth::user()->name) }}</b></span>
+								<br>
+								<span>{{ Auth::user()->email }}</span>
+								<br><br>
+								@foreach ($priviledges as $p)
+									<span class="profile-card-priviledges p-2 mr-2 rounded-lg">{{strtoupper($p)}}</span>
+								@endforeach
+							</p>
+						</div>
 					</div>
+					@else
+					<div class="card" style="width: 70%;">
+						<img class="card-img-top" src="{{ asset('assets/novena/images/landing-card-background.png') }}" alt="Card image cap">
+						<div class="card-name rounded px-4 pt-2">
+							<p>
+								<span><b>Welcome Back!</b></span>
+								<br>
+								<span>Please login to your account</span>
+							</p>
+						</div>
+					</div>
+					@endif
 				</div>
 			</div>
 		</div>

@@ -1000,7 +1000,7 @@
 		const fetchCustomer = await $.get('/sales/data/get-undefined-customer-transaction');
 		$('.list-undefined-customer').empty();
 		fetchCustomer['customers'].forEach(row => {
-			$('#container-undefined-'+row[2]).append('<li>'+row[0]+'<br>'+row[1]+'</li><br>');
+			$('#container-undefined-'+row[2]).append('<li>'+row[0]+' ('+row[3]+' Loads)<br>'+row[4]+'<br>'+row[1]+'</li><br>');
 		});
 
 		//Table Chart Trends
