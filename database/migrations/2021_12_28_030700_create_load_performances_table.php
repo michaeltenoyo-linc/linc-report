@@ -16,7 +16,7 @@ class CreateLoadPerformancesTable extends Migration
         Schema::create('load_performances', function (Blueprint $table) {
             $table->string('tms_id',20)->primary();
             $table->datetime('created_date');
-            $table->string('carrier_reference',6);
+            $table->string('carrier_reference',20);
             $table->string('carrier_name');
             $table->string('equipment_description');
             $table->string('vehicle_number',10);
