@@ -2231,18 +2231,21 @@ class ViewController extends BaseController
         return response($data, 200);
     }
 
+
     public function getUndefinedCustomerTransaction(Request $req){
         $budgetMonth = Session::get('sales-month');
         $budgetYear = Session::get('sales-year');
 
         $budget = SalesBudget::select('customer_sap')
                             ->where('customer_sap','!=',0)
+                            ->where('budget','>',0)
+                            ->where('sales','!=','NONE')
                             ->whereMonth('period',Session::get('sales-month'))
                             ->whereYear('period',Session::get('sales-year'))
                             ->groupBy('customer_sap')
                             ->get()->pluck('customer_sap');
 
-        $undefinedCustomer = LoadPerformance::select('customer_reference','customer_name','load_group')
+        $undefinedCustomer = LoadPerformance::selectRaw('customer_reference, customer_name, load_group, COUNT(*) as totalLoads')
                                             ->whereNotIn('customer_reference',$budget)
                                             ->whereIn('load_group',$this->surabayaLoadGroups)
                                             ->where('load_status','!=','Voided')
@@ -2269,7 +2272,7 @@ class ViewController extends BaseController
             }
 
             //Append Value
-            $value = [$c->customer_reference, $c->customer_name, $division];
+            $value = [$c->customer_reference, $c->customer_name, $division, $c->totalLoads, $c->load_group];
             if(!in_array($value, $data['customers']) && $division!=""){
                 array_push($data['customers'], $value);
             }
