@@ -75,6 +75,7 @@ Linc | Export PDF
                                 <option value="all">==Semua==</option>
                                 <option value="transport">Transport</option>
                                 <option value="exim">ExIm</option>
+                                <option value="warehouse">Warehouse</option>
                                 <option value="bulk">Bulk</option>
                             </select>
                         </div>

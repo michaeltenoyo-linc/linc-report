@@ -297,7 +297,34 @@
 					<div class="col-6 p-3">
 						<b>Warehouse</b>
 						<br>
-						Data is not available yet.
+						<div class="row">
+							<div class="col-5">
+								Revenue (CM)
+								<br>
+								Revenue (Ytd.)
+								<br>
+								Loads (CM)
+								<br>
+								Loads (Ytd.)
+								<br>
+								Achievement (CM)
+								<br>
+								Achievement (Ytd.)
+							</div>
+							<div class="col-7 text-right">
+								IDR. <span id="warehouse-revenue-1m"></span>
+								<br>
+								IDR. <span id="warehouse-revenue-ytd"></span>
+								<br>
+								<span id="warehouse-transaction-1m"></span> Bills
+								<br>
+								<span id="warehouse-transaction-ytd"></span> Bills
+								<br>
+								<span id="warehouse-achievement-1m"></span>
+								<br>
+								<span id="warehouse-achievement-ytd"></span>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="row">
@@ -501,6 +528,23 @@
 						<div class="row">
 							<div class="col">
 								<ul style="font-size: 8pt;" class="list-undefined-customer" id="container-undefined-bulk">
+									<li>1</li>
+									<li>2</li>
+									<li>3</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="col-3 border rounded p-3 m-2">
+						<div class="row">
+							<div class="col text-center h5">
+								Warehouse
+							</div>
+						</div>
+						<hr>
+						<div class="row">
+							<div class="col">
+								<ul style="font-size: 8pt;" class="list-undefined-customer" id="container-undefined-warehouse">
 									<li>1</li>
 									<li>2</li>
 									<li>3</li>
@@ -877,6 +921,18 @@
 		$('#bulk-achievement-ytd').empty().html(bulkOverviewFetch['achievement_ytd_text']);
 		$('#bulk-achivementbar-1m').css("width",bulkOverviewFetch['achivement_1m']+"%");
 		$('#bulk-achivementbar-ytd').css("width",bulkOverviewFetch['achivement_ytd']+"%");
+
+		//Warehouse
+		const warehouseOverviewFetch = await $.get('/sales/data/get-division-overview/warehouse');
+		
+		$('#warehouse-revenue-1m').empty().html(warehouseOverviewFetch['revenue_1m']);
+		$('#warehouse-revenue-ytd').empty().html(warehouseOverviewFetch['revenue_ytd']);
+		$('#warehouse-transaction-1m').empty().html(warehouseOverviewFetch['transaction_1m']);
+		$('#warehouse-transaction-ytd').empty().html(warehouseOverviewFetch['transaction_ytd']);
+		$('#warehouse-achievement-1m').empty().html(warehouseOverviewFetch['achievement_1m_text']);
+		$('#warehouse-achievement-ytd').empty().html(warehouseOverviewFetch['achievement_ytd_text']);
+		$('#warehouse-achivementbar-1m').css("width",warehouseOverviewFetch['achivement_1m']+"%");
+		$('#warehouse-achivementbar-ytd').css("width",warehouseOverviewFetch['achivement_ytd']+"%");
 
 		//SALES OVERVIEW IF EXIST
 		@if ($sales != "all")

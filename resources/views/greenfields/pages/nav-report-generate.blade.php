@@ -33,11 +33,31 @@ Linc | Generate Report
                         </select>
                     </div>
                 </div>
+
+                <!--
                 <div class="w-full lg:w-12/12 px-4">
                     <div class="relative w-full mb-3">
                         <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                             htmlFor="name"> Filter Load ID <div style="color: red;">*Pisahkan dengan tanda semicolon (5040123;4000123;3201230)</div></label>
                         <textarea required class="input-customer-loadid w-full border bg-white rounded px-3 py-2 outline-none" name="loadId" id="" cols="100" rows="5"></textarea>
+                    </div>
+                </div>
+                --> 
+
+                <div class="flex flex-wrap px-4">
+                    <div class="relative w-5/12 mb-3 pr-2">
+                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                            htmlFor="name"> Dari </label>
+                        <input type="date"
+                            class="input-filter-start-date w-full border bg-white rounded px-3 py-2 outline-none"
+                            name="startDate" required>
+                    </div>
+                    <div class="relative w-5/12 mb-3">
+                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                            htmlFor="name"> Sampai </label>
+                        <input type="date"
+                            class="input-filter-end-date w-full border bg-white rounded px-3 py-2 outline-none"
+                            name="endDate" required>
                     </div>
                 </div>
                 <div class="flex flex-wrap">
