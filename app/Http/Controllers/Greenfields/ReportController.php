@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Greenfields;
 
+use App\Exports\Greenfield_Report1;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -22,6 +23,7 @@ use App\Models\LoadPerformance;
 use App\Models\Suratjalan_greenfields;
 use App\Models\Suratjalan_ltl;
 use Illuminate\Support\Facades\Date;
+use Maatwebsite\Excel\Facades\Excel as FacadesExcel;
 use phpDocumentor\Reflection\PseudoTypes\True_;
 use Yajra\DataTables\Contracts\DataTable;
 
@@ -31,14 +33,22 @@ class ReportController extends BaseController
 
     public function generateReport(Request $req){
         $req->validate([
-            'loadId' => 'required',
+            'startDate' => 'required',
+            'endDate' => 'required',
         ]);
         
 
         $reports = new Collection;
         $warning = new Collection;
-        $listLoadId = explode(';',$req->input('loadId'));
         $ctr = 1;
+
+        //Baru pake local BLUJAY
+        $listSJ = Suratjalan_greenfields::whereBetween('order_date', [$req->input('startDate'),$req->input('endDate')])
+                                    ->orderBy('order_date','asc')->get();
+        $listLoadId = [];
+        foreach ($listSJ as $sj) {
+            array_push($listLoadId, $sj->load_id);
+        }
 
         if($req->input('reportType') == "pengiriman_greenfields"){
             //REVISI BLUJAY LOCAL
@@ -46,10 +56,12 @@ class ReportController extends BaseController
                 if($wantedLoad == ""){
                     break;
                 }
+
                 $row = LoadPerformance::where('tms_id',$wantedLoad)->first();
 
                 $listSJ = Suratjalan_greenfields::where('load_id','=',$row->tms_id)
                             ->get();
+
                 $firstSJ = true;
                 $loadExist = False;
                 foreach ($reports as $r) {
@@ -277,6 +289,6 @@ class ReportController extends BaseController
     }
 
     public function downloadExcel(Request $req){
-        return (Session::get('resultReport'))->downloadExcel("report.xlsx",null,true);
+        return FacadesExcel::download(new Greenfield_Report1, 'greenfield.xlsx');
     }
 }

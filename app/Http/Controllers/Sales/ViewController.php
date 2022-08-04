@@ -38,9 +38,10 @@ class ViewController extends BaseController
     private $transportLoadGroups = ['SURABAYA LOG PACK', 'SURABAYA RENTAL', 'SURABAYA RENTAL TRIP', 'SURABAYA TIV LOKAL'];
     private $eximLoadGroups = ['SURABAYA EXIM TRUCKING', 'SURABAYA TIV IMPORT'];
     private $bulkLoadGroups = ['SURABAYA LOG BULK'];
-    private $warehouseLoadGroups = [];
+    private $warehouseLoadGroups = ['FLUX WAREHOUSE'];
     private $emptyLoadGroups = ['SURABAYA MOB KOSONGAN'];
     private $surabayaLoadGroups = ['SURABAYA LOG PACK', 'SURABAYA RENTAL', 'SURABAYA RENTAL TRIP', 'SURABAYA TIV LOKAL','SURABAYA EXIM TRUCKING', 'SURABAYA TIV IMPORT','SURABAYA LOG BULK','SURABAYA MOB KOSONGAN'];
+    private $surabayaAllDivision = ['FLUX WAREHOUSE' ,'SURABAYA LOG PACK', 'SURABAYA RENTAL', 'SURABAYA RENTAL TRIP', 'SURABAYA TIV LOKAL','SURABAYA EXIM TRUCKING', 'SURABAYA TIV IMPORT','SURABAYA LOG BULK','SURABAYA MOB KOSONGAN'];
     private $rateThreshold = 100;
 
     //Navigation
@@ -344,10 +345,12 @@ class ViewController extends BaseController
                 break;
             case 'warehouse':
                 $division = "Package Whs";
-                $divisionGroup = [];
+                $divisionGroup = $this->warehouseLoadGroups;
+                break;
             case 'kosongan':
                 $division = "Kosongan";
                 $divisionGroup = $this->emptyLoadGroups;
+                break;
         }
 
         //Load Performance Data
@@ -565,7 +568,7 @@ class ViewController extends BaseController
         $data['pod'] = [0,0,0,0,0,0,0,0,0,0,0,0];
         $data['websettle'] = [0,0,0,0,0,0,0,0,0,0,0,0];
 
-        $group = $this->surabayaLoadGroups;
+        $group = $this->surabayaAllDivision;
         switch ($division) {
             case 'transport':
                 $group = $this->transportLoadGroups;
@@ -1686,6 +1689,9 @@ class ViewController extends BaseController
             case 'bulk':
                 $division = 'Bulk Trans';
                 break;
+            case 'warehouse':
+                $division = 'Package Whs';
+                break;
             default:
                 break;
         }
@@ -1739,6 +1745,9 @@ class ViewController extends BaseController
                 break;
             case 'bulk':
                 $division = 'Bulk Trans';
+                break;
+            case 'warehouse':
+                $division = 'Package Whs';
                 break;
             default:
                 break;
@@ -1805,7 +1814,7 @@ class ViewController extends BaseController
                     break;
                 case 'Package Whs':
                     $loadGroup = $this->warehouseLoadGroups;
-                    break;
+                    break;  
             }
 
             //REVISI ALGORITHM BARU
@@ -2247,7 +2256,7 @@ class ViewController extends BaseController
 
         $undefinedCustomer = LoadPerformance::selectRaw('customer_reference, customer_name, load_group, COUNT(*) as totalLoads')
                                             ->whereNotIn('customer_reference',$budget)
-                                            ->whereIn('load_group',$this->surabayaLoadGroups)
+                                            ->whereIn('load_group',$this->surabayaAllDivision)
                                             ->where('load_status','!=','Voided')
                                             ->whereMonth('created_date',$budgetMonth)
                                             ->whereYear('created_date',$budgetYear)
@@ -2269,6 +2278,10 @@ class ViewController extends BaseController
 
             if(in_array($c->load_group,$this->bulkLoadGroups)){
                 $division = "bulk";
+            }
+
+            if(in_array($c->load_group,$this->warehouseLoadGroups)){
+                $division = "warehouse";
             }
 
             //Append Value
