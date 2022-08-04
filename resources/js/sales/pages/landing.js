@@ -461,6 +461,113 @@ export const loadStaticChart = async () => {
   };
 
   const chartRevenueYearlyBulk = new Chart(contYearlyRevenueBulk, configYearlyRevenueBulk);
+
+  //Yearly Revenue Warehouse
+  //Dummy Data
+  const labelsWarehouse = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ];
+  const revenueDataFetchWarehouse = await $.get('/sales/data/get-yearly-revenue/warehouse');
+  var contYearlyRevenueWarehouse =  document.getElementById('chartRevenueYearlyWarehouse').getContext('2d'), gradientWarehouse = contYearlyRevenueWarehouse.createLinearGradient(0, 0, 0, 200);
+
+  gradientWarehouse.addColorStop(0, 'rgba(74, 74, 74, 1)');
+  gradientWarehouse.addColorStop(0.5, 'rgba(74, 74, 74, 0.5)');
+  gradientWarehouse.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+
+
+  const dataWarehouse = {
+      labels: labelsWarehouse,
+      datasets: [
+          {
+              label: 'Warehouse',
+              data: revenueDataFetchWarehouse['overall'],
+              borderColor: '#2e2e2e',
+              backgroundColor: gradientWarehouse,
+              pointBackgroundColor: 'white',
+              fill: true,
+              cubicInterpolationMode: 'monotone',
+              tension: 0.4,
+              order: 0,
+          },
+          {
+            label: 'Websettle',
+            data: revenueDataFetchWarehouse['websettle'],
+            borderColor: 'rgb(21, 255, 0)',
+            borderWidth: 1,
+            backgroundColor: 'rgba(21, 255, 0, 0.2)',
+            order: 1,
+            type: 'bar',
+            stack: 'stack progress',
+          },
+          {
+            label: 'POD',
+            data: revenueDataFetchWarehouse['pod'],
+            borderColor: 'rgb(255, 159, 64)',
+            borderWidth: 1,
+            backgroundColor: 'rgba(255, 159, 64, 0.2)',
+            order: 2,
+            type: 'bar',
+            stack: 'stack progress',
+          },
+          {
+            label: 'Ongoing',
+            data: revenueDataFetchWarehouse['ongoing'],
+            borderColor: 'rgb(255, 99, 132)',
+            borderWidth: 1,
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            order: 3,
+            type: 'bar',
+            stack: 'stack progress',
+          },
+      ]
+  };
+
+  const configYearlyRevenueWarehouse = {
+      type: 'line',
+      data: dataWarehouse,
+      options: {
+          responsive: true,
+          plugins: {
+              title: {
+                  display: false,
+                  text: 'Yearly Revenue Surabaya Warehouse 2022'
+              },
+          },
+          interaction: {
+              intersect: false,
+          },
+          scales: {
+          x: {
+              display: true,
+              title: {
+                display: true
+              },
+          },
+          y: {
+              display: true,
+              title: {
+                display: true,
+                text: 'Revenue (Bill.)'
+              },
+              suggestedMin: 0,
+          }
+          }
+      },
+  };
+
+  const chartRevenueYearlyWarehouse = new Chart(contYearlyRevenueWarehouse, configYearlyRevenueWarehouse);
 }
 
 export const loadDynamicChart = async () => {
