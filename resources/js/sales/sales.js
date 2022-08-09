@@ -48,24 +48,24 @@ export const load = () => {
         const fetchChangeDate = await $.get('/sales/filter-date/'+month+'/'+year);
 
         //Chart Refresh
-        let chartBahanaMonthly = '<canvas id="chartBahanaMonthly" width="100%" height="30%"></canvas>';
-        let chartTransportDaily = '<canvas id="chartTransportDaily" width="100%" height="35%"></canvas>';
-        let chartEximDaily = '<canvas id="chartEximDaily" width="100%" height="30%"></canvas>';
-        let chartBulkDaily = '<canvas id="chartBulkDaily" width="100%" height="30%"></canvas>';
         let chartTransportMonthly = '<canvas id="chartTransportMonthly" width="100%" height="30%"></canvas>';
         let chartEximMonthly = '<canvas id="chartEximMonthly" width="100%" height="30%"></canvas>';
         let chartBulkMonthly = '<canvas id="chartBulkMonthly" width="100%" height="30%"></canvas>';
+        let chartWarehouseMonthly = '<canvas id="chartWarehouseMonthly" width="100%" height="30%"></canvas>';
+        let chartTransportDaily = '<canvas id="chartTransportDaily" width="100%" height="35%"></canvas>';
+        let chartEximDaily = '<canvas id="chartEximDaily" width="100%" height="30%"></canvas>';
+        let chartBulkDaily = '<canvas id="chartBulkDaily" width="100%" height="30%"></canvas>';
 
 
         $('.canvas-landing-dynamic').empty();
 
-        $('#canvas-bahana-monthly').html(chartBahanaMonthly);
-        $('#canvas-transport-daily').html(chartTransportDaily);
-        $('#canvas-exim-daily').html(chartEximDaily);
-        $('#canvas-bulk-daily').html(chartBulkDaily);
         $('#canvas-transport-monthly').html(chartTransportMonthly);
         $('#canvas-exim-monthly').html(chartEximMonthly);
         $('#canvas-bulk-monthly').html(chartBulkMonthly);
+        $('#canvas-warehouse-monthly').html(chartWarehouseMonthly);
+        $('#canvas-transport-daily').html(chartTransportDaily);
+        $('#canvas-exim-daily').html(chartEximDaily);
+        $('#canvas-bulk-daily').html(chartBulkDaily);
 
         loadDynamicChart();
     });

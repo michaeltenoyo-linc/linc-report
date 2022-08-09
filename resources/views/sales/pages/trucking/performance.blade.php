@@ -100,8 +100,8 @@ Linc | Trucking Performance
                             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                                 htmlFor="tree">Report Tree</label>
                             <select required name="tree" class="input-tree border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text">
-                                <option value="nopol_to_customer">Vehicle Performance</option>
-                                <option value="customer_to_nopol">Customer Performance</option>
+                                <option value="nopol_to_customer">By Vehicle</option>
+                                <option value="customer_to_nopol">By Customer</option>
                             </select>
                         </div>
                     </div>

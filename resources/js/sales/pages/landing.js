@@ -571,112 +571,135 @@ export const loadStaticChart = async () => {
 }
 
 export const loadDynamicChart = async () => {
-  /*
-  //Sales Revenue This Month
-  const AditRevenue = await $.get('/sales/data/get-sales-overview/adit');
-  const EdwinRevenue = await $.get('/sales/data/get-sales-overview/edwin');
-  const WillemRevenue = await $.get('/sales/data/get-sales-overview/willem');
+  //Fetch Division Pie Data
+  const fetchDivisionMonthlyPie = await $.get('/sales/data/get-sales-pie/all');
+  console.log(fetchDivisionMonthlyPie);
 
-  $('#revenue-adit').html(AditRevenue['revenue_1m']);
-  $('#revenue-edwin').html(EdwinRevenue['revenue_1m']);
-  $('#revenue-willem').html(WillemRevenue['revenue_1m']);
-  */
-
-  //Chart Landing Monthly BP
-
-  //Dummy Data
-  const labels2 = [
-      'Transport - Yay',
-      'Transport - Nay',
-      'EXIM - Yay',
-      'EXIM - Nay',
-      'Bulk - Yay',
-      'Bulk - Nay',
-  ];
-
-  const fetchDivisionMonthlyPie = await $.get('/sales/data/get-division-pie');
-
-  const data2 = {
-      labels: labels2,
-      datasets: [
-          {
-              backgroundColor: ['hsl(0, 100%, 60%)', 'hsl(0, 100%, 35%)'],
-              data: fetchDivisionMonthlyPie['transport'],
-          },
-          {
-              backgroundColor: ['hsl(100, 100%, 60%)', 'hsl(100, 100%, 35%)'],
-              data: fetchDivisionMonthlyPie['exim'],
-          },
-          {
-              backgroundColor: ['hsl(180, 100%, 60%)', 'hsl(180, 100%, 35%)'],
-              data: fetchDivisionMonthlyPie['bulk'],
-          },
-      ]
-  };
-
-  const contMonthlyBahana = $('#chartBahanaMonthly');
-  const configMonthlyBahana = {
-      type: 'pie',
-      data: data2,
-      options: {
-        responsive: true,
-        plugins: {
-          title: {
-              display: true,
-              text: 'This Month Achievement by Division Unit'
-          },
-          legend: {
-            labels: {
-              generateLabels: function(chart) {
-                // Get the default label list
-                const original = Chart.overrides.pie.plugins.legend.labels.generateLabels;
-                const labelsOriginal = original.call(this, chart);
-
-                // Build an array of colors used in the datasets of the chart
-                var datasetColors = chart.data.datasets.map(function(e) {
-                  return e.backgroundColor;
-                });
-                datasetColors = datasetColors.flat();
-
-                // Modify the color and hide state of each label
-                labelsOriginal.forEach(label => {
-                  // There are twice as many labels as there are datasets. This converts the label index into the corresponding dataset index
-                  label.datasetIndex = (label.index - label.index % 2) / 2;
-
-                  // The hidden state must match the dataset's hidden state
-                  label.hidden = !chart.isDatasetVisible(label.datasetIndex);
-
-                  // Change the color to match the dataset
-                  label.fillStyle = datasetColors[label.index];
-                });
-
-                return labelsOriginal;
-              }
-            },
-            onClick: function(mouseEvent, legendItem, legend) {
-              // toggle the visibility of the dataset from what it currently is
-              legend.chart.getDatasetMeta(
-                legendItem.datasetIndex
-              ).hidden = legend.chart.isDatasetVisible(legendItem.datasetIndex);
-              legend.chart.update();
-            }
-          },
-          tooltip: {
-            callbacks: {
-              label: function(context) {
-                const labelIndex = (context.datasetIndex * 2) + context.dataIndex;
-                return context.chart.data.labels[labelIndex] + ': ' + context.formattedValue;
-              }
-            }
-          }
-        }
+  //PIE MONTHLY TRANSPORT
+  //Transport
+  const dataMonthlyTransportPie = {
+    labels: ['Yay', 'Nay'],
+    datasets: [
+      {
+        label: 'Transport',
+        data: [ fetchDivisionMonthlyPie['transport'][0], fetchDivisionMonthlyPie['transport'][1]],
+        backgroundColor: ['rgb(255, 169, 77)', 'rgb(255, 132, 0)'],
       },
+    ]
   };
+  const contMonthlyTransportPie = $('#chartTransportMonthly');
+  const configMonthlyTransportPie = {
+    type: 'doughnut',
+    data: dataMonthlyTransportPie,
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: false,
+        },
+        title: {
+          display: false,
+          text: 'Transport',
+          color: '#ffffff',
+        }
+      }
+    },
+  };
+  const chartMonthlyTransportPie = new Chart(contMonthlyTransportPie, configMonthlyTransportPie);
   
-
-  const chartMonthlyBahana = new Chart(contMonthlyBahana, configMonthlyBahana);
-
-  //Chart Monthly Achievement Transport
+  //Exim
+  const dataMonthlyEximPie = {
+    labels: ['Yay', 'Nay'],
+    datasets: [
+      {
+        label: 'Exim',
+        data: [ fetchDivisionMonthlyPie['exim'][0], fetchDivisionMonthlyPie['exim'][1]],
+        backgroundColor: ['rgb(33, 242, 5)', 'rgb(22, 163, 3)'],
+      },
+    ]
+  };
+  const contMonthlyEximPie = $('#chartEximMonthly');
+  const configMonthlyEximPie = {
+    type: 'doughnut',
+    data: dataMonthlyEximPie,
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: false,
+        },
+        title: {
+          display: false,
+          text: 'Exim',
+          color: '#ffffff',
+        }
+      }
+    },
+  };
+  const chartMonthlyEximPie = new Chart(contMonthlyEximPie, configMonthlyEximPie);
+  
+  //Bulk
+  const dataMonthlyBulkPie = {
+    labels: ['Yay', 'Nay'],
+    datasets: [
+      {
+        label: 'Bulk',
+        data: [ fetchDivisionMonthlyPie['bulk'][0], fetchDivisionMonthlyPie['bulk'][1]],
+        backgroundColor: ['rgb(0, 119, 255)', 'rgb(0, 30, 255)'],
+      },
+    ]
+  };
+  const contMonthlyBulkPie = $('#chartBulkMonthly');
+  const configMonthlyBulkPie = {
+    type: 'doughnut',
+    data: dataMonthlyBulkPie,
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: false,
+        },
+        title: {
+          display: false,
+          text: 'Bulk',
+          color: '#ffffff',
+        }
+      }
+    },
+  };
+  const chartMonthlyBulkPie = new Chart(contMonthlyBulkPie, configMonthlyBulkPie);
+  
+  //Warehouse
+  const dataMonthlyWarehousePie = {
+    labels: ['Yay', 'Nay'],
+    datasets: [
+      {
+        label: 'Warehouse',
+        data: [ fetchDivisionMonthlyPie['warehouse'][0], fetchDivisionMonthlyPie['warehouse'][1]],
+        backgroundColor: ['rgb(168, 168, 168)', 'rgb(87, 87, 87)'],
+      },
+    ]
+  };
+  const contMonthlyWarehousePie = $('#chartWarehouseMonthly');
+  const configMonthlyWarehousePie = {
+    type: 'doughnut',
+    data: dataMonthlyWarehousePie,
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: false,
+        },
+        title: {
+          display: false,
+          text: 'Warehouse',
+          color: '#ffffff',
+        }
+      }
+    },
+  };
+  const chartMonthlyWarehousePie = new Chart(contMonthlyWarehousePie, configMonthlyWarehousePie);
+  
 
   //Dummy Data
   const monthlyAchivementDataFetch = await $.get('/sales/data/get-monthly-achievement');

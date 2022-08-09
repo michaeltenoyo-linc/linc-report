@@ -415,7 +415,7 @@ Linc | Sales Report Homepage
                             <canvas id="chartRevenueYearlyBulk" width="100%" height="40%"></canvas>
                         </div>
                     </div>
-                </div>
+                </div>  
             </div>
         </div>
         <div class="w-full">
@@ -429,96 +429,51 @@ Linc | Sales Report Homepage
         </div>
     </div>
 
-    <div class="w-full flex flex-row-reverse">
-        <div class="w-2/3 flex inline-block gap-4">
-            <a href="/sales/by-sales/adit" class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white transform transition duration-500 hover:scale-110">
-                <div class="rounded-t mb-0 px-4 py-3 border-0">
-                    <div class="flex flex-wrap items-center">
-                        <div class="flex-auto p-4">
-                            <div class="flex flex-wrap">
-                                <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-                                    <h5 class="text-blueGray-400 uppercase font-bold text-xs">
-                                        Sales
-                                    </h5>
-                                    <span class="font-semibold text-blueGray-700">
-                                        Adit
-                                    </span>
-                                </div>
-                                <div class="relative w-auto pl-4 flex-initial">
-                                    <div
-                                        class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-blue-500">
-                                        <i class="fas fa-users"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="/sales/by-sales/edwin" class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white transform transition duration-500 hover:scale-110">
-                <div class="rounded-t mb-0 px-4 py-3 border-0">
-                    <div class="flex flex-wrap items-center">
-                        <div class="flex-auto p-4">
-                            <div class="flex flex-wrap">
-                                <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-                                    <h5 class="text-blueGray-400 uppercase font-bold text-xs">
-                                        Sales
-                                    </h5>
-                                    <span class="font-semibold text-blueGray-700">
-                                        Edwin
-                                    </span>
-                                </div>
-                                <div class="relative w-auto pl-4 flex-initial">
-                                    <div
-                                        class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-blue-500">
-                                        <i class="fas fa-users"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="/sales/by-sales/willem" class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white transform transition duration-500 hover:scale-110">
-                <div class="rounded-t mb-0 px-4 py-3 border-0">
-                    <div class="flex flex-wrap items-center">
-                        <div class="flex-auto p-4">
-                            <div class="flex flex-wrap">
-                                <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-                                    <h5 class="text-blueGray-400 uppercase font-bold text-xs">
-                                        Sales
-                                    </h5>
-                                    <span class="font-semibold text-blueGray-700">
-                                        Willem
-                                    </span>
-                                </div>
-                                <div class="relative w-auto pl-4 flex-initial">
-                                    <div
-                                        class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-blue-500">
-                                        <i class="fas fa-users"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-    </div>
-
     <div class="w-full flex">
-        <div class="w-full flex inline-block gap-4">
-            <div class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
-                <div class="rounded-t mb-0 px-4 py-3 border-0">
-                    <div class="flex flex-wrap items-center mb-8">
-                        <div class="flex-auto p-4 canvas-landing-dynamic" id="canvas-bahana-monthly">
-                            <canvas id="chartBahanaMonthly" width="100%" height="30%"></canvas>
+        <div class="w-full flex grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-2 gap-10">
+                <div class="inline-block min-w-0 break-words w-full cursor-pointer mb-6 shadow-lg rounded bg-white transition ease-in-out delay-150 hover:bg-red-100 duration-300">
+                    <div class="rounded-t mb-0 px-4 py-3 border-0">
+                        <div class="flex flex-wrap items-center mb-8">
+                            <div class="flex-auto p-4 canvas-landing-dynamic" id="canvas-transport-monthly">
+                                <canvas id="chartTransportMonthly" width="100%" height="30%"></canvas>
+                            </div>
                         </div>
+                        <h1 class="font-bold text-3xl text-center">TRANSPORT</h1>
+                        <center>This Month</center>
                     </div>
-                    <div class="flex justify-center">
-                        <a href="/sales/by-division/transport"><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-right">Division Unit Report</button></a>
+                </div>
+                <div class="inline-block min-w-0 break-words w-full cursor-pointer mb-6 shadow-lg rounded bg-white transition ease-in-out delay-150 hover:bg-green-100 duration-300">
+                    <div class="rounded-t mb-0 px-4 py-3 border-0">
+                        <div class="flex flex-wrap items-center mb-8">
+                            <div class="flex-auto p-4 canvas-landing-dynamic" id="canvas-exim-monthly">
+                                <canvas id="chartEximMonthly" width="100%" height="30%"></canvas>
+                            </div>
+                        </div>
+                        <h1 class="font-bold text-3xl text-center">EXIM</h1>
+                        <center>This Month</center> 
+                    </div>
+                </div>
+                <div class="inline-block min-w-0 break-words w-full cursor-pointer mb-6 shadow-lg rounded bg-white transition ease-in-out delay-150 hover:bg-blue-100 duration-300">
+                    <div class="rounded-t mb-0 px-4 py-3 border-0">
+                        <div class="flex flex-wrap items-center mb-8">
+                            <div class="flex-auto p-4 canvas-landing-dynamic" id="canvas-bulk-monthly">
+                                <canvas id="chartBulkMonthly" width="100%" height="30%"></canvas>
+                            </div>
+                        </div>
+                        <h1 class="font-bold text-3xl text-center">BULK</h1>
+                        <center>This Month</center>
+                    </div>
+                </div>
+                <div class="inline-block min-w-0 break-words w-full cursor-pointer mb-6 shadow-lg rounded bg-white transition ease-in-out delay-150 hover:bg-gray-200 duration-300">
+                    <div class="rounded-t mb-0 px-4 py-3 border-0">
+                        <div class="flex flex-wrap items-center mb-8">
+                            <div class="flex-auto p-4 canvas-landing-dynamic" id="canvas-warehouse-monthly">
+                                <canvas id="chartWarehouseMonthly" width="100%" height="30%"></canvas>
+                            </div>
+                        </div>
+                        <h1 class="font-bold text-3xl text-center">WAREHOUSE</h1>
+                        <center>This Month</center>
                     </div>
                 </div>
             </div>
@@ -550,54 +505,5 @@ Linc | Sales Report Homepage
             </div>
         </div>
     </div>
-
-    <div class="w-full flex">
-        <div class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
-            <div class="rounded-t mb-0 px-4 py-3 border-0">
-                <div class="flex flex-wrap items-center mb-8">
-                    <div class="w-2/3 p-4 canvas-landing-dynamic" id="canvas-transport-monthly">
-                        <canvas id="chartTransportMonthly" width="100%" height="40%"></canvas>
-                    </div>
-                    <div class="w-1/3 p-4">
-                        <div class="font-bold text-xl">Transport</div>
-                        <br>
-                        <br>
-                        <a href="/sales/by-division/transport"><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-right">Transport Log Pack</button></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="w-full flex">
-        <div class="w-full flex inline-block gap-4">
-            <div class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
-                <div class="rounded-t mb-0 px-4 py-3 border-0">
-                    <div class="flex flex-wrap items-center mb-8">
-                        <div class="flex-auto p-4 w-full canvas-landing-dynamic" id="canvas-exim-monthly">
-                            <canvas id="chartEximMonthly" width="100%" height="100%"></canvas>
-                        </div>
-                    </div>
-                    <div class="flex justify-center">
-                        <a href="/sales/by-division/exim"><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-right">EXIM</button></a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
-                <div class="rounded-t mb-0 px-4 py-3 border-0">
-                    <div class="flex flex-wrap items-center mb-8">
-                        <div class="flex-auto p-4 w-full canvas-landing-dynamic" id="canvas-bulk-monthly">
-                            <canvas id="chartBulkMonthly" width="100%" height="100%"></canvas>
-                        </div>
-                    </div>
-                    <div class="flex justify-center">
-                        <a href="/sales/by-division/bulk"><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-right">Bulk</button></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </div>
 @endsection

@@ -132,8 +132,8 @@
 										<div class="col">
 											<span style="color:white; background-color:darkred; padding: 2%; margin-right: 1%; border-radius: 50px; font-size: 8pt;">Cost</span><span> IDR. {{ $p->cost_format }}</b></span>
 										</div>
-										<div class="col-2 text-center">
-											<b>{{ $p->totalLoads }} Loads</b> 
+										<div class="col-3 text-center">
+											<button data-toggle="modal" data-target="#modal-customer-loads" class="btn-customer-loads btn btn-outline-secondary" id="{{ $p->customer_reference }}${{ $p->customer_name }}${{ $division }}" target="_blank" class="btn btn-outline-secondary"><b>{{ $p->totalLoads }} Loads</b></button>
 										</div>
 										<div class="col text-right">
 											<span>IDR. {{ $p->revenue_format }} </b></span><span style="color:white; background-color:#067d00; padding: 2%; margin-left: 1%; border-radius: 50px; font-size: 8pt;">Bill</span>
@@ -195,6 +195,7 @@
 </body>
 </html>
 @include('sales.modals.customer-trucks-modal');
+@include('sales.modals.customer-loads-modal');
 
 
 <!--Alert Instruction-->
@@ -203,6 +204,24 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script>
+	$(document).on('click','.btn-customer-loads', async function(e){
+		e.preventDefault();
+		let id = $(this).attr('id').split('$');
+		const fetchLoads = await $.get('/sales/data/get-customer-loads/'+id[0]+'/'+id[2]);
+
+		//Reset Init Value
+		$('#customer-load-list').empty();
+		$('#cloads-modal-name').html(id[1]);
+		$('#cloads-modal-reference').html(id[0]);
+
+		fetchLoads['loads'].forEach(load => {
+			let loadBtn = '<button type="button" style="font-size:15pt;" class="m-2 btn btn-primary btn-sm my-2 btn-show-truck-route-load-detail" value="'+load+'"><b>'+load+'</b></button>';
+
+			$('#customer-load-list').append(loadBtn);
+		});
+	});
+</script>
 <script>
 	Swal.fire(
 		'How to save as PDF?',

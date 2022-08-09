@@ -401,6 +401,14 @@
 										<span id="sales-overview-loads-cm">X.XXX</span> Load ID
 									</p>
 								</center>
+								<br>
+								<center>
+									<p>
+										<b>CML Bills (CM)</b>
+										<br>
+										<span id="sales-overview-bills-cm">X.XXX</span> Billings
+									</p>
+								</center>
 								<br><br>
 								<center>
 									<p>
@@ -435,6 +443,14 @@
 										<b>Loads (Ytd.)</b>
 										<br>
 										<span id="sales-overview-loads-ytd">X.XXX</span> Load ID
+									</p>
+								</center>
+								<br>
+								<center>
+									<p>
+										<b>CML Bills (Ytd.)</b>
+										<br>
+										<span id="sales-overview-bills-ytd">X.XXX</span> Billings
 									</p>
 								</center>
 								<br><br>
@@ -860,7 +876,7 @@
 			datasets: [
 				{
 					label: 'Warehouse',
-					data: [0,1],
+					data: [{{ $achievement_warehouse[0] }}, {{ $achievement_warehouse[1]-$achievement_warehouse[0] }}],
 					backgroundColor: ['rgb(168, 168, 168)', 'rgb(87, 87, 87)'],
 				},
 			]
@@ -1036,18 +1052,19 @@
 			};
 			const chartSalesPieBulk = new Chart(contSalesPieBulk, configSalesPieBulk);
 
-
 			//Overview Text
 			const salesOverview = await $.get('/sales/data/get-sales-overview/{{ $sales }}');
 			
 			//assigning the value to div
 			$('#sales-overview-revenue-cm').html(salesOverview['revenue_1m']);
 			$('#sales-overview-loads-cm').html(salesOverview['transaction_1m']);
+			$('#sales-overview-bills-cm').html(salesOverview['billing_1m']);
 			$('#sales-overview-achievement-cm-percentage').html(parseFloat(salesOverview['achivement_1m']).toFixed(2)+'%');
 			$('#sales-overview-achievement-cm').html(salesOverview['achievement_1m_text']);
 
 			$('#sales-overview-revenue-ytd').html(salesOverview['revenue_ytd']);
 			$('#sales-overview-loads-ytd').html(salesOverview['transaction_ytd']);
+			$('#sales-overview-bills-ytd').html(salesOverview['billing_ytd']);
 			$('#sales-overview-achievement-ytd-percentage').html(parseFloat(salesOverview['achivement_ytd']).toFixed(2)+'%');
 			$('#sales-overview-achievement-ytd').html(salesOverview['achievement_ytd_text']);
 		@endif

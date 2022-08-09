@@ -43,6 +43,7 @@ class ViewController extends BaseController
     private $surabayaLoadGroups = ['SURABAYA LOG PACK', 'SURABAYA RENTAL', 'SURABAYA RENTAL TRIP', 'SURABAYA TIV LOKAL','SURABAYA EXIM TRUCKING', 'SURABAYA TIV IMPORT','SURABAYA LOG BULK','SURABAYA MOB KOSONGAN'];
     private $surabayaAllDivision = ['FLUX WAREHOUSE' ,'SURABAYA LOG PACK', 'SURABAYA RENTAL', 'SURABAYA RENTAL TRIP', 'SURABAYA TIV LOKAL','SURABAYA EXIM TRUCKING', 'SURABAYA TIV IMPORT','SURABAYA LOG BULK','SURABAYA MOB KOSONGAN'];
     private $rateThreshold = 100;
+    private $billableThreshold = 100;
 
     //Navigation
     public function showLoadDetail(Request $req, $load_id){
@@ -168,7 +169,7 @@ class ViewController extends BaseController
         $mPerformance = LoadPerformance::selectRaw('customer_reference, load_group, SUM(billable_total_rate) as totalActual, COUNT(*) as totalLoads')
                                     ->where('load_status','!=','Voided')
                                     ->where($statusCondition)
-                                    ->whereIn('load_group',$this->surabayaLoadGroups)
+                                    ->whereIn('load_group',$this->surabayaAllDivision)
                                     ->whereMonth($dateConstraint,Session::get('sales-month'))
                                     ->whereYear($dateConstraint,Session::get('sales-year'))
                                     ->groupBy('customer_reference','load_group')
@@ -177,7 +178,7 @@ class ViewController extends BaseController
         $ytdPerformance = LoadPerformance::selectRaw('customer_reference, load_group, SUM(billable_total_rate) as totalActual, COUNT(*) as totalLoads')
                                     ->where('load_status','!=','Voided')
                                     ->where($statusCondition)
-                                    ->whereIn('load_group',$this->surabayaLoadGroups)
+                                    ->whereIn('load_group',$this->surabayaAllDivision)
                                     ->whereMonth($dateConstraint,'<=',Session::get('sales-month'))
                                     ->whereYear($dateConstraint,Session::get('sales-year'))
                                     ->groupBy('customer_reference','load_group')
@@ -186,10 +187,12 @@ class ViewController extends BaseController
         //CM
         $data['revenue_1m'] = 0;
         $data['transaction_1m'] = 0;
+        $data['billing_1m'] = 0;
 
         //YTD
         $data['revenue_ytd'] = 0;
         $data['transaction_ytd'] = 0;
+        $data['billing_ytd'] = 0;
 
         foreach ($customerList as $c) {
             $division = ['none'];
@@ -203,13 +206,21 @@ class ViewController extends BaseController
                 case 'Freight Forwarding BP':
                     $division = $this->eximLoadGroups;
                     break;
+                case 'Package Whs':
+                    $division = $this->warehouseLoadGroups;
+                    break;
             };
 
             foreach ($mPerformance as $tempMonth) {
                 if(in_array($tempMonth->load_group, $division) && $c->customer_sap == $tempMonth->customer_reference){
                     //CM
                     $data['revenue_1m'] += $tempMonth->totalActual;
-                    $data['transaction_1m'] += $tempMonth->totalLoads;
+                    
+                    if($c->division == 'Package Whs'){
+                        $data['billing_1m'] += $tempMonth->totalLoads;
+                    }else{
+                        $data['transaction_1m'] += $tempMonth->totalLoads;
+                    }
                 }
             }
 
@@ -217,7 +228,12 @@ class ViewController extends BaseController
                 if(in_array($tempYtd->load_group, $division) && $c->customer_sap == $tempYtd->customer_reference){
                     //YTD
                     $data['revenue_ytd'] += $tempYtd->totalActual;
-                    $data['transaction_ytd'] += $tempYtd->totalLoads;
+                    
+                    if($c->division == 'Package Whs'){
+                        $data['billing_ytd'] += $tempYtd->totalLoads;
+                    }else{
+                        $data['transaction_ytd'] += $tempYtd->totalLoads;
+                    }
                 }
             }            
         }
@@ -735,6 +751,8 @@ class ViewController extends BaseController
                 break;
             case 'Surabaya':
                 $divisionGroup = $this->surabayaLoadGroups;
+            case 'Package Whs':
+                $divisionGroup = $this->warehouseLoadGroups;
             default:
                 break;
         }
@@ -1289,6 +1307,13 @@ class ViewController extends BaseController
         $month = Session::get('sales-month');
         $year = Session::get('sales-year');
 
+        $salesComparator = '=';
+
+        if($sales == "all"){
+            $sales = '%%';
+            $salesComparator = 'LIKE';
+        }
+
         //Date Constraint
         $dateConstraint = Session::get('sales-constraint');
 
@@ -1317,7 +1342,7 @@ class ViewController extends BaseController
                 break;
         }
 
-        $budget = SalesBudget::where('sales',$sales)
+        $budget = SalesBudget::where('sales',$salesComparator,$sales)
                             ->whereMonth('period', $month)
                             ->whereYear('period', $year)
                             ->where('customer_sap','!=',0)
@@ -1327,7 +1352,7 @@ class ViewController extends BaseController
         $mPerformance = LoadPerformance::selectRaw('customer_reference, load_group, SUM(billable_total_rate) as totalActual, COUNT(*) as totalLoads')
                                     ->where('load_status','!=','Voided')
                                     ->where($statusCondition)
-                                    ->whereIn('load_group',$this->surabayaLoadGroups)
+                                    ->whereIn('load_group',$this->surabayaAllDivision)
                                     ->whereMonth($dateConstraint,Session::get('sales-month'))
                                     ->whereYear($dateConstraint,Session::get('sales-year'))
                                     ->groupBy('customer_reference','load_group')
@@ -1387,7 +1412,7 @@ class ViewController extends BaseController
         }
 
         //Assign Output Data
-        $data['warehouse'] = [0,0,0];
+        $data['warehouse'] = [$actualWarehouse, $warehouseBudgets-$actualWarehouse, $loadWarehouse];
         $data['transport'] = [$actualTransport, $transportBudgets-$actualTransport, $loadTransport];
         $data['exim'] = [$actualExim, $eximBudgets-$actualExim, $loadExim];
         $data['bulk'] = [$actualBulk, $bulkBudgets-$actualBulk, $loadBulk];
@@ -1585,97 +1610,6 @@ class ViewController extends BaseController
             $property->setAccessible(false);
         }
         return $array;
-    }
-
-    public function getAllDivisionPie(){
-        $data['transport'] = [0,0];
-        $data['exim'] = [0,0];
-        $data['bulk'] = [0,0];
-
-        //Blujay Transport
-        $revenueTransport = 0;
-        $budgetTransport = 0;
-        $customerTransport = SalesBudget::where('division', 'Pack Trans')
-                                        ->whereMonth('period',Session::get('sales-month'))
-                                        ->whereYear('period',Session::get('sales-year'))
-                                        ->get();
-        $data['transportCust'] = $this->dismount($customerTransport);
-        foreach ($customerTransport as $c) {
-            $budgetTransport += $c->budget;
-        }
-
-        $fetchTransport = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
-                                    ->whereIn('customer_reference',array_column($data['transportCust']['items'], 'customer_sap'))
-                                    ->whereIn('load_group',$this->transportLoadGroups)
-                                    ->where('load_status','Completed')
-                                    ->whereMonth('closed_date',Session::get('sales-month'))
-                                    ->whereYear('closed_date',Session::get('sales-year'))
-                                    ->first();
-
-        if(!is_null($fetchTransport)){
-            $revenueTransport += intval($fetchTransport->totalActual);
-        }
-
-        $budgetTransport -= $revenueTransport;
-        $data['transport'] = [$revenueTransport,$budgetTransport];
-
-        //Blujay Exim
-        $revenueExim = 0;
-        $budgetExim = 0;
-        $customerExim = SalesBudget::where('division', 'Freight Forwarding BP')
-                                        ->whereMonth('period',Session::get('sales-month'))
-                                        ->whereYear('period',Session::get('sales-year'))
-                                        ->get();
-        $data['eximCust'] = $this->dismount($customerExim);
-
-        foreach ($customerExim as $c) {
-            $budgetExim += $c->budget;
-        }
-
-        $fetchExim = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
-                                    ->whereIn('customer_reference',array_column($data['eximCust']['items'], 'customer_sap'))
-                                    ->whereIn('load_group',$this->eximLoadGroups)
-                                    ->where('load_status','Completed')
-                                    ->whereMonth('closed_date',Session::get('sales-month'))
-                                    ->whereYear('closed_date',Session::get('sales-year'))
-                                    ->first();
-
-        if(!is_null($fetchExim)){
-            $revenueExim += intval($fetchExim->totalActual);
-        }
-
-        $budgetExim -= $revenueExim;
-        $data['exim'] = [$revenueExim,$budgetExim];
-
-        //Blujay Bulk
-        $revenueBulk = 0;
-        $budgetBulk = 0;
-        $customerBulk = SalesBudget::where('division', 'Bulk Trans')
-                                        ->whereMonth('period',Session::get('sales-month'))
-                                        ->whereYear('period',Session::get('sales-year'))
-                                        ->get();
-        $data['bulkCust'] = $this->dismount($customerBulk);
-
-        foreach ($customerBulk as $c) {
-            $budgetBulk += $c->budget;
-        }
-
-        $fetchBulk = LoadPerformance::selectRaw('SUM(billable_total_rate) as totalActual')
-                                    ->whereIn('customer_reference',array_column($data['bulkCust']['items'], 'customer_sap'))
-                                    ->whereIn('load_group',$this->bulkLoadGroups)
-                                    ->where('load_status','Completed')
-                                    ->whereMonth('closed_date',Session::get('sales-month'))
-                                    ->whereYear('closed_date',Session::get('sales-year'))
-                                    ->first();
-
-        if(!is_null($fetchBulk)){
-            $revenueBulk += intval($fetchBulk->totalActual);
-        }
-
-        $budgetBulk -= $revenueBulk;
-        $data['bulk'] = [$revenueBulk,$budgetBulk];
-
-        return response()->json($data,200);
     }
 
     public function getFilteringCustomer(Request $req, $division, $sales){
@@ -2292,6 +2226,73 @@ class ViewController extends BaseController
         }
         $data['message'] = "Sukses mengambil data customer";
 
+        return response()->json($data, 200);
+    }
+
+    public function getCustomerLoads($reference, $division){
+        $data['division'] = $division;
+        $dateConstraint = Session::get('sales-constraint');
+        
+        //Division Change
+        $divisionGroup = [];
+        switch ($division) {
+            case 'transport':
+                $division = 'Pack Trans';
+                $divisionGroup = $this->transportLoadGroups;
+                break;
+            case 'exim':
+                $division = 'Freight Forwarding BP';
+                $divisionGroup = $this->eximLoadGroups;
+                break;
+            case 'bulk':
+                $division = 'Bulk Trans';
+                $divisionGroup = $this->bulkLoadGroups;
+                break;
+            case 'surabaya':
+                $division = 'Surabaya';
+                $divisionGroup = $this->surabayaLoadGroups;
+            default:
+                break;
+        }
+
+        //status constraint
+        $status = Session::get('sales-status');
+        $statusCondition = [
+            ['created_date','!=',null]
+        ];
+        Session::put('sales-status', $status);
+        switch ($status) {
+            case 'ongoing':
+                $statusCondition = [
+                    ['load_status','=','Accepted']
+                ];
+                break;
+            case 'pod':
+                $statusCondition = [
+                    ['load_status','=','Completed'],
+                    ['websettle_date','=',null]
+                ];
+                break;
+            case 'websettle':
+                $statusCondition = [
+                    ['websettle_date','!=',null]
+                ];
+                break;
+        }
+
+        $data['loads'] = LoadPerformance::select('tms_id')
+                                        ->where('customer_reference',$reference)
+                                        ->where('billable_total_rate','>',$this->billableThreshold)
+                                        ->whereIn('load_group',$divisionGroup)  
+                                        ->whereNotNull($dateConstraint)
+                                        ->whereBetween($dateConstraint,[Session::get('sales-from'),Session::get('sales-to')])
+                                        ->where('load_status','!=','Voided')
+                                        ->where($statusCondition)
+                                        ->get()->pluck('tms_id');
+
+        $data['count'] = count($data['loads']);
+
+        $data['message'] = "Sukses mengambil load list customer";
         return response()->json($data, 200);
     }
 }

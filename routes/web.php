@@ -408,6 +408,7 @@ Route::middleware(['auth','priviledge:sales,master'])->group(function () {
             Route::get('/get-division-pie',[SalesViewController::class, 'getAllDivisionPie']);
             Route::get('/get-daily-update/{section}/{step}', [SalesViewController::class, 'getDailyUpdate']);
             Route::get('/get-undefined-customer-transaction', [SalesViewController::class, 'getUndefinedCustomerTransaction']);
+            Route::get('/get-customer-loads/{customer}/{division}',[SalesViewController::class, 'getCustomerLoads']);
         });
         
         Route::prefix('/truck')->group(function () {
@@ -422,7 +423,7 @@ Route::middleware(['auth','priviledge:sales,master'])->group(function () {
             Route::get('/filter-nopol/{division}/{ownership}',[SalesTruckController::class, 'getFilteringTruck']);
             Route::get('/filter-customer/{division}/{ownership}/{nopol}',[SalesTruckController::class, 'getFilteringCustomer']);
             Route::get('get-monthly-customers/{nopol}/{division}',[SalesTruckController::class, 'getCustomerData']);
-            Route::get('get-monthly-units/{nopol}/{division}',[SalesTruckController::class, 'getUnitData']);
+            Route::get('get-monthly-units/{customer}/{division}',[SalesTruckController::class, 'getUnitData']);
             Route::get('/get-yearly-achievement/{id}/{division}',[SalesTruckController::class, 'getYearlyAchievement']);
             Route::get('/get-lead-time',[SalesTruckController::class, 'getLeadTime']);
             Route::get('/get-trucking-calendar/{nopol}',[SalesTruckController::class, 'getTruckCalendar']);
