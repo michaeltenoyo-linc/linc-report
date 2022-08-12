@@ -386,6 +386,7 @@ Route::middleware(['auth','priviledge:sales,master'])->group(function () {
         
         //Utility
         Route::get('/filter-date/{month}/{year}', [SalesViewController::class, 'filterSalesDate']);
+        Route::get('/filter-date-landing/{month}/{year}', [SalesViewController::class, 'filterSalesDateLanding']);
         Route::get('/filter-date-between/{fromDate}/{fromMonth}/{fromYear}/{toDate}/{toMonth}/{toYear}', [SalesViewController::class, 'filterSalesDateBetween']);
 
         //Export
