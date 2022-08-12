@@ -45,7 +45,7 @@ export const load = () => {
         var year = inputDate.getFullYear();
         var month = inputDate.getMonth()+1;
 
-        const fetchChangeDate = await $.get('/sales/filter-date/'+month+'/'+year);
+        const fetchChangeDate = await $.get('/sales/filter-date-landing/'+month+'/'+year);
 
         //Chart Refresh
         let chartTransportMonthly = '<canvas id="chartTransportMonthly" width="100%" height="30%"></canvas>';

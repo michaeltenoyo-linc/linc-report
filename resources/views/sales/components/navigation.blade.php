@@ -86,7 +86,7 @@
             <hr class="my-4 md:min-w-full" />
             <!-- Heading -->
             <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                Sales
+                Monitoring
             </h6>
 
             <!-- Navigation Monitoring Master-->
@@ -109,31 +109,31 @@
                 </li>
             </ul>
 
-            <!-- Navigation Product -->
+            <!-- Divider -->
+            <hr class="my-4 md:min-w-full" />
+            <!-- Heading -->
+            <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+                Report Engine
+            </h6>
+
+            <!-- Navigation Sales -->
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
                 <li class="items-center">
                     @if (Request::path() == '/sales/export/pdf')
                         <a href="{{url('/sales/export/pdf')}}"
                             class="page_nav_active">
                             <i class="fas fa-clipboard"></i>
-                            Sales Performance
+                            Sales Achievement
                         </a>
                     @else
                         <a href="{{url('/sales/export/pdf')}}"
                             class="page_nav">
                             <i class="fas fa-clipboard"></i>
-                            Sales Performance
+                            Sales Achievement
                         </a>
                     @endif
                 </li>
             </ul>
-
-            <!-- Divider -->
-            <hr class="my-4 md:min-w-full" />
-            <!-- Heading -->
-            <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                Truck
-            </h6>
 
             <!-- Navigation Product -->
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
@@ -160,13 +160,13 @@
                         <a href="{{url('/sales/truck/utility')}}"
                             class="page_nav_active">
                             <i class="fas fa-shipping-fast"></i>
-                            Utility Performance
+                            Utility
                         </a>
                     @else
                         <a href="{{url('/sales/truck/utility')}}"
                             class="page_nav">
                             <i class="fas fa-shipping-fast"></i>
-                            Utility Performance
+                            Utility
                         </a>
                     @endif
                 </li>

@@ -141,7 +141,7 @@ Linc | Sales Report Homepage
         <!-- POD performance -->
         <div class="relative w-full mb-6 shadow-lg rounded bg-white">
             <div class="w-full p-5">
-                <h1 class="text-left text-xl hover:text-blue-500 cursor-pointer">POD Progress <i class="fas fa-angle-right ml-3"></i></h1>
+                <a href="/sales/truck/performance-customer/all/surabaya/all/created_date/pod" target="_blank"><h1 class="text-left text-xl hover:text-blue-500 cursor-pointer">POD Progress <i class="fas fa-angle-right ml-3"></i></h1></a>
             </div>
             <div class="w-full flex px-5 mb-5">
                 <div id="pod-1" class="landing-headline-active headline-pod">
@@ -190,7 +190,7 @@ Linc | Sales Report Homepage
         <!-- Websettle performance -->
         <div class="relative w-full mb-6 shadow-lg rounded bg-white">
             <div class="w-full p-5">
-                <h1 class="text-left text-xl hover:text-blue-500 cursor-pointer">Websettle Progress <i class="fas fa-angle-right ml-3"></i></h1>
+                <a target="_blank" href="/sales/truck/performance-customer/all/surabaya/all/created_date/websettle"><h1 class="text-left text-xl hover:text-blue-500 cursor-pointer">Websettle Progress <i class="fas fa-angle-right ml-3"></i></h1></a>
             </div>
             <div class="w-full flex px-5 mb-5">
                 <div id="websettle-1" class="landing-headline-active headline-websettle">
@@ -239,7 +239,7 @@ Linc | Sales Report Homepage
         <!-- Gainer -->
         <div class="relative w-full mb-6 shadow-lg rounded bg-white">
             <div class="w-full p-5">
-                <h1 class="text-left text-xl hover:text-blue-500 cursor-pointer">Top Profit <i class="fas fa-angle-right ml-3"></i></h1>
+                <a target="_blank" href="/sales/truck/performance-customer/all/surabaya/all/created_date/all"><h1 class="text-left text-xl hover:text-blue-500 cursor-pointer">Top Profit <i class="fas fa-angle-right ml-3"></i></h1></a>
             </div>
             <div class="w-full flex px-5 mb-5">
                 <div id="profit-1" class="landing-headline-active headline-profit">
@@ -323,6 +323,18 @@ Linc | Sales Report Homepage
         </div>
     </div>
 
+    <div class="w-full flex justify-end">
+        <div class="relative cursor-pointer rounded-3xl w-3/12 mb-6 mx-2 shadow-lg overflow-hidden">
+            <img src="{{ asset('assets/novena/images/sales-card-background.png') }}" class="w-full" />
+            <div class="absolute w-full bottom-0 bg-black bg-opacity-80 ">
+                <div class="px-4 py-4">
+                    <h3 class="text-white text-lg font-bold">EDWIN</h3>
+                    <h3 class="text-white text-sm">IDR. XXX.XXX.XXX.XXX This Month</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <div class="relative w-full mb-6 shadow-lg rounded bg-white">
         <div class="w-full pt-4">
             <h1 class="font-bold text-2xl text-center">Surabaya in 2022</h1>
@@ -432,50 +444,58 @@ Linc | Sales Report Homepage
     <div class="w-full flex">
         <div class="w-full flex grid grid-cols-2 gap-4">
             <div class="grid grid-cols-2 gap-10">
-                <div class="inline-block min-w-0 break-words w-full cursor-pointer mb-6 shadow-lg rounded bg-white transition ease-in-out delay-150 hover:bg-red-100 duration-300">
-                    <div class="rounded-t mb-0 px-4 py-3 border-0">
-                        <div class="flex flex-wrap items-center mb-8">
-                            <div class="flex-auto p-4 canvas-landing-dynamic" id="canvas-transport-monthly">
-                                <canvas id="chartTransportMonthly" width="100%" height="30%"></canvas>
+                <a target="_blank" href="/sales/truck/performance-customer/all/transport/all/created_date/all">
+                    <div class="inline-block min-w-0 break-words w-full cursor-pointer mb-6 shadow-lg rounded bg-white transition ease-in-out delay-150 hover:bg-red-100 duration-300">
+                        <div class="rounded-t mb-0 px-4 py-3 border-0">
+                            <div class="flex flex-wrap items-center mb-8">
+                                <div class="flex-auto p-4 canvas-landing-dynamic" id="canvas-transport-monthly">
+                                    <canvas id="chartTransportMonthly" width="100%" height="30%"></canvas>
+                                </div>
                             </div>
+                            <h1 class="font-bold text-3xl text-center">TRANSPORT</h1>
+                            <center>This Month</center>
                         </div>
-                        <h1 class="font-bold text-3xl text-center">TRANSPORT</h1>
-                        <center>This Month</center>
                     </div>
-                </div>
-                <div class="inline-block min-w-0 break-words w-full cursor-pointer mb-6 shadow-lg rounded bg-white transition ease-in-out delay-150 hover:bg-green-100 duration-300">
-                    <div class="rounded-t mb-0 px-4 py-3 border-0">
-                        <div class="flex flex-wrap items-center mb-8">
-                            <div class="flex-auto p-4 canvas-landing-dynamic" id="canvas-exim-monthly">
-                                <canvas id="chartEximMonthly" width="100%" height="30%"></canvas>
+                </a>
+                <a target="_blank" href="/sales/truck/performance-customer/all/exim/all/created_date/all">
+                    <div class="inline-block min-w-0 break-words w-full cursor-pointer mb-6 shadow-lg rounded bg-white transition ease-in-out delay-150 hover:bg-green-100 duration-300">
+                        <div class="rounded-t mb-0 px-4 py-3 border-0">
+                            <div class="flex flex-wrap items-center mb-8">
+                                <div class="flex-auto p-4 canvas-landing-dynamic" id="canvas-exim-monthly">
+                                    <canvas id="chartEximMonthly" width="100%" height="30%"></canvas>
+                                </div>
                             </div>
+                            <h1 class="font-bold text-3xl text-center">EXIM</h1>
+                            <center>This Month</center> 
                         </div>
-                        <h1 class="font-bold text-3xl text-center">EXIM</h1>
-                        <center>This Month</center> 
                     </div>
-                </div>
-                <div class="inline-block min-w-0 break-words w-full cursor-pointer mb-6 shadow-lg rounded bg-white transition ease-in-out delay-150 hover:bg-blue-100 duration-300">
-                    <div class="rounded-t mb-0 px-4 py-3 border-0">
-                        <div class="flex flex-wrap items-center mb-8">
-                            <div class="flex-auto p-4 canvas-landing-dynamic" id="canvas-bulk-monthly">
-                                <canvas id="chartBulkMonthly" width="100%" height="30%"></canvas>
+                </a>
+                <a target="_blank" href="/sales/truck/performance-customer/all/bulk/all/created_date/all">
+                    <div class="inline-block min-w-0 break-words w-full cursor-pointer mb-6 shadow-lg rounded bg-white transition ease-in-out delay-150 hover:bg-blue-100 duration-300">
+                        <div class="rounded-t mb-0 px-4 py-3 border-0">
+                            <div class="flex flex-wrap items-center mb-8">
+                                <div class="flex-auto p-4 canvas-landing-dynamic" id="canvas-bulk-monthly">
+                                    <canvas id="chartBulkMonthly" width="100%" height="30%"></canvas>
+                                </div>
                             </div>
+                            <h1 class="font-bold text-3xl text-center">BULK</h1>
+                            <center>This Month</center>
                         </div>
-                        <h1 class="font-bold text-3xl text-center">BULK</h1>
-                        <center>This Month</center>
                     </div>
-                </div>
-                <div class="inline-block min-w-0 break-words w-full cursor-pointer mb-6 shadow-lg rounded bg-white transition ease-in-out delay-150 hover:bg-gray-200 duration-300">
-                    <div class="rounded-t mb-0 px-4 py-3 border-0">
-                        <div class="flex flex-wrap items-center mb-8">
-                            <div class="flex-auto p-4 canvas-landing-dynamic" id="canvas-warehouse-monthly">
-                                <canvas id="chartWarehouseMonthly" width="100%" height="30%"></canvas>
+                </a>
+                <a target="_blank" href="/sales/truck/performance-customer/all/warehouse/all/created_date/all">
+                    <div class="inline-block min-w-0 break-words w-full cursor-pointer mb-6 shadow-lg rounded bg-white transition ease-in-out delay-150 hover:bg-gray-200 duration-300">
+                        <div class="rounded-t mb-0 px-4 py-3 border-0">
+                            <div class="flex flex-wrap items-center mb-8">
+                                <div class="flex-auto p-4 canvas-landing-dynamic" id="canvas-warehouse-monthly">
+                                    <canvas id="chartWarehouseMonthly" width="100%" height="30%"></canvas>
+                                </div>
                             </div>
+                            <h1 class="font-bold text-3xl text-center">WAREHOUSE</h1>
+                            <center>This Month</center>
                         </div>
-                        <h1 class="font-bold text-3xl text-center">WAREHOUSE</h1>
-                        <center>This Month</center>
                     </div>
-                </div>
+                </a>
             </div>
 
             <div class="inline-block min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">

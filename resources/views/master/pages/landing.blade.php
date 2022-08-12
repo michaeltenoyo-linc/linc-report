@@ -87,7 +87,6 @@
 			   @else
 			    <li id="nav-login"><a class="nav-link font-weight-bold text-decoration-underline" href="" data-toggle="modal" data-target="#loginModal"><u>Login</u></a></li>
 			   @endif
-
 			</ul>
 		  </div>
 		</div>
