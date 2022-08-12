@@ -28,6 +28,7 @@ class CreateCompaniesTable extends Migration
             $table->string('timezone');
             $table->string('latitude');
             $table->string('longitude');
+            $table->string('blujay_city');
             $table->timestamps();
             $table->softDeletes();
         });

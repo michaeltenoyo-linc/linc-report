@@ -509,12 +509,14 @@ class TruckController extends BaseController
                                         ->where($statusCondition)
                                         ->get();
 
-            $routeRates = LoadPerformance::selectRaw("first_pick_location_city, last_drop_location_city, CONCAT(REPLACE(first_pick_location_city,' ',''),'-',REPLACE(last_drop_location_city,' ','')) as route_id, CONCAT(first_pick_location_city,' - ',last_drop_location_city) as route, SUM(billable_total_rate) as totalRevenue, SUM(payable_total_rate) as totalCost")
+            $routeRates = LoadPerformance::selectRaw("REPLACE(routing_guide_name,' ','') as route_id, 
+                                                        routing_guide_name as route, 
+                                                        SUM(billable_total_rate) as totalRevenue, SUM(payable_total_rate) as totalCost")
                                             ->whereIn('tms_id',$customerLoadList)  
                                             ->where('load_status','!=','Voided')
                                             ->where($statusCondition)
                                             ->where('billable_total_rate','>',$this->billableThreshold)
-                                            ->groupBy('route_id', 'route', 'first_pick_location_city', 'last_drop_location_city')
+                                            ->groupBy('route_id', 'route')
                                             ->get();
             
             $totalBillable = 0;
@@ -531,10 +533,9 @@ class TruckController extends BaseController
                 $rate->loadList = LoadPerformance::selectRaw('tms_id, billable_total_rate, payable_total_rate, (billable_total_rate - payable_total_rate) as net')
                                                         ->whereIn('tms_id',$customerLoadList)  
                                                         ->where('billable_total_rate','>',$this->billableThreshold)
-                                                        ->where('first_pick_location_city', $rate->first_pick_location_city)
+                                                        ->where('routing_guide_name', $rate->route)
                                                         ->where('load_status','!=','Voided')
                                                         ->where($statusCondition)
-                                                        ->where('last_drop_location_city', $rate->last_drop_location_city)
                                                         ->get();
             }
 
@@ -637,12 +638,13 @@ class TruckController extends BaseController
                                         ->where($statusCondition)
                                         ->get();
 
-            $routeRates = LoadPerformance::selectRaw("first_pick_location_city, last_drop_location_city, CONCAT(REPLACE(first_pick_location_city,' ',''),'-',REPLACE(last_drop_location_city,' ','')) as route_id, CONCAT(first_pick_location_city,' - ',last_drop_location_city) as route, SUM(billable_total_rate) as totalRevenue, SUM(payable_total_rate) as totalCost")
-                                            ->whereIn('tms_id',$unitLoadList)  
+            $routeRates = LoadPerformance::selectRaw("REPLACE(routing_guide_name,' ','') as route_id, 
+                                                routing_guide_name as route, 
+                                                SUM(billable_total_rate) as totalRevenue, SUM(payable_total_rate) as totalCost")->whereIn('tms_id',$unitLoadList)  
                                             ->where('billable_total_rate','>',$this->billableThreshold)
                                             ->where('load_status','!=','Voided')
                                             ->where($statusCondition)
-                                            ->groupBy('route_id', 'route', 'first_pick_location_city', 'last_drop_location_city')
+                                            ->groupBy('route_id', 'route')
                                             ->get();
             
             $totalBillable = 0;
@@ -664,8 +666,7 @@ class TruckController extends BaseController
                                                         ->where('billable_total_rate','>',$this->billableThreshold)
                                                         ->where('load_status','!=','Voided')
                                                         ->where($statusCondition)
-                                                        ->where('first_pick_location_city', $rate->first_pick_location_city)
-                                                        ->where('last_drop_location_city', $rate->last_drop_location_city)
+                                                        ->where('routing_guide_name', $rate->route)
                                                         ->get();
             }
 

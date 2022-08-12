@@ -336,6 +336,8 @@ class ReportController extends BaseController
                 $splitID = explode('$',$sj->id_so);
                 $truck = Trucks::where('nopol','=',$sj->nopol)->first();
                 $blujay = LoadPerformance::where('tms_id', $sj->load_id)->first();
+                $company_from = Company::where('location',$blujay->first_pick_location_name)->first();
+                $company_to = Company::where('location',$blujay->last_drop_location_name)->first();
 
 
                 foreach ($dload as $items) {
@@ -355,7 +357,7 @@ class ReportController extends BaseController
                             'Kuantitas' => $sj->total_qtySO,
                             'Berat' => $sj->total_weightSO,
                             'Utilitas' => strval($sj->utilitas)."%",
-                            'City Routes'=>is_null($blujay)?"UNDEFINED":$blujay->first_pick_location_city." - ".$blujay->last_drop_location_city,
+                            'City Routes'=>is_null($company_from)||is_null($company_to)?"UNDEFINED":$company_from->blujay_city." - ".$company_to->blujay_city,
                             'Nopol' => $sj->nopol,
                             'Driver' => $sj->driver_name,
                             'Tipe Kendaraan' => $truck->type,

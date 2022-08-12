@@ -27,5 +27,6 @@ class Company extends Model
         'timezone',
         'latitude',
         'longitude',
+        'blujay_city'
     ];
 }

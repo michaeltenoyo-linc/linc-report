@@ -100,6 +100,8 @@ class ViewController extends BaseController
     public function gotoLandingPage(){
         Session::put('sales-month',date('m'));
         Session::put('sales-year', date('Y'));
+        Session::put('sales-from',Carbon::now()->startOfMonth());
+        Session::put('sales-to',Carbon::now());
 
         $data['last_update'] = LoadPerformance::orderBy('updated_at','desc')->first();
 
@@ -1309,11 +1311,6 @@ class ViewController extends BaseController
 
         $salesComparator = '=';
 
-        if($sales == "all"){
-            $sales = '%%';
-            $salesComparator = 'LIKE';
-        }
-
         //Date Constraint
         $dateConstraint = Session::get('sales-constraint');
 
@@ -1340,6 +1337,15 @@ class ViewController extends BaseController
                     ['websettle_date','!=',null]
                 ];
                 break;
+        }
+
+        if($sales == "all"){
+            $sales = '%%';
+            $salesComparator = 'LIKE';
+            $dateConstraint = 'created_date';
+            $statusCondition = [
+                ['created_date','!=',null]
+            ];
         }
 
         $budget = SalesBudget::where('sales',$salesComparator,$sales)
@@ -1587,6 +1593,15 @@ class ViewController extends BaseController
     public function filterSalesDate($month, $year){
         Session::put('sales-month', $month);
         Session::put('sales-year', $year);
+
+        return response()->json(['message' => "success"], 200);
+    }
+
+    public function filterSalesDateLanding($month, $year){
+        Session::put('sales-month', $month);
+        Session::put('sales-year', $year);
+        Session::put('sales-from', Carbon::createFromFormat('m/Y',($month).'/'.$year)->startOfMonth());
+        Session::put('sales-to', Carbon::createFromFormat('m/Y',($month).'/'.$year)->endOfMonth());
 
         return response()->json(['message' => "success"], 200);
     }

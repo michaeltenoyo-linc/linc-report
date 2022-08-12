@@ -30,13 +30,8 @@ class CreateLoadPerformancesTable extends Migration
             $table->float('weight_lb',12);
             $table->float('weight_kg',12);
             $table->float('total_distance_km');
-            $table->string('routing_guide');
             $table->string('load_group');
             $table->string('load_contact');
-            $table->string('last_drop_location_reference_number');
-            $table->string('last_drop_location_city');
-            $table->string('first_pick_location_reference_number');
-            $table->string('first_pick_location_city');
             $table->string('customer_reference');
             $table->longText('customer_name');
             $table->datetime('websettle_date')->nullable();

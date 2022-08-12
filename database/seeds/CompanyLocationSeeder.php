@@ -42,7 +42,7 @@ class CompanyLocationSeeder extends Seeder
 
         $counter = 1;
         $errorLog = [];
-        while(($data = fgetcsv($csvFile, 0, ';','"')) != FALSE){
+        while(($data = fgetcsv($csvFile, 0, ',','"')) != FALSE){
             error_log($counter,0);
             $counter++;
             if (!$firstline){
@@ -50,14 +50,20 @@ class CompanyLocationSeeder extends Seeder
                     $postalBPS = postal_code::where('postal_code',strval($data['8']))->first();
 
                     if(is_null($postalBPS)){
-                        $fixedCompany = FixCompany::where('reference',$data['0'])->first();
-                        $postalBPS = postal_code::where('postal_code',strval($fixedCompany->revision))->first();
+                        $province = "UNDEFINED";
+                        $city = "UNDEFINED";
+                        $district = "UNDEFINED";
+                        $urban = "UNDEFINED";
+                        $postal = "UNDEFINED";
+                    }else{
+                        $province = $postalBPS->province;
+                        $city = $postalBPS->city;
+                        $district = $postalBPS->district;
+                        $urban = $postalBPS->urban;
+                        $postal = $postalBPS->postal_code;
                     }
 
-                    $province = $postalBPS->province;
-                    $city = $postalBPS->city;
-                    $district = $postalBPS->district;
-                    $urban = $postalBPS->urban;
+                    
                     Company::create([
                         'reference' => $data['0'],
                         'location' => $data['1'],
@@ -69,10 +75,11 @@ class CompanyLocationSeeder extends Seeder
                         'district' => $district,
                         'city' => $city,
                         'province' => $province,
-                        'postal_code' => $postalBPS->postal_code,
+                        'postal_code' => $postal,
                         'timezone' => $data['9'],
                         'latitude' => $data['10'],
                         'longitude' => $data['11'],
+                        'blujay_city' => $data['6'],
                     ]);
                 } catch (\Throwable $th) {
                     array_push($errorLog,[$counter, $data['0'], $data['1'], $data['2'], $data['3'], $data['4'], $data['10'], $data['11'], $data['8']]);
