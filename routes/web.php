@@ -25,6 +25,11 @@ use App\Http\Controllers\Ltl\ReportController as LtlReportController;
 use App\Http\Controllers\Ltl\LoadController as LtlLoadController;
 use App\Http\Controllers\Ltl\SuratjalanController as LtlSuratjalanController;
 
+//PKG CONTROLLER
+use App\Http\Controllers\Pkg\ViewController as PkgViewController;
+use App\Http\Controllers\Pkg\TicketController as PkgTicketController;
+use App\Http\Controllers\Pkg\ReportController as PkgReportController;
+
 //GREENFIELDS CONTROLLER
 use App\Http\Controllers\Greenfields\ViewController as GreenfieldsViewController;
 use App\Http\Controllers\Greenfields\SuratjalanController as GreenfieldsSuratjalanController;
@@ -180,6 +185,34 @@ Route::middleware(['auth','priviledge:ltl,master'])->group(function () {
             Route::get('/get-preview',[LtlReportController::class, 'getPreviewResult']);
             Route::get('/get-warning',[LtlReportController::class, 'getPreviewWarning']);
             Route::get('/downloadReport',[LtlReportController::class, 'downloadExcel']);
+        });
+    });
+});
+
+//PKG
+Route::middleware(['auth','priviledge:pkg,master'])->group(function () {
+    Route::prefix('/pkg')->group(function () {
+        Route::get('/',[PkgViewController::class, 'gotoLandingPage']);
+        Route::get('/nav-so-new',[PkgViewController::class, 'gotoSoNew']);
+        Route::get('/nav-so-list',[PkgViewController::class, 'gotoSoList']);
+        Route::get('/nav-report-generate',[PkgViewController::class, 'gotoGenerateReport']);
+
+
+        //Ticket
+        Route::prefix('/ticket')->group(function () {
+            Route::get('/read',[PkgTicketController::class, 'getTicket']);
+            Route::post('/delete',[PkgTicketController::class, 'delete']);
+            Route::get('/check/{posto}',[PkgTicketController::class, 'checkPosto']);
+            Route::get('/check-load/{load}',[PkgTicketController::class, 'checkLoad']);
+            Route::post('/addPosto',[PkgTicketController::class, 'addPosto']);
+            Route::post('/addLoads',[PkgTicketController::class, 'addLoads']);
+        });
+
+        Route::prefix('/report')->group(function () {
+            Route::post('/generate',[PkgReportController::class, 'generateReport']);
+            Route::get('/get-preview',[PkgReportController::class, 'getPreviewResult']);
+            Route::get('/get-warning',[PkgReportController::class, 'getPreviewWarning']);
+            Route::get('/downloadReport',[PkgReportController::class, 'downloadExcel']);
         });
     });
 });
