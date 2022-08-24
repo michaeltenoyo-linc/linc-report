@@ -42,8 +42,67 @@ Linc | Sales Report Homepage
         </div>
     </div>
 
+    <!-- SALES CARD 
+
+        <img src="{{ asset('assets/novena/images/sales-card-background.png') }}"/>
+
+    -->
+
+
+    @if ($isSales)
+        <div class="w-full flex bg-gray-800 rounded mb-3 text-white">
+            <div class="w-4/12 text-sm font-bold text-center text-5xl p-5 font-bold font-serif">
+                <marquee direction="up" onmouseover="this.stop()"  onmouseout="this.start()" id="container-sales-update" class="h-72" Scrollamount=3>
+                    @foreach ($budgets as $b)
+                        <!-- TEMPLATE NAIK -->
+                        <div class="text-white font-mono mb-5">
+                            <span class="text-xl">{{ $b->customer_name }}</span><br>
+                            <span class="text-sm grid grid-cols-2 gap-4">
+                                <span class="text-sm">{{ $b->division }}</span><br>
+                                <div>
+                                    <i class='fas fa-coins text-sm mr-3 w-3'></i><span class="text-sm">IDR. {{ $b->achievement_1m_actual }}</span><br>
+                                    IDR. {{ number_format($b->budget - $b->achievement_1m_raw,0,',','.') }} Left
+                                </div>
+                                <div class="text-right text-3xl">
+                                    <div class="{{ $b->achievement_1m_color }}">
+                                        {{ $b->achievement_1m_percentage }}%
+                                    </div>
+                                </div>
+                            </span>
+                        </div>
+                    @endforeach
+                </marquee>
+            </div>
+            <div class="w-4/12 text-sm text-center mb-1 p-5 font-serif">
+                <span><b>Current Month</b></span>
+                <br>
+                <span class="text-6xl">{{ $totalPercentage }} %</span>
+                <br>
+                <span>IDR. {{ $totalAchievement }} / {{ $totalBudget }}</span>
+                <br><br>
+                <span><b>Year to Date</b></span>
+                <br>
+                <span class="text-6xl">{{ $totalPercentageYTD }} %</span>
+                <br>
+                <span>IDR. {{ $totalAchievementYTD }} / {{ $totalBudgetYTD }}</span>
+            </div>
+            <div class="w-4/12 cursor-pointer text-sm text-left justify-center relative p-5 rounded-3xl relative">
+                <a target="_blank" href="/sales/export/generate-report/created_date/all/all/{{ Auth::user()->name }}/all/false">
+                    <div class="relative">
+                        <img src="{{ asset('assets/novena/images/sales-card-background.png') }}" class="rounded-3xl"/>
+                        <div class="absolute bottom-0 bg-black w-full rounded-b-3xl p-3 bg-opacity-80">
+                            <b class="text-3xl">EDWIN</b>
+                            <br>
+                            Sales This Month
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    @endif
+
     <div class="w-full flex">
-        <div class="w-1/2 text-sm font-bold text-center mb-0 text-5xl font-bold font-serif">
+        <div class="w-1/2 text-sm font-bold text-center mb-2 text-5xl font-bold font-serif">
             DAILY HEADLINE
         </div>
         <div class="w-1/2 text-sm text-left">
@@ -54,7 +113,7 @@ Linc | Sales Report Homepage
     </div>
 
     <div class="news-update w-full mb-5 bg-gray-800 rounded py-3">
-        <marquee onmouseover="this.stop()"  onmouseout="this.start()" id="container-news-update" class="" Scrollamount=7>
+        <marquee onmouseover="this.stop()"  onmouseout="this.start()" id="container-news-update" class="" Scrollamount=6>
             <!-- TEMPLATE NAIK -->
             <div class="text-white font-mono text-2xl inline-block mr-20">
                 SINAR MAS AGRO AND <br>
@@ -318,18 +377,6 @@ Linc | Sales Report Homepage
                     <div class="w-1/12 flex justify-center p-4">
                         <a class="flex align-middle justify-center text-center bg-blue-300 rounded w-full hover:bg-blue-400" href="#" target="_blank"><button id="0"><i class="fas fa-dolly"></i></button></a>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="w-full flex justify-end">
-        <div class="relative cursor-pointer rounded-3xl w-3/12 mb-6 mx-2 shadow-lg overflow-hidden">
-            <img src="{{ asset('assets/novena/images/sales-card-background.png') }}" class="w-full" />
-            <div class="absolute w-full bottom-0 bg-black bg-opacity-80 ">
-                <div class="px-4 py-4">
-                    <h3 class="text-white text-lg font-bold">EDWIN</h3>
-                    <h3 class="text-white text-sm">IDR. XXX.XXX.XXX.XXX This Month</h3>
                 </div>
             </div>
         </div>

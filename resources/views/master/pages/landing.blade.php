@@ -154,7 +154,7 @@
 						<div class="feature-icon mb-4">
 							<img height="50rem" src="{{ asset('assets/novena/images/service/logo/smart.jpg') }}" alt="">
 						</div>
-						<span>Data Services</span>
+						<span>Customer Third-Party</span>
 						<h4 class="mb-3">SMART Customer</h4>
 						<p class="mb-4">Truck and item database for SMART customer, auto-generate report for SMART.</p>
 						<a href="{{ url('/smart') }}" class="btn btn-main btn-round-full">GO TO SMART</a>
@@ -164,7 +164,7 @@
 						<div class="feature-icon mb-4">
 							<img height="50rem" src="{{ asset('assets/novena/images/service/logo/ltl.jpg') }}" alt="">
 						</div>
-						<span>Data Services</span>
+						<span>Customer Third-Party</span>
 						<h4 class="mb-3">LTL Customer</h4>
 						<p class="mb-4">Order database for LTL (Lautan Luas) customer, auto-generate report for LTL.</p>
 						<a href="{{ url('/lautanluas') }}" class="btn btn-main btn-round-full">GO TO LTL</a>
@@ -174,7 +174,7 @@
 						<div class="feature-icon mb-4">
 							<img height="50rem" src="{{ asset('assets/novena/images/service/logo/greenfields.jpg') }}" alt="">
 						</div>
-						<span>Data Services</span>
+						<span>Customer Third-Party</span>
 						<h4 class="mb-3">Greenfields Customer</h4>
 						<p class="mb-4">Order database for Greenfields customer, auto-generate report for Greenfields.</p>
 						<a href="{{ url('/greenfields') }}" class="btn btn-main btn-round-full">GO TO GREENFIELDS</a>
@@ -192,6 +192,46 @@
 				<div class="feature-block d-lg-flex">
 					<div class="feature-item mb-5 mb-lg-0">
 						<div class="feature-icon mb-4">
+							<img height="50rem" src="{{ asset('assets/icons/customers/3000004389.png') }}" alt="">
+						</div>
+						<span>Customer Third-Party</span>
+						<h4 class="mb-3">Petrokimia Gresik</h4>
+						<p class="mb-4">Data services for PKG data monitoring, input, and report.</p>
+						<a href="{{ url('/pkg') }}" class="btn btn-main btn-round-full">UNDER CONSTRUCTION</a>
+					</div>
+
+					<div class="feature-item mb-5 mb-lg-0">
+						<div class="feature-icon mb-4">
+							<img height="50rem" src="{{ asset('assets/novena/images/service/logo/revenue.jpg') }}" alt="">
+						</div>
+						<span>Statistic</span>
+						<h4 class="mb-3">Statistic Report</h4>
+						<p class="mb-4">Reporting for performance statistic, with visualization, and specific master in detail.</p>
+						<a href="{{ url('/sales') }}" class="btn btn-main btn-round-full">GO TO STATISTIC REPORT</a>
+					</div>
+
+					<div class="feature-item mb-5 mb-lg-0">
+						<div class="feature-icon mb-4">
+							<img height="50rem" src="{{ asset('assets/novena/images/service/logo/blujay.png') }}" alt="">
+						</div>
+						<span>Middleware</span>
+						<h4 class="mb-3">Third Party System</h4>
+						<p class="mb-4">This module will give you an insight of all available data in third party system used.</p>
+						<a href="{{ url('/third-party') }}" class="btn btn-main btn-round-full">UNDER CONSTRUCTION</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="features-3">
+	<div class="container">
+		<div class="row mt-4 mb-5">
+			<div class="col-lg-12">
+				<div class="feature-block d-lg-flex">
+					<div class="feature-item mb-5 mb-lg-0">
+						<div class="feature-icon mb-4">
 							<img height="50rem" src="{{ asset('assets/novena/images/service/logo/loa.jpg') }}" alt="">
 						</div>
 						<span>Data Services</span>
@@ -202,22 +242,22 @@
 
 					<div class="feature-item mb-5 mb-lg-0">
 						<div class="feature-icon mb-4">
-							<img height="50rem" src="{{ asset('assets/novena/images/service/logo/revenue.jpg') }}" alt="">
+							<img height="50rem" src="{{ asset('assets/icons/customers/default.png') }}" alt="">
 						</div>
-						<span>Data Services</span>
-						<h4 class="mb-3">Statistic Report</h4>
-						<p class="mb-4">Reporting for performance statistic, with visualization, and specific master in detail.</p>
-						<a href="{{ url('/sales') }}" class="btn btn-main btn-round-full">GO TO STATISTIC REPORT</a>
+						<span>TBD</span>
+						<h4 class="mb-3">TBD</h4>
+						<p class="mb-4">TBD</p>
+						<a href="{{ url('/') }}" class="btn btn-main btn-round-full">Under Construction</a>
 					</div>
 
 					<div class="feature-item mb-5 mb-lg-0">
 						<div class="feature-icon mb-4">
-							<img height="50rem" src="{{ asset('assets/novena/images/service/logo/blujay.png') }}" alt="">
+							<img height="50rem" src="{{ asset('assets/icons/customers/default.png') }}" alt="">
 						</div>
-						<span>Data Services</span>
-						<h4 class="mb-3">Third Party System</h4>
-						<p class="mb-4">This module will give you an insight of all available data in third party system used.</p>
-						<a href="{{ url('/third-party') }}" class="btn btn-main btn-round-full">UNDER CONSTRUCTION</a>
+						<span>TBD</span>
+						<h4 class="mb-3">TBD</h4>
+						<p class="mb-4">TBD</p>
+						<a href="{{ url('/') }}" class="btn btn-main btn-round-full">Under Construction</a>
 					</div>
 				</div>
 			</div>
