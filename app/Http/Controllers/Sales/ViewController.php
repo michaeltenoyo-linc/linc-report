@@ -11,21 +11,25 @@ use Illuminate\Routing\Controller as BaseController;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Auth;
 
+
 //Model
 use App\Models\Item;
 use App\Models\lead_time;
 use App\Models\LoadPerformance;
+use App\Models\Priviledge;
 use App\Models\SalesBudget;
 use App\Models\ShipmentBlujay;
 use App\Models\Suratjalan_greenfields;
 use App\Models\Trucks;
 use App\Models\unit_surabaya;
 use Google\Service\Compute\BackendServiceLocalityLoadBalancingPolicyConfig;
+use Google\Service\Directory\Privilege;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use PDF;
+use PharIo\Manifest\AuthorCollection;
 use ReflectionClass;
 
 use function PHPUnit\Framework\isNan;
@@ -103,6 +107,176 @@ class ViewController extends BaseController
         Session::put('sales-from',Carbon::now()->startOfMonth());
         Session::put('sales-to',Carbon::now());
 
+        $fetchPriviledge = Priviledge::where('user_id',Auth::user()->id)->first();
+        $priviledges = explode(';',$fetchPriviledge->priviledge);
+
+        $data['isSales'] = in_array("sales",$priviledges);
+        $data['budgets'] = [];
+        if($data['isSales']){
+            $sales = Auth::user()->name;
+            //Data Filtering
+            $data['budgets'] = SalesBudget::where('budget','>',0)
+                                    ->where('sales','LIKE',$sales=='all'?'%%':'%'.$sales.'%')
+                                    ->whereMonth('period',Session::get('sales-month'))
+                                    ->whereYear('period',Session::get('sales-year'))
+                                    ->where('customer_sap','!=',0)
+                                    ->get();
+
+            //Actual Period Data
+            $loadList = LoadPerformance::selectRaw('customer_reference, load_group, SUM(billable_total_rate) as totalActual')
+                                    ->where('load_status','!=','Voided')
+                                    ->whereNotNull('created_date')
+                                    ->whereBetween('created_date', [Session::get('sales-from'),Session::get('sales-to')])
+                                    ->groupBy('customer_reference','load_group')
+                                    ->get();
+
+            //YTD Month Filter
+            $currentMonth = intval(Session::get('sales-month'));
+            $ytd_month = [];
+
+            for ($i=1; $i <= $currentMonth; $i++) {
+            array_push($ytd_month,$i);
+            }
+
+            //YTD Budget
+            $ytd_budget = SalesBudget::selectRaw('customer_sap, division, SUM(budget) as budget')
+                ->where('sales','LIKE',$sales=='all'?'%%':'%'.$sales.'%')
+                ->whereIn(DB::raw('month(period)'), $ytd_month)
+                ->whereYear('period',Session::get('sales-year'))
+                ->groupBy('customer_sap', 'division')
+                ->get();
+
+            //YTD Actual
+            $ytd_actual = LoadPerformance::selectRaw('customer_reference, load_group, SUM(billable_total_rate) as totalActual')
+                    ->where('load_status','!=','Voided')
+                    ->whereIn(DB::raw('month(created_date)'),$ytd_month)
+                    ->whereYear('created_date',Session::get('sales-year'))
+                    ->groupBy('customer_reference','load_group')
+                    ->get();
+
+            $data['totalBudget'] = 0;
+            $data['totalAchievement'] = 0;
+            $data['totalBudgetYTD'] = 0;
+            $data['totalAchievementYTD'] = 0;
+
+            foreach ($data['budgets'] as $row) {
+                //1MONTH ACHIEVEMENT
+                //actual data
+                $actual = 0;
+                $percentage = 0;
+
+                $loadGroup = "";
+                switch ($row->division) {
+                    case 'Pack Trans':
+                        $loadGroup = $this->transportLoadGroups;
+                        break;
+                    case 'Freight Forwarding BP':
+                        $loadGroup = $this->eximLoadGroups;
+                        break;
+                    case 'Bulk Trans':
+                        $loadGroup = $this->bulkLoadGroups;
+                        break;
+                    case 'Package Whs':
+                        $loadGroup = $this->warehouseLoadGroups;
+                        break;  
+                }
+
+                //REVISI ALGORITHM BARU
+                $actual = 0;
+                foreach ($loadList as $performance) {
+                    if($performance->customer_reference == $row->customer_sap && in_array($performance->load_group, $loadGroup)){
+                        $actual += $performance->totalActual;
+                    }
+                }
+
+
+
+                if($row->budget > 0){
+                    $percentage = floatval($actual)/floatval($row->budget) * 100;
+                    $percentage = round(floatval($percentage), 2);
+                }
+
+
+                $row->achievement_1m_raw = $actual;
+                $data['totalAchievement'] += $actual;
+                $data['totalBudget'] += $row->budget;
+                $row->achievement_1m_actual = number_format($actual,0,',','.');
+                $row->achievement_1m_budget = number_format($row->budget,0,',','.');
+                $row->achievement_1m_percentage = $percentage;
+
+                if($percentage > 90){
+                    $row->achievement_1m_color = 'text-green-700';
+                }else if($percentage > 75){
+                    $row->achievement_1m_color = 'text-green-500';
+                }else if($percentage > 50){
+                    $row->achievement_1m_color = 'text-yellow-300';
+                }else if($percentage > 25){
+                    $row->achievement_1m_color = 'text-orange-400';
+                }else if($percentage > 10){
+                    $row->achievement_1m_color = 'text-orange-600';    
+                }else{
+                    $row->achievement_1m_color = 'text-red-600';    
+                }
+
+                //YTD ACHIEVEMENT
+                //actual data
+                $actual = 0;
+                $percentage = 0;
+
+                //ALGORITHM BARU
+
+                //YTD Budget Row
+                $total_ytd_budget = 0;
+                foreach ($ytd_budget as $row_ytd_budget) {
+                    if($row_ytd_budget->division == $row->division && $row_ytd_budget->customer_sap == $row->customer_sap){
+                        $total_ytd_budget += $row_ytd_budget->budget;
+                    }
+                }
+
+                //YTD Actual Row
+                $total_ytd_actual = 0;
+                foreach ($ytd_actual as $row_ytd_actual) {
+                    if($row_ytd_actual->customer_reference == $row->customer_sap && in_array($row_ytd_actual->load_group, $loadGroup)){
+                        $total_ytd_actual += $row_ytd_actual->totalActual;
+                    }
+                }
+
+
+                if($row->budget > 0){
+                    $percentage = floatval($total_ytd_actual)/floatval($total_ytd_budget) * 100;
+                    $percentage = round(floatval($percentage), 2);
+                }
+
+                $row->achievement_ytd_raw = $total_ytd_actual;
+                $data['totalAchievementYTD'] += $total_ytd_actual;
+                $data['totalBudgetYTD'] += $total_ytd_budget;
+                $row->achievement_ytd_actual = number_format($total_ytd_actual,0,',','.');
+                $row->achievement_ytd_budget = number_format($total_ytd_budget,0,',','.');
+                $row->achievement_ytd_percentage = $percentage;
+                if($percentage > 90){
+                    $row->achievement_ytd_color = 'text-green-700';
+                }else if($percentage > 75){
+                    $row->achievement_ytd_color = 'text-green-500';
+                }else if($percentage > 50){
+                    $row->achievement_ytd_color = 'text-yellow-300';
+                }else if($percentage > 25){
+                    $row->achievement_ytd_color = 'text-orange-400';
+                }else if($percentage > 10){
+                    $row->achievement_ytd_color = 'text-orange-600';    
+                }else{
+                    $row->achievement_ytd_color = 'text-red-600';    
+                }
+            }
+
+            $data['budgets'] = collect($data['budgets'])->sortBy('division')->sortBy('achievement_1m_raw')->reverse();
+            
+            $data['totalPercentage'] = round(floatval(floatval($data['totalAchievement'])/floatval($data['totalBudget']) * 100), 2);
+            $data['totalPercentageYTD'] = round(floatval(floatval($data['totalAchievementYTD'])/floatval($data['totalBudgetYTD']) * 100), 2);
+            $data['totalBudget'] = number_format($data['totalBudget'],0,',','.');
+            $data['totalAchievement'] = number_format($data['totalAchievement'],0,',','.');
+            $data['totalBudgetYTD'] = number_format($data['totalBudgetYTD'],0,',','.');
+            $data['totalAchievementYTD'] = number_format($data['totalAchievementYTD'],0,',','.');
+        }
         $data['last_update'] = LoadPerformance::orderBy('updated_at','desc')->first();
 
         return view('sales.pages.landing',$data);

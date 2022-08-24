@@ -26,9 +26,13 @@ class ViewController extends BaseController
     //Navigation
     public function gotoLandingPage(){
         $data['priviledges'] = "NONE";
+        
+
         if(FacadesAuth::user()){
             $priviledge = Priviledge::where('user_id',FacadesAuth::user()->id)->first();
             $data['priviledges'] = explode(';',$priviledge->priviledge);
+
+
         }
 
         return view('master.pages.landing', $data);
