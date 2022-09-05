@@ -55,9 +55,13 @@
     </div>
 </div>
 
+
+
 {{-- Request for data table --}}
 <script type="text/javascript">
 </script>
 
 @endsection
+
+@include('pkg.modals.ticket-loads-modal');
 

@@ -133,8 +133,12 @@ Linc | Trucking Performance
                             <div>
                                 <div class="flex flex-row-reverse w-full mb-3">
                                     <input type="submit"
-                                        class="export-pdf-generate bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded text-right"
+                                        class="export-pdf-generate cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 ml-5 rounded text-right"
                                         value="Generate"/>
+
+                                    <input type="submit"
+                                        class="export-pdf-download cursor-pointer bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded text-right"
+                                        value="Export"/>
                                 </div>
                             </div>
                         </div>

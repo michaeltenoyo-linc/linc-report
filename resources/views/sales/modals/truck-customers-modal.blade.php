@@ -8,6 +8,9 @@
                         <h6 class="modal-title">Truck's Performance {{ ucfirst($division) }}</h6>
                         <h3><span id="modal-nopol">-Nopol Here-</span></h3>
                         <span id="modal-unit-type">-Unit Type-</span>
+                        <div class="col text-center absolute">
+                            <a href="" class="">Download</a>
+                        </div>
                     </div>
                 </div>
             </div>

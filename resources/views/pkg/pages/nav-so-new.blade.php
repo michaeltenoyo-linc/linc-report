@@ -161,6 +161,39 @@ Linc | Register Ticket
                                 </div>
                             </div>
 
+                            <div class="w-full lg:w-12/12 px-4">
+                                <div class="relative w-full mb-3">
+                                    <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                        htmlFor="grid-password"> No. DO </label>
+                                    <input type="text"
+                                        name="do"
+                                        class="input-do border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                        value="" readonly/>
+                                </div>
+                            </div>
+
+                            <div class="w-full lg:w-12/12 px-4">
+                                <div class="relative w-full mb-3">
+                                    <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                        htmlFor="grid-password"> Pick Up Date </label>
+                                    <input type="date"
+                                        name="pickup"
+                                        class="input-pickup border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                        value="" readonly/>
+                                </div>
+                            </div>
+
+                            <div class="w-full lg:w-12/12 px-4">
+                                <div class="relative w-full mb-3">
+                                    <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                        htmlFor="grid-password"> Remark </label>
+                                    <input type="text"
+                                        name="remark"
+                                        class="input-remark border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                        value="TIDAK ADA" readonly/>
+                                </div>
+                            </div>
+
                             <div class="w-full lg:w-12/12 px-4" >
                                 <div class="flex justify-center w-full">
                                     <input type="submit"
@@ -169,13 +202,14 @@ Linc | Register Ticket
                                 </div>
                             </div>
                         </div>
-                        <div class="w-5/12 m-2 inline-block border-2 p-5 rounded h-52 overflow-auto input-load-list">
+                        <div class="w-5/12 m-2 inline-block border-2 p-5 rounded h-72 overflow-auto input-load-list">
                             <!-- List Load ID -->
                             <div class="grid grid-cols-2 gap-2 mb-5 load-list-0">
                                 <input type="hidden" name="loads[0]">
                                 <input type="hidden" name="bookings[0]">
                                 <div><b>6257748329</b><br>SISTRO_BHP_gUkh6VBQ8</div>
                                 <div id="0" class="cursor-pointer text-3xl w-1 load-delete"><i class="fas fa-times"></i></div>
+                                <hr>
                             </div>
                         </div>
                         <div class="w-full lg:w-12/12 px-4" >
