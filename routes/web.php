@@ -197,11 +197,13 @@ Route::middleware(['auth','priviledge:pkg,master'])->group(function () {
         Route::get('/nav-so-list',[PkgViewController::class, 'gotoSoList']);
         Route::get('/nav-report-generate',[PkgViewController::class, 'gotoGenerateReport']);
 
-
         //Ticket
         Route::prefix('/ticket')->group(function () {
             Route::get('/read',[PkgTicketController::class, 'getTicket']);
+            Route::get('/read/{posto}',[PkgTicketController::class, 'getDetail']);
+            Route::get('/read-loads/{posto}',[PkgTicketController::class, 'getLoads']);
             Route::post('/delete',[PkgTicketController::class, 'delete']);
+            Route::post('/delete-load',[PkgTicketController::class, 'deleteLoad']);
             Route::get('/check/{posto}',[PkgTicketController::class, 'checkPosto']);
             Route::get('/check-load/{load}',[PkgTicketController::class, 'checkLoad']);
             Route::post('/addPosto',[PkgTicketController::class, 'addPosto']);
@@ -452,6 +454,10 @@ Route::middleware(['auth','priviledge:sales,master'])->group(function () {
             Route::get('/performance-customer/{ownership}/{division}/{nopol}/{constraint}/{status}',[SalesTruckController::class, 'generateCustomerPerformance']);
             Route::get('/utility',[SalesViewController::class, 'gotoTruckingUtility']);
             Route::get('/utility-generate/{ownership}',[SalesTruckController::class, 'generateTruckingUtility']);
+
+            //Export
+            Route::get('/performance-generate-download/{ownership}/{division}/{nopol}/{constraint}/{status}',[SalesTruckController::class, 'downloadTruckingPerformance']);
+            Route::get('/performance-customer-download/{ownership}/{division}/{nopol}/{constraint}/{status}',[SalesTruckController::class, 'downloadCustomerPerformance']);
 
             //Data
             Route::get('/filter-nopol/{division}/{ownership}',[SalesTruckController::class, 'getFilteringTruck']);

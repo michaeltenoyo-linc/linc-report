@@ -1,4 +1,5 @@
 import { AdminTicket } from "./pages/AdminTicket";
+import { LoadsModal } from "./modals/LoadsModal";
 
 export const load = () => {
     //Loading Spinner
@@ -24,6 +25,7 @@ export const load = () => {
     });
 
     AdminTicket();
+    LoadsModal();
 };
 
 load();

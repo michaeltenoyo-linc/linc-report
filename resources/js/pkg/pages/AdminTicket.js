@@ -191,6 +191,9 @@ export const AdminTicket = () => {
             let load_id = $('#form-so-new .input-load').val();
             let booking = $('#form-so-new .input-booking').val();
             let counter = parseInt($('#form-so-new .counter').val());
+            let no_do = $('#form-so-new .input-do').val();
+            let pickup = $('#form-so-new .input-pickup').val();
+            let remark = $('#form-so-new .input-remark').val();
 
             if(load_id != "" && booking != ""){
                 //CHECK IF LOAD ALREADY EXIST
@@ -219,7 +222,10 @@ export const AdminTicket = () => {
                             divRow += '<div class="grid grid-cols-2 gap-2 mb-5 load-list-'+counter+'">';
                             divRow += '<input type="hidden" name="loads['+counter+']" value="'+load_id+'">';
                             divRow += '<input type="hidden" name="bookings['+counter+']" value="'+booking+'">';
-                            divRow += '<div><b>'+load_id+'</b><br>'+booking+'</div>';
+                            divRow += '<input type="hidden" name="no_do['+counter+']" value="'+no_do+'">';
+                            divRow += '<input type="hidden" name="pickup['+counter+']" value="'+pickup+'">';
+                            divRow += '<input type="hidden" name="remark['+counter+']" value="'+remark+'">';
+                            divRow += '<div><b>'+load_id+'</b><br>'+no_do+'<br>'+booking+'<br>'+pickup+'<br><u>'+(remark==""?"No Remark":remark)+'</u></div>';
                             divRow += '<div id="'+counter+'" class="cursor-pointer text-3xl w-1 load-delete"><i class="fas fa-times"></i></div>';
                             divRow += '</div>';
 
@@ -229,6 +235,10 @@ export const AdminTicket = () => {
                             $('#form-so-new .counter').val(counter+1);
                             $('#form-so-new .input-load').val("");
                             $('#form-so-new .input-booking').val("");
+                            $('#form-so-new .input-do').val("");
+                            $('#form-so-new .input-pickup').val("");
+                            $('#form-so-new .input-remark').val("TIDAK ADA");
+
                         }else{
                             console.log(data);
                             Snackbar.show({
@@ -383,12 +393,12 @@ export const AdminTicket = () => {
                             })
                         },
                     });
-
-
                 }
             })
         });
     }
+
+    
 
     onDeleteTicket();
     onTicketDetail();

@@ -81,6 +81,28 @@ export const trucking = async () => {
     })
   }
 
+  const exportReport = () => {
+    $('#form-trucking-performance .export-pdf-download').on('click', (e) => {
+      
+      e.preventDefault();
+      console.log("Generating...");
+
+      let division = $('#form-trucking-performance .input-division').val();
+      let ownership = $('#form-trucking-performance .input-ownership').val();
+      let nopol = "all";
+      let constraint = $('#form-trucking-performance .input-constraint').val();
+      let status = $('#form-trucking-performance .input-status').val();
+
+      let tree = $('#form-trucking-performance .input-tree').val();
+
+      if(tree == "nopol_to_customer"){
+        window.open('/sales/truck/performance-generate-download/'+ownership+'/'+division+'/'+nopol+'/'+constraint+'/'+status, '_blank');
+      }else{
+        window.open('/sales/truck/performance-customer-download/'+ownership+'/'+division+'/'+nopol+'/'+constraint+'/'+status, '_blank');
+      }
+    })
+  }
+
   const onChangePreview = () => {
     $('#form-trucking-performance .input-tree').on('change', (e) => {
       e.preventDefault();
@@ -116,4 +138,5 @@ export const trucking = async () => {
   getNopolList();
   onChangePreview();
   getLeadTimeDatatable();
+  exportReport();
 }
