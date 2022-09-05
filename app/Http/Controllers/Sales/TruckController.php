@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Sales;
 
+use App\Exports\Sales_ReportCustomerPerformance;
+use App\Exports\Sales_ReportTruckingPerformance;
 use App\Models\Customer;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -25,6 +27,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Maatwebsite\Excel\Facades\Excel;
 use PDF;
 use PDO;
 use SebastianBergmann\CodeCoverage\Report\Xml\Unit;
@@ -118,7 +121,7 @@ class TruckController extends BaseController
         return response()->json($data,200);
     }
 
-    public function generateTruckingPerformance(Request $req, $ownership, $division, $nopol, $dateConstraint, $status){
+    public function generateTruckingPerformanceData($ownership, $division, $nopol, $dateConstraint, $status){
         Session::put('sales-constraint',$dateConstraint);
         $data['division'] = $division;
         //Division Change
@@ -271,10 +274,55 @@ class TruckController extends BaseController
 
         //Sorting
         $data['performance'] = collect($data['performance'])->sortBy('totalRevenue')->reverse();
-        return view('sales.pages.pdf.pdf-trucking-performance', $data);
+
+        return $data;
     }
 
-    public function generateCustomerPerformance(Request $req, $ownership, $division, $nopol, $dateConstraint, $status){
+    public function generateTruckingPerformance(Request $req, $ownership, $division, $nopol, $dateConstraint, $status){
+        return view('sales.pages.pdf.pdf-trucking-performance', $this->generateTruckingPerformanceData($ownership, $division, $nopol, $dateConstraint, $status));
+    }
+
+    public function downloadTruckingPerformance(Request $req, $ownership, $division, $nopol, $dateConstraint, $status){
+        $data = $this->generateTruckingPerformanceData($ownership, $division, $nopol, $dateConstraint, $status);
+        $reports = new Collection;
+        $ctr = 1;
+
+        foreach ($data['performance'] as $row) {
+            $reports->push([
+                'No' => $ctr,
+                'Nopol' => $row->vehicle_number,
+                'Carrier' => $row->carrier_name,
+                'Unit' => $row->unit_type,
+                'Driver' => $row->current_driver,
+                'Total Loads' => $row->totalLoads,
+                'Billable' => $row->totalRevenue,
+                'Payable' => $row->totalCost,
+                'Profit' => $row->totalRevenue-$row->totalCost,
+                'Margin' =>  $row->margin_percentage/100,
+            ]);
+
+            $reports->push([
+                'No' => '',
+                'Nopol' => '',
+                'Carrier' => '',
+                'Unit' => '',
+                'Driver' => '',
+                'Total Loads' => '',
+                'Billable' => '',
+                'Payable' => '',
+                'Profit' => '',
+                'Margin' =>  ''
+            ]);
+            $ctr++;
+        }
+
+        Session::put('totalReport', $ctr-1);
+        Session::put('resultReport', $reports);
+
+        return Excel::download(new Sales_ReportTruckingPerformance, 'trucking performance.xlsx');
+    }
+
+    public function generateCustomerPerformanceData($ownership, $division, $nopol, $dateConstraint, $status){
         Session::put('sales-constraint',$dateConstraint);
         $data['division'] = $division;
         //Division Change
@@ -419,9 +467,49 @@ class TruckController extends BaseController
 
         //Sorting
         $data['customer'] = collect($data['customer'])->sortBy('totalRevenue')->reverse();
-        return view('sales.pages.pdf.pdf-customer-trucking-performance', $data);
-        //return $data;
         
+        return $data;
+    }
+
+    public function generateCustomerPerformance(Request $req, $ownership, $division, $nopol, $dateConstraint, $status){
+        return view('sales.pages.pdf.pdf-customer-trucking-performance', $this->generateCustomerPerformanceData($ownership, $division, $nopol, $dateConstraint, $status));
+    }
+
+    public function downloadCustomerPerformance(Request $req, $ownership, $division, $nopol, $dateConstraint, $status){
+        $data = $this->generateCustomerPerformanceData($ownership, $division, $nopol, $dateConstraint, $status);
+        $reports = new Collection;
+        $ctr = 1;
+
+        foreach ($data['customer'] as $row) {
+            $reports->push([
+                'No' => $ctr,
+                'Customer Reference' => $row->customer_reference,
+                'Customer Name' => $row->customer_name,
+                'Total Loads' => $row->totalLoads,
+                'Billable' => $row->totalRevenue,
+                'Payable' => $row->totalCost,
+                'Profit' => $row->totalRevenue-$row->totalCost,
+                'Margin' =>  $row->margin_percentage/100,
+            ]);
+
+            $reports->push([
+                'No' => '',
+                'Customer Reference' => '',
+                'Customer Name' => '',
+                'Total Loads' => '',
+                'Billable' => '',
+                'Payable' => '',
+                'Profit' => '',
+                'Margin' =>  ''
+            ]);
+
+            $ctr++;
+        }
+
+        Session::put('totalReport', $ctr-1);
+        Session::put('resultReport', $reports);
+
+        return Excel::download(new Sales_ReportCustomerPerformance, 'customer performance.xlsx');           
     }
 
     public function getCustomerData(Request $req, $nopol, $division){

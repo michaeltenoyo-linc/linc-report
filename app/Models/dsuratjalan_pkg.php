@@ -15,6 +15,9 @@ class dsuratjalan_pkg extends Model
     protected $fillable = [
         'load_id',
         'posto',
-        'booking_code'
+        'booking_code',
+        'no_do',
+        'pickup',
+        'remark',
     ];
 }

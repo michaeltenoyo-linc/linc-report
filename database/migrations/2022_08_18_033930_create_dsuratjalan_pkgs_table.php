@@ -17,6 +17,9 @@ class CreateDsuratjalanPkgsTable extends Migration
             $table->string('load_id')->primary();
             $table->string('posto');
             $table->string('booking_code');
+            $table->string('no_do');
+            $table->date('pickup');
+            $table->string('remark');
             $table->timestamps();
             $table->softDeletes();
         });

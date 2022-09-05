@@ -57,7 +57,7 @@ class UsersTableSeeder extends Seeder
             ],
             [
                 'name' => 'Wanna',
-                'email' => 'wannalisa@linc-express.com',
+                'email' => 'wannalisa@lincgrp.com',
                 'email_verified_at' => Carbon::today(),
                 'password' => Hash::make('admin'),
                 'active' => 1,
