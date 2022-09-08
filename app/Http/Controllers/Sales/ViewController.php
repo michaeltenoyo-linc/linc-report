@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Sales;
 
+use App\Exports\Sales_ForecastRolling;
 use App\Models\Customer;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -18,6 +19,7 @@ use App\Models\lead_time;
 use App\Models\LoadPerformance;
 use App\Models\Priviledge;
 use App\Models\SalesBudget;
+use App\Models\SalesForecast;
 use App\Models\ShipmentBlujay;
 use App\Models\Suratjalan_greenfields;
 use App\Models\Trucks;
@@ -28,6 +30,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Maatwebsite\Excel\Facades\Excel;
 use PDF;
 use PharIo\Manifest\AuthorCollection;
 use ReflectionClass;
@@ -487,8 +490,21 @@ class ViewController extends BaseController
         $today = Carbon::now();
         Session::put('sales-from',$today);
         Session::put('sales-to',$today);
+        Session::put('sales-month',date('m'));
+        Session::put('sales-year',date('Y'));
 
         return view('sales.pages.export-pdf');
+    }
+
+    public function gotoExportForecast(){
+        Session::put('start-month',date('m'));
+        Session::put('start-year',date('Y'));
+        Session::put('end-month',date('m'));
+        Session::put('end-year',date('Y'));
+        Session::put('sales-month',date('m'));
+        Session::put('sales-year',date('Y'));
+
+        return view('sales.pages.export-forecast');
     }
 
     public function getDivisionOverview($division){
@@ -1771,6 +1787,20 @@ class ViewController extends BaseController
         return response()->json(['message' => "success"], 200);
     }
 
+    public function filterStartDate($month, $year){
+        Session::put('start-month', $month);
+        Session::put('start-year', $year);
+
+        return response()->json(['message' => "success"], 200);
+    }
+
+    public function filterEndDate($month, $year){
+        Session::put('end-month', $month);
+        Session::put('end-year', $year);
+
+        return response()->json(['message' => "success"], 200);
+    }
+
     public function filterSalesDateLanding($month, $year){
         Session::put('sales-month', $month);
         Session::put('sales-year', $year);
@@ -1966,32 +1996,6 @@ class ViewController extends BaseController
             $actual = 0;
             $percentage = 0;
 
-            /* ALGORITHM LAMA
-
-            $ytd_budget = SalesBudget::selectRaw('customer_name, SUM(budget) as budget')
-                                    ->where('customer_name','=',$row->customer_name)
-                                    ->where('division',$row->division)
-                                    ->whereIn(DB::raw('month(period)'),$ytd_month)
-                                    ->whereYear('period',Session::get('sales-year'))
-                                    ->groupBy('customer_name')
-                                    ->first();
-
-            $total = LoadPerformance::selectRaw('customer_reference, SUM(billable_total_rate) as totalActual')
-                                ->where('customer_reference',$row->customer_sap)
-                                ->whereIn('load_group',$loadGroup)
-                                ->where('load_status','!=','Voided')
-                                ->where($statusCondition)
-                                ->whereIn(DB::raw('month('.$dateConstraint.')'),$ytd_month)
-                                ->whereYear($dateConstraint,Session::get('sales-year'))
-                                ->groupBy('customer_reference')
-                                ->first();
-
-            if(!is_null($total)){
-                $actual = $total->totalActual;
-            }
-
-            */
-
             //ALGORITHM BARU
 
             //YTD Budget Row
@@ -2144,6 +2148,128 @@ class ViewController extends BaseController
                                                 ->first();
 
             return view('sales.pages.pdf.pdf-single-customer', $data);
+        }
+    }
+
+    public function downloadForecastReport(Request $req, $dateConstraint, $status, $division, $sales, $customer, $isDatatable){
+        Session::put('sales-constraint',$dateConstraint);
+        //status constraint
+        $statusCondition = [
+            ['created_date','!=',null]
+        ];
+        Session::put('sales-status', $status);
+        $data['status_constraint'] = $status;
+        switch ($status) {
+            case 'ongoing':
+                $statusCondition = [
+                    ['load_status','=','Accepted']
+                ];
+                break;
+            case 'pod':
+                $statusCondition = [
+                    ['load_status','=','Completed'],
+                    ['websettle_date','=',null]
+                ];
+                break;
+            case 'websettle':
+                $statusCondition = [
+                    ['websettle_date','!=',null]
+                ];
+                break;
+        }
+
+        switch ($division) {
+            case 'transport':
+                $division = 'Pack Trans';
+                break;
+            case 'exim':
+                $division = 'Freight Forwarding BP';
+                break;
+            case 'bulk':
+                $division = 'Bulk Trans';
+                break;
+            case 'warehouse':
+                $division = 'Package Whs';
+                break;
+            default:
+                break;
+        }
+
+        //Data Filtering
+        $data['forecast_grouping'] = SalesForecast::select('customer_sap','customer_name','sales','division')
+                                    ->where('division','LIKE',$division=='all'?'%%':'%'.$division.'%')
+                                    ->where('sales','LIKE',$sales=='all'?'%%':'%'.$sales.'%')
+                                    ->where('customer_sap','LIKE',$customer=='all'?'%%':'%'.$customer.'%')
+                                    ->whereMonth('period','>=',Session::get('start-month'))
+                                    ->whereYear('period','>=',Session::get('start-year'))
+                                    ->whereMonth('period','<=',Session::get('sales-month'))
+                                    ->whereYear('period','<=',Session::get('sales-year'))
+                                    ->groupBy('customer_sap','customer_name','sales','division')
+                                    ->orderBy('division','asc')
+                                    ->orderBy('sales','asc')
+                                    ->orderBy('customer_sap','asc')
+                                    ->orderBy('customer_name','asc')
+                                    ->get();
+
+        $data['forecast'] = SalesForecast::where('division','LIKE',$division=='all'?'%%':'%'.$division.'%')
+                                    ->where('sales','LIKE',$sales=='all'?'%%':'%'.$sales.'%')
+                                    ->where('customer_sap','LIKE',$customer=='all'?'%%':'%'.$customer.'%')
+                                    ->whereMonth('period','>=',Session::get('start-month'))
+                                    ->whereYear('period','>=',Session::get('start-year'))
+                                    ->whereMonth('period','<=',Session::get('sales-month'))
+                                    ->whereYear('period','<=',Session::get('sales-year'))
+                                    ->get();
+
+        $outputExcel = new Collection();
+        $outputExcel = collect($data['forecast_grouping']);
+
+        foreach ($outputExcel as $row) {
+            //DIVISION GROUPS
+            $row_division = [];
+            switch ($row->division) {
+                case 'Pack Trans':
+                    $row_division = $this->transportLoadGroups;
+                    break;
+                case 'Freight Forwarding BP':
+                    $row_division = $this->eximLoadGroups;
+                    break;
+                case 'Bulk Trans':
+                    $row_division = $this->bulkLoadGroups;
+                    break;
+                case 'Package Whs':
+                    $row_division = $this->warehouseLoadGroups;
+                    break;
+            }
+
+            $periodList = [];
+            
+            foreach ($data['forecast'] as $forecastPeriodically) {
+                //PUSH DATA FORECAST TO ARRAY
+                if($row->customer_name == $forecastPeriodically->customer_name && $row->customer_sap == $forecastPeriodically->customer_sap && $row->division == $forecastPeriodically->division){
+                    //array_push($periodList, $forecastPeriodically);
+                    $row[$forecastPeriodically->period] = $forecastPeriodically->forecast;
+                }
+            }
+
+            //$row->periods = $periodList;
+        }
+
+        //Return Output
+        if($isDatatable == 'true'){
+            return DataTables::of($data['budgets'])
+            ->addColumn('period_mon', function($row){
+                return date('M-Y',strtotime($row->period));
+            })
+            ->addColumn('graph', function($row){
+                return "<canvas id='".$row->id."' value='".$row->id."' class='table-container-graph' height='75px'><input type='hidden' name='budgetId' value='".$row->id."'></canvas>";
+            })
+            ->rawColumns(['achievement_1m','achievement_ytd','period_mon','graph'])
+            ->make(true);
+        }else if($isDatatable == 'false'){
+            //return $data['forecast_grouping'];
+            
+            Session::put('resultReport',$data['forecast_grouping']);
+            return Excel::download(new Sales_ForecastRolling, 'forecast.xlsx');
         }
     }
 
