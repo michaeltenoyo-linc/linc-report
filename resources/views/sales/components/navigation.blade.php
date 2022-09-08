@@ -135,6 +135,25 @@
                 </li>
             </ul>
 
+            <!-- Navigation Sales -->
+            <ul class="md:flex-col md:min-w-full flex flex-col list-none">
+                <li class="items-center">
+                    @if (Request::path() == '/sales/export/forecast')
+                        <a href="{{url('/sales/export/pdf')}}"
+                            class="page_nav_active">
+                            <i class="fas fa-clipboard"></i>
+                            Forecast Rolling
+                        </a>
+                    @else
+                        <a href="{{url('/sales/export/forecast')}}"
+                            class="page_nav">
+                            <i class="fas fa-clipboard"></i>
+                            Forecast Rolling
+                        </a>
+                    @endif
+                </li>
+            </ul>
+
             <!-- Navigation Product -->
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
                 <li class="items-center">

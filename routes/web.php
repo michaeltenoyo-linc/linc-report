@@ -418,15 +418,19 @@ Route::middleware(['auth','priviledge:sales,master'])->group(function () {
         //Route::get('/by-division/{division}',[SalesViewController::class, 'gotoByDivision']); MAINTENANCE
         Route::get('/by-division/{division}',[MasterViewController::class, 'underMaintenance']);
         Route::get('/export/pdf',[SalesViewController::class, 'gotoExportPdf']);
+        Route::get('/export/forecast',[SalesViewController::class, 'gotoExportForecast']);
         
         //Utility
         Route::get('/filter-date/{month}/{year}', [SalesViewController::class, 'filterSalesDate']);
         Route::get('/filter-date-landing/{month}/{year}', [SalesViewController::class, 'filterSalesDateLanding']);
         Route::get('/filter-date-between/{fromDate}/{fromMonth}/{fromYear}/{toDate}/{toMonth}/{toYear}', [SalesViewController::class, 'filterSalesDateBetween']);
+        Route::get('/filter-start-date/{month}/{year}', [SalesViewController::class, 'filterStartDate']);
+        Route::get('/filter-end-date/{month}/{year}', [SalesViewController::class, 'filterEndDate']);
 
         //Export
         Route::get('/export/filter-customer/{division}/{sales}',[SalesViewController::class, 'getFilteringCustomer']);
         Route::get('/export/generate-report/{constraint}/{status}/{division}/{sales}/{customer}/{isDatatable}',[SalesViewController::class, 'generateSalesReport']);
+        Route::get('/export/download-forecast/{constraint}/{status}/{division}/{sales}/{customer}/{isDatatable}',[SalesViewController::class, 'downloadForecastReport']);
 
         Route::prefix('/data')->group(function () {
             //DATA VIEW

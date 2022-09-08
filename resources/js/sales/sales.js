@@ -11,6 +11,8 @@ export const load = () => {
     const viewContent = $('#page-content').val();
     const defaultDate = async () => {
         //Date Default
+        $('#start-filter').val(moment().format('YYYY-MM'));
+        $('#end-filter').val(moment().format('YYYY-MM'));
         $('#date-filter').val(moment().format('YYYY-MM'));
         $('#date-filter-landing').val(moment().format('YYYY-MM'));
         $('.date-filter-between').val(moment().format('YYYY-MM-DD'));
@@ -136,6 +138,22 @@ export const load = () => {
 
             RefreshDivisionPie();
         } catch (error) {console.log(error);}
+    })
+
+    $('#start-filter').on('change', async function(){
+        var inputDate = new Date($(this).val());
+        var year = inputDate.getFullYear();
+        var month = inputDate.getMonth()+1;
+
+        const fetchChangeDate = await $.get('/sales/filter-start-date/'+month+'/'+year);
+    })
+
+    $('#end-filter').on('change', async function(){
+        var inputDate = new Date($(this).val());
+        var year = inputDate.getFullYear();
+        var month = inputDate.getMonth()+1;
+
+        const fetchChangeDate = await $.get('/sales/filter-end-date/'+month+'/'+year);
     })
 
     
