@@ -88,6 +88,14 @@ class TicketController extends BaseController
         return response()->json(['message' => 'berhasil menghapus data.'], 200);
     }
 
+    public function deleteBookingNote(Request $req){
+        $booking = dsuratjalan_pkg::where('load_id','=',$req->input('load_id'))->first();
+        $booking->remark = "TIDAK ADA";
+        $booking->save();
+
+        return response()->json(['message' => 'berhasil menghapus note booking.'], 200);
+    }
+
     public function checkPosto(Request $req, $posto){
         $data['message'] = "ID Posto belum terdaftar";
         $data['check'] = true;

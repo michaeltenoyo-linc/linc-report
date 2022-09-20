@@ -33,7 +33,7 @@ class Sales_ForecastRolling implements FromCollection, WithHeadings, ShouldAutoS
     public function columnFormats(): array
     {
         return [
-            'E:P' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'E:AB' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
         ];
     }
 
@@ -56,6 +56,18 @@ class Sales_ForecastRolling implements FromCollection, WithHeadings, ShouldAutoS
             '10 2022',
             '11 2022',
             '12 2022',
+            '01 2023',
+            '02 2023',
+            '03 2023',
+            '04 2023',
+            '05 2023',
+            '06 2023',          
+            '07 2023',
+            '08 2023',
+            '09 2023',
+            '10 2023',
+            '11 2023',
+            '12 2023',
         ];
     }
 

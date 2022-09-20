@@ -23,7 +23,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
-class SalesForecastSeeder extends Seeder
+class SalesForecastSeeder2023 extends Seeder
 {
     /**
      * Run the database seeds.
@@ -34,12 +34,10 @@ class SalesForecastSeeder extends Seeder
      */
     public function run()
     {
-        SalesForecast::truncate();
-
-        //2022
+        //2023
 
         //WAREHOUSE
-        $csvFile = fopen(base_path("reference/sales_report/FORECAST_WAREHOUSE_2022.csv"),"r");
+        $csvFile = fopen(base_path("reference/sales_report/FORECAST_WAREHOUSE_2023.csv"),"r");
 
         $firstline = true;
 
@@ -66,7 +64,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','01'),
+                    'period' => Carbon::create('2023','01'),
                     'forecast' => $data['5']
                 ]);
 
@@ -77,7 +75,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','02'),
+                    'period' => Carbon::create('2023','02'),
                     'forecast' => $data['6']
                 ]);
 
@@ -88,7 +86,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','03'),
+                    'period' => Carbon::create('2023','03'),
                     'forecast' => $data['7']
                 ]);
 
@@ -99,7 +97,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','04'),
+                    'period' => Carbon::create('2023','04'),
                     'forecast' => $data['8']
                 ]);
 
@@ -110,7 +108,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','05'),
+                    'period' => Carbon::create('2023','05'),
                     'forecast' => $data['9']
                 ]);
 
@@ -121,7 +119,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','06'),
+                    'period' => Carbon::create('2023','06'),
                     'forecast' => $data['10']
                 ]);
 
@@ -132,7 +130,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','07'),
+                    'period' => Carbon::create('2023','07'),
                     'forecast' => $data['11']
                 ]);
 
@@ -143,7 +141,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','08'),
+                    'period' => Carbon::create('2023','08'),
                     'forecast' => $data['12']
                 ]);
 
@@ -154,7 +152,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','09'),
+                    'period' => Carbon::create('2023','09'),
                     'forecast' => $data['13']
                 ]);
 
@@ -165,7 +163,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','10'),
+                    'period' => Carbon::create('2023','10'),
                     'forecast' => $data['14']
                 ]);
 
@@ -176,7 +174,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','11'),
+                    'period' => Carbon::create('2023','11'),
                     'forecast' => $data['15']
                 ]);
 
@@ -187,7 +185,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','12'),
+                    'period' => Carbon::create('2023','12'),
                     'forecast' => $data['16']
                 ]);
             }
@@ -197,7 +195,7 @@ class SalesForecastSeeder extends Seeder
         fclose($csvFile);
 
         //BULK
-        $csvFile = fopen(base_path("reference/sales_report/FORECAST_BULK_2022.csv"),"r");
+        $csvFile = fopen(base_path("reference/sales_report/FORECAST_BULK_2023.csv"),"r");
 
         $firstline = true;
 
@@ -224,7 +222,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','01'),
+                    'period' => Carbon::create('2023','01'),
                     'forecast' => $data['5']
                 ]);
 
@@ -235,7 +233,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','02'),
+                    'period' => Carbon::create('2023','02'),
                     'forecast' => $data['6']
                 ]);
 
@@ -246,7 +244,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','03'),
+                    'period' => Carbon::create('2023','03'),
                     'forecast' => $data['7']
                 ]);
 
@@ -257,7 +255,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','04'),
+                    'period' => Carbon::create('2023','04'),
                     'forecast' => $data['8']
                 ]);
 
@@ -268,7 +266,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','05'),
+                    'period' => Carbon::create('2023','05'),
                     'forecast' => $data['9']
                 ]);
 
@@ -279,7 +277,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','06'),
+                    'period' => Carbon::create('2023','06'),
                     'forecast' => $data['10']
                 ]);
 
@@ -290,7 +288,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','07'),
+                    'period' => Carbon::create('2023','07'),
                     'forecast' => $data['11']
                 ]);
 
@@ -301,7 +299,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','08'),
+                    'period' => Carbon::create('2023','08'),
                     'forecast' => $data['12']
                 ]);
 
@@ -312,7 +310,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','09'),
+                    'period' => Carbon::create('2023','09'),
                     'forecast' => $data['13']
                 ]);
 
@@ -323,7 +321,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','10'),
+                    'period' => Carbon::create('2023','10'),
                     'forecast' => $data['14']
                 ]);
 
@@ -334,7 +332,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','11'),
+                    'period' => Carbon::create('2023','11'),
                     'forecast' => $data['15']
                 ]);
 
@@ -345,7 +343,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','12'),
+                    'period' => Carbon::create('2023','12'),
                     'forecast' => $data['16']
                 ]);
             }
@@ -355,7 +353,7 @@ class SalesForecastSeeder extends Seeder
         fclose($csvFile);
 
         //TRANSPORT
-        $csvFile = fopen(base_path("reference/sales_report/FORECAST_TRANSPORT_2022.csv"),"r");
+        $csvFile = fopen(base_path("reference/sales_report/FORECAST_TRANSPORT_2023.csv"),"r");
 
         $firstline = true;
 
@@ -382,7 +380,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','01'),
+                    'period' => Carbon::create('2023','01'),
                     'forecast' => $data['5']
                 ]);
 
@@ -393,7 +391,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','02'),
+                    'period' => Carbon::create('2023','02'),
                     'forecast' => $data['6']
                 ]);
 
@@ -404,7 +402,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','03'),
+                    'period' => Carbon::create('2023','03'),
                     'forecast' => $data['7']
                 ]);
 
@@ -415,7 +413,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','04'),
+                    'period' => Carbon::create('2023','04'),
                     'forecast' => $data['8']
                 ]);
 
@@ -426,7 +424,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','05'),
+                    'period' => Carbon::create('2023','05'),
                     'forecast' => $data['9']
                 ]);
 
@@ -437,7 +435,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','06'),
+                    'period' => Carbon::create('2023','06'),
                     'forecast' => $data['10']
                 ]);
 
@@ -448,7 +446,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','07'),
+                    'period' => Carbon::create('2023','07'),
                     'forecast' => $data['11']
                 ]);
 
@@ -459,7 +457,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','08'),
+                    'period' => Carbon::create('2023','08'),
                     'forecast' => $data['12']
                 ]);
 
@@ -470,7 +468,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','09'),
+                    'period' => Carbon::create('2023','09'),
                     'forecast' => $data['13']
                 ]);
 
@@ -481,7 +479,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','10'),
+                    'period' => Carbon::create('2023','10'),
                     'forecast' => $data['14']
                 ]);
 
@@ -492,7 +490,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','11'),
+                    'period' => Carbon::create('2023','11'),
                     'forecast' => $data['15']
                 ]);
 
@@ -503,7 +501,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','12'),
+                    'period' => Carbon::create('2023','12'),
                     'forecast' => $data['16']
                 ]);
             }
@@ -513,7 +511,7 @@ class SalesForecastSeeder extends Seeder
         fclose($csvFile);
 
         //EXIM
-        $csvFile = fopen(base_path("reference/sales_report/FORECAST_EXIM_2022.csv"),"r");
+        $csvFile = fopen(base_path("reference/sales_report/FORECAST_EXIM_2023.csv"),"r");
 
         $firstline = true;
 
@@ -540,7 +538,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','01'),
+                    'period' => Carbon::create('2023','01'),
                     'forecast' => $data['5']
                 ]);
 
@@ -551,7 +549,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','02'),
+                    'period' => Carbon::create('2023','02'),
                     'forecast' => $data['6']
                 ]);
 
@@ -562,7 +560,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','03'),
+                    'period' => Carbon::create('2023','03'),
                     'forecast' => $data['7']
                 ]);
 
@@ -573,7 +571,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','04'),
+                    'period' => Carbon::create('2023','04'),
                     'forecast' => $data['8']
                 ]);
 
@@ -584,7 +582,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','05'),
+                    'period' => Carbon::create('2023','05'),
                     'forecast' => $data['9']
                 ]);
 
@@ -595,7 +593,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','06'),
+                    'period' => Carbon::create('2023','06'),
                     'forecast' => $data['10']
                 ]);
 
@@ -606,7 +604,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','07'),
+                    'period' => Carbon::create('2023','07'),
                     'forecast' => $data['11']
                 ]);
 
@@ -617,7 +615,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','08'),
+                    'period' => Carbon::create('2023','08'),
                     'forecast' => $data['12']
                 ]);
 
@@ -628,7 +626,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','09'),
+                    'period' => Carbon::create('2023','09'),
                     'forecast' => $data['13']
                 ]);
 
@@ -639,7 +637,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','10'),
+                    'period' => Carbon::create('2023','10'),
                     'forecast' => $data['14']
                 ]);
 
@@ -650,7 +648,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','11'),
+                    'period' => Carbon::create('2023','11'),
                     'forecast' => $data['15']
                 ]);
 
@@ -661,7 +659,7 @@ class SalesForecastSeeder extends Seeder
                     'customer_name' =>$data['2'],
                     'customer_sap' =>$data['3'],
                     'customer_status' =>$data['4'],
-                    'period' => Carbon::create('2022','12'),
+                    'period' => Carbon::create('2023','12'),
                     'forecast' => $data['16']
                 ]);
             }

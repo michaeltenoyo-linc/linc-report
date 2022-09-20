@@ -1919,6 +1919,7 @@ class ViewController extends BaseController
         $loadList = LoadPerformance::selectRaw('customer_reference, load_group, SUM(billable_total_rate) as totalActual')
                                         ->where('load_status','!=','Voided')
                                         ->where($statusCondition)
+                                        ->whereIn('load_group',$this->surabayaLoadGroups)
                                         ->whereNotNull($dateConstraint)
                                         ->whereBetween($dateConstraint, [Session::get('sales-from'),Session::get('sales-to')])
                                         ->groupBy('customer_reference','load_group')
@@ -2195,15 +2196,15 @@ class ViewController extends BaseController
                 break;
         }
 
+        $dateFrom = Session::get('start-year').'-'.Session::get('start-month').'-'.'01';
+        $dateEnd = Session::get('sales-year').'-'.Session::get('sales-month').'-'.'30';
+
         //Data Filtering
         $data['forecast_grouping'] = SalesForecast::select('customer_sap','customer_name','sales','division')
                                     ->where('division','LIKE',$division=='all'?'%%':'%'.$division.'%')
                                     ->where('sales','LIKE',$sales=='all'?'%%':'%'.$sales.'%')
                                     ->where('customer_sap','LIKE',$customer=='all'?'%%':'%'.$customer.'%')
-                                    ->whereMonth('period','>=',Session::get('start-month'))
-                                    ->whereYear('period','>=',Session::get('start-year'))
-                                    ->whereMonth('period','<=',Session::get('sales-month'))
-                                    ->whereYear('period','<=',Session::get('sales-year'))
+                                    ->whereBetween('period',[$dateFrom, $dateEnd])
                                     ->groupBy('customer_sap','customer_name','sales','division')
                                     ->orderBy('division','asc')
                                     ->orderBy('sales','asc')
@@ -2214,10 +2215,7 @@ class ViewController extends BaseController
         $data['forecast'] = SalesForecast::where('division','LIKE',$division=='all'?'%%':'%'.$division.'%')
                                     ->where('sales','LIKE',$sales=='all'?'%%':'%'.$sales.'%')
                                     ->where('customer_sap','LIKE',$customer=='all'?'%%':'%'.$customer.'%')
-                                    ->whereMonth('period','>=',Session::get('start-month'))
-                                    ->whereYear('period','>=',Session::get('start-year'))
-                                    ->whereMonth('period','<=',Session::get('sales-month'))
-                                    ->whereYear('period','<=',Session::get('sales-year'))
+                                    ->whereBetween('period',[$dateFrom, $dateEnd])
                                     ->get();
 
         $outputExcel = new Collection();
@@ -2247,7 +2245,7 @@ class ViewController extends BaseController
                 //PUSH DATA FORECAST TO ARRAY
                 if($row->customer_name == $forecastPeriodically->customer_name && $row->customer_sap == $forecastPeriodically->customer_sap && $row->division == $forecastPeriodically->division){
                     //array_push($periodList, $forecastPeriodically);
-                    $row[$forecastPeriodically->period] = $forecastPeriodically->forecast;
+                    $row[$forecastPeriodically->period] = $forecastPeriodically->forecast==0?"0":$forecastPeriodically->forecast;
                 }
             }
 
