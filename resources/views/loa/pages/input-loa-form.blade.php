@@ -91,6 +91,205 @@ Linc | LOA Homepage
                                 </div>
                             </div>
 
+                            @if ($type == 'bp')
+                            @elseif ($type  == 'cml')
+                                <!-- DETAIL COST EXTRACT CML-->
+                                <div class="w-full relative p-5 mb-3 border border-dashed border-2 border-blue-400">
+                                    <center>
+                                        <div class="w-full font-bold text-2xl mb-3">
+                                            Cost Detail
+                                        </div>
+                                    </center>
+                                    <!--Input Rate-->
+                                    <input type="hidden" name="rate_name[0]" value="storage">
+                                    <div class="inline-block relative w-7/12 mb-3">
+                                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                            htmlFor="name">Storage Rate</label>
+                                        <input type="number"
+                                            name="rate[0]"
+                                            class="input-rate border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                            value="0"
+                                            required/>
+                                    </div> /
+                                    <div class="inline-block relative w-2/12 mb-3">
+                                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                            htmlFor="name">QTY</label>
+                                        <input type="text"
+                                            name="qty[0]"
+                                            class="input-qty border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                            value="PP"
+                                            required/>
+                                    </div> /
+                                    <div class="inline-block relative w-2/12 mb-3">
+                                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                            htmlFor="name">Duration</label>
+                                        <input type="text"
+                                            name="duration[0]"
+                                            class="input-duration border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                            value="Month"
+                                            required/>
+                                    </div>
+                                    <!---->
+                                    <hr>
+                                    <!--Input Rate-->
+                                    <input type="hidden" name="rate_name[1]" value="handling in">
+                                    <div class="inline-block relative w-7/12 mb-3">
+                                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                            htmlFor="name">Handling In</label>
+                                        <input type="number"
+                                            name="rate[1]"
+                                            class="input-rate border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                            value="0"
+                                            required/>
+                                    </div> /
+                                    <div class="inline-block relative w-2/12 mb-3">
+                                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                            htmlFor="name">QTY</label>
+                                        <input type="text"
+                                            name="qty[1]"
+                                            class="input-qty border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                            value="PP"
+                                            required/>
+                                    </div> /
+                                    <div class="inline-block relative w-2/12 mb-3">
+                                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                            htmlFor="name">Duration</label>
+                                        <input type="text"
+                                            name="duration[1]"
+                                            class="input-duration border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                            value="Month"
+                                            required/>
+                                    </div>
+                                    <!---->
+                                    <hr>
+                                    <!--Input Rate-->
+                                    <input type="hidden" name="rate_name[2]" value="handling out">
+                                    <div class="inline-block relative w-7/12 mb-3">
+                                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                            htmlFor="name">Handling Out</label>
+                                        <input type="number"
+                                            name="rate[2]"
+                                            class="input-rate border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                            value="0"
+                                            required/>
+                                    </div> /
+                                    <div class="inline-block relative w-2/12 mb-3">
+                                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                            htmlFor="name">QTY</label>
+                                        <input type="text"
+                                            name="qty[2]"
+                                            class="input-qty border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                            value="PP"
+                                            required/>
+                                    </div> /
+                                    <div class="inline-block relative w-2/12 mb-3">
+                                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                            htmlFor="name">Duration</label>
+                                        <input type="text"
+                                            name="duration[2]"
+                                            class="input-duration border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                            value="Month"
+                                            required/>
+                                    </div>
+                                    <!---->
+                                    <hr>
+                                    <!--Input Rate-->
+                                    <input type="hidden" name="rate_name[3]" value="vas">
+                                    <div class="inline-block relative w-7/12 mb-3">
+                                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                            htmlFor="name">VAS</label>
+                                        <input type="number"
+                                            name="rate[3]"
+                                            class="input-rate border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                            value="0"
+                                            required/>
+                                    </div> /
+                                    <div class="inline-block relative w-2/12 mb-3">
+                                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                            htmlFor="name">QTY</label>
+                                        <input type="text"
+                                            name="qty[3]"
+                                            class="input-qty border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                            value="PP"
+                                            required/>
+                                    </div> /
+                                    <div class="inline-block relative w-2/12 mb-3">
+                                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                            htmlFor="name">Duration</label>
+                                        <input type="text"
+                                            name="duration[3]"
+                                            class="input-duration border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                            value="Month"
+                                            required/>
+                                    </div>
+                                    <!---->
+                                    <hr>
+                                    <!--Input Rate-->
+                                    <input type="hidden" name="rate_name[4]" value="overtime">
+                                    <div class="inline-block relative w-7/12 mb-3">
+                                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                            htmlFor="name">Overtime</label>
+                                        <input type="number"
+                                            name="rate[4]"
+                                            class="input-rate border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                            value="0"
+                                            required/>
+                                    </div> /
+                                    <div class="inline-block relative w-2/12 mb-3">
+                                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                            htmlFor="name">QTY</label>
+                                        <input type="text"
+                                            name="qty[4]"
+                                            class="input-qty border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                            value="PP"
+                                            required/>
+                                    </div> /
+                                    <div class="inline-block relative w-2/12 mb-3">
+                                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                            htmlFor="name">Duration</label>
+                                        <input type="text"
+                                            name="duration[4]"
+                                            class="input-duration border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                            value="Month"
+                                            required/>
+                                    </div>
+                                    <!---->
+                                    <hr>
+                                    <!--Input Rate-->
+                                    <input type="hidden" name="rate_name[5]" value="other">
+                                    <div class="inline-block relative w-7/12 mb-3">
+                                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                            htmlFor="name">Other</label>
+                                        <input type="number"
+                                            name="rate[5]"
+                                            class="input-rate border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                            value="0"
+                                            required/>
+                                    </div> /
+                                    <div class="inline-block relative w-2/12 mb-3">
+                                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                            htmlFor="name">QTY</label>
+                                        <input type="text"
+                                            name="qty[5]"
+                                            class="input-qty border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                            value="PP"
+                                            required/>
+                                    </div> /
+                                    <div class="inline-block relative w-2/12 mb-3">
+                                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                            htmlFor="name">Duration</label>
+                                        <input type="text"
+                                            name="duration[5]"
+                                            class="input-duration border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                            value="Month"
+                                            required/>
+                                    </div>
+                                    <!---->
+                                </div>
+                                <!-- DETAIL COST EXTRACT END -->
+                            @endif
+                            
+
                             <hr class="my-5">
                             
                             <div class="w-full text-center mb-10">

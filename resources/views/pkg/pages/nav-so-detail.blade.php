@@ -36,7 +36,6 @@ Linc | Ticket Detail
                                 Expired <br>
                                 Produk <br>
                                 QTY Ticket <br>
-                                
                             </b>
                         </div>
                         <div>
@@ -71,11 +70,14 @@ Linc | Ticket Detail
                                             </div>
                                             <div class="w-3/12">
                                                 @if($b->remark != "TIDAK ADA")
-                                                    <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                                                    <button value="{{ $b->remark }}" primary="{{ $b->load_id }}" id="pkg-booking-note" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                                                         <i class="far fa-bookmark"></i>
                                                     </button>
+                                                @else
+                                                    <button primary="{{ $b->load_id }}" id="pkg-add-note" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                                                        <i class="fas fa-pencil-alt"></i>
+                                                    </button>
                                                 @endif
-                                                
                                             </div>
                                         </header>
                                         <div class="flex flex-wrap p-2 w-full gap-4">
@@ -104,7 +106,6 @@ Linc | Ticket Detail
                         @endforeach
                     @endforeach
                 </div>
-            
             </div>
         </div>
     </div>
@@ -112,3 +113,6 @@ Linc | Ticket Detail
 
 <div class="dot-elastic"></div>
 @endsection
+
+@include('pkg.modals.booking-note-modal');
+@include('pkg.modals.add-note-modal');

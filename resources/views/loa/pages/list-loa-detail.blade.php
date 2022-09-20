@@ -136,7 +136,61 @@ Linc | LOA Homepage
 
         <hr>
 
-        <div class="w-full m-5 px-4">
+        <!-- LOA Detail Tree -->
+        <div class="w-full my-5 px-4 py-5 border border-4 border-dashed border-blue-300">
+            <div class="w-full text-center font-bold text-2xl px-4">
+                Detail Harga
+            </div>
+            <div class="w-full text-center text-red-500 px-4">
+                Choose a main LOA to show
+            </div>
+
+            <table class="table-loa-rates w-full text-sm text-left text-gray-500 dark:text-gray-400 my-5 hidden">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="py-3 px-6">
+                            Rate Name
+                        </th>
+                        <th scope="col" class="py-3 px-6">
+                            Cost
+                        </th>
+                        <th scope="col" class="py-3 px-6">
+                            QTY
+                        </th>
+                        <th scope="col" class="py-3 px-6">
+                            Duration
+                        </th>
+                        <th scope="col" class="py-3 px-6">
+                            Note
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="table-loa-rates-values">
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            Storage Rate
+                        </th>
+                        <td class="py-4 px-6">
+                            10.000.000
+                        </td>
+                        <td class="py-4 px-6">
+                            /PP
+                        </td>
+                        <td class="py-4 px-6">
+                            /Month
+                        </td>
+                        <td class="py-4 px-6">
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus provident quas laudantium dignissimos distinctio alias sunt esse, quisquam quibusdam odit voluptatum aliquam facilis commodi vitae eaque voluptatem, dolor repellat. Omnis.
+                            </p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- LOA File Viewer -->
+        <div class="w-full my-5 px-4">
             <div class="w-full text-center font-bold text-2xl px-4">
                 File Viewer
             </div>
