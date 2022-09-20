@@ -4,6 +4,88 @@ import Snackbar from 'node-snackbar';
 export const LoadsModal = () => {
     console.log("loading LoadsModal PKG JS");
 
+
+
+    const onDeleteBookingNote = async () => {
+        $(document).on('submit','#form-delete-note', async function(e){
+            e.preventDefault();
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Data load akan dihapus secara permanen!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Iya, hapus!'
+              }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        processData: false,
+                        contentType: false,
+                        dataType: 'JSON',
+                    });
+                    $.ajax({
+                        url: '/pkg/ticket/delete-booking-note',
+                        type: 'POST',
+                        data: new FormData($(this)[0]),
+                        success: (data) => {
+                            Swal.fire({
+                                title: 'Terhapus!',
+                                text: 'Data note sudah dihapus.',
+                                icon: 'success'
+                            }).then(function(){
+                                location.reload();
+                            });
+                        },
+                        error : function(request, status, error){
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: (JSON.parse(request.responseText)).message,
+                            })
+                        },
+                    });
+                }
+            });
+        });
+    }
+
+    const getBookingNote = async () => {
+        $(document).on('click','#pkg-booking-note', async function(e){
+            e.preventDefault();
+            
+            let load_id = $(this).attr('primary');
+            console.log(load_id);
+            
+            $('#booking-note-modal .container-note').html($(this).val());
+            $('#booking-note-modal .input-load-id').val(load_id);
+            //Show Modal
+            $('#booking-note-modal .modal').removeClass('hidden');
+
+        });
+    }
+
+    const onAddNote = async () => {
+        $(document).on('click','#pkg-add-note', async function(e){
+            e.preventDefault();
+
+            let load_id = $(this).attr('primary');
+            console.log(load_id);
+            
+            $('#add-note-modal .input-remark').val('');
+            $('#add-note-modal .input-load-id').val(load_id);
+
+            //Show Modal
+            $('#add-note-modal .modal').removeClass('hidden');
+        });
+
+        $(document).on('submit','#form')
+    }
+
     const getLoadList = async () => {
         $(document).on('click','#btn-detail-loads', async function(e){
             let posto = $(this).val();
@@ -109,6 +191,9 @@ export const LoadsModal = () => {
         });
     }
 
+    onDeleteBookingNote();
     getLoadList();
     onDeleteLoad();
+    getBookingNote();
+    onAddNote();
 };
