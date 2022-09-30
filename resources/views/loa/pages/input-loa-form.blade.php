@@ -255,36 +255,64 @@ Linc | LOA Homepage
                                     </div>
                                     <!---->
                                     <hr>
-                                    <!--Input Rate-->
-                                    <input type="hidden" name="rate_name[5]" value="other">
-                                    <div class="inline-block relative w-7/12 mb-3">
-                                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                            htmlFor="name">Other</label>
-                                        <input type="number"
-                                            name="rate[5]"
-                                            class="input-rate border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                            value="0"
-                                            required/>
-                                    </div> /
-                                    <div class="inline-block relative w-2/12 mb-3">
-                                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                            htmlFor="name">QTY</label>
-                                        <input type="text"
-                                            name="qty[5]"
-                                            class="input-qty border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                            value="PP"
-                                            required/>
-                                    </div> /
-                                    <div class="inline-block relative w-2/12 mb-3">
-                                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                            htmlFor="name">Duration</label>
-                                        <input type="text"
-                                            name="duration[5]"
-                                            class="input-duration border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                            value="Month"
-                                            required/>
+                                    <div id="container-loa-rates">
+                                        <div class="w-full text-center font-bold py-5">
+                                            Other Cost
+                                        </div>
+                                        <input type="hidden" id="counter-rates" name="counter-rates" value=5>
+                                        <div class="loa-other-rate-5">
+                                            <!--Input Rate-->
+                                            <div class="inline-block relative w-2/12 mb-3">
+                                                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                                    htmlFor="name">Cost Name</label>
+                                                <input type="text"
+                                                    name="rate_name[5]"
+                                                    class="input-rate border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                                    value="Other"
+                                                    required/>
+                                            </div>
+                                            <div class="inline-block relative w-3/12 mb-3">
+                                                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                                    htmlFor="name">Rate</label>
+                                                <input type="number"
+                                                    name="rate[5]"
+                                                    class="input-rate border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                                    value="0"
+                                                    required/>
+                                            </div> /
+                                            <div class="inline-block relative w-2/12 mb-3">
+                                                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                                    htmlFor="name">QTY</label>
+                                                <input type="text"
+                                                    name="qty[5]"
+                                                    class="input-qty border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                                    value="PP"
+                                                    required/>
+                                            </div> /
+                                            <div class="inline-block relative w-2/12 mb-3">
+                                                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                                    htmlFor="name">Duration</label>
+                                                <input type="text"
+                                                    name="duration[5]"
+                                                    class="input-duration border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                                    value="Month"
+                                                    required/>
+                                            </div>
+                                            <div class="inline-block relative ml-2 w-1/12">
+                                                <button class="btn-delete-rate text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" id="5">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                            <!---->
+                                        </div>
                                     </div>
-                                    <!---->
+                                    <div class="w-full flex justify-center">
+                                        <div class="inline-block relative ml-2 w-1/12">
+                                            <button class="btn-add-rate text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" id="5">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                                 <!-- DETAIL COST EXTRACT END -->
                             @endif
@@ -292,7 +320,7 @@ Linc | LOA Homepage
 
                             <hr class="my-5">
                             
-                            <div class="w-full text-center mb-10">
+                            <div class="w-full text-center mb-10">  
                                 <label class="block text-blueGray-600 text-xs font-bold mb-2"
                                         htmlFor="name">FILE UTAMA<br><span class="text-red-500">*Upload 1 file utama, bila lebih dari satu dapat di upload setelah ini.</span></label>
                             </div>

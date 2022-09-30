@@ -289,6 +289,9 @@ Route::middleware(['auth', 'priviledge:loa,master'])->group(function () {
             Route::get('/read/{type}', [LoaDataController::class, 'read']);
             Route::get('/activationById/{id}', [LoaDataController::class, 'activationById']);
             Route::get('/pinById/{id}', [LoaDataController::class, 'pinById']);
+            Route::post('/editDetailByLoa/{id}', [LoaDataController::class, 'editDetailByLoa']);
+            Route::post('/deleteDetailByLoa/{id}', [LoaDataController::class, 'deleteDetailByLoa']);
+            Route::post('/insertDetailByLoa/{id}', [LoaDataController::class, 'insertDetailByLoa']);
             Route::get('/deleteById/{id}', [LoaDataController::class, 'deleteById']);
             Route::get('/deleteFileById/{id}', [LoaDataController::class, 'deleteFileById']);
             Route::get('/read/byCustomer/{type}/{reference}', [LoaDataController::class, 'readByCustomer']);
@@ -410,7 +413,7 @@ Route::middleware(['auth', 'priviledge:loa,master'])->group(function () {
 });
 
 //SALES
-Route::middleware(['auth', 'priviledge:sales,master'])->group(function () {
+Route::middleware(['auth', 'priviledge:sales,master,statistic'])->group(function () {
     Route::prefix('/sales')->group(function () {
         //View Navigation
         Route::get('/', [SalesViewController::class, 'gotoLandingPage']);
@@ -458,11 +461,13 @@ Route::middleware(['auth', 'priviledge:sales,master'])->group(function () {
             Route::get('/performance', [SalesViewController::class, 'gotoTruckingPerformance']);
             Route::get('/performance-generate/{ownership}/{division}/{nopol}/{constraint}/{status}', [SalesTruckController::class, 'generateTruckingPerformance']);
             Route::get('/performance-customer/{ownership}/{division}/{nopol}/{constraint}/{status}', [SalesTruckController::class, 'generateCustomerPerformance']);
+            Route::get('/performance-routes/{ownership}/{division}/{nopol}/{constraint}/{status}', [SalesTruckController::class, 'generateRoutesPerformance']);
             Route::get('/utility', [SalesViewController::class, 'gotoTruckingUtility']);
             Route::get('/utility-generate/{ownership}', [SalesTruckController::class, 'generateTruckingUtility']);
 
             //Export
             Route::get('/performance-generate-download/{ownership}/{division}/{nopol}/{constraint}/{status}', [SalesTruckController::class, 'downloadTruckingPerformance']);
+            Route::get('/performance-routes-download/{ownership}/{division}/{nopol}/{constraint}/{status}', [SalesTruckController::class, 'downloadRoutesPerformance']);
             Route::get('/performance-customer-download/{ownership}/{division}/{nopol}/{constraint}/{status}', [SalesTruckController::class, 'downloadCustomerPerformance']);
 
             //Data
