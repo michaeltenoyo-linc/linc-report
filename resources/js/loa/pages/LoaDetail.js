@@ -1,6 +1,7 @@
 import Swal from 'sweetalert2';
 import Snackbar from 'node-snackbar';
 import { split } from 'lodash';
+import { data } from 'jquery';
 
 export const refreshTimeline = async () => {
     $('#timeline-list').empty();
@@ -92,24 +93,30 @@ export const refreshLoaRates = async () => {
     $('.table-loa-rates-values').empty();
 
     rates['rates'].forEach(rate => {
+        let rowId = rate['name'].replace(' ', '-');
+
         let row = '';
         row += '<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">';
-        row += '<th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">';
+        row += '<input type="hidden" name="id_loa" id="id-loa" class="row-name-' + rowId + '" value="' + rate['id_loa'] + '">';
+        row += '<th scope="row" id="name" class="row-name-' + rowId + ' py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">';
         row += rate['name'];
         row += '</th>';
-        row += '<td class="py-4 px-6">';
+        row += '<td contenteditable="false" id="cost" class="row-rate-' + rowId + ' py-4 px-6">';
         row += rate['cost'];
         row += '</td>';
-        row += '<td class="py-4 px-6">';
-        row += '/' + rate['qty'];
+        row += '<td contenteditable="false" id="qty" class="row-rate-' + rowId + ' py-4 px-6">';
+        row += '' + rate['qty'];
         row += '</td>';
-        row += '<td class="py-4 px-6">';
-        row += '/' + rate['duration'];
+        row += '<td contenteditable="false" id="duration" class="row-rate-' + rowId + ' py-4 px-6">';
+        row += '' + rate['duration'];
         row += '</td>';
-        row += '<td class="py-4 px-6">';
-        row += '<p>';
-        row += '-';
-        row += '</p>';
+        row += '<td>';
+        row += '<button onEdit="false" id="' + rowId + '" class="btn-rate-edit bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-full">';
+        row += '<i class="far fa-edit"></i>';
+        row += '</button>';
+        row += ' <button id="' + rowId + '" class="btn-rate-delete bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">';
+        row += '<i class="fas fa-trash"></i>';
+        row += '</button>';
         row += '</td>';
         row += '</tr>';
 
@@ -562,6 +569,241 @@ export const LoaDetail = () => {
         })
     }
 
+    const onEditRate = async () => {
+        $(document).on('click', '.btn-rate-edit', async function (e) {
+            e.preventDefault();
+
+            let button = $(this);
+            let onEdit = $(this).attr('onEdit');
+
+            if (onEdit == 'false') {
+                console.log("On Edit");
+                //OnEdit
+                $(this).attr('onEdit', true);
+                //Row Editable
+                let rowId = $(this).attr('id');
+                console.log(rowId);
+                $('.row-rate-' + rowId).attr('contenteditable', 'true');
+
+                //Change Button Icon
+                $(this).empty();
+                $(this).append('<i class="fas fa-clipboard-check"></i>');
+                $(this).removeClass('bg-yellow-500');
+                $(this).removeClass('hover:bg-yellow-700');
+                $(this).addClass('bg-green-500');
+                $(this).addClass('hover:bg-green-700');
+            } else {
+                console.log("On Show");
+                //OnShow
+                //Row Not Editable
+                let rowId = $(this).attr('id');
+
+
+                //Save Edit Value
+                let name = $('.row-name-' + rowId + '#name').html();
+                let id = $('.row-name-' + rowId + '#id-loa').val();
+                let cost = $('.row-rate-' + rowId + '#cost').html();
+                let qty = $('.row-rate-' + rowId + '#qty').html();
+                let duration = $('.row-rate-' + rowId + '#duration').html();
+
+                const data = new FormData();
+                data.append('name', name);
+                data.append('cost', cost);
+                data.append('qty', qty);
+                data.append('duration', duration);
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "Data rate cost ini akan diubah!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Iya, simpan!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            processData: false,
+                            contentType: false,
+                            dataType: 'JSON',
+                        });
+                        $.ajax({
+                            url: '/loa/data/editDetailByLoa/' + id,
+                            type: 'POST',
+                            data: data,
+                            success: (data) => {
+                                Swal.fire({
+                                    title: 'Tersimpan!',
+                                    text: 'Data Rate berhasil diubah.',
+                                    icon: 'success'
+                                }).then(function () {
+                                    button.attr('onEdit', false);
+                                    $('.row-rate-' + rowId).attr('contenteditable', 'false');
+                                    //Change Button Icon
+                                    button.empty();
+                                    button.append('<i class="far fa-edit"></i>');
+                                    button.removeClass('bg-green-500');
+                                    button.removeClass('hover:bg-green-700');
+                                    button.addClass('bg-yellow-500');
+                                    button.addClass('hover:bg-yellow-700');
+                                });
+                            },
+                            error: function (request, status, error) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: (JSON.parse(request.responseText)).message,
+                                })
+                            },
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+    const onDeleteRate = async () => {
+        $(document).on('click', '.btn-rate-delete', async function (e) {
+            e.preventDefault();
+            let rowId = $(this).attr('id');
+
+
+            //Save Edit Value
+            let name = $('.row-name-' + rowId + '#name').html();
+            let id = $('.row-name-' + rowId + '#id-loa').val();
+            const data = new FormData();
+            data.append('name', name);
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Data rate cost ini akan dihapus!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Iya, hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        processData: false,
+                        contentType: false,
+                        dataType: 'JSON',
+                    });
+                    $.ajax({
+                        url: '/loa/data/deleteDetailByLoa/' + id,
+                        type: 'POST',
+                        data: data,
+                        success: (data) => {
+                            Swal.fire({
+                                title: 'Terhapus!',
+                                text: 'Data Rate berhasil diubah.',
+                                icon: 'success'
+                            }).then(function () {
+                                location.reload();
+                            });
+                        },
+                        error: function (request, status, error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: (JSON.parse(request.responseText)).message,
+                            });
+                        },
+                    });
+                }
+            });
+        });
+    }
+
+    const onShowAddRate = async () => {
+        $(document).on('click', '#btn-show-rate-form', async function (e) {
+            e.preventDefault();
+
+            let onAdd = $(this).attr('onAdd');
+            console.log(onAdd);
+            let button = $(this);
+
+            if (onAdd == 'true') {
+                button.attr('onAdd', 'false');
+                button.empty();
+                button.append('Add Rate Cost');
+                button.removeClass('bg-red-500');
+                button.removeClass('hover:bg-red-700');
+                button.addClass('bg-blue-500');
+                button.addClass('hover:bg-blue-700');
+
+                $('#form-rate-detail').addClass('hidden');
+            } else {
+                button.attr('onAdd', 'true');
+                button.empty();
+                button.append('Cancel Add Rate');
+                button.removeClass('bg-blue-500');
+                button.removeClass('hover:bg-blue-700');
+                button.addClass('bg-red-500');
+                button.addClass('hover:bg-red-700');
+
+                $('#form-rate-detail').removeClass('hidden');
+            }
+        });
+    }
+
+    const onAddRate = async () => {
+        $('#form-rate-detail').on('submit', function (e) {
+            e.preventDefault();
+            console.log("Saving new Rate...");
+            let loaId = $('#selected-loa-id').val();
+            //AJAX Save
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Pastikan data sudah benar semua!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Iya, simpan!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        processData: false,
+                        contentType: false,
+                        dataType: 'JSON',
+                    });
+                    $.ajax({
+                        url: '/loa/data/insertDetailByLoa/' + loaId,
+                        type: 'POST',
+                        enctype: 'multipart/form-data',
+                        data: new FormData($('#form-rate-detail')[0]),
+                        success: (data) => {
+                            Swal.fire({
+                                title: 'Tersimpan!',
+                                text: 'Data rate sudah disimpan.',
+                                icon: 'success'
+                            }).then(function () {
+                                location.reload();
+                            });
+                        },
+                        error: function (request, status, error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: (JSON.parse(request.responseText)).message,
+                            })
+                        },
+                    });
+                }
+            })
+        });
+    }
+
     init();
     onChangeGroup();
     onClickContext();
@@ -571,4 +813,8 @@ export const LoaDetail = () => {
     onClickLoaActivation();
     onClickPin();
     onClickShowArchive();
+    onEditRate();
+    onDeleteRate();
+    onShowAddRate();
+    onAddRate();
 };

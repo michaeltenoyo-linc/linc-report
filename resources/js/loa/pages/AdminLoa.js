@@ -5,7 +5,7 @@ export const AdminLoa = () => {
     console.log("loading adminLoa JS");
 
     const inputLoa = () => {
-        $('#form-loa-new').on('submit', function(e){
+        $('#form-loa-new').on('submit', function (e) {
             e.preventDefault();
             console.log("Saving new LOA...");
 
@@ -18,7 +18,7 @@ export const AdminLoa = () => {
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Iya, simpan!'
-              }).then((result) => {
+            }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajaxSetup({
                         headers: {
@@ -38,11 +38,11 @@ export const AdminLoa = () => {
                                 title: 'Tersimpan!',
                                 text: 'Data surat jalan sudah disimpan.',
                                 icon: 'success'
-                            }).then(function(){
+                            }).then(function () {
                                 location.reload();
                             });
                         },
-                        error : function(request, status, error){
+                        error: function (request, status, error) {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
@@ -51,7 +51,72 @@ export const AdminLoa = () => {
                         },
                     });
                 }
-              })
+            })
+        });
+    }
+
+    const inputOtherRate = () => {
+        //ADD OTHER RATE
+        $('.btn-add-rate').on('click', async function (e) {
+            e.preventDefault();
+            let counter = parseInt($('#counter-rates').val());
+            counter += 1;
+
+            let rowCost = '';
+            rowCost += '<div class="loa-other-rate-' + counter + '">';
+            rowCost += '<div class="inline-block relative w-2/12 mb-3">';
+            rowCost += '<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"';
+            rowCost += 'htmlFor="name">Cost Name</label>';
+            rowCost += '<input type="text"';
+            rowCost += 'name="rate_name[' + counter + ']"';
+            rowCost += 'class="input-rate border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"';
+            rowCost += 'value=""';
+            rowCost += 'required/>';
+            rowCost += '</div>';
+            rowCost += ' <div class="inline-block relative w-3/12 mb-3">';
+            rowCost += '<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"';
+            rowCost += 'htmlFor="name">Rate</label>';
+            rowCost += '<input type="number"';
+            rowCost += 'name="rate[' + counter + ']"';
+            rowCost += 'class="input-rate border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"';
+            rowCost += 'value="0"';
+            rowCost += 'required/>';
+            rowCost += '</div> / ';
+            rowCost += '<div class="inline-block relative w-2/12 mb-3">';
+            rowCost += '<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"';
+            rowCost += 'htmlFor="name">QTY</label>';
+            rowCost += '<input type="text"';
+            rowCost += 'name="qty[' + counter + ']"';
+            rowCost += 'class="input-qty border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"';
+            rowCost += 'value="PP"';
+            rowCost += 'required/>';
+            rowCost += '</div> / ';
+            rowCost += '<div class="inline-block relative w-2/12 mb-3">';
+            rowCost += '<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"';
+            rowCost += 'htmlFor="name">Duration</label>';
+            rowCost += '<input type="text"';
+            rowCost += 'name="duration[' + counter + ']"';
+            rowCost += 'class="input-duration border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"';
+            rowCost += 'value="Month"';
+            rowCost += 'required/>';
+            rowCost += '</div>';
+            rowCost += '<div class="inline-block relative ml-2 w-1/12">';
+            rowCost += '<button class="btn-delete-rate text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" id="' + counter + '">';
+            rowCost += '<i class="fas fa-trash"></i>';
+            rowCost += '</button>';
+            rowCost += '</div>';
+            rowCost += '</div>';
+
+            $('#container-loa-rates').append(rowCost);
+            $('#counter-rates').val(counter);
+        });
+
+        //DELETE OTHER RATE
+        $(document).on('click', '.btn-delete-rate', async function (e) {
+            e.preventDefault();
+
+            let id = $(this).attr('id');
+            $('.loa-other-rate-' + id).remove();
         });
     }
 
@@ -61,17 +126,18 @@ export const AdminLoa = () => {
         $('#yajra-datatable-loa-list').DataTable({
             processing: true,
             serverSide: false,
-            ajax: '/loa/data/read/'+type,
+            ajax: '/loa/data/read/' + type,
             columns: [
-                {data: 'reference', name: 'reference'},
-                {data: 'name', name: 'name'},
-                {data: 'last_period', name: 'last_period'},
-                {data: 'count', name: 'count'},
-                {data: 'action', name: 'action', orderable: false, searchable: false},
+                { data: 'reference', name: 'reference' },
+                { data: 'name', name: 'name' },
+                { data: 'last_period', name: 'last_period' },
+                { data: 'count', name: 'count' },
+                { data: 'action', name: 'action', orderable: false, searchable: false },
             ]
         });
     }
 
     inputLoa();
+    inputOtherRate();
     getLoa();
 };
