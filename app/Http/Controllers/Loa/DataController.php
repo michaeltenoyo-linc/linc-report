@@ -84,14 +84,16 @@ class DataController extends BaseController
                 $rate = $req->input('rate');
                 $qty = $req->input('qty');
                 $duration = $req->input('duration');
-                for ($i = 0; $i < 5; $i++) {
-                    $costDetail = LoaDetail::create([
-                        'name' => $rate_name[$i],
-                        'id_loa' => $newLoa->id,
-                        'cost' => $rate[$i],
-                        'qty' => $qty[$i],
-                        'duration' => $duration[$i],
-                    ]);
+                for ($i = 0; $i < $req->input('counter-rates') + 1; $i++) {
+                    if (isset($rate_name[$i])) {
+                        $costDetail = LoaDetail::create([
+                            'name' => $rate_name[$i],
+                            'id_loa' => $newLoa->id,
+                            'cost' => $rate[$i],
+                            'qty' => $qty[$i],
+                            'duration' => $duration[$i],
+                        ]);
+                    }
                 }
             }
 
@@ -320,5 +322,74 @@ class DataController extends BaseController
             ->get();
 
         return $data;
+    }
+
+    public function editDetailByLoa(Request $req, $id_loa)
+    {
+        $req->validate([
+            'name' => 'required',
+            'cost' => 'required',
+            'qty' => 'required',
+            'duration' => 'required',
+        ]);
+
+        $data['message'] = "Success";
+
+        //Update Data
+        $loa_detail = LoaDetail::where('id_loa', $id_loa)->where('name', $req->input('name'))->first();
+
+        $loa_detail->update([
+            'cost' => $req->input('cost'),
+            'qty' => $req->input('qty'),
+            'duration' => $req->input('duration'),
+        ]);
+
+        return response()->json($data, 200);
+    }
+
+    public function deleteDetailByLoa(Request $req, $id_loa)
+    {
+        $req->validate([
+            'name' => 'required',
+        ]);
+
+        $data['message'] = "Success";
+
+        //Update Data
+        $loa_detail = LoaDetail::where('id_loa', $id_loa)->where('name', $req->input('name'))->first();
+        $loa_detail->forceDelete();
+
+        return response()->json($data, 200);
+    }
+
+    public function insertDetailByLoa(Request $req, $id_loa)
+    {
+        $req->validate([
+            'rate_name' => 'required',
+            'rate' => 'required',
+            'qty' => 'required',
+            'duration' => 'required',
+        ]);
+
+        $ctr = $req->input('counter-rates');
+        $name = $req->input('rate_name');
+        $rate = $req->input('rate');
+        $qty = $req->input('qty');
+        $duration = $req->input('duration');
+
+        for ($i = 0; $i <= $ctr; $i++) {
+            if (isset($name[$i])) {
+                LoaDetail::create([
+                    'id_loa' => $id_loa,
+                    'name' => $name[$i],
+                    'cost' => $rate[$i],
+                    'qty' => $qty[$i],
+                    'duration' => $duration[$i]
+                ]);
+            }
+        }
+
+        $data['message'] = "Berhasil menambah data rate";
+        return response()->json($data, 200);
     }
 }
