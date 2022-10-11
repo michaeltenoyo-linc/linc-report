@@ -16,20 +16,20 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 class Ltl_Report1 implements FromCollection, WithHeadings, ShouldAutoSize, WithStyles, WithColumnFormatting
 {
     public function collection()
-    {   
+    {
         return Session::get('resultReport');
     }
-    
+
     public function styles(Worksheet $sheet)
     {
         $sheet->getStyle('1')->getFont()->setBold(true);
-        $sheet->getStyle('A1:N1')->getFill()->applyFromArray(['fillType' => 'solid','rotation' => 0, 'color' => ['rgb' => '99ffcc'],]);
-        $sheet->getStyle('O1:P1')->getFill()->applyFromArray(['fillType' => 'solid','rotation' => 0, 'color' => ['rgb' => '00ff00'],]);
-        $sheet->getStyle('Q1')->getFill()->applyFromArray(['fillType' => 'solid','rotation' => 0, 'color' => ['rgb' => 'ffff00'],]);
+        $sheet->getStyle('A1:P1')->getFill()->applyFromArray(['fillType' => 'solid', 'rotation' => 0, 'color' => ['rgb' => '99ffcc'],]);
+        $sheet->getStyle('Q1:R1')->getFill()->applyFromArray(['fillType' => 'solid', 'rotation' => 0, 'color' => ['rgb' => '00ff00'],]);
+        $sheet->getStyle('S1')->getFill()->applyFromArray(['fillType' => 'solid', 'rotation' => 0, 'color' => ['rgb' => 'ffff00'],]);
 
         return [
             // Styling an entire column.
-            'A:Q'  => ['font' => ['size' => 9, 'name' => 'Calibri']],
+            'A:S'  => ['font' => ['size' => 9, 'name' => 'Calibri']],
         ];
     }
 
@@ -37,7 +37,7 @@ class Ltl_Report1 implements FromCollection, WithHeadings, ShouldAutoSize, WithS
     {
         return [
             'E' => NumberFormat::FORMAT_DATE_DDMMYYYY,
-            'J:P' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'L:R' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
         ];
     }
 
@@ -52,7 +52,9 @@ class Ltl_Report1 implements FromCollection, WithHeadings, ShouldAutoSize, WithS
             'No Polisi',
             'Customer Name',
             'Customer Address',
-            'City',
+            'ID STOP LOCATION',
+            'PROVINSI TUJUAN',
+            'KOTA TUJUAN',
             'Qty',
             'Transport Rate',
             'Unloading Cost',
@@ -63,5 +65,4 @@ class Ltl_Report1 implements FromCollection, WithHeadings, ShouldAutoSize, WithS
             'Remarks'
         ];
     }
-
 }

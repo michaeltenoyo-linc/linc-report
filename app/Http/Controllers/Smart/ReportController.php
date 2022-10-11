@@ -31,7 +31,8 @@ class ReportController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function generateReport(Request $req){
+    public function generateReport(Request $req)
+    {
         $req->validate([
             'customerType' => 'required',
             'loadId' => 'required',
@@ -42,21 +43,21 @@ class ReportController extends BaseController
         */
         $reports = new Collection;
         $warning = new Collection;
-        $listLoadId = explode(';',$req->input('loadId'));
+        $listLoadId = explode(';', $req->input('loadId'));
         $ctr = 1;
 
         //Untuk Report 2
-        $SjReport2 = Suratjalan::orderBy('created_at','asc')->whereMonth('created_at','>=',6)->get();
+        $SjReport2 = Suratjalan::orderBy('created_at', 'asc')->whereMonth('created_at', '>=', 6)->get();
 
-        if($req->input('reportType') == "smart_1"){
+        if ($req->input('reportType') == "smart_1") {
 
             foreach ($listLoadId as $wantedLoad) {
-                $row = LoadPerformance::where('tms_id',$wantedLoad)->first();
-                if($row != ""){
-                    $listSJ = Suratjalan::where('load_id','=',$row->tms_id)->get();
+                $row = LoadPerformance::where('tms_id', $wantedLoad)->first();
+                if ($row != "") {
+                    $listSJ = Suratjalan::where('load_id', '=', $row->tms_id)->get();
                     $loadExist = False;
                     foreach ($reports as $r) {
-                        if($r['Load ID'] == $row->tms_id){
+                        if ($r['Load ID'] == $row->tms_id) {
                             $loadExist = True;
                         }
                     }
@@ -66,30 +67,30 @@ class ReportController extends BaseController
                     $totalMultidrop = 0;
                     $totalOvernight = 0;
 
-                    $listBongkar = Addcost::where('type','TMB_BONGKAR')->where('load_id',$row->tms_id)->get();
-                    $listMultidrop = Addcost::where('type','TMB_MULTIDROP')->where('load_id',$row->tms_id)->get();
-                    $listOvernight = Addcost::where('type','TMB_BIAYA INAP (OVERNIGHT CHARGE)')->where('load_id',$row->tms_id)->get();
+                    $listBongkar = Addcost::where('type', 'TMB_BONGKAR')->where('load_id', $row->tms_id)->get();
+                    $listMultidrop = Addcost::where('type', 'TMB_MULTIDROP')->where('load_id', $row->tms_id)->get();
+                    $listOvernight = Addcost::where('type', 'TMB_BIAYA INAP (OVERNIGHT CHARGE)')->where('load_id', $row->tms_id)->get();
 
-                    if(count($listBongkar) > 0){
+                    if (count($listBongkar) > 0) {
                         foreach ($listBongkar as $bongkar) {
                             $totalBongkar += $bongkar->rate;
-                        }                    
+                        }
                     }
 
-                    if(count($listMultidrop) > 0){
+                    if (count($listMultidrop) > 0) {
                         foreach ($listMultidrop as $multidrop) {
                             $totalMultidrop += $multidrop->rate;
-                        }                    
+                        }
                     }
 
-                    if(count($listOvernight) > 0){
+                    if (count($listOvernight) > 0) {
                         foreach ($listOvernight as $overnight) {
                             $totalOvernight += $overnight->rate;
-                        }                    
+                        }
                     }
 
                     //LISTING SURAT JALAN
-                    if(count($listSJ) > 0 && !$loadExist){
+                    if (count($listSJ) > 0 && !$loadExist) {
                         //Check multidrop
                         $isMultidrop = false;
                         $listPenerima = [];
@@ -97,8 +98,8 @@ class ReportController extends BaseController
                             array_push($listPenerima, $sj->penerima);
                         }
                         $uniqueCount = count(array_count_values($listPenerima));
-                        $uniqueCount>1?$isMultidrop=true:$isMultidrop=false;
-                        if(!$isMultidrop){
+                        $uniqueCount > 1 ? $isMultidrop = true : $isMultidrop = false;
+                        if (!$isMultidrop) {
                             $totalMultidrop = 0;
                         }
 
@@ -107,37 +108,37 @@ class ReportController extends BaseController
                             $isWanted = false;
 
                             foreach ($listLoadId as $load) {
-                                if($sj->load_id == $load){
+                                if ($sj->load_id == $load) {
                                     $isWanted = true;
                                 }
                             }
-                            
-                            if($req->input('customerType') == "all"){
-                                $truck = Trucks::where('nopol','=',$sj->nopol)->first();
-                                //$totalHarga = intval($row->billable_total_rate) + $totalOvernight + $totalBongkar + $totalMultidrop;
-                                $splitID = explode('$',$sj->id_so);
 
-                                $dload = Dload::where('id_so','=',$sj->id_so)->get();
+                            if ($req->input('customerType') == "all") {
+                                $truck = Trucks::where('nopol', '=', $sj->nopol)->first();
+                                //$totalHarga = intval($row->billable_total_rate) + $totalOvernight + $totalBongkar + $totalMultidrop;
+                                $splitID = explode('$', $sj->id_so);
+
+                                $dload = Dload::where('id_so', '=', $sj->id_so)->get();
 
                                 foreach ($dload as $item) {
-                                    $itemDetail = Item::where('material_code','=',$item->material_code)->first();
-                                    $locationDetail = Company::where('reference',$row->last_drop_location_name)->first();
+                                    $itemDetail = Item::where('material_code', '=', $item->material_code)->first();
+                                    $locationDetail = Company::where('reference', $row->last_drop_location_name)->first();
 
-                                    if($firstline){
+                                    if ($firstline) {
                                         $reports->push([
                                             'No' => $ctr,
                                             'Load ID' => $row->tms_id,
                                             'Customer Type' => strtoupper($sj->customer_type),
                                             'Tgl Muat' => Carbon::parse($sj->tgl_terima)->format('d-M-Y'),
                                             'No SJ' => $splitID[0],
-                                            'No DO' => (isset($splitID[1])?$splitID[1]:"-"),
+                                            'No DO' => (isset($splitID[1]) ? $splitID[1] : "-"),
                                             'Penerima' => $sj->penerima,
                                             'Lokasi Tujuan' => $row->last_drop_location_name,
-                                            'Provinsi Tujuan' => strtoupper(is_null($locationDetail)?"Undefined":$locationDetail->province),
-                                            'Kota Tujuan' => strtoupper(is_null($locationDetail)?"Undefined":$locationDetail->city),
+                                            'Provinsi Tujuan' => strtoupper(is_null($locationDetail) ? "Undefined" : $locationDetail->province),
+                                            'Kota Tujuan' => strtoupper(is_null($locationDetail) ? "Undefined" : $locationDetail->city),
                                             'Kuantitas' => $sj->total_qtySO,
                                             'Berat' => $sj->total_weightSO,
-                                            'Utilitas' => strval($sj->utilitas)."%",
+                                            'Utilitas' => strval($sj->utilitas) . "%",
                                             'Nopol' => $sj->nopol,
                                             'Tipe Kendaraan' => $row->equipment_description,
                                             'Kontainer' => "-",
@@ -154,7 +155,7 @@ class ReportController extends BaseController
                                         ]);
 
                                         $firstline = false;
-                                    }else{
+                                    } else {
                                         $reports->push([
                                             'No' => " ",
                                             'Load ID' => " ",
@@ -174,7 +175,7 @@ class ReportController extends BaseController
                                             'Kontainer' => " ",
                                             'Biaya Kirim' => " ",
                                             'Biaya Bongkar' => " ",
-                                            'Overnight Charge' =>" ",
+                                            'Overnight Charge' => " ",
                                             'Multidrop' => " ",
                                             'Total' => " ",
                                             'Kode SKU' => $item->material_code,
@@ -208,7 +209,7 @@ class ReportController extends BaseController
                             'Kontainer' => " ",
                             'Biaya Kirim' => " ",
                             'Biaya Bongkar' => " ",
-                            'Overnight Charge' =>" ",
+                            'Overnight Charge' => " ",
                             'Multidrop' => " ",
                             'Total' => " ",
                             'Kode SKU' => " ",
@@ -217,19 +218,19 @@ class ReportController extends BaseController
                             'Item Weight' => " ",
                             'Subtotal Weight' => " ",
                         ]);
-                    }else if(count($listSJ) == 0){
-                        $custId = substr($row->first_pick_location_name,0,3);
+                    } else if (count($listSJ) == 0) {
+                        $custId = substr($row->first_pick_location_name, 0, 3);
 
-                        if($custId == "SMR"){
+                        if ($custId == "SMR") {
                             $warning->push([
                                 'Load ID' => $row->tms_id,
                                 'Customer Pick Location' => $row->first_pick_location_name,
-                                'Suggestion' => (isset($row->shipment_reference)?$row->shipment_reference:"None"),
+                                'Suggestion' => (isset($row->shipment_reference) ? $row->shipment_reference : "None"),
 
                             ]);
                         }
                     }
-                }else{
+                } else {
                     $warning->push([
                         'Load ID' => $wantedLoad,
                         'Customer Pick Location' => "",
@@ -321,33 +322,32 @@ class ReportController extends BaseController
             }
             */
 
-            Session::put('warningReport',$warning);
-            Session::put('resultReport',$reports);
-            Session::put('totalReport',$ctr-1);
-            Session::put('reportType',$req->input('reportType'));
+            Session::put('warningReport', $warning);
+            Session::put('resultReport', $reports);
+            Session::put('totalReport', $ctr - 1);
+            Session::put('reportType', $req->input('reportType'));
 
             return view('smart.pages.report-preview-smart-1');
-
-        }elseif ($req->input('reportType') == "smart_2") {
+        } elseif ($req->input('reportType') == "smart_2") {
             foreach ($SjReport2 as $sj) {
                 $firstline = true;
 
-                $dload = Dload::where('id_so','=',$sj->id_so)->get();
-                $splitID = explode('$',$sj->id_so);
-                $truck = Trucks::where('nopol','=',$sj->nopol)->first();
+                $dload = Dload::where('id_so', '=', $sj->id_so)->get();
+                $splitID = explode('$', $sj->id_so);
+                $truck = Trucks::where('nopol', '=', $sj->nopol)->first();
                 $blujay = LoadPerformance::where('tms_id', $sj->load_id)->first();
-                $company_from = Company::where('location',$blujay->first_pick_location_name)->first();
-                $company_to = Company::where('location',$blujay->last_drop_location_name)->first();
+                $company_from = Company::where('location', $blujay->first_pick_location_name)->first();
+                $company_to = Company::where('location', $blujay->last_drop_location_name)->first();
 
 
                 foreach ($dload as $items) {
-                    $itemDetail = Item::where('material_code','=',$items->material_code)->first();
+                    $itemDetail = Item::where('material_code', '=', $items->material_code)->first();
                     if ($firstline) {
-                        
+
                         $reports->push([
                             'No' => $ctr,
                             'No SJ' => $splitID[0],
-                            'No DO' => (isset($splitID[1])?$splitID[1]:""),
+                            'No DO' => (isset($splitID[1]) ? $splitID[1] : ""),
                             'Tanggal Input' => $sj->created_at,
                             'Update Terakhir' => $sj->updated_at,
                             'Load ID' => $sj->load_id,
@@ -356,8 +356,8 @@ class ReportController extends BaseController
                             'Penerima' => $sj->penerima,
                             'Kuantitas' => $sj->total_qtySO,
                             'Berat' => $sj->total_weightSO,
-                            'Utilitas' => strval($sj->utilitas)."%",
-                            'City Routes'=>is_null($company_from)||is_null($company_to)?"UNDEFINED":$company_from->blujay_city." - ".$company_to->blujay_city,
+                            'Utilitas' => strval($sj->utilitas) . "%",
+                            'City Routes' => is_null($company_from) || is_null($company_to) ? "UNDEFINED" : $company_from->blujay_city . " - " . $company_to->blujay_city,
                             'Nopol' => $sj->nopol,
                             'Driver' => $sj->driver_name,
                             'Tipe Kendaraan' => $truck->type,
@@ -373,7 +373,7 @@ class ReportController extends BaseController
                         ]);
                         $firstline = false;
                         $ctr++;
-                    }else{
+                    } else {
                         $reports->push([
                             'No' => "",
                             'No SJ' => "",
@@ -387,7 +387,7 @@ class ReportController extends BaseController
                             'Kuantitas' => "",
                             'Berat' => "",
                             'Utilitas' => "",
-                            'City Routes'=>"",
+                            'City Routes' => "",
                             'Nopol' => "",
                             'Driver' => "",
                             'Tipe Kendaraan' => "",
@@ -417,7 +417,7 @@ class ReportController extends BaseController
                     'Kuantitas' => "",
                     'Berat' => "",
                     'Utilitas' => "",
-                    'City Routes'=>"",
+                    'City Routes' => "",
                     'Nopol' => "",
                     'Driver' => "",
                     'Tipe Kendaraan' => "",
@@ -433,21 +433,21 @@ class ReportController extends BaseController
                 ]);
             }
 
-            Session::put('warningReport',$warning);
-            Session::put('resultReport',$reports);
-            Session::put('totalReport',$ctr-1);
-            Session::put('reportType',$req->input('reportType'));
+            Session::put('warningReport', $warning);
+            Session::put('resultReport', $reports);
+            Session::put('totalReport', $ctr - 1);
+            Session::put('reportType', $req->input('reportType'));
 
             return view('smart.pages.report-preview-smart-1');
-        }else if($req->input('reportType') == "smart_3"){
+        } else if ($req->input('reportType') == "smart_3") {
 
             foreach ($listLoadId as $wantedLoad) {
-                $row = LoadPerformance::where('tms_id',$wantedLoad)->first();
-                if($row != ""){
-                    $listSJ = Suratjalan::where('load_id','=',$row->tms_id)->get();
+                $row = LoadPerformance::where('tms_id', $wantedLoad)->first();
+                if ($row != "") {
+                    $listSJ = Suratjalan::where('load_id', '=', $row->tms_id)->get();
                     $loadExist = False;
                     foreach ($reports as $r) {
-                        if($r['Load ID'] == $row->tms_id){
+                        if ($r['Load ID'] == $row->tms_id) {
                             $loadExist = True;
                         }
                     }
@@ -457,30 +457,30 @@ class ReportController extends BaseController
                     $totalMultidrop = 0;
                     $totalOvernight = 0;
 
-                    $listBongkar = Addcost::where('type','TMB_BONGKAR')->where('load_id',$row->tms_id)->get();
-                    $listMultidrop = Addcost::where('type','TMB_MULTIDROP')->where('load_id',$row->tms_id)->get();
-                    $listOvernight = Addcost::where('type','TMB_BIAYA INAP (OVERNIGHT CHARGE)')->where('load_id',$row->tms_id)->get();
+                    $listBongkar = Addcost::where('type', 'TMB_BONGKAR')->where('load_id', $row->tms_id)->get();
+                    $listMultidrop = Addcost::where('type', 'TMB_MULTIDROP')->where('load_id', $row->tms_id)->get();
+                    $listOvernight = Addcost::where('type', 'TMB_BIAYA INAP (OVERNIGHT CHARGE)')->where('load_id', $row->tms_id)->get();
 
-                    if(count($listBongkar) > 0){
+                    if (count($listBongkar) > 0) {
                         foreach ($listBongkar as $bongkar) {
                             $totalBongkar += $bongkar->rate;
-                        }                    
+                        }
                     }
 
-                    if(count($listMultidrop) > 0){
+                    if (count($listMultidrop) > 0) {
                         foreach ($listMultidrop as $multidrop) {
                             $totalMultidrop += $multidrop->rate;
-                        }                    
+                        }
                     }
 
-                    if(count($listOvernight) > 0){
+                    if (count($listOvernight) > 0) {
                         foreach ($listOvernight as $overnight) {
                             $totalOvernight += $overnight->rate;
-                        }                    
+                        }
                     }
 
                     //LISTING SURAT JALAN
-                    if(count($listSJ) > 0 && !$loadExist){
+                    if (count($listSJ) > 0 && !$loadExist) {
                         //Check multidrop
                         $isMultidrop = false;
                         $listPenerima = [];
@@ -488,8 +488,8 @@ class ReportController extends BaseController
                             array_push($listPenerima, $sj->penerima);
                         }
                         $uniqueCount = count(array_count_values($listPenerima));
-                        $uniqueCount>1?$isMultidrop=true:$isMultidrop=false;
-                        if(!$isMultidrop){
+                        $uniqueCount > 1 ? $isMultidrop = true : $isMultidrop = false;
+                        if (!$isMultidrop) {
                             $totalMultidrop = 0;
                         }
 
@@ -498,38 +498,38 @@ class ReportController extends BaseController
                             $isWanted = false;
 
                             foreach ($listLoadId as $load) {
-                                if($sj->load_id == $load){
+                                if ($sj->load_id == $load) {
                                     $isWanted = true;
                                 }
                             }
-                            
-                            if($req->input('customerType') == "all"){
-                                $truck = Trucks::where('nopol','=',$sj->nopol)->first();
-                                //$totalHarga = intval($row->billable_total_rate) + $totalOvernight + $totalBongkar + $totalMultidrop;
-                                $splitID = explode('$',$sj->id_so);
 
-                                $dload = Dload::where('id_so','=',$sj->id_so)->get();
+                            if ($req->input('customerType') == "all") {
+                                $truck = Trucks::where('nopol', '=', $sj->nopol)->first();
+                                //$totalHarga = intval($row->billable_total_rate) + $totalOvernight + $totalBongkar + $totalMultidrop;
+                                $splitID = explode('$', $sj->id_so);
+
+                                $dload = Dload::where('id_so', '=', $sj->id_so)->get();
 
                                 foreach ($dload as $item) {
-                                    $itemDetail = Item::where('material_code','=',$item->material_code)->first();
-                                    $locationDetail = Company::where('reference',$row->last_drop_location_name)->first();
+                                    $itemDetail = Item::where('material_code', '=', $item->material_code)->first();
+                                    $locationDetail = Company::where('location', $row->last_drop_location_name)->first();
 
-                                    if($firstline){
+                                    if ($firstline) {
                                         $reports->push([
                                             'No' => $ctr,
                                             'Load ID' => $row->tms_id,
                                             'TANGGAL MUAT' => Carbon::parse($sj->tgl_terima)->format('d-M-Y'),
                                             'No DO' => $splitID[0],
-                                            'No SJ' => (isset($splitID[1])?$splitID[1]:"-"),
+                                            'No SJ' => (isset($splitID[1]) ? $splitID[1] : "-"),
                                             'CUSTOMER' => $sj->penerima,
                                             'ID STOP LOCATION' => $row->last_drop_location_name,
-                                            'PROVINSI TUJUAN' => strtoupper(is_null($locationDetail)?"Undefined":$locationDetail->province),
-                                            'KOTA TUJUAN' => strtoupper(is_null($locationDetail)?"Undefined":$locationDetail->city),
+                                            'PROVINSI TUJUAN' => strtoupper(is_null($locationDetail) ? "Undefined" : $locationDetail->province),
+                                            'KOTA TUJUAN' => strtoupper(is_null($locationDetail) ? "Undefined" : $locationDetail->city),
                                             'SKU' => $item->material_code,
                                             'DESCRIPTION' => $itemDetail->description,
                                             'QTY' => $item->qty,
                                             'NOPOL' => $sj->nopol,
-                                            'TIPE KENDARAAN' => str_replace('_',' ',$row->equipment_description),
+                                            'TIPE KENDARAAN' => str_replace('_', ' ', $row->equipment_description),
                                             'BIAYA TRUKING' => intval($row->billable_total_rate) - $totalOvernight - $totalBongkar - $totalMultidrop,
                                             'BIAYA BONGKAR' => $totalBongkar,
                                             'BIAYA MULTIDROP' => $totalMultidrop,
@@ -540,7 +540,7 @@ class ReportController extends BaseController
                                         ]);
 
                                         $firstline = false;
-                                    }else{
+                                    } else {
                                         $reports->push([
                                             'No' => "",
                                             'Load ID' => "",
@@ -593,19 +593,19 @@ class ReportController extends BaseController
                             'TOTAL' => "",
                             'CUST TYPE' => "",
                         ]);
-                    }else if(count($listSJ) == 0){
-                        $custId = substr($row->first_pick_location_name,0,3);
+                    } else if (count($listSJ) == 0) {
+                        $custId = substr($row->first_pick_location_name, 0, 3);
 
-                        if($custId == "SMR"){
+                        if ($custId == "SMR") {
                             $warning->push([
                                 'Load ID' => $row->tms_id,
                                 'Customer Pick Location' => $row->first_pick_location_name,
-                                'Suggestion' => (isset($row->shipment_reference)?$row->shipment_reference:"None"),
+                                'Suggestion' => (isset($row->shipment_reference) ? $row->shipment_reference : "None"),
 
                             ]);
                         }
                     }
-                }else{
+                } else {
                     $warning->push([
                         'Load ID' => $wantedLoad,
                         'Customer Pick Location' => "",
@@ -614,13 +614,12 @@ class ReportController extends BaseController
                 }
             }
 
-            Session::put('warningReport',$warning);
-            Session::put('resultReport',$reports);
-            Session::put('totalReport',$ctr-1);
-            Session::put('reportType',$req->input('reportType'));
+            Session::put('warningReport', $warning);
+            Session::put('resultReport', $reports);
+            Session::put('totalReport', $ctr - 1);
+            Session::put('reportType', $req->input('reportType'));
 
             return view('smart.pages.report-preview-smart-3');
-
         }
         /*
         else if($req->input('reportType') == "smart_2"){
@@ -846,28 +845,30 @@ class ReportController extends BaseController
             return view('smart.pages.report-preview-smart-2');
         }
         */
-
     }
 
-    public function getPreviewResult(Request $req){
+    public function getPreviewResult(Request $req)
+    {
         $collection = Session::get('resultReport');
         $totalReport = Session::get('totalReport');
 
         return DataTables::of($collection)->setTotalRecords($totalReport)->make(true);
     }
 
-    public function getPreviewWarning(Request $req){
+    public function getPreviewWarning(Request $req)
+    {
         $collection = Session::get('warningReport');
 
         return DataTables::of($collection)->make(true);
     }
 
-    public function downloadExcel(Request $req){
-        if(Session::get('reportType') == 'smart_1'){
+    public function downloadExcel(Request $req)
+    {
+        if (Session::get('reportType') == 'smart_1') {
             return Excel::download(new Smart_Report1, 'smart.xlsx');
-        }else if(Session::get('reportType') == "smart_2"){
+        } else if (Session::get('reportType') == "smart_2") {
             return Excel::download(new Smart_Report2, 'smart.xlsx');
-        }else if(Session::get('reportType') == "smart_3"){
+        } else if (Session::get('reportType') == "smart_3") {
             return Excel::download(new Smart_Report3, 'smart.xlsx');
         }
     }
