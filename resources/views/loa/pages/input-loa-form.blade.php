@@ -97,7 +97,7 @@ Linc | LOA Homepage
                                 <div class="w-full relative p-5 mb-3 border border-dashed border-2 border-blue-400">
                                     <center>
                                         <div class="w-full font-bold text-2xl mb-3">
-                                            Cost Detail
+                                            Charges
                                         </div>
                                     </center>
                                     <!--Input Rate-->
@@ -264,7 +264,7 @@ Linc | LOA Homepage
                                             <!--Input Rate-->
                                             <div class="inline-block relative w-2/12 mb-3">
                                                 <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                                    htmlFor="name">Cost Name</label>
+                                                    htmlFor="name">Services</label>
                                                 <input type="text"
                                                     name="rate_name[5]"
                                                     class="input-rate border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
@@ -282,7 +282,7 @@ Linc | LOA Homepage
                                             </div> /
                                             <div class="inline-block relative w-2/12 mb-3">
                                                 <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                                    htmlFor="name">QTY</label>
+                                                    htmlFor="name">UoM</label>
                                                 <input type="text"
                                                     name="qty[5]"
                                                     class="input-qty border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"

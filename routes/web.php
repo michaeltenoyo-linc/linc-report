@@ -273,12 +273,16 @@ Route::middleware(['auth', 'priviledge:master'])->group(function () {
 });
 
 //LOA NEW REVISION
-Route::middleware(['auth', 'priviledge:loa,master'])->group(function () {
+Route::middleware(['auth', 'priviledge:loa,loa_view,master'])->group(function () {
     Route::prefix('/loa')->group(function () {
         //View Navigation
         Route::get('/', [LoaViewController::class, 'gotoLandingPage']);
-        Route::get('/nav-loa-new', [LoaViewController::class, 'gotoInputType']);
-        Route::get('/nav-loa-new/{type}', [LoaViewController::class, 'gotoInputForm']);
+
+        Route::middleware(['auth', 'priviledge:loa,master'])->group(function () {
+            Route::get('/nav-loa-new', [LoaViewController::class, 'gotoInputType']);
+            Route::get('/nav-loa-new/{type}', [LoaViewController::class, 'gotoInputForm']);
+        });
+
         Route::get('/nav-loa-list', [LoaViewController::class, 'gotoListType']);
         Route::get('/nav-loa-list/{type}', [LoaViewController::class, 'gotoListMaster']);
 

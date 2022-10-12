@@ -17,16 +17,16 @@ class Priviledges
      * @param  string|null  $guard
      * @return mixed
      */
-    public function handle($request, Closure $next, ... $roles)
+    public function handle($request, Closure $next, ...$roles)
     {
         $user = Auth::user();
 
         $userPriviledge = Priviledge::where('user_id', $user->id)->first();
-        $priviledges = explode(';',$userPriviledge->priviledge);
+        $priviledges = explode(';', $userPriviledge->priviledge);
 
         foreach ($priviledges as $p) {
             foreach ($roles as $r) {
-                if($r == $p){
+                if ($r == $p) {
                     return $next($request);
                 }
             }

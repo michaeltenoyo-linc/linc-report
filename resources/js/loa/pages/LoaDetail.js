@@ -3,6 +3,8 @@ import Snackbar from 'node-snackbar';
 import { split } from 'lodash';
 import { data } from 'jquery';
 
+const userPriviledge = $('#user-priviledge').val();
+
 export const refreshTimeline = async () => {
     $('#timeline-list').empty();
     $('.viewer-container').addClass('hidden');
@@ -55,8 +57,10 @@ export const refreshTimeline = async () => {
         rowDiv += '<div class="w-4/12 ml-5 grid grid-cols-2 gap-4">';
         rowDiv += '<div>' + '<button id="' + row['id'] + '" class="btn-archive-loa py-3 w-full rounded-full ' + activeColor + ' text-white">' + activeIcon + '</button>' + '</div>';
         rowDiv += '<div>' + '<button id="' + row['id'] + '" class="btn-pin-loa py-3 w-full rounded-full bg-orange-600 hover:bg-orange-700 text-white">' + iconFavorite + '</button>' + '</div>';
-        rowDiv += '<div>' + '<button id="' + row['id'] + '" class="btn-edit-loa py-3 w-full rounded-full bg-yellow-500 hover:bg-yellow-700 text-white"><i class="far fa-edit"></i></button>' + '</div>';
-        rowDiv += '<div>' + '<button id="' + row['id'] + '" class="btn-delete-loa py-3 w-full rounded-full bg-red-500 hover:bg-red-700 text-white"><i class="far fa-trash-alt"></i></button>' + '</div>';
+        if (userPriviledge == 'true') {
+            rowDiv += '<div>' + '<button id="' + row['id'] + '" class="btn-edit-loa py-3 w-full rounded-full bg-yellow-500 hover:bg-yellow-700 text-white"><i class="far fa-edit"></i></button>' + '</div>';
+            rowDiv += '<div>' + '<button id="' + row['id'] + '" class="btn-delete-loa py-3 w-full rounded-full bg-red-500 hover:bg-red-700 text-white"><i class="far fa-trash-alt"></i></button>' + '</div>';
+        }
         rowDiv += '</div>';
         rowDiv += '</div>';
         rowDiv += '</div>';
@@ -72,7 +76,8 @@ export const refreshTimeline = async () => {
         }
 
     });
-
+    $('.btn-delete-all-file').addClass('hidden');
+    $('.btn-add-file').addClass('hidden');
     //Reset Tab Class
     $.each($('.tab-active'), function (index, e) {
         $(e).removeClass('tab-active');
@@ -111,12 +116,14 @@ export const refreshLoaRates = async () => {
         row += '' + rate['duration'];
         row += '</td>';
         row += '<td>';
-        row += '<button onEdit="false" id="' + rowId + '" class="btn-rate-edit bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-full">';
-        row += '<i class="far fa-edit"></i>';
-        row += '</button>';
-        row += ' <button id="' + rowId + '" class="btn-rate-delete bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">';
-        row += '<i class="fas fa-trash"></i>';
-        row += '</button>';
+        if (userPriviledge == 'true') {
+            row += '<button onEdit="false" id="' + rowId + '" class="btn-rate-edit bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-full">';
+            row += '<i class="far fa-edit"></i>';
+            row += '</button>';
+            row += ' <button id="' + rowId + '" class="btn-rate-delete bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">';
+            row += '<i class="fas fa-trash"></i>';
+            row += '</button>';
+        }
         row += '</td>';
         row += '</tr>';
 

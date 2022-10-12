@@ -16,6 +16,7 @@ Linc | LOA Homepage
 
 @section('content')
 <input type="hidden" name="page-content" id="page-content" value="list-loa-detail">
+<input type="hidden" name="user-priviledge" id="user-priviledge" value="{{ $isAdmin }}">
 <div class="w-full mb-12 px-4">
     <div class="relative content p-10 flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
         <div class="w-full bg-gradient-to-r from-red-700 to-red-300 p-2 text-white font-bold italic text-sm">
@@ -120,6 +121,8 @@ Linc | LOA Homepage
                         </li>
                     </ul>
                 </div>
+
+                @if($isAdmin == 'true')
                 <div class="w-full">
                     <div class="w-12/12 my-5 flex justify-end">
                         <div></div>
@@ -131,6 +134,7 @@ Linc | LOA Homepage
                         </button>
                     </div>
                 </div>
+                @endif
             </div>
         </div>
 
@@ -149,13 +153,13 @@ Linc | LOA Homepage
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="py-3 px-6">
-                            Rate Name
+                            Description
                         </th>
                         <th scope="col" class="py-3 px-6">
                             Cost
                         </th>
                         <th scope="col" class="py-3 px-6">
-                            QTY
+                            UoM
                         </th>
                         <th scope="col" class="py-3 px-6">
                             Duration
@@ -188,11 +192,13 @@ Linc | LOA Homepage
                 </tbody>
             </table>
 
-            <div class="w-full flex justify-center table-loa-rates hidden">
-                <button id="btn-show-rate-form" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-                    Add Rate Cost
-                </button>
-            </div>
+            @if($isAdmin == 'true')
+                <div class="w-full flex justify-center table-loa-rates hidden">
+                    <button id="btn-show-rate-form" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                        Add Rate Cost
+                    </button>
+                </div>
+            @endif
 
             <form id="form-rate-detail" class="hidden">
                 <div id="container-loa-rates" class="w-full justify-center border border-4 border-red-500 border-dashed px-4 py-5 my-5">

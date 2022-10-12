@@ -29,30 +29,35 @@ class ViewController extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     //Navigation
-    public function gotoLandingPage(){
+    public function gotoLandingPage()
+    {
         return view('loa.pages.landing');
     }
 
-    public function gotoInputType(){
+    public function gotoInputType()
+    {
         return view('loa.pages.input-loa-type');
     }
 
-    public function gotoInputForm($type){
+    public function gotoInputForm($type)
+    {
         $data['type'] = $type;
         $data['customer'] = Customer::get();
-        $data['group_list'] = LoaMaster::join('customers','customers.reference','=','loa_masters.id_customer')
-                                        ->select('customers.name','loa_masters.group')
-                                        ->groupBy('customers.name','loa_masters.group')
-                                        ->get();
+        $data['group_list'] = LoaMaster::join('customers', 'customers.reference', '=', 'loa_masters.id_customer')
+            ->select('customers.name', 'loa_masters.group')
+            ->groupBy('customers.name', 'loa_masters.group')
+            ->get();
         //return $data;
         return view('loa.pages.input-loa-form', $data);
     }
 
-    public function gotoListType(){
+    public function gotoListType()
+    {
         return view('loa.pages.list-loa-type');
     }
 
-    public function gotoListMaster($type){
+    public function gotoListMaster($type)
+    {
         $data['type_raw'] = $type;
         switch ($type) {
             case 'bp':

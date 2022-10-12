@@ -20,11 +20,13 @@ use App\Models\Loa_warehouse;
 use App\Models\LoaDetail;
 use App\Models\LoaFile;
 use App\Models\LoaMaster;
+use App\Models\Priviledge;
 use App\Models\Province;
 use App\Models\Regency;
 use App\Models\Trucks;
 use App\Models\Village;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
@@ -192,6 +194,20 @@ class DataController extends BaseController
 
     public function readByCustomer($type, $reference)
     {
+        //Admin Checking
+        $data['isAdmin'] = 'false';
+        $user = Auth::user();
+
+        $userPriviledge = Priviledge::where('user_id', $user->id)->first();
+        $priviledges = explode(';', $userPriviledge->priviledge);
+
+        foreach ($priviledges as $p) {
+            if ($p == "loa" || $p == 'master') {
+                $data['isAdmin'] = 'true';
+            }
+        }
+
+
         $data['customer'] = Customer::find($reference);
         $data['loa'] = LoaMaster::where('id_customer', $reference)
             ->where('type', $type)
