@@ -24,6 +24,7 @@ use App\Models\Trucks;
 use App\Models\Suratjalan;
 use App\Models\Dload;
 use App\Models\LoadPerformance;
+use App\Models\ShipmentBlujay;
 use Maatwebsite\Excel\Excel as ExcelExcel;
 use Yajra\DataTables\Contracts\DataTable;
 
@@ -504,9 +505,11 @@ class ReportController extends BaseController
                             }
 
                             if ($req->input('customerType') == "all") {
-                                $truck = Trucks::where('nopol', '=', $sj->nopol)->first();
+                                //$truck = Trucks::where('nopol', '=', $sj->nopol)->first();
                                 //$totalHarga = intval($row->billable_total_rate) + $totalOvernight + $totalBongkar + $totalMultidrop;
                                 $splitID = explode('$', $sj->id_so);
+                                $shipment = ShipmentBlujay::where('load_id', $row->tms_id)->first();
+
 
                                 $dload = Dload::where('id_so', '=', $sj->id_so)->get();
 
@@ -524,12 +527,12 @@ class ReportController extends BaseController
                                             'CUSTOMER' => $sj->penerima,
                                             'ID STOP LOCATION' => $row->last_drop_location_name,
                                             'PROVINSI TUJUAN' => strtoupper(is_null($locationDetail) ? "Undefined" : $locationDetail->province),
-                                            'KOTA TUJUAN' => strtoupper(is_null($locationDetail) ? "Undefined" : $locationDetail->city),
+                                            'KOTA TUJUAN' => strtoupper(is_null($locationDetail) ? "Undefined" : $locationDetail->address_2),
                                             'SKU' => $item->material_code,
                                             'DESCRIPTION' => $itemDetail->description,
                                             'QTY' => $item->qty,
                                             'NOPOL' => $sj->nopol,
-                                            'TIPE KENDARAAN' => str_replace('_', ' ', $row->equipment_description),
+                                            'TIPE KENDARAAN' => str_replace('_', ' ', $shipment->load_group),
                                             'BIAYA TRUKING' => intval($row->billable_total_rate) - $totalOvernight - $totalBongkar - $totalMultidrop,
                                             'BIAYA BONGKAR' => $totalBongkar,
                                             'BIAYA MULTIDROP' => $totalMultidrop,

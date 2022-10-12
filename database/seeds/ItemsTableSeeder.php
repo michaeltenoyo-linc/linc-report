@@ -16,15 +16,15 @@ class ItemsTableSeeder extends Seeder
     {
         //Item::truncate();
 
-        $csvFile = fopen(base_path("reference/smart/ItemSmart_20220613.csv"),"r");
-        
+        $csvFile = fopen(base_path("reference/smart/ItemSmart_202210.csv"), "r");
+
         $firstline = true;
 
-        while(($data = fgetcsv($csvFile, 2000, ';')) != FALSE){
-            if (!$firstline){
+        while (($data = fgetcsv($csvFile, 2000, ';')) != FALSE) {
+            if (!$firstline) {
                 $checkItem = Item::find($data['0']);
 
-                if($checkItem == null){
+                if ($checkItem == null) {
                     error_log($data['0']);
                     Item::create([
                         'material_code' => $data['0'],
@@ -33,8 +33,15 @@ class ItemsTableSeeder extends Seeder
                         'nett_weight' => 1,
                         'category' => 'BRANDED CONSUMER',
                     ]);
-                }else{
-                    error_log($data['0']." Already Exist.");
+                } else {
+                    $checkItem->update([
+                        'description' => $data['1'],
+                        'gross_weight' => 1,
+                        'nett_weight' => 1,
+                        'category' => 'BRANDED CONSUMER',
+                    ]);
+
+                    error_log($data['0'] . " Already Exist. UPDATING");
                 }
             }
             $firstline = false;
