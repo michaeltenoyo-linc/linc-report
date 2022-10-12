@@ -82,7 +82,7 @@ Linc | LOA Homepage
                                 <div id="timeline-context" class="timeline cursor-pointer order-1 bg-gray-400 hover:bg-gray-300 rounded-lg shadow-xl w-10/12 px-6 py-4">
                                     <h3 class="mb-3 font-bold text-gray-800 text-xl">Context Title</h3>
                                     <p class="text-sm leading-snug tracking-wide text-gray-900 text-opacity-100">
-                                        <b class="text-gray-800">Effective :</b> DD/MM/YYYY <b class="text-gray-800">| Expired :</b> DD/MM/YYYY
+                                        <b class="text-gray-800">Effective :</b> DD/MM/YYYY <b class="bg-red-600 text-gray-800">| Expired :</b> DD/MM/YYYY
                                     </p>
                                 </div>
                             </div>

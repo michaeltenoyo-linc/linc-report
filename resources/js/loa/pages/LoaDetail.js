@@ -51,7 +51,7 @@ export const refreshTimeline = async () => {
         rowDiv += '<div class="w-8/12">'
         rowDiv += '<h3 class="mb-3 font-bold text-gray-800 text-xl">' + row['name'] + '</h3>';
         rowDiv += '<p class="text-sm leading-snug tracking-wide text-gray-900 text-opacity-100">';
-        rowDiv += '<b class="text-gray-800">Expired :</b> ' + row['expired'];
+        rowDiv += '<div class="bg-red-600 text-white p-2 rounded-md w-1/2 text-sm">' + '<b class="text-white">Expired :</b> ' + row['expired'] + '</div>';
         rowDiv += '</p>';
         rowDiv += '</div>';
         rowDiv += '<div class="w-4/12 ml-5 grid grid-cols-2 gap-4">';
