@@ -102,7 +102,11 @@ class ReportController  extends BaseController
                         }
                         foreach ($listSJ as $sj) {
                             $totalPay = $transRate + $sj->biaya_bongkar + $multidrop;
-                            $rateKG = floor(($totalPay / $totalWeight) * 100) / 100;
+                            $rateKG = 0;
+
+                            if ($totalWeight != 0) {
+                                $rateKG = floor(($totalPay / $totalWeight) * 100) / 100;
+                            }
                             if ($firstSJ) {
                                 $reports->push([
                                     'No' => $ctr,
