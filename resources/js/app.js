@@ -1,6 +1,7 @@
 require('./bootstrap');
+import 'tw-elements';
 
-const sharedModule= require('./shared/index');
+const sharedModule = require('./shared/index');
 
 sharedModule.load();
 

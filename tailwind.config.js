@@ -6,6 +6,7 @@ module.exports = {
     content: [
       './resources/views/**/*.blade.php',
       './resources/sass/**/*.scss',
+      './node_modules/tw-elements/dist/js/**/*.js'
     ],
     safelist: [
       'text-green-700',
@@ -104,6 +105,7 @@ module.exports = {
   },
   variants: {},
   plugins: [
+    require('tw-elements/dist/plugin'),
     require('@tailwindcss/ui'),
     require("@tailwindcss/forms"),
     plugin(function ({ addComponents, theme }) {

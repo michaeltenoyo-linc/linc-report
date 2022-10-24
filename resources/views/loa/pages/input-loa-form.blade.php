@@ -90,9 +90,7 @@ Linc | LOA Homepage
                                         required/>
                                 </div>
                             </div>
-
-                            @if ($type == 'bp')
-                            @elseif ($type  == 'cml')
+                            @if ($type  == 'cml')
                                 <!-- DETAIL COST EXTRACT CML-->
                                 <div class="w-full relative p-5 mb-3 border border-dashed border-2 border-blue-400">
                                     <center>
@@ -360,14 +358,244 @@ Linc | LOA Homepage
                             </div>
 
                             <hr class="my-5">
-
-                            <div class="w-full lg:w-12/12 px-4" >
-                                <div class="flex flex-row-reverse w-full mb-3">
-                                    <input type="submit"
-                                        class="btn-simpan bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded text-right"
-                                        value="Simpan"/>
+                            
+                            @if ($type  == 'cml')
+                                <div class="w-full lg:w-12/12 px-4" >
+                                    <div class="flex flex-row-reverse w-full mb-3">
+                                        <input type="submit"
+                                            class="btn-simpan bg-green-500 cursor-pointer hover:bg-green-700 text-white font-bold py-1 px-2 rounded text-right"
+                                            value="Simpan"/>
+                                    </div>
                                 </div>
-                            </div>
+                            @elseif ($type == 'bp')
+                                <div class="w-full text-center mb-10">  
+                                    <label class="block text-blueGray-600 text-xs font-bold mb-2"
+                                        htmlFor="name">Services<br><span class="text-red-500">*Harap melengkapi step berikut untuk menyimpan data.
+                                        <br>
+                                        <u>Pengisian detail harga dapat dilakukan secara bertahap atau menyicil.</u>
+                                        </span>
+                                    </label>
+                                </div>
+
+                                <!-- TAB SECTION -->
+                                <div class="flex flex-wrap" id="tabs-id">
+                                    <div class="w-full">
+                                    <ul class="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row">
+                                        <li class="-mb-px mr-2 last:mr-0 flex-auto text-center cursor-pointer">
+                                        <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-white bg-blue-600" onclick="changeActiveTab(event,'tab-profile')">
+                                            <i class="fas fa-truck-moving text-base mr-1"></i>  Rental
+                                        </a>
+                                        </li>
+                                        <li class="-mb-px mr-2 last:mr-0 flex-auto text-center cursor-pointer">
+                                        <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-blue-600 bg-white" onclick="changeActiveTab(event,'tab-settings')">
+                                            <i class="fas fa-clipboard-list text-base mr-1"></i>  Excess / Variables
+                                        </a>
+                                        </li>
+                                        <li class="-mb-px mr-2 last:mr-0 flex-auto text-center cursor-pointer">
+                                        <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-blue-600 bg-white" onclick="changeActiveTab(event,'tab-options')">
+                                            <i class="fas fa-route text-base mr-1"></i>  On Call Routes
+                                        </a>
+                                        </li>
+                                    </ul>
+                                    <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+                                            <div class="px-4 py-5 flex-auto">
+                                                <div class="tab-content tab-space">
+                                                    <div class="block" id="tab-profile">
+                                                    <!-- Fixed Rental Charges -->
+                                                    <div class="w-full">
+                                                        <div class="w-full text-center text-red-500 font-bold mb-5">
+                                                            Jika tidak memiliki service fixed rental, dapat melanjutkan pengisian charges lain.
+                                                        </div>
+                                                        <div class="w-full">
+                                                            <center>
+                                                                <div class="w-full flex justify-center mb-3">
+                                                                    <div class="inline-block relative ml-2 w-1/12">
+                                                                        <button class="btn-add-rental text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" id="5">
+                                                                            <i class="fas fa-plus"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                                <div id="container-loa-rental" style="max-height: 36rem;" class="overflow-y-scroll">
+                                                                    <input type="hidden" id="counter-rental" name="counter-rental" value=-1>
+                                                                </div>
+                                                            </center>
+                                                        </div>
+                                                    </div>
+                                                    <!-- END SECTION -->
+                                                    </div>
+                                                    <div class="hidden" id="tab-settings">
+                                                    <!-- EXCESS CHARGES -->
+                                                    <div class="w-full mb-5">
+                                                        <div class="w-full text-center text-red-500 font-bold">
+                                                            Jika tidak memiliki tambahan excess/variables, dapat melanjutkan pengisian charges lain.
+                                                        </div>
+                                                    </div>
+                                                    <center>
+                                                        <div class="w-full flex justify-center mb-3">
+                                                            <div class="inline-block relative ml-2 w-1/12">
+                                                                <button class="btn-add-excess text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" id="5">
+                                                                    <i class="fas fa-plus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div id="container-loa-excess" style="max-height: 36rem;" class="overflow-y-scroll">
+                                                            <input type="hidden" id="counter-excess" name="counter-excess" value=-1>
+                                                        </div>
+                                                    </center>
+                                                    <!-- END SECTION -->
+                                                    </div>
+                                                    <div class="hidden" id="tab-options">
+                                                    <!-- ON CALL ROUTES CHARGES -->
+                                                    <div class="w-full mb-5">
+                                                        <div class="w-full text-center text-red-500 font-bold">
+                                                            Jika tidak memiliki tambahan on call routes, dapat melanjutkan pengisian charges lain.
+                                                        </div>
+                                                    </div>
+                                                    <center>
+                                                        <div class="w-full flex justify-center mb-5">
+                                                            <div class="inline-block relative ml-2 w-1/12">
+                                                                <button class="btn-add-routes text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" id="5">
+                                                                    <i class="fas fa-plus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div id="container-loa-routes" style="max-height: 36rem;" class="overflow-y-scroll">
+                                                            <input type="hidden" id="counter-routes" name="counter-routes" value=-1>
+                                                        </div>
+                                                    </center>
+                                                    <!-- END SECTION -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END TAB SECTION -->
+
+                                {{-- <!-- STEPPER SECTION -->
+                                <ul class="stepper" data-mdb-stepper="stepper">
+                                    <li class="stepper-step stepper-active">
+                                    <div class="stepper-head">
+                                        <span class="stepper-head-icon"> 1 </span>
+                                        <span class="stepper-head-text"> Fixed Rental </span>
+                                    </div>
+                                    <div class="stepper-content">
+                                        <!-- Fixed Rental Charges -->
+                                        <div class="w-full">
+                                            <div class="w-full text-center text-red-500 font-bold">
+                                                Jika tidak memiliki service fixed rental, dapat melanjutkan pengisian charges lain.
+                                            </div>
+                                            <div class="w-full grid grid-cols-4 gap-4 section-fixed-rental mb-5">
+
+                                            </div>
+                                            <div class="w-full">
+                                                <center>
+                                                    <button id="btn-add-rental" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                                                        Add
+                                                    </button>
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <!-- END SECTION -->
+                                    </div>
+                                    </li>
+                                    <li class="stepper-step">
+                                        <div class="stepper-head">
+                                        <span class="stepper-head-icon"> 2 </span>
+                                        <span class="stepper-head-text"> Excess/Variables on Call</span>
+                                        </div>
+                                        <div class="stepper-content">
+                                        <!-- EXCESS CHARGES -->
+                                        <div class="w-full mb-5">
+                                            <div class="w-full text-center text-red-500 font-bold">
+                                                Jika tidak memiliki tambahan excess/variables, dapat melanjutkan pengisian charges lain.
+                                            </div>
+                                        </div>
+                                        <center>
+                                            <div id="container-loa-rates">
+                                                <input type="hidden" id="counter-rates" name="counter-rates" value=0>
+                                                <div class="loa-other-rate-0">
+                                                    <!--Input Rate-->
+                                                    <div class="inline-block relative w-2/12 mb-3">
+                                                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                                            htmlFor="name">Services</label>
+                                                        <input type="text"
+                                                            name="rate_name[0]"
+                                                            class="input-rate border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                                            value="Other"
+                                                            required/>
+                                                    </div>
+                                                    <div class="inline-block relative w-3/12 mb-3">
+                                                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                                            htmlFor="name">Rate</label>
+                                                        <input type="number"
+                                                            name="rate[0]"
+                                                            class="input-rate border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                                            value="0"
+                                                            required/>
+                                                    </div> /
+                                                    <div class="inline-block relative w-2/12 mb-3">
+                                                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                                            htmlFor="name">UoM</label>
+                                                        <input type="text"
+                                                            name="qty[0]"
+                                                            class="input-qty border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                                            value="PP"
+                                                            required/>
+                                                    </div> /
+                                                    <div class="inline-block relative w-2/12 mb-3">
+                                                        <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                                            htmlFor="name">Duration</label>
+                                                        <input type="text"
+                                                            name="duration[0]"
+                                                            class="input-duration border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                                            value="Month"
+                                                            required/>
+                                                    </div>
+                                                    <div class="inline-block relative ml-2 w-1/12">
+                                                        <button class="btn-delete-rate text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" id="5">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                    <!---->
+                                                </div>
+                                            </div>
+                                            <div class="w-full flex justify-center">
+                                                <div class="inline-block relative ml-2 w-1/12">
+                                                    <button class="btn-add-rate text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" id="5">
+                                                        <i class="fas fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </center>
+                                        <!-- END SECTION -->
+                                        </div>
+                                    </li>
+                                    <li class="stepper-step">
+                                    <div class="stepper-head">
+                                        <span class="stepper-head-icon"> 3 </span>
+                                        <span class="stepper-head-text"> On Call Routes </span>
+                                    </div>
+                                    <div class="stepper-content">
+                                        <div class="w-full lg:w-12/12 px-4" >
+                                            <div class="flex flex-row-reverse w-full mb-3">
+                                                <input type="submit"
+                                                    class="btn-simpan cursor-pointer bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded text-right"
+                                                    value="Simpan"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </li>
+                                </ul>
+                                <!-- END STEPPER SECTION --> --}}
+                                <div class="w-full lg:w-12/12 px-4" >
+                                    <div class="flex flex-row-reverse w-full mb-3">
+                                        <input type="submit"
+                                            class="btn-simpan bg-green-500 cursor-pointer hover:bg-green-700 text-white font-bold py-1 px-2 rounded text-right"
+                                            value="Simpan"/>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </form>
@@ -376,3 +604,29 @@ Linc | LOA Homepage
     </div>
 </div>
 @endsection
+
+<script>
+    function changeActiveTab(event, tabID) {
+        let element = event.target;
+        while (element.nodeName !== "A") {
+            element = element.parentNode;
+        }
+        ulElement = element.parentNode.parentNode;
+        aElements = ulElement.querySelectorAll("li > a");
+        tabContents = document.getElementById("tabs-id").querySelectorAll(".tab-content > div");
+        for (let i = 0; i < aElements.length; i++) {
+            aElements[i].classList.remove("text-white");
+            aElements[i].classList.remove("bg-blue-600");
+            aElements[i].classList.add("text-blue-600");
+            aElements[i].classList.add("bg-white");
+            tabContents[i].classList.add("hidden");
+            tabContents[i].classList.remove("block");
+        }
+        element.classList.remove("text-blue-600");
+        element.classList.remove("bg-white");
+        element.classList.add("text-white");
+        element.classList.add("bg-blue-600");
+        document.getElementById(tabID).classList.remove("hidden");
+        document.getElementById(tabID).classList.add("block");
+    }
+</script>

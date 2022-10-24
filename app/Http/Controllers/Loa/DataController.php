@@ -18,6 +18,7 @@ use App\Models\dloa_transport;
 use App\Models\Loa_transport;
 use App\Models\Loa_warehouse;
 use App\Models\LoaDetail;
+use App\Models\LoaDetailBp;
 use App\Models\LoaFile;
 use App\Models\LoaMaster;
 use App\Models\Priviledge;
@@ -37,20 +38,34 @@ class DataController extends BaseController
     //Navigation
     public function insert(Request $req)
     {
-        $req->validate([
-            'name' => 'required',
-            'customer' => 'required',
-            'type' => 'required',
-            'effective' => 'required',
-            'expired' => 'required',
-            'filename' => 'required',
-            'file' => 'required',
-            'extension' => 'required',
-            'rate_name' => 'required',
-            'rate' => 'required',
-            'qty' => 'required',
-            'duration' => 'required',
-        ]);
+        if ($req->input('type') == 'cml') {
+            $req->validate([
+                'name' => 'required',
+                'customer' => 'required',
+                'type' => 'required',
+                'effective' => 'required',
+                'expired' => 'required',
+                'filename' => 'required',
+                'file' => 'required',
+                'extension' => 'required',
+                'rate_name' => 'required',
+                'rate' => 'required',
+                'qty' => 'required',
+                'duration' => 'required',
+            ]);
+        } else if ($req->input('type') == 'bp') {
+            $req->validate([
+                'name' => 'required',
+                'customer' => 'required',
+                'type' => 'required',
+                'effective' => 'required',
+                'expired' => 'required',
+                'filename' => 'required',
+                'file' => 'required',
+                'extension' => 'required',
+            ]);
+        }
+
 
         $checkCustomer = Customer::find($req->input('customer'));
 
@@ -97,6 +112,79 @@ class DataController extends BaseController
                         ]);
                     }
                 }
+            } else if ($req->input('type') == 'bp') {
+                //IF BP ADA EXCESS DeTAIL KOMPLEKS
+
+                //RENTAL
+                $ctr_rental = $req->input('counter-rental');
+                if ($ctr_rental > -1) {
+                    $rental_site = $req->input('rental_site');
+                    $rental_type = $req->input('rental_type');
+                    $rental_rate = $req->input('rental_rate');
+                    $rental_qty = $req->input('rental_qty');
+                    $rental_terms = $req->input('rental_terms');
+
+                    for ($i = 0; $i < $req->input('counter-rental') + 1; $i++) {
+                        if (isset($rental_site[$i])) {
+                            $rentalDetail = LoaDetailBp::create([
+                                'name' => 'rental|' . $rental_site[$i] . '|' . $rental_type[$i],
+                                'id_loa' => $newLoa->id,
+                                'cost' => $rental_rate[$i],
+                                'uom' => $rental_qty[$i],
+                                'terms' => $rental_terms[$i],
+                                'type' => $rental_type[$i],
+                            ]);
+                        }
+                    }
+                }
+
+                //EXCESS
+                $ctr_excess = $req->input('counter-excess');
+                if ($ctr_excess > -1) {
+                    $excess_name = $req->input('excess_name');
+                    $excess_type = $req->input('excess_type');
+                    $excess_rate = $req->input('excess_rate');
+                    $excess_qty = $req->input('excess_qty');
+                    $excess_terms = $req->input('excess_terms');
+
+                    for ($i = 0; $i < $req->input('counter-excess') + 1; $i++) {
+                        if (isset($excess_name[$i])) {
+                            $rentalDetail = LoaDetailBp::create([
+                                'name' => 'excess|' . $excess_name[$i] . '|' . $excess_type[$i],
+                                'id_loa' => $newLoa->id,
+                                'cost' => $excess_rate[$i],
+                                'uom' => $excess_qty[$i],
+                                'terms' => $excess_terms[$i],
+                                'type' => $excess_type[$i],
+                            ]);
+                        }
+                    }
+                }
+
+                //ON CALL ROUTES
+                $ctr_routes = $req->input('counter-routes');
+                if ($ctr_routes > -1) {
+                    $routes_type = $req->input('routes_type');
+                    $routes_origin = $req->input('routes_origin');
+                    $routes_destination = $req->input('routes_destination');
+                    $routes_type = $req->input('routes_type');
+                    $routes_rate = $req->input('routes_rate');
+
+                    for ($i = 0; $i < $req->input('counter-routes') + 1; $i++) {
+                        if (isset($routes_origin[$i])) {
+                            $rentalDetail = LoaDetailBp::create([
+                                'name' => 'routes|' . $routes_origin[$i] . '|' . $routes_destination[$i] . '|' . $routes_type[$i],
+                                'id_loa' => $newLoa->id,
+                                'cost' => $routes_rate[$i],
+                                'uom' => 'routes',
+                                'terms' => 'none',
+                                'type' => $routes_type[$i],
+                            ]);
+                        }
+                    }
+                }
+
+                //END COMPLEX EXCESS
             }
 
 

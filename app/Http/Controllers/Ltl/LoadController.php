@@ -21,61 +21,63 @@ class LoadController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    private function csvstring_to_array($string, $separatorChar = ';', $enclosureChar = '"', $newlineChar = "\n") {
+    private function csvstring_to_array($string, $separatorChar = ';', $enclosureChar = '"', $newlineChar = "\n")
+    {
         // @author: Klemen Nagode
         $array = array();
         $size = strlen($string);
         $columnIndex = 0;
         $rowIndex = 0;
-        $fieldValue="";
+        $fieldValue = "";
         $isEnclosured = false;
-        for($i=0; $i<$size;$i++) {
+        for ($i = 0; $i < $size; $i++) {
 
-            $char = $string{$i};
+            $char = $string{
+            $i};
             $addChar = "";
 
-            if($isEnclosured) {
-                if($char==$enclosureChar) {
+            if ($isEnclosured) {
+                if ($char == $enclosureChar) {
 
-                    if($i+1<$size && $string{$i+1}==$enclosureChar){
+                    if ($i + 1 < $size && $string{
+                    $i + 1} == $enclosureChar) {
                         // escaped char
-                        $addChar=$char;
+                        $addChar = $char;
                         $i++; // dont check next char
-                    }else{
+                    } else {
                         $isEnclosured = false;
                     }
-                }else {
-                    $addChar=$char;
+                } else {
+                    $addChar = $char;
                 }
-            }else {
-                if($char==$enclosureChar) {
+            } else {
+                if ($char == $enclosureChar) {
                     $isEnclosured = true;
-                }else {
+                } else {
 
-                    if($char==$separatorChar) {
+                    if ($char == $separatorChar) {
 
                         $array[$rowIndex][$columnIndex] = $fieldValue;
-                        $fieldValue="";
+                        $fieldValue = "";
 
                         $columnIndex++;
-                    }elseif($char==$newlineChar) {
+                    } elseif ($char == $newlineChar) {
                         echo $char;
                         $array[$rowIndex][$columnIndex] = $fieldValue;
-                        $fieldValue="";
-                        $columnIndex=0;
+                        $fieldValue = "";
+                        $columnIndex = 0;
                         $rowIndex++;
-                    }else {
-                        $addChar=$char;
+                    } else {
+                        $addChar = $char;
                     }
                 }
             }
-            if($addChar!=""){
-                $fieldValue.=$addChar;
-
+            if ($addChar != "") {
+                $fieldValue .= $addChar;
             }
         }
 
-        if($fieldValue) { // save last field
+        if ($fieldValue) { // save last field
             $array[$rowIndex][$columnIndex] = $fieldValue;
         }
         return $array;
@@ -83,16 +85,16 @@ class LoadController extends BaseController
 
     private function csvtoarray($file)
     {
-        $csv= file_get_contents($file);
+        $csv = file_get_contents($file);
         $array = $this->csvstring_to_array($csv);
         $header = $array[0];
         $out = new Collection;
 
-        for ($i=0; $i < count($array); $i++) {
+        for ($i = 0; $i < count($array); $i++) {
             $row = $array[$i];
-            if($i > 0){
+            if ($i > 0) {
                 $arrayRow = [];
-                for ($key=0; $key < count($header); $key++) {
+                for ($key = 0; $key < count($header); $key++) {
                     $arrayRow[$header[$key]] = $row[$key];
                 }
                 $out->push($arrayRow);
@@ -102,8 +104,9 @@ class LoadController extends BaseController
         return $out;
     }
 
-    private function csv_to_array($csvfile) {
-        $csv = Array();
+    private function csv_to_array($csvfile)
+    {
+        $csv = array();
         $rowcount = 0;
         if (($handle = fopen($csvfile, "r")) !== FALSE) {
             $max_line_length = defined('MAX_LINE_LENGTH') ? MAX_LINE_LENGTH : 10000;
@@ -114,8 +117,7 @@ class LoadController extends BaseController
                 if ($row_colcount == $header_colcount) {
                     $entry = array_combine($header, $row);
                     $csv[] = $entry;
-                }
-                else {
+                } else {
                     error_log("csvreader: Invalid number of columns at line " . ($rowcount + 2) . " (row " . ($rowcount + 1) . "). Expected=$header_colcount Got=$row_colcount");
                     return null;
                 }
@@ -123,15 +125,15 @@ class LoadController extends BaseController
             }
             //echo "Totally $rowcount rows found\n";
             fclose($handle);
-        }
-        else {
+        } else {
             error_log("csvreader: Could not read CSV \"$csvfile\"");
             return null;
         }
         return $csv;
     }
 
-    public function checkBluejay(Request $req){
+    public function checkBluejay(Request $req)
+    {
         $this->validate($req, [
             'bluejay' => 'required',
         ]);
@@ -139,27 +141,28 @@ class LoadController extends BaseController
         $data['bluejayData'] = $this->csvtoarray($req->file('bluejay'));
         $data['message'] = "File sesuai dengan ketentuan.";
 
-        Session::put('bluejayArray',$data['bluejayData']);
+        Session::put('bluejayArray', $data['bluejayData']);
 
         $data['datatable'] = DataTables::of($data['bluejayData'])->make(true);
 
-        return response()->json($data,200);
+        return response()->json($data, 200);
     }
 
-    public function bluejayTable(Request $req){
+    public function bluejayTable(Request $req)
+    {
         $bluejayList = Session::get('bluejayArray');
 
         $loads = new Collection;
 
-        for ($i=0; $i < count($bluejayList); $i++) {
+        for ($i = 0; $i < count($bluejayList); $i++) {
             $row = $bluejayList[$i];
-            $customerID = substr($row['First Pick Location Name'],0,3);
+            $customerID = substr($row['First Pick Location Name'], 0, 3);
 
             $loads->push([
-                'TMS ID' => (isset($row['TMS ID'])?$row['TMS ID']:$row['Load ID']),
+                'TMS ID' => (isset($row['TMS ID']) ? $row['TMS ID'] : $row['Load ID']),
                 'Customer ID' => $customerID,
-                'Created Date' => (isset($row['Created Date'])?$row['Created Date']:$row['Order Create Date']),
-                'Last Drop Location City' => (isset($row['Last Drop Location City'])?$row['Last Drop Location City']:$row['Delivery Location Name']),
+                'Created Date' => (isset($row['Created Date']) ? $row['Created Date'] : $row['Order Create Date']),
+                'Last Drop Location City' => (isset($row['Last Drop Location City']) ? $row['Last Drop Location City'] : $row['Delivery Location Name']),
                 'Load Status' => $row['Load Status'],
             ]);
 
@@ -176,5 +179,4 @@ class LoadController extends BaseController
 
         return DataTables::of($loads)->make(true);
     }
-
 }

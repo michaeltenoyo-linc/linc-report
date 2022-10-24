@@ -37,6 +37,7 @@
         "sweetalert2": "^11.1.5",
         "tailwindcss": "^2.2.16",
         "three-dots": "^0.2.1",
+        "tw-elements": "^1.0.0-alpha12",
         "typeahead": "^0.2.2",
         "vue-template-compiler": "^2.6.11",
         "webpack-cli": "^4.8.0"

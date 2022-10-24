@@ -5,16 +5,16 @@ import { refreshFileList } from '../pages/LoaDetail';
 export const LoaModal = () => {
     console.log("loading LoaModal JS");
 
-    function hideTimelineNumber(){
+    function hideTimelineNumber() {
         $('.timeline-number').addClass("hidden");
     }
 
-    function showTimelineNumber(){
+    function showTimelineNumber() {
         $('.timeline-number').removeClass("hidden");
     }
 
     const CreateContract = () => {
-        $(document).on('click', '.btn-add-file', function (e){
+        $(document).on('click', '.btn-add-file', function (e) {
             e.preventDefault();
             let customerReference = $('#customer_reference').html();
             let customerName = $('#customer_name').html();
@@ -35,7 +35,7 @@ export const LoaModal = () => {
             $('#loa-add-file .modal').removeClass('hidden');
         });
 
-        $('#form-loa-file').on('submit', async function(e){
+        $('#form-loa-file').on('submit', async function (e) {
             e.preventDefault();
 
             //AJAX Save
@@ -47,7 +47,7 @@ export const LoaModal = () => {
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Iya, simpan!'
-              }).then((result) => {
+            }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajaxSetup({
                         headers: {
@@ -67,7 +67,7 @@ export const LoaModal = () => {
                                 title: 'Tersimpan!',
                                 text: 'File LOA sudah disimpan.',
                                 icon: 'success'
-                            }).then(function(){
+                            }).then(function () {
                                 $('#form-loa-file input').val("");
 
                                 refreshFileList();
@@ -75,7 +75,7 @@ export const LoaModal = () => {
                                 $('#loa-add-file .modal').addClass('hidden');
                             });
                         },
-                        error : function(request, status, error){
+                        error: function (request, status, error) {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
@@ -88,5 +88,13 @@ export const LoaModal = () => {
         });
     }
 
+    const AddFixedRental = () => {
+        $('#btn-add-rental').on('click', (e) => {
+            e.preventDefault();
+            $('#loa-fixed-rental .modal').removeClass('hidden');
+        });
+    }
+
     CreateContract();
+    AddFixedRental();
 };
