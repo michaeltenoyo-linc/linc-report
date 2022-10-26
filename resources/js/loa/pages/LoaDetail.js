@@ -94,43 +94,87 @@ export const refreshTimeline = async () => {
 
 export const refreshLoaRates = async () => {
     let loaId = $('#selected-loa-id').val();
-    const rates = await $.get('/loa/data/getRatesByLoa/' + loaId);
-    $('.table-loa-rates-values').empty();
+    let type = $('#loa-type').val();
 
-    rates['rates'].forEach(rate => {
-        let rowId = rate['name'].replace(' ', '-');
+    const rates = await $.get('/loa/data/getRatesByLoa/' + loaId + '/' + type);
 
-        let row = '';
-        row += '<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">';
-        row += '<input type="hidden" name="id_loa" id="id-loa" class="row-name-' + rowId + '" value="' + rate['id_loa'] + '">';
-        row += '<th scope="row" id="name" class="row-name-' + rowId + ' py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">';
-        row += rate['name'];
-        row += '</th>';
-        row += '<td contenteditable="false" id="cost" class="row-rate-' + rowId + ' py-4 px-6">';
-        row += rate['cost'];
-        row += '</td>';
-        row += '<td contenteditable="false" id="qty" class="row-rate-' + rowId + ' py-4 px-6">';
-        row += '' + rate['qty'];
-        row += '</td>';
-        row += '<td contenteditable="false" id="duration" class="row-rate-' + rowId + ' py-4 px-6">';
-        row += '' + rate['duration'];
-        row += '</td>';
-        row += '<td>';
-        if (userPriviledge == 'true') {
-            row += '<button onEdit="false" id="' + rowId + '" class="btn-rate-edit bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-full">';
-            row += '<i class="far fa-edit"></i>';
-            row += '</button>';
-            row += ' <button id="' + rowId + '" class="btn-rate-delete bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">';
-            row += '<i class="fas fa-trash"></i>';
-            row += '</button>';
+
+    if (type == 'cml') {
+        $('.table-loa-rates-values').empty();
+
+        rates['rates'].forEach(rate => {
+            let rowId = rate['name'].replace(' ', '-');
+
+            let row = '';
+            row += '<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">';
+            row += '<input type="hidden" name="id_loa" id="id-loa" class="row-name-' + rowId + '" value="' + rate['id_loa'] + '">';
+            row += '<th scope="row" id="name" class="row-name-' + rowId + ' py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">';
+            row += rate['name'];
+            row += '</th>';
+            row += '<td contenteditable="false" id="cost" class="row-rate-' + rowId + ' py-4 px-6">';
+            row += rate['cost'];
+            row += '</td>';
+            row += '<td contenteditable="false" id="qty" class="row-rate-' + rowId + ' py-4 px-6">';
+            row += '' + rate['qty'];
+            row += '</td>';
+            row += '<td contenteditable="false" id="duration" class="row-rate-' + rowId + ' py-4 px-6">';
+            row += '' + rate['duration'];
+            row += '</td>';
+            row += '<td>';
+            if (userPriviledge == 'true') {
+                row += '<button onEdit="false" id="' + rowId + '" class="btn-rate-edit bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-full">';
+                row += '<i class="far fa-edit"></i>';
+                row += '</button>';
+                row += ' <button id="' + rowId + '" class="btn-rate-delete bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">';
+                row += '<i class="fas fa-trash"></i>';
+                row += '</button>';
+            }
+            row += '</td>';
+            row += '</tr>';
+
+            $('.table-loa-rates-values').append(row);
+        });
+
+        $('.table-loa-rates').removeClass('hidden');
+    } else if (type == 'bp') {
+        //RESET VALUE
+        $('.content-rental').empty();
+        $('.content-excess').empty();
+        $('.content-routes').empty();
+
+        var rentalCount = 0;
+        var excessCount = 0;
+        var routesCount = 0;
+
+        //INPUT VALUE
+        rates['rates'].forEach(rate => {
+            let rateName = rate['name'].split('|')[0];
+            let rateType = rateName[0];
+            if (rateType == 'rental') {
+                rentalCount++;
+            } else if (rateType == 'excess') {
+                excessCount++;
+            } else if (rateType == 'routes') {
+                routesCount++;
+            }
+        });
+
+        //COUNT
+        if (rentalCount == 0) {
+            let row = '<div class="w-full text-center text-red-500 font-bold"> LOA ini tidak memiliki services fixed rental</div>';
+            $('.content-rental').append(row);
         }
-        row += '</td>';
-        row += '</tr>';
+        if (excessCount == 0) {
+            let row = '<div class="w-full text-center text-red-500 font-bold"> LOA ini tidak memiliki services excess/variables</div>';
+            $('.content-excess').append(row);
+        }
+        if (routesCount == 0) {
+            let row = '<div class="w-full text-center text-red-500 font-bold"> LOA ini tidak memiliki services on call routes</div>';
+            $('.content-routes').append(row);
+        }
 
-        $('.table-loa-rates-values').append(row);
-    });
-
-    $('.table-loa-rates').removeClass('hidden');
+        $('.services-bp-tab').removeClass('hidden');
+    }
 }
 
 export const refreshFileList = async () => {

@@ -285,6 +285,7 @@ class DataController extends BaseController
         //Admin Checking
         $data['isAdmin'] = 'false';
         $user = Auth::user();
+        $data['type'] = $type;
 
         $userPriviledge = Priviledge::where('user_id', $user->id)->first();
         $priviledges = explode(';', $userPriviledge->priviledge);
@@ -351,9 +352,9 @@ class DataController extends BaseController
         return $data;
     }
 
-    public function getRatesByLoa($loa_id)
+    public function getRatesByLoa($loa_id, $type)
     {
-        $data['rates'] = LoaDetail::where('id_loa', $loa_id)->get();
+        $data['rates'] = $type == 'cml' ? LoaDetail::where('id_loa', $loa_id)->get() : LoaDetailBp::where('id_loa', $loa_id)->get();
         return response()->json($data, 200);
     }
 

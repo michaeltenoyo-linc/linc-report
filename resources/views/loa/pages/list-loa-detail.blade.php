@@ -16,6 +16,7 @@ Linc | LOA Homepage
 
 @section('content')
 <input type="hidden" name="page-content" id="page-content" value="list-loa-detail">
+<input type="hidden" name="" id="loa-type" value="{{ $type }}">
 <input type="hidden" name="user-priviledge" id="user-priviledge" value="{{ $isAdmin }}">
 <div class="w-full mb-12 px-4">
     <div class="relative content p-10 flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
@@ -149,120 +150,180 @@ Linc | LOA Homepage
                 Choose a main LOA to show
             </div>
 
-            <table class="table-loa-rates w-full text-sm text-left text-gray-500 dark:text-gray-400 my-5 hidden">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="py-3 px-6">
-                            Description
-                        </th>
-                        <th scope="col" class="py-3 px-6">
-                            Cost
-                        </th>
-                        <th scope="col" class="py-3 px-6">
-                            UoM
-                        </th>
-                        <th scope="col" class="py-3 px-6">
-                            Duration
-                        </th>
-                        <th scope="col" class="py-3 px-6">
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="table-loa-rates-values">
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <input type="hidden" name="id_loa" id="id-loa" class="row-name-0" value="0">
-                        <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Storage Rate
-                        </th>
-                        <td class="py-4 px-6">
-                            10.000.000
-                        </td>
-                        <td class="py-4 px-6">
-                            /PP
-                        </td>
-                        <td class="py-4 px-6">
-                            /Month
-                        </td>
-                        <td>
-                            <button id="0" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-                                <i class="far fa-edit"></i>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            @if($type == 'cml')
+                <table class="table-loa-rates w-full text-sm text-left text-gray-500 dark:text-gray-400 my-5 hidden">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="py-3 px-6">
+                                Description
+                            </th>
+                            <th scope="col" class="py-3 px-6">
+                                Cost
+                            </th>
+                            <th scope="col" class="py-3 px-6">
+                                UoM
+                            </th>
+                            <th scope="col" class="py-3 px-6">
+                                Duration
+                            </th>
+                            <th scope="col" class="py-3 px-6">
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-loa-rates-values">
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <input type="hidden" name="id_loa" id="id-loa" class="row-name-0" value="0">
+                            <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Storage Rate
+                            </th>
+                            <td class="py-4 px-6">
+                                10.000.000
+                            </td>
+                            <td class="py-4 px-6">
+                                /PP
+                            </td>
+                            <td class="py-4 px-6">
+                                /Month
+                            </td>
+                            <td>
+                                <button id="0" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                                    <i class="far fa-edit"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 
-            @if($isAdmin == 'true')
-                <div class="w-full flex justify-center table-loa-rates hidden">
-                    <button id="btn-show-rate-form" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-                        Add Rate Cost
-                    </button>
+                @if($isAdmin == 'true')
+                    <div class="w-full flex justify-center table-loa-rates hidden">
+                        <button id="btn-show-rate-form" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                            Add Rate Cost
+                        </button>
+                    </div>
+
+                    <form id="form-rate-detail" class="hidden">
+                        <div id="container-loa-rates" class="w-full justify-center border border-4 border-red-500 border-dashed px-4 py-5 my-5">
+                            <div class="w-full text-center font-bold py-5">
+                                Add Cost
+                            </div>
+                            <input type="hidden" id="counter-rates" name="counter-rates" value=0>
+                            <div class="loa-other-rate-0">
+                                <!--Input Rate-->
+                                <div class="inline-block relative w-2/12 mb-3">
+                                    <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                        htmlFor="name">Cost Name</label>
+                                    <input type="text"
+                                        name="rate_name[0]"
+                                        class="input-rate border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                        value="Other"
+                                        required/>
+                                </div>
+                                <div class="inline-block relative w-3/12 mb-3">
+                                    <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                        htmlFor="name">Rate</label>
+                                    <input type="number"
+                                        name="rate[0]"
+                                        class="input-rate border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                        value="0"
+                                        required/>
+                                </div> /
+                                <div class="inline-block relative w-2/12 mb-3">
+                                    <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                        htmlFor="name">QTY</label>
+                                    <input type="text"
+                                        name="qty[0]"
+                                        class="input-qty border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                        value="PP"
+                                        required/>
+                                </div> /
+                                <div class="inline-block relative w-2/12 mb-3">
+                                    <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                        htmlFor="name">Duration</label>
+                                    <input type="text"
+                                        name="duration[0]"
+                                        class="input-duration border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                        value="Month"
+                                        required/>
+                                </div>
+                                <div class="inline-block relative ml-2 w-1/12">
+                                    <button class="btn-delete-rate text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" id="0">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                                <!---->
+                            </div>
+                        </div>
+                        <div class="w-full flex justify-center mb-3">
+                            <button class="btn-add-rate text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="w-full flex justify-center" >
+                            <input type="submit"
+                                    class="btn-simpan cursor-pointer bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded text-right"
+                                    value="Simpan"/>
+                        </div>
+                    </form>
+                @endif
+            @elseif ($type == 'bp')
+                <!-- TAB SECTION -->
+                <div class="flex flex-wrap hidden services-bp-tab" id="tabs-id">
+                    <div class="w-full">
+                    <ul class="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row">
+                        <li class="-mb-px mr-2 last:mr-0 flex-auto text-center cursor-pointer">
+                        <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-white bg-blue-600" onclick="changeActiveTab(event,'tab-profile')">
+                            <i class="fas fa-truck-moving text-base mr-1"></i>  Rental
+                        </a>
+                        </li>
+                        <li class="-mb-px mr-2 last:mr-0 flex-auto text-center cursor-pointer">
+                        <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-blue-600 bg-white" onclick="changeActiveTab(event,'tab-settings')">
+                            <i class="fas fa-clipboard-list text-base mr-1"></i>  Excess / Variables
+                        </a>
+                        </li>
+                        <li class="-mb-px mr-2 last:mr-0 flex-auto text-center cursor-pointer">
+                        <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-blue-600 bg-white" onclick="changeActiveTab(event,'tab-options')">
+                            <i class="fas fa-route text-base mr-1"></i>  On Call Routes
+                        </a>
+                        </li>
+                    </ul>
+                    <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+                            <div class="px-4 py-5 flex-auto">
+                                <div class="tab-content tab-space">
+                                    <div class="block" id="tab-profile">
+                                    <!-- Fixed Rental Charges -->
+                                    <div class="w-full mb-5 content-rental">
+                                        <div class="w-full text-center text-red-500 font-bold">
+                                            LOA ini tidak memiliki services fixed rental
+                                        </div>
+                                    </div>
+                                    <!-- END SECTION -->
+                                    </div>
+                                    <div class="hidden" id="tab-settings">
+                                    <!-- EXCESS CHARGES -->
+                                    <div class="w-full mb-5 content-excess">
+                                        <div class="w-full text-center text-red-500 font-bold">
+                                            LOA ini tidak memiliki services excess/variables
+                                        </div>
+                                    </div>
+                                    <!-- END SECTION -->
+                                    </div>
+                                    <div class="hidden" id="tab-options">
+                                    <!-- ON CALL ROUTES CHARGES -->
+                                    <div class="w-full mb-5 content-routes">
+                                        <div class="w-full text-center text-red-500 font-bold">
+                                            LOA ini tidak memiliki services on call routes
+                                        </div>
+                                    </div>
+                                    <!-- END SECTION -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <!-- END TAB SECTION -->
             @endif
 
-            <form id="form-rate-detail" class="hidden">
-                <div id="container-loa-rates" class="w-full justify-center border border-4 border-red-500 border-dashed px-4 py-5 my-5">
-                    <div class="w-full text-center font-bold py-5">
-                        Add Cost
-                    </div>
-                    <input type="hidden" id="counter-rates" name="counter-rates" value=0>
-                    <div class="loa-other-rate-0">
-                        <!--Input Rate-->
-                        <div class="inline-block relative w-2/12 mb-3">
-                            <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="name">Cost Name</label>
-                            <input type="text"
-                                name="rate_name[0]"
-                                class="input-rate border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                value="Other"
-                                required/>
-                        </div>
-                        <div class="inline-block relative w-3/12 mb-3">
-                            <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="name">Rate</label>
-                            <input type="number"
-                                name="rate[0]"
-                                class="input-rate border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                value="0"
-                                required/>
-                        </div> /
-                        <div class="inline-block relative w-2/12 mb-3">
-                            <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="name">QTY</label>
-                            <input type="text"
-                                name="qty[0]"
-                                class="input-qty border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                value="PP"
-                                required/>
-                        </div> /
-                        <div class="inline-block relative w-2/12 mb-3">
-                            <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                                htmlFor="name">Duration</label>
-                            <input type="text"
-                                name="duration[0]"
-                                class="input-duration border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                value="Month"
-                                required/>
-                        </div>
-                        <div class="inline-block relative ml-2 w-1/12">
-                            <button class="btn-delete-rate text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" id="0">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                        <!---->
-                    </div>
-                </div>
-                <div class="w-full flex justify-center mb-3">
-                    <button class="btn-add-rate text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
-                        <i class="fas fa-plus"></i>
-                    </button>
-                </div>
-                <div class="w-full flex justify-center" >
-                    <input type="submit"
-                            class="btn-simpan cursor-pointer bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded text-right"
-                            value="Simpan"/>
-                </div>
-            </form>
         </div>
 
         <!-- LOA File Viewer -->
@@ -302,4 +363,32 @@ Linc | LOA Homepage
 </div>
 @endsection
 
-@include('loa.modals.loa-add-file');
+@include('loa.modals.loa-add-file')
+
+@if($type == 'bp')
+<script>
+    function changeActiveTab(event, tabID) {
+        let element = event.target;
+        while (element.nodeName !== "A") {
+            element = element.parentNode;
+        }
+        ulElement = element.parentNode.parentNode;
+        aElements = ulElement.querySelectorAll("li > a");
+        tabContents = document.getElementById("tabs-id").querySelectorAll(".tab-content > div");
+        for (let i = 0; i < aElements.length; i++) {
+            aElements[i].classList.remove("text-white");
+            aElements[i].classList.remove("bg-blue-600");
+            aElements[i].classList.add("text-blue-600");
+            aElements[i].classList.add("bg-white");
+            tabContents[i].classList.add("hidden");
+            tabContents[i].classList.remove("block");
+        }
+        element.classList.remove("text-blue-600");
+        element.classList.remove("bg-white");
+        element.classList.add("text-white");
+        element.classList.add("bg-blue-600");
+        document.getElementById(tabID).classList.remove("hidden");
+        document.getElementById(tabID).classList.add("block");
+    }
+</script>
+@endif

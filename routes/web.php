@@ -304,7 +304,7 @@ Route::middleware(['auth', 'priviledge:loa,loa_view,master'])->group(function ()
             Route::get('/getTimelineByGroup/{type}/{reference}/{group}', [LoaDataController::class, 'getTimelineByGroup']);
             Route::get('/getFileByGroup/{groupId}', [LoaDataController::class, 'getFileByGroup']);
             Route::get('/getFileById/{id}', [LoaDataController::class, 'getFileById']);
-            Route::get('/getRatesByLoa/{id}', [LoaDataController::class, 'getRatesByLoa']);
+            Route::get('/getRatesByLoa/{id}/{type}', [LoaDataController::class, 'getRatesByLoa']);
             Route::get('/getPinnedGroup/{type}/{customer}', [LoaDataController::class, 'getPinnedLoa']);
         });
     });
