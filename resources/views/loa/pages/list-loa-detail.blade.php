@@ -267,21 +267,21 @@ Linc | LOA Homepage
                 @endif
             @elseif ($type == 'bp')
                 <!-- TAB SECTION -->
-                <div class="flex flex-wrap hidden services-bp-tab" id="tabs-id">
+                <div class="flex flex-wrap hidden services-bp-tab mb-5" id="tabs-id">
                     <div class="w-full">
                     <ul class="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row">
                         <li class="-mb-px mr-2 last:mr-0 flex-auto text-center cursor-pointer">
-                        <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-white bg-blue-600" onclick="changeActiveTab(event,'tab-profile')">
+                        <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-white bg-blue-600" onclick="changeActiveTab(event,'tab-profile', 'tabs-id', 'tab-content')">
                             <i class="fas fa-truck-moving text-base mr-1"></i>  Rental
                         </a>
                         </li>
                         <li class="-mb-px mr-2 last:mr-0 flex-auto text-center cursor-pointer">
-                        <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-blue-600 bg-white" onclick="changeActiveTab(event,'tab-settings')">
+                        <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-blue-600 bg-white" onclick="changeActiveTab(event,'tab-settings', 'tabs-id', 'tab-content')">
                             <i class="fas fa-clipboard-list text-base mr-1"></i>  Excess / Variables
                         </a>
                         </li>
                         <li class="-mb-px mr-2 last:mr-0 flex-auto text-center cursor-pointer">
-                        <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-blue-600 bg-white" onclick="changeActiveTab(event,'tab-options')">
+                        <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-blue-600 bg-white" onclick="changeActiveTab(event,'tab-options', 'tabs-id', 'tab-content')">
                             <i class="fas fa-route text-base mr-1"></i>  On Call Routes
                         </a>
                         </li>
@@ -295,6 +295,32 @@ Linc | LOA Homepage
                                         <div class="w-full text-center text-red-500 font-bold">
                                             LOA ini tidak memiliki services fixed rental
                                         </div>
+                                        <table id="yajra-datatable-bp-rental" class="items-center w-full bg-transparent border-collapse yajra-datatable-bp-rental">
+                                            <thead>
+                                              <tr>
+                                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                                    Site
+                                                </th>
+                                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                                    Vehicle Type
+                                                    </th>
+                                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                                    Rental Charge
+                                                </th>
+                                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                                    UoM
+                                                </th>
+                                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                                    Category
+                                                </th>
+                                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                                    Action
+                                                </th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
                                     </div>
                                     <!-- END SECTION -->
                                     </div>
@@ -304,6 +330,29 @@ Linc | LOA Homepage
                                         <div class="w-full text-center text-red-500 font-bold">
                                             LOA ini tidak memiliki services excess/variables
                                         </div>
+                                        <table id="yajra-datatable-bp-excess" class="items-center w-full bg-transparent border-collapse yajra-datatable-bp-excess">
+                                            <thead>
+                                              <tr>
+                                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                                    Charges Name
+                                                </th>
+                                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                                    Vehicle Type
+                                                    </th>
+                                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                                    Rate
+                                                </th>
+                                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                                    UoM
+                                                </th>
+                                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                                    Action
+                                                </th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
                                     </div>
                                     <!-- END SECTION -->
                                     </div>
@@ -313,6 +362,29 @@ Linc | LOA Homepage
                                         <div class="w-full text-center text-red-500 font-bold">
                                             LOA ini tidak memiliki services on call routes
                                         </div>
+                                        <table id="yajra-datatable-bp-routes" class="items-center w-full bg-transparent border-collapse yajra-datatable-bp-routes">
+                                            <thead>
+                                              <tr>
+                                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                                    Vehicle Type
+                                                </th>
+                                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                                    Origin
+                                                </th>
+                                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                                    Destination
+                                                </th>
+                                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                                    Rate
+                                                </th>
+                                                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100">
+                                                    Action
+                                                </th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
                                     </div>
                                     <!-- END SECTION -->
                                     </div>
@@ -322,6 +394,116 @@ Linc | LOA Homepage
                     </div>
                 </div>
                 <!-- END TAB SECTION -->
+
+                @if($isAdmin == 'true')
+                    <div class="w-full flex justify-center table-loa-rates services-bp-tab hidden mb-5">
+                        <button id="btn-show-rate-form" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                            Add Rate Cost
+                        </button>
+                    </div>
+
+                    <form id="form-rate-bp" class="hidden">
+                        <div class="w-full flex justify-center mb-5">
+                            <button type="submit" id="btn-save-bp-rates" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full">
+                                Save Changes
+                            </button>
+                        </div>
+                        <!-- TAB SECTION -->
+                        <div class="flex flex-wrap" id="tabs-id-input">
+                            <div class="w-full">
+                            <ul class="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row">
+                                <li class="-mb-px mr-2 last:mr-0 flex-auto text-center cursor-pointer">
+                                <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-white bg-blue-600" onclick="changeActiveTab(event,'input-rental', 'tabs-id-input', 'tab-content-input')">
+                                    <i class="fas fa-truck-moving text-base mr-1"></i>  Rental
+                                </a>
+                                </li>
+                                <li class="-mb-px mr-2 last:mr-0 flex-auto text-center cursor-pointer">
+                                <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-blue-600 bg-white" onclick="changeActiveTab(event,'input-excess', 'tabs-id-input', 'tab-content-input')">
+                                    <i class="fas fa-clipboard-list text-base mr-1"></i>  Excess / Variables
+                                </a>
+                                </li>
+                                <li class="-mb-px mr-2 last:mr-0 flex-auto text-center cursor-pointer">
+                                <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-blue-600 bg-white" onclick="changeActiveTab(event,'input-routes', 'tabs-id-input', 'tab-content-input')">
+                                    <i class="fas fa-route text-base mr-1"></i>  On Call Routes
+                                </a>
+                                </li>
+                            </ul>
+                            <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+                                    <div class="px-4 py-5 flex-auto">
+                                        <div class="tab-content-input tab-space">
+                                            <div class="block" id="input-rental">
+                                            <!-- Fixed Rental Charges -->
+                                            <div class="w-full">
+                                                <div class="w-full text-center text-red-500 font-bold mb-5">
+                                                    Jika tidak memiliki service fixed rental, dapat melanjutkan pengisian charges lain.
+                                                </div>
+                                                <div class="w-full">
+                                                    <center>
+                                                        <div class="w-full flex justify-center mb-3">
+                                                            <div class="inline-block relative ml-2 w-1/12">
+                                                                <button class="btn-add-rental text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" id="5">
+                                                                    <i class="fas fa-plus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div id="container-loa-rental" style="max-height: 36rem;" class="overflow-y-scroll">
+                                                            <input type="hidden" id="counter-rental" name="counter-rental" value=-1>
+                                                        </div>
+                                                    </center>
+                                                </div>
+                                            </div>
+                                            <!-- END SECTION -->
+                                            </div>
+                                            <div class="hidden" id="input-excess">
+                                            <!-- EXCESS CHARGES -->
+                                            <div class="w-full mb-5">
+                                                <div class="w-full text-center text-red-500 font-bold">
+                                                    Jika tidak memiliki tambahan excess/variables, dapat melanjutkan pengisian charges lain.
+                                                </div>
+                                            </div>
+                                            <center>
+                                                <div class="w-full flex justify-center mb-3">
+                                                    <div class="inline-block relative ml-2 w-1/12">
+                                                        <button class="btn-add-excess text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" id="5">
+                                                            <i class="fas fa-plus"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div id="container-loa-excess" style="max-height: 36rem;" class="overflow-y-scroll">
+                                                    <input type="hidden" id="counter-excess" name="counter-excess" value=-1>
+                                                </div>
+                                            </center>
+                                            <!-- END SECTION -->
+                                            </div>
+                                            <div class="hidden" id="input-routes">
+                                            <!-- ON CALL ROUTES CHARGES -->
+                                            <div class="w-full mb-5">
+                                                <div class="w-full text-center text-red-500 font-bold">
+                                                    Jika tidak memiliki tambahan on call routes, dapat melanjutkan pengisian charges lain.
+                                                </div>
+                                            </div>
+                                            <center>
+                                                <div class="w-full flex justify-center mb-5">
+                                                    <div class="inline-block relative ml-2 w-1/12">
+                                                        <button class="btn-add-routes text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" id="5">
+                                                            <i class="fas fa-plus"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div id="container-loa-routes" style="max-height: 36rem;" class="overflow-y-scroll">
+                                                    <input type="hidden" id="counter-routes" name="counter-routes" value=-1>
+                                                </div>
+                                            </center>
+                                            <!-- END SECTION -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END TAB SECTION -->
+                    </form>
+                @endif
             @endif
 
         </div>
@@ -367,14 +549,14 @@ Linc | LOA Homepage
 
 @if($type == 'bp')
 <script>
-    function changeActiveTab(event, tabID) {
+    function changeActiveTab(event, tabID, tabContentsId, tabContentsClass) {
         let element = event.target;
         while (element.nodeName !== "A") {
             element = element.parentNode;
         }
         ulElement = element.parentNode.parentNode;
         aElements = ulElement.querySelectorAll("li > a");
-        tabContents = document.getElementById("tabs-id").querySelectorAll(".tab-content > div");
+        tabContents = document.getElementById(tabContentsId).querySelectorAll("."+tabContentsClass+" > div");
         for (let i = 0; i < aElements.length; i++) {
             aElements[i].classList.remove("text-white");
             aElements[i].classList.remove("bg-blue-600");

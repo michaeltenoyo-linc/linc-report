@@ -69,4 +69,9 @@ class ViewController extends BaseController
         }
         return view('loa.pages.list-loa-master', $data);
     }
+
+    public function gotoReportGenerate()
+    {
+        return view('loa.pages.loa-report-generate');
+    }
 }

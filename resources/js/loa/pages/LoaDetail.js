@@ -95,9 +95,7 @@ export const refreshTimeline = async () => {
 export const refreshLoaRates = async () => {
     let loaId = $('#selected-loa-id').val();
     let type = $('#loa-type').val();
-
     const rates = await $.get('/loa/data/getRatesByLoa/' + loaId + '/' + type);
-
 
     if (type == 'cml') {
         $('.table-loa-rates-values').empty();
@@ -148,7 +146,7 @@ export const refreshLoaRates = async () => {
 
         //INPUT VALUE
         rates['rates'].forEach(rate => {
-            let rateName = rate['name'].split('|')[0];
+            let rateName = rate['name'].split('|');
             let rateType = rateName[0];
             if (rateType == 'rental') {
                 rentalCount++;
@@ -159,18 +157,73 @@ export const refreshLoaRates = async () => {
             }
         });
 
-        //COUNT
+        //VALIDATING DETAILS
+        //FIXED RENTAL
         if (rentalCount == 0) {
             let row = '<div class="w-full text-center text-red-500 font-bold"> LOA ini tidak memiliki services fixed rental</div>';
             $('.content-rental').append(row);
+        } else {
+            let row = '<table id="yajra-datatable-bp-rental" class="items-center w-full bg-transparent border-collapse yajra-datatable-bp-rental"> <thead> <tr> <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"> Site </th> <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"> Vehicle Type </th> <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"> Rental Charge </th> <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"> UoM </th> <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"> Action </th> </tr> </thead> <tbody> </tbody> </table>';
+            $('.content-rental').append(row);
+
+            //SETUP DATATABLE
+            $('#yajra-datatable-bp-rental').DataTable({
+                autoWidth: false,
+                processing: true,
+                serverSide: false,
+                ajax: "/loa/data/get-bp-detail/rental/" + loaId,
+                columns: [
+                    { data: 'nameDetail', name: 'nameDetail' },
+                    { data: 'type', name: 'type' },
+                    { data: 'cost', name: 'cost' },
+                    { data: 'uom', name: 'uom' },
+                    { data: 'action', name: 'action', orderable: false, searchable: false }
+                ],
+            });
         }
+        //EXCESS
         if (excessCount == 0) {
             let row = '<div class="w-full text-center text-red-500 font-bold"> LOA ini tidak memiliki services excess/variables</div>';
             $('.content-excess').append(row);
+        } else {
+            let row = '<table id="yajra-datatable-bp-excess" class="items-center w-full bg-transparent border-collapse yajra-datatable-bp-excess"> <thead> <tr> <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"> Charges Name </th> <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"> Vehicle Type </th> <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"> Rate </th> <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"> UoM </th> <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"> Action </th> </tr> </thead> <tbody> </tbody> </table>';
+            $('.content-excess').append(row);
+
+            //SETUP DATATABLE
+            $('#yajra-datatable-bp-excess').DataTable({
+                autoWidth: false,
+                processing: true,
+                serverSide: false,
+                ajax: "/loa/data/get-bp-detail/excess/" + loaId,
+                columns: [
+                    { data: 'nameDetail', name: 'nameDetail' },
+                    { data: 'type', name: 'type' },
+                    { data: 'cost', name: 'cost' },
+                    { data: 'uom', name: 'uom' },
+                    { data: 'action', name: 'action', orderable: false, searchable: false }
+                ],
+            });
         }
+        //ON CALL
         if (routesCount == 0) {
             let row = '<div class="w-full text-center text-red-500 font-bold"> LOA ini tidak memiliki services on call routes</div>';
             $('.content-routes').append(row);
+        } else {
+            let row = '<table id="yajra-datatable-bp-routes" class="items-center w-full bg-transparent border-collapse yajra-datatable-bp-routes"> <thead> <tr> <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"> Vehicle Type </th> <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"> Routes </th> <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"> Rate </th> <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"> Action </th> </tr> </thead> <tbody> </tbody> </table>';
+            $('.content-routes').append(row);
+            //SETUP DATATABLE
+            $('#yajra-datatable-bp-routes').DataTable({
+                autoWidth: false,
+                processing: true,
+                serverSide: false,
+                ajax: "/loa/data/get-bp-detail/routes/" + loaId,
+                columns: [
+                    { data: 'type', name: 'type' },
+                    { data: 'nameDetail', name: 'nameDetail' },
+                    { data: 'cost', name: 'cost' },
+                    { data: 'action', name: 'action', orderable: false, searchable: false }
+                ],
+            });
         }
 
         $('.services-bp-tab').removeClass('hidden');
@@ -779,6 +832,7 @@ export const LoaDetail = () => {
             let onAdd = $(this).attr('onAdd');
             console.log(onAdd);
             let button = $(this);
+            let type = $('#loa-type').val();
 
             if (onAdd == 'true') {
                 button.attr('onAdd', 'false');
@@ -789,7 +843,7 @@ export const LoaDetail = () => {
                 button.addClass('bg-blue-500');
                 button.addClass('hover:bg-blue-700');
 
-                $('#form-rate-detail').addClass('hidden');
+                type == 'cml' ? $('#form-rate-detail').addClass('hidden') : $('#form-rate-bp').addClass('hidden');
             } else {
                 button.attr('onAdd', 'true');
                 button.empty();
@@ -799,7 +853,7 @@ export const LoaDetail = () => {
                 button.addClass('bg-red-500');
                 button.addClass('hover:bg-red-700');
 
-                $('#form-rate-detail').removeClass('hidden');
+                type == 'cml' ? $('#form-rate-detail').removeClass('hidden') : $('#form-rate-bp').removeClass('hidden');
             }
         });
     }
@@ -855,6 +909,112 @@ export const LoaDetail = () => {
         });
     }
 
+    const saveRatesBp = async () => {
+        $('#form-rate-bp').on('submit', async (e) => {
+            e.preventDefault();
+
+            console.log("Saving new Rate bp...");
+            let loaId = $('#selected-loa-id').val();
+            //AJAX Save
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Pastikan data sudah benar semua!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Iya, simpan!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        processData: false,
+                        contentType: false,
+                        dataType: 'JSON',
+                    });
+                    $.ajax({
+                        url: '/loa/data/insertDetailByLoaBp/' + loaId,
+                        type: 'POST',
+                        enctype: 'multipart/form-data',
+                        data: new FormData($('#form-rate-bp')[0]),
+                        success: (data) => {
+                            Swal.fire({
+                                title: 'Tersimpan!',
+                                text: 'Data rate sudah disimpan.',
+                                icon: 'success'
+                            }).then(function () {
+                                location.reload();
+                            });
+                        },
+                        error: function (request, status, error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: (JSON.parse(request.responseText)).message,
+                            })
+                        },
+                    });
+                }
+            });
+        });
+    }
+
+    const onDeleteDetailBp = async () => {
+        $(document).on('submit', '#btn-bp-detail-delete', function (e) {
+            e.preventDefault();
+
+            //AJAX Save
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Detail LOA ini akan di hapus dari database!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Iya, hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        processData: false,
+                        contentType: false,
+                        dataType: 'JSON',
+                    });
+                    $.ajax({
+                        url: '/loa/data/deleteDetailByLoaBp',
+                        type: 'POST',
+                        data: new FormData($(this)[0]),
+                        success: (data) => {
+                            Swal.fire({
+                                title: 'Terhapus!',
+                                text: 'Detail charges sudah di hapus.',
+                                icon: 'success'
+                            }).then(function () {
+                                var table1 = $('#yajra-datatable-bp-rental').DataTable();
+                                var table2 = $('#yajra-datatable-bp-excess').DataTable();
+                                var table3 = $('#yajra-datatable-bp-routes').DataTable();
+                                table1.ajax.reload(null, false);
+                                table2.ajax.reload(null, false);
+                                table3.ajax.reload(null, false);
+                            });
+                        },
+                        error: function (request, status, error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: (JSON.parse(request.responseText)).message,
+                            })
+                        },
+                    });
+                }
+            });
+        });
+    }
+
     init();
     onChangeGroup();
     onClickContext();
@@ -866,6 +1026,8 @@ export const LoaDetail = () => {
     onClickShowArchive();
     onEditRate();
     onDeleteRate();
+    onDeleteDetailBp();
     onShowAddRate();
     onAddRate();
+    saveRatesBp();
 };

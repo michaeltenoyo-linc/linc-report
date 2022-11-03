@@ -286,6 +286,8 @@ Route::middleware(['auth', 'priviledge:loa,loa_view,master'])->group(function ()
         Route::get('/nav-loa-list', [LoaViewController::class, 'gotoListType']);
         Route::get('/nav-loa-list/{type}', [LoaViewController::class, 'gotoListMaster']);
 
+        Route::get('/nav-loa-report', [LoaViewController::class, 'gotoReportGenerate']);
+
         //Data CRUD
         Route::prefix('/data')->group(function () {
             Route::post('/insert', [LoaDataController::class, 'insert']);
@@ -295,7 +297,9 @@ Route::middleware(['auth', 'priviledge:loa,loa_view,master'])->group(function ()
             Route::get('/pinById/{id}', [LoaDataController::class, 'pinById']);
             Route::post('/editDetailByLoa/{id}', [LoaDataController::class, 'editDetailByLoa']);
             Route::post('/deleteDetailByLoa/{id}', [LoaDataController::class, 'deleteDetailByLoa']);
+            Route::post('/deleteDetailByLoaBp', [LoaDataController::class, 'deleteDetailByLoaBp']);
             Route::post('/insertDetailByLoa/{id}', [LoaDataController::class, 'insertDetailByLoa']);
+            Route::post('/insertDetailByLoaBp/{id}', [LoaDataController::class, 'insertDetailByLoaBp']);
             Route::get('/deleteById/{id}', [LoaDataController::class, 'deleteById']);
             Route::get('/deleteFileById/{id}', [LoaDataController::class, 'deleteFileById']);
             Route::get('/read/byCustomer/{type}/{reference}', [LoaDataController::class, 'readByCustomer']);
@@ -306,6 +310,8 @@ Route::middleware(['auth', 'priviledge:loa,loa_view,master'])->group(function ()
             Route::get('/getFileById/{id}', [LoaDataController::class, 'getFileById']);
             Route::get('/getRatesByLoa/{id}/{type}', [LoaDataController::class, 'getRatesByLoa']);
             Route::get('/getPinnedGroup/{type}/{customer}', [LoaDataController::class, 'getPinnedLoa']);
+            Route::get('/getLoaCustomer/{division}/{showArchive}', [LoaDataController::class, 'getLoaCustomer']);
+            Route::get('/get-bp-detail/{subdetail}/{id_loa}', [LoaDataController::class, 'getLoaBpDetail']);
         });
     });
 });

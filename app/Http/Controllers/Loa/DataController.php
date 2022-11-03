@@ -467,6 +467,28 @@ class DataController extends BaseController
         return response()->json($data, 200);
     }
 
+    public function deleteDetailByLoaBp(Request $req)
+    {
+        $req->validate([
+            'name' => 'required',
+            'id_loa' => 'required',
+        ]);
+
+        $data['message'] = "Success";
+
+        $id_loa = $req->input('id_loa');
+        $name = $req->input('name');
+        error_log($id_loa . ' - ' . $name);
+        //Update Data
+        $loa_detail = LoaDetailBp::where('id_loa', $id_loa)
+            ->where('name', $name)
+            ->first();
+
+        $loa_detail->forceDelete();
+
+        return response()->json($data, 200);
+    }
+
     public function insertDetailByLoa(Request $req, $id_loa)
     {
         $req->validate([
@@ -495,6 +517,123 @@ class DataController extends BaseController
         }
 
         $data['message'] = "Berhasil menambah data rate";
+        return response()->json($data, 200);
+    }
+
+    public function insertDetailByLoaBp(Request $req, $id_loa)
+    {
+        //IF BP ADA EXCESS DeTAIL KOMPLEKS
+
+        //RENTAL
+        $ctr_rental = $req->input('counter-rental');
+        if ($ctr_rental > -1) {
+            $rental_site = $req->input('rental_site');
+            $rental_type = $req->input('rental_type');
+            $rental_rate = $req->input('rental_rate');
+            $rental_qty = $req->input('rental_qty');
+            $rental_terms = $req->input('rental_terms');
+
+            for ($i = 0; $i < $req->input('counter-rental') + 1; $i++) {
+                if (isset($rental_site[$i])) {
+                    $rentalDetail = LoaDetailBp::create([
+                        'name' => 'rental|' . $rental_site[$i] . '|' . $rental_type[$i],
+                        'id_loa' => $id_loa,
+                        'cost' => $rental_rate[$i],
+                        'uom' => $rental_qty[$i],
+                        'terms' => $rental_terms[$i],
+                        'type' => $rental_type[$i],
+                    ]);
+                }
+            }
+        }
+
+        //EXCESS
+        $ctr_excess = $req->input('counter-excess');
+        if ($ctr_excess > -1) {
+            $excess_name = $req->input('excess_name');
+            $excess_type = $req->input('excess_type');
+            $excess_rate = $req->input('excess_rate');
+            $excess_qty = $req->input('excess_qty');
+            $excess_terms = $req->input('excess_terms');
+
+            for ($i = 0; $i < $req->input('counter-excess') + 1; $i++) {
+                if (isset($excess_name[$i])) {
+                    $rentalDetail = LoaDetailBp::create([
+                        'name' => 'excess|' . $excess_name[$i] . '|' . $excess_type[$i],
+                        'id_loa' => $id_loa,
+                        'cost' => $excess_rate[$i],
+                        'uom' => $excess_qty[$i],
+                        'terms' => $excess_terms[$i],
+                        'type' => $excess_type[$i],
+                    ]);
+                }
+            }
+        }
+
+        //ON CALL ROUTES
+        $ctr_routes = $req->input('counter-routes');
+        if ($ctr_routes > -1) {
+            $routes_type = $req->input('routes_type');
+            $routes_origin = $req->input('routes_origin');
+            $routes_destination = $req->input('routes_destination');
+            $routes_type = $req->input('routes_type');
+            $routes_rate = $req->input('routes_rate');
+
+            for ($i = 0; $i < $req->input('counter-routes') + 1; $i++) {
+                if (isset($routes_origin[$i])) {
+                    $rentalDetail = LoaDetailBp::create([
+                        'name' => 'routes|' . $routes_origin[$i] . '|' . $routes_destination[$i] . '|' . $routes_type[$i],
+                        'id_loa' => $id_loa,
+                        'cost' => $routes_rate[$i],
+                        'uom' => 'routes',
+                        'terms' => 'none',
+                        'type' => $routes_type[$i],
+                    ]);
+                }
+            }
+        }
+
+        //END COMPLEX EXCESS
+
+        $data['message'] = "Berhasil menambah data rate";
+        return response()->json($data, 200);
+    }
+
+    public function getLoaBpDetail(Request $req, $subdetail, $id_loa)
+    {
+        $data = LoaDetailBp::where('name', 'LIKE', $subdetail . '%')->where('id_loa', $id_loa)->get();
+        return DataTables::of($data)
+            ->addColumn('nameDetail', function ($row) {
+                $nameDetail = explode('|', $row->name);
+                if ($nameDetail[0] == 'routes') {
+                    $nameDetail = $nameDetail[1] . ' - ' . $nameDetail[2];
+                } else {
+                    $nameDetail = $nameDetail[1];
+                }
+                return $nameDetail;
+            })
+            ->addColumn('action', function ($row) {
+                $btn = '<a href="smart/trucks/' . $row->nopol . '" class="btn_yellow">Edit</a>';
+                $btn = '<form id="btn-bp-detail-delete" class="inline-flex"><input name="name" type="hidden" value="' . $row->name . '"><input name="id_loa" type="hidden" value="' . $row->id_loa . '"><button type="submit" class="btn_red">Delete</button></form>';
+                return $btn;
+            })
+            ->make(true);
+    }
+
+    public function getLoaCustomer(Request $req, $division, $showArchive)
+    {
+        $data['message'] = 'Berhasil mengambil data customer';
+
+        $isArchived = $showArchive == 'true' ? 1 : 0;
+
+        $customer_list = LoaMaster::select('id_customer')
+            ->where('type', $division)
+            ->where('is_archived', $isArchived)
+            ->distinct()
+            ->get()->pluck('id_customer');
+
+        $data['customer'] = Customer::whereIn('reference', $customer_list)->get();
+
         return response()->json($data, 200);
     }
 }

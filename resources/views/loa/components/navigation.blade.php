@@ -125,64 +125,32 @@
                     @endif
                 </li>
             </ul>
-            <ul class="md:flex-col md:min-w-full flex flex-col list-none">
-                {{-- Active --}}
-                <li class="items-center">
-                    @if (Request::path() == 'loa/nav-blujay-data')
-                    <a href="{{url('/loa/nav-blujay-data')}}"
-                        class="page_nav_active">
-                        <i class="fas fa-atlas"></i>
-                        Blujay Data
-                    </a>
-                    @else
-                    <a href="{{url('/loa/nav-blujay-data')}}"
-                        class="page_nav">
-                        <i class="fas fa-atlas"></i>
-                        Blujay Data
-                    </a>
-                    @endif
-                </li>
-            </ul>
 
-            <!-- Divider -->
-            <hr class="my-4 md:min-w-full" />
-            <!-- Heading -->
-            <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                Search Engine
-            </h6>
-            <!-- Navigation Product -->
-            <ul class="md:flex-col md:min-w-full flex flex-col list-none">
-                <li class="items-center">
-                    @if (Request::path() == 'loa/nav-search-transport')
-                        <a href="{{url('/loa/nav-search-transport')}}"
+             <!-- Divider -->
+             <hr class="my-4 md:min-w-full" />
+             <!-- Heading -->
+             <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+                 Report
+             </h6>
+             <!-- Navigation Loads-->
+             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
+                 {{-- Active --}}
+                 <li class="items-center">
+                     @if (Request::path() == 'loa/nav-loa-report')
+                        <a href="{{url('/loa/nav-loa-report')}}"
                             class="page_nav_active">
-                            <i class="fas fa-balance-scale-left"></i>
-                            Load Contract
+                            <i class="fas fa-envelope-open-text"></i>
+                            Generate Report
                         </a>
-                    @else
-                        <a href="{{url('/loa/nav-search-transport')}}"
+                     @else
+                        <a href="{{url('/loa/nav-loa-report')}}"
                             class="page_nav">
-                            <i class="fas fa-balance-scale-left"></i>
-                            Load Contract
+                            <i class="fas fa-envelope-open-text"></i>
+                            Generate Report
                         </a>
-                    @endif
-                </li>
-                <li class="items-center">
-                    @if (Request::path() == 'loa/nav-blujay-compare')
-                        <a href="{{url('/loa/nav-blujay-compare')}}"
-                            class="page_nav_active">
-                            <i class="fas fa-route"></i>
-                            Routes Contract
-                        </a>
-                    @else
-                        <a href="{{url('/loa/nav-blujay-compare')}}"
-                            class="page_nav">
-                            <i class="fas fa-route"></i>
-                            Routes Contract
-                        </a>
-                    @endif
-                </li>
-            </ul>
+                     @endif
+                 </li>
+             </ul>
         </div>
     </div>
 </nav>

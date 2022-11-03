@@ -8,26 +8,26 @@ export const ExportToPDF = async () => {
   const getCustomerList = async () => {
     let division = $('#form-export-sales .input-division').val();
     let sales = $('#form-export-sales .input-sales').val();
-    
+
     $.ajaxSetup({
       headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       },
       processData: false,
       contentType: false,
       dataType: 'JSON',
     });
     $.ajax({
-      url: '/sales/export/filter-customer/'+division+'/'+sales,
+      url: '/sales/export/filter-customer/' + division + '/' + sales,
       type: 'GET',
       success: (data) => {
-          console.log(data['customer']);
+        console.log(data['customer']);
 
-          $('#form-export-sales .input-customer').empty();
-          $('#form-export-sales .input-customer').append('<option value="all">==Semua==</option>');
-          data['customer'].forEach(d => {
-            $('#form-export-sales .input-customer').append('<option value="'+d['reference']+'">'+d['name']+'</option>');
-          });
+        $('#form-export-sales .input-customer').empty();
+        $('#form-export-sales .input-customer').append('<option value="all">==Semua==</option>');
+        data['customer'].forEach(d => {
+          $('#form-export-sales .input-customer').append('<option value="' + d['reference'] + '">' + d['name'] + '</option>');
+        });
       }
     });
   }
@@ -46,7 +46,7 @@ export const ExportToPDF = async () => {
 
   const generatePDF = () => {
     $('#form-export-sales .export-pdf-generate').on('click', (e) => {
-      
+
       e.preventDefault();
       console.log("Generating...");
 
@@ -56,7 +56,7 @@ export const ExportToPDF = async () => {
       let sales = $('#form-export-sales .input-sales').val();
       let customer = $('#form-export-sales .input-customer').val();
 
-      window.open('/sales/export/generate-report/'+constraint+'/'+status+'/'+division+'/'+sales+'/'+customer+'/false','_blank');
+      window.open('/sales/export/generate-report/' + constraint + '/' + status + '/' + division + '/' + sales + '/' + customer + '/false', '_blank');
     })
   }
 
@@ -71,7 +71,7 @@ export const ExportToPDF = async () => {
       let sales = $('#form-export-forecast .input-sales').val();
       let customer = $('#form-export-forecast .input-customer').val();
 
-      window.open('/sales/export/download-forecast/'+constraint+'/'+status+'/'+division+'/'+sales+'/'+customer+'/false','_blank');
+      window.open('/sales/export/download-forecast/' + constraint + '/' + status + '/' + division + '/' + sales + '/' + customer + '/false', '_blank');
     })
   }
 

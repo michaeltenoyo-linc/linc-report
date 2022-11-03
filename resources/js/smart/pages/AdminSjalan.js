@@ -11,13 +11,13 @@ export const AdminSjalan = () => {
             serverSide: false,
             ajax: "/smart/data/get-sj",
             columns: [
-              {data: 'splitId', name: 'id_so'},
-              {data: 'load_id', name: 'load_id'},
-              {data: 'created_at_format', name: 'created_at_format'},
-              {data: 'penerima', name: 'penerima'},
-              //{data: 'total_weightSO', name: 'total_weightSO'},
-              //{data: 'utilitas', name: 'utilitas'},
-              {data: 'action', name: 'action', orderable: false, searchable: false}
+                { data: 'splitId', name: 'id_so' },
+                { data: 'load_id', name: 'load_id' },
+                { data: 'created_at_format', name: 'created_at_format' },
+                { data: 'penerima', name: 'penerima' },
+                //{data: 'total_weightSO', name: 'total_weightSO'},
+                //{data: 'utilitas', name: 'utilitas'},
+                { data: 'action', name: 'action', orderable: false, searchable: false }
             ],
         });
 
@@ -25,17 +25,17 @@ export const AdminSjalan = () => {
     }
 
     const checkSj = () => {
-        $('#form-so-new .check-sj').on('click', function(e){
+        $('#form-so-new .check-sj').on('click', function (e) {
             var currentStats = $(this).val();
             e.preventDefault();
 
-            if(currentStats == "check"){
+            if (currentStats == "check") {
                 console.log("Checking SJ...");
-                
+
                 var id = $('#form-so-new .input-id-so').val();
 
-                if($('#form-so-new .input-no-do').val()){
-                    id += "$"+$('#form-so-new .input-no-do').val();
+                if ($('#form-so-new .input-no-do').val()) {
+                    id += "$" + $('#form-so-new .input-no-do').val();
                 }
                 //console.log(id);
 
@@ -48,33 +48,33 @@ export const AdminSjalan = () => {
                     dataType: 'JSON',
                 });
                 $.ajax({
-                    url: '/smart/suratjalan/check/'+id,
+                    url: '/smart/suratjalan/check/' + id,
                     type: 'GET',
                     success: (data) => {
                         //$(this).trigger('reset');
                         //console.log(data);
 
-                        if(data['check']){
+                        if (data['check']) {
                             $(this).val("cancel");
                             $(this).html("Cancel");
 
-                            $('#form-so-new .input-id-so').prop('readonly',true);
-                            $('#form-so-new .input-no-do').prop('readonly',true);
-                            $('#form-so-new .input-loadid').prop('readonly',false);
-                            $('#form-so-new .input-nopol').prop('readonly',false);
-                            $('#form-so-new .input-penerima').prop('readonly',false);
-                            $('#form-so-new .input-customer-type').prop('disabled',false);
-                            $('#form-so-new .input-bongkar').prop('readonly',false);
-                            $('#form-so-new .input-multidrop').prop('readonly',false);
-                            $('#form-so-new .input-overnight').prop('readonly',false);
-                            $('#form-so-new .input-muat').prop('readonly',false);
-                            $('#form-so-new .input-setor-sj').prop('readonly',false);
-                            $('#form-so-new .input-note').prop('readonly',false);
-                            $('#form-so-new .input-driver-nmk').prop('readonly',false);
-                            $('#form-so-new .input-driver-name').prop('readonly',false);
-                            $('#form-so-new .check-truck').prop('disabled',false);
-                            $('#form-so-new .check-load-smart').prop('disabled',false);
-                            $('#form-so-new .btn-simpan').prop('disabled',false);
+                            $('#form-so-new .input-id-so').prop('readonly', true);
+                            $('#form-so-new .input-no-do').prop('readonly', true);
+                            $('#form-so-new .input-loadid').prop('readonly', false);
+                            $('#form-so-new .input-nopol').prop('readonly', false);
+                            $('#form-so-new .input-penerima').prop('readonly', false);
+                            $('#form-so-new .input-customer-type').prop('disabled', false);
+                            $('#form-so-new .input-bongkar').prop('readonly', false);
+                            $('#form-so-new .input-multidrop').prop('readonly', false);
+                            $('#form-so-new .input-overnight').prop('readonly', false);
+                            $('#form-so-new .input-muat').prop('readonly', false);
+                            $('#form-so-new .input-setor-sj').prop('readonly', false);
+                            $('#form-so-new .input-note').prop('readonly', false);
+                            $('#form-so-new .input-driver-nmk').prop('readonly', false);
+                            $('#form-so-new .input-driver-name').prop('readonly', false);
+                            $('#form-so-new .check-truck').prop('disabled', false);
+                            $('#form-so-new .check-load-smart').prop('disabled', false);
+                            $('#form-so-new .btn-simpan').prop('disabled', false);
 
                             Snackbar.show({
                                 text: "Surat jalan belum terdaftar.",
@@ -82,7 +82,7 @@ export const AdminSjalan = () => {
                                 duration: 3000,
                                 pos: 'bottom-center',
                             });
-                        }else{
+                        } else {
                             Snackbar.show({
                                 text: "Surat jalan sudah terdaftar.",
                                 actionText: 'Tutup',
@@ -93,27 +93,27 @@ export const AdminSjalan = () => {
 
                     }
                 });
-            }else{
+            } else {
                 $(this).val("check");
                 $(this).html('Check SJ');
 
-                $('#form-so-new .input-id-so').prop('readonly',false);
-                $('#form-so-new .input-no-do').prop('readonly',false);
-                $('#form-so-new .input-loadid').prop('readonly',true);
-                $('#form-so-new .input-customer-type').prop('disabled',true);
-                $('#form-so-new .input-nopol').prop('readonly',true);
-                $('#form-so-new .input-penerima').prop('readonly',true);
-                $('#form-so-new .input-bongkar').prop('readonly',true);
-                $('#form-so-new .input-multidrop').prop('readonly',true);
-                $('#form-so-new .input-overnight').prop('readonly',true);
-                $('#form-so-new .input-muat').prop('readonly',true);
-                $('#form-so-new .input-setor-sj').prop('readonly',true);
-                $('#form-so-new .input-note').prop('readonly',true);
-                $('#form-so-new .input-driver-nmk').prop('readonly',true);
-                $('#form-so-new .input-driver-name').prop('readonly',true);
-                $('#form-so-new .check-truck').prop('disabled',true);
-                $('#form-so-new .check-load-smart').prop('disabled',true);
-                $('#form-so-new .btn-simpan').prop('disabled',true);
+                $('#form-so-new .input-id-so').prop('readonly', false);
+                $('#form-so-new .input-no-do').prop('readonly', false);
+                $('#form-so-new .input-loadid').prop('readonly', true);
+                $('#form-so-new .input-customer-type').prop('disabled', true);
+                $('#form-so-new .input-nopol').prop('readonly', true);
+                $('#form-so-new .input-penerima').prop('readonly', true);
+                $('#form-so-new .input-bongkar').prop('readonly', true);
+                $('#form-so-new .input-multidrop').prop('readonly', true);
+                $('#form-so-new .input-overnight').prop('readonly', true);
+                $('#form-so-new .input-muat').prop('readonly', true);
+                $('#form-so-new .input-setor-sj').prop('readonly', true);
+                $('#form-so-new .input-note').prop('readonly', true);
+                $('#form-so-new .input-driver-nmk').prop('readonly', true);
+                $('#form-so-new .input-driver-name').prop('readonly', true);
+                $('#form-so-new .check-truck').prop('disabled', true);
+                $('#form-so-new .check-load-smart').prop('disabled', true);
+                $('#form-so-new .btn-simpan').prop('disabled', true);
 
                 Snackbar.show({
                     text: "Silahkan cek kembali nomor SJ.",
@@ -129,7 +129,7 @@ export const AdminSjalan = () => {
     }
 
     const checkAutofillLoad = () => {
-        $('#form-so-new .check-load-smart').on('click', function(e){
+        $('#form-so-new .check-load-smart').on('click', function (e) {
             e.preventDefault();
 
             Swal.fire({
@@ -140,7 +140,7 @@ export const AdminSjalan = () => {
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Iya, ubah!'
-              }).then((result) => {
+            }).then((result) => {
                 if (result.isConfirmed) {
                     var id = $('#form-so-new .input-loadid').val();
 
@@ -153,17 +153,17 @@ export const AdminSjalan = () => {
                         dataType: 'JSON',
                     });
                     $.ajax({
-                        url: '/smart/suratjalan/autofill-load/'+id,
+                        url: '/smart/suratjalan/autofill-load/' + id,
                         type: 'GET',
                         success: (data) => {
                             console.log(data);
-                            
-                            if(data['isExist']){
+
+                            if (data['isExist']) {
                                 //Reset Vehicle and Items
                                 $('#form-so-new .check-truck').val("check");
                                 $('#form-so-new .check-truck').html('Cek Kendaraan');
-                                $('#form-so-new .input-nopol').prop('readonly',false);
-                                $('#form-so-new .open-item-modal').prop('disabled',true);
+                                $('#form-so-new .input-nopol').prop('readonly', false);
+                                $('#form-so-new .open-item-modal').prop('disabled', true);
 
                                 //reset item value
                                 $('#form-so-new .so-items-list-body').empty();
@@ -173,7 +173,7 @@ export const AdminSjalan = () => {
                                 $('#form-so-new .input-total-qty').val(0);
                                 $('#form-so-new .teks-total-weight').html("Total : Cek Kendaraan...");
                                 $('#form-so-new .teks-utility').html("Utilitas : Cek Kendaraan...");
-                            
+
                                 //Autofill Form
                                 $('#form-so-new .input-customer-type').val(data['suratjalan']['customer_type']);
                                 $('#form-so-new .input-penerima').val(data['suratjalan']['penerima']);
@@ -192,14 +192,14 @@ export const AdminSjalan = () => {
                                     title: 'Success',
                                     text: "Silahkan cek kembali autofill suratjalan!",
                                 });
-                            }else{
+                            } else {
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'Oops...',
                                     text: "Tidak ditemukan SJ Smart dengan LOAD ID berikut. :P",
                                 });
                             }
-                        
+
                         }
                     });
                 }
@@ -208,7 +208,7 @@ export const AdminSjalan = () => {
     }
 
     const addSj = () => {
-        $('#form-so-new').on('submit', function(e){
+        $('#form-so-new').on('submit', function (e) {
             e.preventDefault();
 
             Swal.fire({
@@ -219,7 +219,7 @@ export const AdminSjalan = () => {
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Iya, simpan!'
-              }).then((result) => {
+            }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajaxSetup({
                         headers: {
@@ -238,11 +238,11 @@ export const AdminSjalan = () => {
                                 title: 'Tersimpan!',
                                 text: 'Data surat jalan sudah disimpan.',
                                 icon: 'success'
-                            }).then(function(){
+                            }).then(function () {
                                 location.reload();
                             });
                         },
-                        error : function(request, status, error){
+                        error: function (request, status, error) {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
@@ -253,12 +253,12 @@ export const AdminSjalan = () => {
 
 
                 }
-              })
+            })
         })
     }
 
     const deleteSj = () => {
-        $(document).on('submit','#btn-sj-delete', function(e){
+        $(document).on('submit', '#btn-sj-delete', function (e) {
             e.preventDefault();
 
             Swal.fire({
@@ -269,7 +269,7 @@ export const AdminSjalan = () => {
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Iya, hapus!'
-              }).then((result) => {
+            }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajaxSetup({
                         headers: {
@@ -288,12 +288,12 @@ export const AdminSjalan = () => {
                                 title: 'Terhapus!',
                                 text: 'Data surat jalan sudah dihapus.',
                                 icon: 'success'
-                            }).then(function(){
+                            }).then(function () {
                                 var table = $('#yajra-datatable-sj-list').DataTable();
                                 table.ajax.reload(null, false);
                             });
                         },
-                        error : function(request, status, error){
+                        error: function (request, status, error) {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
@@ -307,7 +307,7 @@ export const AdminSjalan = () => {
             })
         });
     }
-    
+
 
     getSj();
     addSj();
