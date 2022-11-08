@@ -29,6 +29,19 @@ export const LoaReport = () => {
         });
     }
 
+    const onGenerateReport = () => {
+        $('#loa-generate-report').on('submit', function (e) {
+            e.preventDefault();
+
+            let division = $('#input-division').val();
+            let showArchive = $('#archive-checkbox').is(":checked");
+            let customer = $('#input-customer').val();
+
+            window.open('/loa/generateReport/' + division + '/' + showArchive + '/' + customer, '_blank');
+        });
+    }
+
+    onGenerateReport();
     inputValue();
     onChangeFilter();
 };

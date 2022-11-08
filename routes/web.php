@@ -287,6 +287,7 @@ Route::middleware(['auth', 'priviledge:loa,loa_view,master'])->group(function ()
         Route::get('/nav-loa-list/{type}', [LoaViewController::class, 'gotoListMaster']);
 
         Route::get('/nav-loa-report', [LoaViewController::class, 'gotoReportGenerate']);
+        Route::get('/generateReport/{division}/{showArchive}/{customer}', [LoaViewController::class, 'generateReport']);
 
         //Data CRUD
         Route::prefix('/data')->group(function () {

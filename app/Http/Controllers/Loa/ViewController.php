@@ -17,10 +17,12 @@ use App\Models\Customer;
 use App\Models\dloa_transport;
 use App\Models\Loa_transport;
 use App\Models\Loa_warehouse;
+use App\Models\LoaDetail;
 use App\Models\LoaMaster;
 use App\Models\Province;
 use App\Models\Regency;
 use App\Models\Trucks;
+use App\Models\TruckType;
 use App\Models\Village;
 use Carbon\Carbon;
 
@@ -48,6 +50,29 @@ class ViewController extends BaseController
             ->groupBy('customers.name', 'loa_masters.group')
             ->get();
         //return $data;
+
+
+        if ($type == 'bp') {
+            //INPUT AUTOCOMPLETE
+            $data['vehicle_type'] = TruckType::get();
+            $province = Province::all();
+            //$regencies = Regency::all();
+            //$districts = District::all();
+            //$villages = Village::all();
+
+            $data['regions'] = [];
+
+            foreach ($province as $p) {
+                array_push($data['regions'], $p->name);
+                foreach ($p->regencies as $r) {
+                    array_push($data['regions'], $p->name . ',' . $r->name);
+                    foreach ($r->districts as $d) {
+                        array_push($data['regions'], $p->name . ',' . $r->name . ',' . $d->name);
+                    }
+                }
+            }
+        }
+
         return view('loa.pages.input-loa-form', $data);
     }
 
@@ -73,5 +98,22 @@ class ViewController extends BaseController
     public function gotoReportGenerate()
     {
         return view('loa.pages.loa-report-generate');
+    }
+
+    public function generateReport(Request $req, $division, $showArchive, $customer)
+    {
+        $isArchived = $showArchive == 'true' ? 1 : 0;
+
+        $loa_list = LoaMaster::where('type', $division)
+            ->where('is_archived', $isArchived)
+            ->where('id_customer', 'LIKE', $customer == 'all' ? '%%' : $customer)
+            ->get();
+
+        foreach ($loa_list as $loa) {
+            $detail = LoaDetail::where('id_loa', $loa->id)->get();
+            $loa->detail = $detail;
+        }
+
+        return response($loa_list, 200);
     }
 }

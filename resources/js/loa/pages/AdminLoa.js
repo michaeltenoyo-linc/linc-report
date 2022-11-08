@@ -149,7 +149,7 @@ export const AdminLoa = () => {
             rowCost += 'name="excess_type[' + counter + ']"';
             rowCost += 'class="input-excess-name border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"';
             rowCost += 'value=""';
-            rowCost += 'required/>';
+            rowCost += 'list="truck-types" required/>';
             rowCost += '</div>';
             rowCost += ' <div class="inline-block relative w-3/12 mb-3">';
             rowCost += '<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"';
@@ -210,7 +210,7 @@ export const AdminLoa = () => {
             rowCost += 'name="rental_site[' + counter + ']"';
             rowCost += 'class="input-rental-name border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"';
             rowCost += 'value=""';
-            rowCost += 'required/>';
+            rowCost += 'list="indo-regions" required/>';
             rowCost += '</div>';
             rowCost += ' <div class="inline-block relative w-2/12 mb-3">';
             rowCost += '<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"';
@@ -219,7 +219,7 @@ export const AdminLoa = () => {
             rowCost += 'name="rental_type[' + counter + ']"';
             rowCost += 'class="input-rental-name border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"';
             rowCost += 'value=""';
-            rowCost += 'required/>';
+            rowCost += 'list="truck-types" required/>';
             rowCost += '</div>';
             rowCost += ' <div class="inline-block relative w-3/12 mb-3">';
             rowCost += '<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"';
@@ -280,7 +280,7 @@ export const AdminLoa = () => {
             rowCost += 'name="routes_type[' + counter + ']"';
             rowCost += 'class="input-routes-type border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"';
             rowCost += 'value=""';
-            rowCost += 'required/>';
+            rowCost += 'list="truck-types" required/>';
             rowCost += '</div>';
             rowCost += ' <div class="inline-block relative w-2/12 mb-3">';
             rowCost += '<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"';
@@ -289,7 +289,7 @@ export const AdminLoa = () => {
             rowCost += 'name="routes_origin[' + counter + ']"';
             rowCost += 'class="input-routes-origin border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"';
             rowCost += 'value=""';
-            rowCost += 'required/>';
+            rowCost += 'list="indo-regions" required/>';
             rowCost += '</div> - ';
             rowCost += '<div class="inline-block relative w-2/12 mb-3">';
             rowCost += '<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"';
@@ -298,7 +298,7 @@ export const AdminLoa = () => {
             rowCost += 'name="routes_destination[' + counter + ']"';
             rowCost += 'class="input-routes-destination border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"';
             rowCost += 'value=""';
-            rowCost += 'required/>';
+            rowCost += 'list="indo-regions" required/>';
             rowCost += '</div>';
             rowCost += ' <div class="inline-block relative w-3/12 mb-3">';
             rowCost += '<label class="block uppercase text-blueGray-600 text-xs font-bold mb-2"';

@@ -25,6 +25,7 @@ use App\Models\Priviledge;
 use App\Models\Province;
 use App\Models\Regency;
 use App\Models\Trucks;
+use App\Models\TruckType;
 use App\Models\Village;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -315,6 +316,27 @@ class DataController extends BaseController
         foreach ($data['loa'] as $row) {
             $files = LoaFile::where('id_loa', $row->id)->get();
             $row->files = $files;
+        }
+
+        if ($type == 'bp') {
+            //INPUT AUTOCOMPLETE
+            $data['vehicle_type'] = TruckType::get();
+            $province = Province::all();
+            //$regencies = Regency::all();
+            //$districts = District::all();
+            //$villages = Village::all();
+
+            $data['regions'] = [];
+
+            foreach ($province as $p) {
+                array_push($data['regions'], $p->name);
+                foreach ($p->regencies as $r) {
+                    array_push($data['regions'], $p->name . ',' . $r->name);
+                    foreach ($r->districts as $d) {
+                        array_push($data['regions'], $p->name . ',' . $r->name . ',' . $d->name);
+                    }
+                }
+            }
         }
 
         return view('loa.pages.list-loa-detail', $data);

@@ -266,6 +266,20 @@ Linc | LOA Homepage
                     </form>
                 @endif
             @elseif ($type == 'bp')
+                <!-- BP AUTOCOMPLETE -->
+                <datalist id="truck-types">
+                    @foreach ($vehicle_type as $truck)
+                        <option value="{{ $truck->reference }}"></option>
+                    @endforeach
+                </datalist>
+                
+                <datalist id="indo-regions">
+                    @foreach ($regions as $r)
+                        <option value="{{ $r }}"></option>
+                    @endforeach
+                </datalist>
+                <!-- END BP AUTO COMPLETE -->
+                
                 <!-- TAB SECTION -->
                 <div class="flex flex-wrap hidden services-bp-tab mb-5" id="tabs-id">
                     <div class="w-full">

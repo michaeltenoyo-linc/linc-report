@@ -368,6 +368,20 @@ Linc | LOA Homepage
                                     </div>
                                 </div>
                             @elseif ($type == 'bp')
+                                <!-- BP AUTOCOMPLETE -->
+                                <datalist id="truck-types">
+                                    @foreach ($vehicle_type as $truck)
+                                        <option value="{{ $truck->reference }}"></option>
+                                    @endforeach
+                                </datalist>
+                                
+                                <datalist id="indo-regions">
+                                    @foreach ($regions as $r)
+                                        <option value="{{ $r }}"></option>
+                                    @endforeach
+                                </datalist>
+                                <!-- END BP AUTO COMPLETE -->
+
                                 <div class="w-full text-center mb-10">  
                                     <label class="block text-blueGray-600 text-xs font-bold mb-2"
                                         htmlFor="name">Services<br><span class="text-red-500">*Harap melengkapi step berikut untuk menyimpan data.
