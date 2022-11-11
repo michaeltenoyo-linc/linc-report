@@ -619,6 +619,8 @@ Linc | LOA Homepage
 </div>
 @endsection
 
+@include('loa.modals.loa-error-warning')
+
 <script>
     function changeActiveTab(event, tabID) {
         let element = event.target;

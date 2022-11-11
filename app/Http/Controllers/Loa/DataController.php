@@ -28,6 +28,7 @@ use App\Models\Trucks;
 use App\Models\TruckType;
 use App\Models\Village;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
@@ -544,7 +545,7 @@ class DataController extends BaseController
 
     public function insertDetailByLoaBp(Request $req, $id_loa)
     {
-        //IF BP ADA EXCESS DeTAIL KOMPLEKS
+        $data['error'] = new Collection();
 
         //RENTAL
         $ctr_rental = $req->input('counter-rental');
@@ -557,14 +558,21 @@ class DataController extends BaseController
 
             for ($i = 0; $i < $req->input('counter-rental') + 1; $i++) {
                 if (isset($rental_site[$i])) {
-                    $rentalDetail = LoaDetailBp::create([
-                        'name' => 'rental|' . $rental_site[$i] . '|' . $rental_type[$i],
-                        'id_loa' => $id_loa,
-                        'cost' => $rental_rate[$i],
-                        'uom' => $rental_qty[$i],
-                        'terms' => $rental_terms[$i],
-                        'type' => $rental_type[$i],
-                    ]);
+                    try {
+                        $rentalDetail = LoaDetailBp::create([
+                            'name' => 'rental|' . $rental_site[$i] . '|' . $rental_type[$i],
+                            'id_loa' => $id_loa,
+                            'cost' => $rental_rate[$i],
+                            'uom' => $rental_qty[$i],
+                            'terms' => $rental_terms[$i],
+                            'type' => $rental_type[$i],
+                        ]);
+                    } catch (\Throwable $th) {
+                        $data['error']->push([
+                            'Services' => 'Rental',
+                            'Detail' => $rental_site[$i] . ' with ' . $rental_type[$i],
+                        ]);
+                    }
                 }
             }
         }
@@ -580,14 +588,21 @@ class DataController extends BaseController
 
             for ($i = 0; $i < $req->input('counter-excess') + 1; $i++) {
                 if (isset($excess_name[$i])) {
-                    $rentalDetail = LoaDetailBp::create([
-                        'name' => 'excess|' . $excess_name[$i] . '|' . $excess_type[$i],
-                        'id_loa' => $id_loa,
-                        'cost' => $excess_rate[$i],
-                        'uom' => $excess_qty[$i],
-                        'terms' => $excess_terms[$i],
-                        'type' => $excess_type[$i],
-                    ]);
+                    try {
+                        $rentalDetail = LoaDetailBp::create([
+                            'name' => 'excess|' . $excess_name[$i] . '|' . $excess_type[$i],
+                            'id_loa' => $id_loa,
+                            'cost' => $excess_rate[$i],
+                            'uom' => $excess_qty[$i],
+                            'terms' => $excess_terms[$i],
+                            'type' => $excess_type[$i],
+                        ]);
+                    } catch (\Throwable $th) {
+                        $data['error']->push([
+                            'Services' => 'Excess',
+                            'Detail' => $excess_name[$i] . ' with ' . $excess_type[$i],
+                        ]);
+                    }
                 }
             }
         }
@@ -603,14 +618,21 @@ class DataController extends BaseController
 
             for ($i = 0; $i < $req->input('counter-routes') + 1; $i++) {
                 if (isset($routes_origin[$i])) {
-                    $rentalDetail = LoaDetailBp::create([
-                        'name' => 'routes|' . $routes_origin[$i] . '|' . $routes_destination[$i] . '|' . $routes_type[$i],
-                        'id_loa' => $id_loa,
-                        'cost' => $routes_rate[$i],
-                        'uom' => 'routes',
-                        'terms' => 'none',
-                        'type' => $routes_type[$i],
-                    ]);
+                    try {
+                        $rentalDetail = LoaDetailBp::create([
+                            'name' => 'routes|' . $routes_origin[$i] . '|' . $routes_destination[$i] . '|' . $routes_type[$i],
+                            'id_loa' => $id_loa,
+                            'cost' => $routes_rate[$i],
+                            'uom' => 'routes',
+                            'terms' => 'none',
+                            'type' => $routes_type[$i],
+                        ]);
+                    } catch (\Throwable $th) {
+                        $data['error']->push([
+                            'Services' => 'On Call',
+                            'Detail' => $routes_origin[$i] . ' to ' . $routes_destination[$i] . ' with' . $routes_type[$i]
+                        ]);
+                    }
                 }
             }
         }

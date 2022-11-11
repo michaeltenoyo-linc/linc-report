@@ -560,6 +560,7 @@ Linc | LOA Homepage
 @endsection
 
 @include('loa.modals.loa-add-file')
+@include('loa.modals.loa-error-warning')
 
 @if($type == 'bp')
 <script>
